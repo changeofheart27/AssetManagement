@@ -2,12 +2,12 @@ import React from "react";
 import "./App.css";
 import Mainpage from "./components/Mainpage/Mainpage";
 
-const App = () => {
+function App() {
   return (
     <>
       <Mainpage/>
     </>
   );
-};
+}
 
 export default App;
