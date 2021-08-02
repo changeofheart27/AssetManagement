@@ -46,17 +46,19 @@ const Edit = () => {
                 </Row>
                 <Row className="mb-3">
                     <p id="basic-addon1" className={"me-5 w-25"}>State</p>
-                    <div className={"container"}>
+                    <div className={"container w-50"}>
                         <FormCheck
                             inline
                             type={"radio"}
                             label={"Available"}
+                            className={"w-75"}
                         >
                         </FormCheck>
                         <FormCheck
                             inline
                             type={"radio"}
                             label={"Not available"}
+                            className={"w-75"}
                         >
                         </FormCheck>
 
@@ -64,6 +66,7 @@ const Edit = () => {
                             inline
                             type={"radio"}
                             label={"Waiting for recycling"}
+                            className={"w-75"}
                         >
                         </FormCheck>
 
@@ -71,6 +74,7 @@ const Edit = () => {
                             inline
                             type={"radio"}
                             label={"Recycled"}
+                            className={"w-75"}
                         >
                         </FormCheck>
                     </div>
