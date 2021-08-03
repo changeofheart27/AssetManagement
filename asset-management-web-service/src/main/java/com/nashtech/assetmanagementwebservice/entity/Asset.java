@@ -2,6 +2,7 @@ package com.nashtech.assetmanagementwebservice.entity;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,6 +16,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 @Entity
 @Table(name = "asset")
 public class Asset {
@@ -24,7 +28,7 @@ public class Asset {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Column(name = "asset_code", unique = true, nullable = false)
+	@Column(name = "asset_code", unique = true)
 	private String assetCode;
 	
 	@Column(name = "asset_name")
@@ -43,28 +47,37 @@ public class Asset {
 	@Column(name = "location")
 	private String location;
 	
-	@ManyToOne
+	@ManyToOne()
 	@JoinColumn(name = "user_id")
 	private User user;
 	
-	@OneToOne(mappedBy = "category", fetch = FetchType.EAGER)
+	@ManyToOne()
+	@JoinColumn(name = "category_id")
 	private Category category;
 
 	public Asset() {
 		super();
 	}
-
-	public Asset(int id, String assetCode, String assetName, String specification, Date installedDate, int state,
-			String location, User user) {
+	
+	public Asset(String assetName, String specification, Date installedDate, int state, 
+			String location) {
 		super();
-		this.id = id;
-		this.assetCode = assetCode;
 		this.assetName = assetName;
 		this.specification = specification;
 		this.installedDate = installedDate;
 		this.state = state;
 		this.location = location;
-		this.user = user;
+	}
+
+	public Asset(String assetName, String specification, Date installedDate, int state, 
+			String location, Category category) {
+		super();
+		this.assetName = assetName;
+		this.specification = specification;
+		this.installedDate = installedDate;
+		this.state = state;
+		this.location = location;
+		this.category = category;
 	}
 
 	public int getId() {

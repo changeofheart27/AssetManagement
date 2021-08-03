@@ -3,6 +3,7 @@ package com.nashtech.assetmanagementwebservice.entity;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -52,11 +53,17 @@ public class User {
 	@Column(name = "location")
 	private String location;
 	
-	@OneToMany(mappedBy = "asset", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "user")
 	private List<Asset> assets;
 
 	public User() {
 		super();
+	}
+	
+	public User(String firstName, String lastName) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
 	}
 
 	public User(int id, String firstName, String lastName, Date dob, Date joinedDate, int gender, int type,
