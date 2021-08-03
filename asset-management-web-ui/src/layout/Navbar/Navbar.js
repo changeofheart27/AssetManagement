@@ -2,16 +2,18 @@ import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../../resources/logo.jpg";
 import Home from "../../pages/home/Home";
-import User from "../../pages/user/User";
 import Asset from "../../pages/asset/Asset";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./Navbar.css";
+import Manage from "../../pages/manage/Manage";
+import EditAsset from "../../pages/edit/EditAsset";
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 const Navbar = () => {
   return (
     <div className="container">
       <Router>
-        <div className="navbar-container">
+        <div className="navbar-container w-25">
           <img src={logo} alt="logo_NashTech" />
           <p>Online Asset Management</p>
           <div className="navbar">
@@ -37,16 +39,19 @@ const Navbar = () => {
             </ul>
           </div>
         </div>
-        <div className="pages-container">
+        <div className="pages-container w-75">
           <Switch>
             <Route path="/home" exact>
               <Home />
             </Route>
             <Route path="/user">
-              <User />
+              <Manage/>
             </Route>
             <Route path="/asset">
               <Asset />
+            </Route>
+            <Route path={"/edit"}>
+              <EditAsset/>
             </Route>
           </Switch>
         </div>

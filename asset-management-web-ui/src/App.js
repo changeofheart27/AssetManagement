@@ -4,9 +4,9 @@ import Mainpage from "./components/Mainpage/Mainpage";
 
 const App = () => {
   return (
-    <>
-      <Mainpage/>
-    </>
+      <>
+        <Mainpage/>
+      </>
   );
 };
 
