@@ -1,0 +1,15 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.main-header {
+  background-color: #cf2338;
+}
+
+.main-header p {
+  padding: 1.2em 1.4em;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+}
