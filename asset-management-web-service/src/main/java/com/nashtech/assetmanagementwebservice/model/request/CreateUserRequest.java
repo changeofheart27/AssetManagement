@@ -19,7 +19,7 @@ public class CreateUserRequest {
     @NotNull(message = "Username is required")
     @NotEmpty(message = "Username is required")
     @ApiModelProperty(
-            example="daoninhthai",
+            example="thaimeo",
             notes="Username cannot be empty",
             required=true
     )
@@ -29,7 +29,7 @@ public class CreateUserRequest {
     @NotNull(message = "First name is required")
     @NotEmpty(message = "First name is required")
     @ApiModelProperty(
-            example="Dao",
+            example="Da",
             notes="First name cannot be empty",
             required=true
     )
@@ -39,7 +39,7 @@ public class CreateUserRequest {
     @NotNull(message = "Last name is required")
     @NotEmpty(message = "Last name is required")
     @ApiModelProperty(
-            example="Thai",
+            example="Th",
             notes="Last name cannot be empty",
             required=true
     )
@@ -61,7 +61,7 @@ public class CreateUserRequest {
     @NotNull(message = "  Date Of Birth is required")
 //    @NotEmpty(message = "Date Of Birth is required")
     @ApiModelProperty(
-            example="2021-08-03T04:26:55.426Z",
+            example="1999-03-28T17:00:00.000+00:00",
             notes="Birth Date  cannot be empty",
             required=true
     )
@@ -81,7 +81,7 @@ public class CreateUserRequest {
     @NotNull(message = "Joined  Date is required")
 
     @ApiModelProperty(
-            example="2021-08-03T04:26:55.426Z",
+            example="1999-03-28T17:00:00.000+00:00",
             notes="Joined Date  cannot be empty",
             required=true
     )
