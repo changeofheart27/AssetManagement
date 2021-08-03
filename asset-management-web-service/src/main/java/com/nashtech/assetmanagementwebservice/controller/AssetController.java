@@ -40,7 +40,7 @@ public class AssetController {
     }
 	
 	@ApiOperation(value = "GET Request To Find A Post Using id", response = AssetDTO.class)
-    @GetMapping(value = "/asset/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/assets/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AssetDTO> getAsset(@PathVariable Integer id) {
     	AssetDTO asset = assetService.findAssetById(id);
         if (asset == null) {

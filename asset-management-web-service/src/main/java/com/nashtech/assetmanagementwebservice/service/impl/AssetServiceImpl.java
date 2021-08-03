@@ -1,6 +1,6 @@
 package com.nashtech.assetmanagementwebservice.service.impl;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.nashtech.assetmanagementwebservice.dto.AssetDTO;
 import com.nashtech.assetmanagementwebservice.entity.Asset;
 import com.nashtech.assetmanagementwebservice.entity.Category;
+import com.nashtech.assetmanagementwebservice.exception.NotFoundException;
 import com.nashtech.assetmanagementwebservice.mapper.AssetMapper;
 import com.nashtech.assetmanagementwebservice.repository.AssetRepository;
 import com.nashtech.assetmanagementwebservice.repository.CategoryRepository;
@@ -31,24 +32,24 @@ public class AssetServiceImpl implements AssetService {
 	}
 	
 	@Override
-	@Transactional
 	public List<AssetDTO> getAssetList() {
 		List<Asset> assets = assetRepository.findAll();
 		return assets.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
 	}
 	
 	@Override
-	@Transactional
 	public AssetDTO findAssetById(Integer id) {
 		Asset asset = assetRepository.getById(id);
+		if (asset == null) {
+			throw new NotFoundException("No record found with id " + id);
+		}
 		return assetMapper.fromEntity(asset);
 	}
 
 	@Override
-	@Transactional
 	public AssetDTO createAsset(Integer categoryId, AssetDTO payload) {
 		Asset asset = assetMapper.fromDTO(payload);
-		asset.setInstalledDate(new Date());
+		asset.setInstalledDate(LocalDate.now());
 		Category category = categoryRepository.getById(categoryId);
 		asset.setCategory(category);
 		String assetCode = generateAssetCode(category);

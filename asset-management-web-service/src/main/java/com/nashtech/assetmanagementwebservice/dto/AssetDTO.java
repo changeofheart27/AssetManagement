@@ -1,6 +1,6 @@
 package com.nashtech.assetmanagementwebservice.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import com.nashtech.assetmanagementwebservice.entity.Category;
 import com.nashtech.assetmanagementwebservice.entity.User;
@@ -14,7 +14,7 @@ public class AssetDTO {
 	
 	private String specification;
 	
-	private Date installedDate;
+	private LocalDate installedDate;
 	
 	private int state;
 	
@@ -56,11 +56,11 @@ public class AssetDTO {
 		this.specification = specification;
 	}
 
-	public Date getInstalledDate() {
+	public LocalDate getInstalledDate() {
 		return installedDate;
 	}
 
-	public void setInstalledDate(Date installedDate) {
+	public void setInstalledDate(LocalDate installedDate) {
 		this.installedDate = installedDate;
 	}
 

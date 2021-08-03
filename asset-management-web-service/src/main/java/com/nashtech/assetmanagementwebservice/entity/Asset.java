@@ -1,8 +1,7 @@
 package com.nashtech.assetmanagementwebservice.entity;
 
-import java.util.Date;
+import java.time.LocalDate;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,11 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 @Entity
 @Table(name = "asset")
@@ -38,8 +33,7 @@ public class Asset {
 	private String specification;
 	
 	@Column(name = "installed_date")
-	@Temporal(TemporalType.DATE)
-	private Date installedDate;
+	private LocalDate installedDate;
 	
 	@Column(name = "state")
 	private int state;
@@ -59,7 +53,13 @@ public class Asset {
 		super();
 	}
 	
-	public Asset(String assetName, String specification, Date installedDate, int state, 
+	//used for testing purpose (JUnit)
+	public Asset(int id, String assetName) {
+		this.id = id;
+		this.assetName = assetName;
+	}
+	
+	public Asset(String assetName, String specification, LocalDate installedDate, int state, 
 			String location) {
 		super();
 		this.assetName = assetName;
@@ -69,7 +69,7 @@ public class Asset {
 		this.location = location;
 	}
 
-	public Asset(String assetName, String specification, Date installedDate, int state, 
+	public Asset(String assetName, String specification, LocalDate installedDate, int state, 
 			String location, Category category) {
 		super();
 		this.assetName = assetName;
@@ -112,11 +112,11 @@ public class Asset {
 		this.specification = specification;
 	}
 
-	public Date getInstalledDate() {
+	public LocalDate getInstalledDate() {
 		return installedDate;
 	}
 
-	public void setInstalledDate(Date installedDate) {
+	public void setInstalledDate(LocalDate installedDate) {
 		this.installedDate = installedDate;
 	}
 

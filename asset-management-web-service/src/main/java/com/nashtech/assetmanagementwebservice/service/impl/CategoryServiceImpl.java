@@ -19,7 +19,6 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 	
 	@Override
-	@Transactional
 	public Category findById(Integer id) {
 		Category category = categoryRepository.getById(id);
 		return category;
