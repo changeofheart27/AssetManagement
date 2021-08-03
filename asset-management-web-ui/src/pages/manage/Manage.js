@@ -1,36 +1,30 @@
 import React, {useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
-import {Button, Row, FormControl, Dropdown, SplitButton, Table, Container} from 'react-bootstrap';
+import {Button, Row, FormControl, Dropdown, SplitButton, Table, Container, Form} from 'react-bootstrap';
 import axios from "axios";
+import {useHistory} from 'react-router-dom'
+import './Manage.css'
+
 
 const Manage = () => {
     const [list, setList] = useState();
-    useEffect(() => {
-        axios.get('http://localhost:8080/api/v1/users')
-            .then(function (response) {
-                setList(response.data);
-            })
-            .catch(function (error) {
-                console.log(error)
-            })
-    })
+    const history = useHistory();
     return (
-        <Container>
-            <h1 className={"text-danger"}>User List</h1>
-            <Row>
-                <Dropdown className={"w-25 m-auto"}>
+        <Container className={"d-block ms-5"}>
+            <h1 className={"text-danger mb-5"}>User List</h1>
+            <Row className={"mb-5"}>
+                <Dropdown className={"w-25"}>
                     <SplitButton title={"Search by Type"} menuVariant={"dark"} id={""}>
                         <Dropdown.Item>Type</Dropdown.Item>
                     </SplitButton>
                 </Dropdown>
                 <FormControl
                     type={"input"}
-                    className={"w-25 m-auto"}
+                    className={"w-25 me-5"}
                 >
                 </FormControl>
-                <Button variant={"danger"} className={"w-25 m-auto"}>Create new User</Button>
+                <Button variant={"danger"} className={"w-25 ms-5"}>Create new User</Button>
             </Row>
-            <Container className={"mt-5"}>
                 <Row>
                     <Table>
                         <thead>
@@ -47,13 +41,12 @@ const Manage = () => {
                                 <td>annt</td>
                                 <td>20/06/2019</td>
                                 <td>Staff</td>
-                                <td><button>Edit</button></td>
-                                <td><button>Delete</button></td>
+                                <td><button><i className="bi bi-pen"></i></button></td>
+                                <td><button><i className="bi bi-x-circle"></i></button></td>
                             </tr>
                         </tbody>
                     </Table>
                 </Row>
-            </Container>
         </Container>
     );
 };
