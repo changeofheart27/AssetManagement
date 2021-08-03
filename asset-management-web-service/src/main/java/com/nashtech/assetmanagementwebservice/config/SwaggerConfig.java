@@ -26,8 +26,10 @@ public class SwaggerConfig {
 				.groupName(version)
 				.select()
 				.apis(RequestHandlerSelectors.any())
+
 				.paths(PathSelectors.regex(".*/" + version + "/.*"))
 				.build();
+
 	}
 
 	private ApiInfo apiInfo() {
