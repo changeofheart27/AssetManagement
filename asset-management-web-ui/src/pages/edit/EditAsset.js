@@ -3,7 +3,7 @@ import {Container, Form, FormControl, InputGroup, Button, FormCheck, Row} from "
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
-const Edit = () => {
+const EditAsset = () => {
     return (
         <Container>
             <h1 className={"text-danger"}>Edit User</h1>
@@ -90,4 +90,4 @@ const Edit = () => {
     );
 };
 
-export default Edit;
+export default EditAsset;
