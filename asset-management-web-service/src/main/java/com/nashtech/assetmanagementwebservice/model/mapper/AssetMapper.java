@@ -39,4 +39,5 @@ public class AssetMapper {
 		entity.setLocation(payload.getLocation());
 		return entity;
 	}
+
 }

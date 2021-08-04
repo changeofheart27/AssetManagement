@@ -29,7 +29,7 @@ public class AssetServiceImpl implements AssetService {
 	private final CategoryService categoryService;
 	private final AssetMapper assetMapper;
 	private final CategoryMapper categoryMapper;
-	
+
 	@Autowired
 	public AssetServiceImpl(AssetRepository assetRepository, CategoryService categoryService) {
 		this.assetRepository = assetRepository;
@@ -80,7 +80,7 @@ public class AssetServiceImpl implements AssetService {
 		
 		return assetMapper.fromEntity(asset);
 	}
-	
+
 	@Override
 	@Transactional
 	public AssetDTO editAsset(Integer assetId, AssetDTO payload) {
@@ -95,7 +95,7 @@ public class AssetServiceImpl implements AssetService {
 		Asset assetResult = assetRepository.save(assetEdit);
 		return assetMapper.fromEntity(assetResult);
 	}
-	
+
 	@Override
 	@Transactional
 	public void deleteAssetById(Integer id) {
@@ -109,9 +109,9 @@ public class AssetServiceImpl implements AssetService {
 		}
 		assetRepository.delete(asset);
 	}
-	
+
 	/**
-	 * generate assetCode for Asset (Example format: Laptop -> LA000001, 
+	 * generate assetCode for Asset (Example format: Laptop -> LA000001,
 	 * 	Monitor: MO000001, Personal Computer: PC000001)
 	 * @param category
 	 * @return String
@@ -128,7 +128,6 @@ public class AssetServiceImpl implements AssetService {
 		String assetCode = prefix + String.format("%06d", count);
 		return assetCode;
 	}
-	
 
 
 }

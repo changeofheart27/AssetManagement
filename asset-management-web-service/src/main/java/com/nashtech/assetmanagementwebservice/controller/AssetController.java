@@ -38,16 +38,16 @@ public class AssetController {
     		responseContainer = "List")
     @GetMapping(value = "/assets", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<AssetDTO>> getAllAssets() {
-    	List<AssetDTO> assets = assetService.getAssetList();
+        List<AssetDTO> assets = assetService.getAssetList();
         return ResponseEntity.ok(assets);
     }
 	
 	@ApiOperation(value = "Get An Asset Using id", response = AssetDTO.class)
     @GetMapping(value = "/assets/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AssetDTO> getAsset(@PathVariable Integer id) {
-    	AssetDTO asset = assetService.findAssetById(id);
+        AssetDTO asset = assetService.findAssetById(id);
         if (asset == null) {
-        	return ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(asset);
     }
