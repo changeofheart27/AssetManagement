@@ -59,7 +59,22 @@ public class AssetServiceImpl implements AssetService {
 		
 		return assetMapper.fromEntity(asset);
 	}
-	
+
+	@Override
+	@Transactional
+	public AssetDTO editAsset(AssetDTO assetDTO, Integer id) {
+		if (id == null){
+			throw new IllegalArgumentException("asset id can not be null");
+		}
+		if (assetDTO == null){
+			throw new IllegalArgumentException("request asset can not be null");
+		}
+		Asset assetEdit = assetMapper.fromDTO(assetDTO);
+		assetEdit.setId(id);
+		Asset resultAsset = assetRepository.save(assetEdit);
+		return assetMapper.fromEntity(resultAsset);
+	}
+
 	private String generateAssetCode(Category category) {
 		String prefix = "";
 		String categoryName = category.getName();
