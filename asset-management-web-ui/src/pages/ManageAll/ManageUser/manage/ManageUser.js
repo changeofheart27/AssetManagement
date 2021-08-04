@@ -5,10 +5,10 @@ import axios from "axios";
 import {useHistory} from 'react-router-dom'
 import './Manage.css'
 
-
-const Manage = () => {
+const ManageUser = () => {
     const [list, setList] = useState();
     const history = useHistory();
+    
     return (
         <Container className={"d-block ms-5"}>
             <h1 className={"text-danger mb-5"}>User List</h1>
@@ -26,16 +26,16 @@ const Manage = () => {
                     </FormControl>
                     <InputGroup.Text>Search</InputGroup.Text>
                 </InputGroup>
-                <Button variant={"danger"} className={"w-25 ms-5"}>Create new User</Button>
+                <Button variant={"danger"} className={"w-25 ms-5"} onClick={() => history.push('/createuser')}>Create new User</Button>
             </Row>
             <Row>
                 <Table>
                     <thead>
                     <tr>
-                        <th className={"border-bottom"}>Staff Code <i className="bi bi-caret-down-fill"/></th>
-                        <th className={"border-bottom"}>Full Name <i className="bi bi-caret-down-fill"/></th>
+                        <th className={"border-bottom"}>Staff Code<i className="bi bi-caret-down-fill"/></th>
+                        <th className={"border-bottom"}>Full Name<i className="bi bi-caret-down-fill"/></th>
                         <th className={"border-bottom"}>User Name</th>
-                        <th className={"border-bottom"}>Joined Date <i className="bi bi-caret-down-fill"/></th>
+                        <th className={"border-bottom"}>Joined Date<i className="bi bi-caret-down-fill"/></th>
                         <th className={"border-bottom"}>Type<i className="bi bi-caret-down-fill"/></th>
                     </tr>
                     </thead>
@@ -46,7 +46,7 @@ const Manage = () => {
                         <td>annt</td>
                         <td>20/06/2019</td>
                         <td>Staff</td>
-                        <td><i className="bi bi-pen btn m-0 text-muted p-0" onClick={() => history.push('/edit')}/></td>
+                        <td><i className="bi bi-pen btn m-0 text-muted p-0" onClick={() => history.push('/edituser')}/></td>
                         <td><i className="bi bi-x-circle text-danger btn p-0"/></td>
                     </tr>
                     </tbody>
@@ -56,4 +56,4 @@ const Manage = () => {
     );
 };
 
-export default Manage;
+export default ManageUser;
