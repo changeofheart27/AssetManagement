@@ -1,4 +1,4 @@
-package com.nashtech.assetmanagementwebservice.dto;
+package com.nashtech.assetmanagementwebservice.model.dto;
 
 public class CategoryDTO {
 	private int id;

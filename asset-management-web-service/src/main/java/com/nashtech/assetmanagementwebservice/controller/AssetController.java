@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nashtech.assetmanagementwebservice.dto.AssetDTO;
+
+import com.nashtech.assetmanagementwebservice.model.dto.AssetDTO;
+
 import com.nashtech.assetmanagementwebservice.service.AssetService;
 
 import io.swagger.annotations.ApiOperation;

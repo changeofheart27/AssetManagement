@@ -1,4 +1,4 @@
-package com.nashtech.assetmanagementwebservice.dto;
+package com.nashtech.assetmanagementwebservice.model.dto;
 
 import java.time.LocalDate;
 

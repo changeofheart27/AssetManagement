@@ -1,6 +1,6 @@
-package com.nashtech.assetmanagementwebservice.mapper;
+package com.nashtech.assetmanagementwebservice.model.mapper;
 
-import com.nashtech.assetmanagementwebservice.dto.AssetDTO;
+import com.nashtech.assetmanagementwebservice.model.dto.AssetDTO;
 import com.nashtech.assetmanagementwebservice.entity.Asset;
 
 public class AssetMapper {

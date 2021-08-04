@@ -2,7 +2,7 @@ package com.nashtech.assetmanagementwebservice.service;
 
 import java.util.List;
 
-import com.nashtech.assetmanagementwebservice.dto.AssetDTO;
+import com.nashtech.assetmanagementwebservice.model.dto.AssetDTO;
 
 public interface AssetService {
 	List<AssetDTO> getAssetList();

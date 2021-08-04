@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nashtech.assetmanagementwebservice.dto.CategoryDTO;
+import com.nashtech.assetmanagementwebservice.model.dto.CategoryDTO;
 import com.nashtech.assetmanagementwebservice.entity.Category;
-import com.nashtech.assetmanagementwebservice.mapper.CategoryMapper;
+import com.nashtech.assetmanagementwebservice.model.mapper.CategoryMapper;
 import com.nashtech.assetmanagementwebservice.repository.CategoryRepository;
 import com.nashtech.assetmanagementwebservice.service.CategoryService;
 
