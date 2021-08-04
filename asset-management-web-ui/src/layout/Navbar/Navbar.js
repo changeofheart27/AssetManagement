@@ -2,11 +2,16 @@ import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../../resources/logo.jpg";
 import Home from "../../pages/home/Home";
-import Asset from "../../pages/asset/Asset";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./Navbar.css";
-import Manage from "../../pages/manage/Manage";
-import EditAsset from "../../pages/edit/EditAsset";
+
+import ManageUser from "../../pages/ManageAll/ManageUser/manage/ManageUser";
+import CreateUser from "../../pages/ManageAll/ManageUser/create/CreateUser";
+import EditUser from "../../pages/ManageAll/ManageUser/edit/EditUser"
+
+import ManageAsset from "../../pages/ManageAll/ManageAsset/manage/ManageAsset"
+import CreateAsset from "../../pages/ManageAll/ManageAsset/create/CreateAsset"
+import EditAsset from "../../pages/ManageAll/ManageAsset/edit/EditAsset";
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 const Navbar = () => {
@@ -41,16 +46,25 @@ const Navbar = () => {
         </div>
         <div className="pages-container w-75">
           <Switch>
-            <Route path="/home" exact>
+            <Route path={"/home"} exact>
               <Home />
             </Route>
-            <Route path="/user">
-              <Manage/>
+            <Route path={"/user"}>
+              <ManageUser/>
             </Route>
-            <Route path="/asset">
-              <Asset />
+            <Route path={"/createuser"}>
+              <CreateUser/>
             </Route>
-            <Route path={"/edit"}>
+            <Route path={"/edituser"}>
+              <EditUser/>
+            </Route>
+            <Route path={"/asset"}>
+              <ManageAsset />
+            </Route>
+            <Route path={"/createasset"}>
+              <CreateAsset />
+            </Route>
+            <Route path={"/editasset"}>
               <EditAsset/>
             </Route>
           </Switch>

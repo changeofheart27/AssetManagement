@@ -1,7 +1,7 @@
 package com.nashtech.assetmanagementwebservice.service;
 
-import com.nashtech.assetmanagementwebservice.entity.Category;
+import com.nashtech.assetmanagementwebservice.model.dto.CategoryDTO;
 
 public interface CategoryService {
-	Category findById(Integer id);
+	CategoryDTO findCategoryById(Integer id);
 }

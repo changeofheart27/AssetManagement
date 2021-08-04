@@ -3,7 +3,7 @@ package com.nashtech.assetmanagementwebservice.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import com.nashtech.assetmanagementwebservice.entity.Category;
+import com.nashtech.assetmanagementwebservice.model.dto.CategoryDTO;
 import com.nashtech.assetmanagementwebservice.service.CategoryService;
 
 @Controller
@@ -15,7 +15,7 @@ public class CategoryController {
 		this.categoryService = categoryService;
 	}
 	
-	public Category findById(Integer id) {
-		return categoryService.findById(id);
+	public CategoryDTO findById(Integer id) {
+		return categoryService.findCategoryById(id);
 	}
 }

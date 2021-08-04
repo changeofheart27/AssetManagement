@@ -7,14 +7,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import com.nashtech.assetmanagementwebservice.model.dto.AssetDTO;
+
 import com.nashtech.assetmanagementwebservice.service.AssetService;
 
 import io.swagger.annotations.ApiOperation;
@@ -30,7 +34,7 @@ public class AssetController {
 		this.assetService = assetService;
 	}
 	
-	@ApiOperation(value = "GET Request To Get All Assets", response = AssetDTO.class, 
+	@ApiOperation(value = "Get All Assets", response = AssetDTO.class, 
     		responseContainer = "List")
     @GetMapping(value = "/assets", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<AssetDTO>> getAllAssets() {
@@ -38,7 +42,7 @@ public class AssetController {
         return ResponseEntity.ok(assets);
     }
 	
-	@ApiOperation(value = "GET Request To Find A Post Using id", response = AssetDTO.class)
+	@ApiOperation(value = "Get An Asset Using id", response = AssetDTO.class)
     @GetMapping(value = "/assets/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AssetDTO> getAsset(@PathVariable Integer id) {
     	AssetDTO asset = assetService.findAssetById(id);
@@ -48,10 +52,24 @@ public class AssetController {
         return ResponseEntity.ok(asset);
     }
 	
-	@ApiOperation(value = "POST Request To Create A New Asset", response = AssetDTO.class)
+	@ApiOperation(value = "Create A New Asset", response = AssetDTO.class)
     @PostMapping(value = "/assets", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<AssetDTO> createAsset(@RequestBody AssetDTO payload) {
-		AssetDTO result = assetService.createAsset(payload.getCategory().getId(), payload);
+		AssetDTO result = assetService.createAsset(payload.getCategoryDTO().getId(), payload);
 		return ResponseEntity.ok(result);
 	}
+	
+	@ApiOperation(value = "Update An Asset Using id", response = AssetDTO.class)
+    @PutMapping(value = "/assets/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AssetDTO> updatePost(@PathVariable Integer id, @RequestBody AssetDTO payload) {
+    	AssetDTO asset = assetService.editAsset(id, payload);
+    	return ResponseEntity.ok(asset);
+    }
+	
+	@ApiOperation(value = "Delete An Asset Using id")
+    @DeleteMapping(value = "/assets/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> deletePost(@PathVariable Integer id) {
+    	assetService.deleteAssetById(id);
+        return ResponseEntity.ok().build();
+    }
 }
