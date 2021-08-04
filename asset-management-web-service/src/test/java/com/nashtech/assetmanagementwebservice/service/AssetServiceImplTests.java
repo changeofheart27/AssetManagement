@@ -68,18 +68,18 @@ public class AssetServiceImplTests {
             assertEquals("No record found with id 1", exception.getMessage());
         }
 
-//        @Test
-//        public void testFindAssetByIdGivenIdExistInDatabaseShouldReturnDataSuccessfully() {
-//            when(assetRepository.findById(2)).thenReturn(Optional.of(testList.get(1)));
-//            
-//            AssetDTO mockPayload = mock(AssetDTO.class);
-//            when(mockPayload.getId()).thenReturn(2);
-//            when(mockPayload.getAssetName()).thenReturn(testList.get(1).getAssetName());
-//            
-//            AssetDTO asset = underTest.findAssetById(2);
-//            assertEquals(mockPayload.getId(), asset.getId());
-//            assertEquals(mockPayload.getAssetName(), "Asset 2");
-//        }
+        @Test
+        public void testFindAssetByIdGivenIdExistInDatabaseShouldReturnDataSuccessfully() {
+            when(assetRepository.getById(2)).thenReturn(testList.get(1));
+            
+            AssetDTO mockPayload = mock(AssetDTO.class);
+            when(mockPayload.getId()).thenReturn(2);
+            when(mockPayload.getAssetName()).thenReturn(testList.get(1).getAssetName());
+            
+            AssetDTO asset = underTest.findAssetById(2);
+            assertEquals(mockPayload.getId(), asset.getId());
+            assertEquals(mockPayload.getAssetName(), "Asset 2");
+        }
     }
 
     

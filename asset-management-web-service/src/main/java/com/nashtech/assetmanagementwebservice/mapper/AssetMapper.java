@@ -4,6 +4,7 @@ import com.nashtech.assetmanagementwebservice.dto.AssetDTO;
 import com.nashtech.assetmanagementwebservice.entity.Asset;
 
 public class AssetMapper {
+	private final CategoryMapper categoryMapper = new CategoryMapper();
 	
 	//map from Asset to AssetDTO
 	public AssetDTO fromEntity(Asset asset) {
@@ -15,6 +16,7 @@ public class AssetMapper {
 		dto.setInstalledDate(asset.getInstalledDate());
 		dto.setState(asset.getState());
 		dto.setLocation(asset.getLocation());
+		dto.setCategoryDTO(categoryMapper.fromEntity(asset.getCategory()));
 		return dto;
 	}
 	
