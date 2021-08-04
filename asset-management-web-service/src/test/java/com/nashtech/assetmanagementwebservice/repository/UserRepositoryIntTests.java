@@ -34,7 +34,7 @@ public class UserRepositoryIntTests {
     @Test
     public void testGetAllUsers() {
         List<User> users = userRepository.findAll();
-        assertEquals(12, users.size());
+        assertEquals(7, users.size());
     }
 
 

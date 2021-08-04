@@ -30,7 +30,7 @@ public class UserMapper {
 
 
         user.setLocation(request.getLocation());
-        user.setStaffCode(request.getStaffCode());
+        user.setStaffCode(user.getStaffCode());
         return user;
     }
 

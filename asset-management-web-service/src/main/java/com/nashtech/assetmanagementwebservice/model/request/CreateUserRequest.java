@@ -47,7 +47,7 @@ public class CreateUserRequest {
     @JsonProperty("last_name")
     private String lastName;
 
-    @NotNull(message = "Gender is required")
+//    @NotNull(message = "Gender is required")
 //    @NotEmpty(message = "Gender  is required")
     @ApiModelProperty(
             example="1",
@@ -59,7 +59,7 @@ public class CreateUserRequest {
 
 
 
-    @NotNull(message = "  Date Of Birth is required")
+  //  @NotNull(message = "  Date Of Birth is required")
 //    @NotEmpty(message = "Date Of Birth is required")
     @ApiModelProperty(
             example="1999-06-02T21:33:45.249967",
@@ -69,17 +69,8 @@ public class CreateUserRequest {
     @JsonProperty("dob")
     private LocalDateTime dob;
 
-    @NotNull(message = "Staff Code is required")
-    @NotEmpty(message = "Staff Code is required")
-    @ApiModelProperty(
-            example="NV1234",
-            notes="Staff Code cannot be empty",
-            required=true
-    )
-    @JsonProperty("staff_code")
-    private String staffCode;
 
-    @NotNull(message = "Joined  Date is required")
+ //   @NotNull(message = "Joined  Date is required")
 
     @ApiModelProperty(
             example="1999-06-02T21:33:45.249967",
@@ -89,8 +80,8 @@ public class CreateUserRequest {
     @JsonProperty("joined_date")
     private LocalDateTime joinedDate;
 
-    @NotNull(message = "Location is required")
-    @NotEmpty(message = "Location is required")
+ //   @NotNull(message = "Location is required")
+  //  @NotEmpty(message = "Location is required")
     @ApiModelProperty(
             example="HN",
             notes="Location cannot be empty",

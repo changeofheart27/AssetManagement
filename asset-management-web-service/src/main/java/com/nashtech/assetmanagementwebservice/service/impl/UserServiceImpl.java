@@ -46,8 +46,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO updateUser(UpdateUserRequest request, int id) {
-        Optional<User> post = userRepository.findById(id);
-        if (post.isEmpty()) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isEmpty()) {
             throw new NotFoundException("No user found");
         }
 
@@ -72,10 +72,12 @@ public class UserServiceImpl implements UserService {
         if (user != null) {
             throw new DuplicateRecordException("User name already exist !");
         }
+        long count = userRepository.count();
+        String staffCode = "SD" + String.format("%04d", count);
 
         user = UserMapper.toUser(request);
+        user.setStaffCode(staffCode);
         userRepository.save(user);
-
         return UserMapper.toUserDTO(user);
     }
 }
