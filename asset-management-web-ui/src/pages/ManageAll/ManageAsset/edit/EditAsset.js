@@ -12,7 +12,10 @@ const EditAsset = () => {
         assetName: null,
         specification: null,
         installedDate: null,
-        state: null
+        state: null,
+        categoryDTO:{
+            name:null
+        }
     });
     useEffect(() => {
         axios.get(`http://localhost:8080/api/v1/assets/${id}`)
@@ -25,7 +28,10 @@ const EditAsset = () => {
         assetName: asset.assetName,
         specification: asset.specification,
         installedDate: asset.installedDate,
-        state: asset.state
+        state: asset.state,
+        categoryDTO:{
+            name:asset.categoryDTO.name
+        }
     }
     const onSubmit = (values, {setSubmitting}) => {
         let edit = {
@@ -73,11 +79,7 @@ const EditAsset = () => {
                             </Row>
                             <Row className="mb-3">
                                 <p className={"col-3"}>Category</p>
-                                <Form.Select size="sm" className={"w-75"}>
-                                    <option>Laptop</option>
-                                    <option>Monitor</option>
-                                    <option>Personal Computer</option>
-                                </Form.Select>
+                                <Form.Control size="sm" className={"w-75"} name={"category"} value={values.categoryDTO.name} disabled/>
                             </Row>
                             <Row className="mb-3">
                                 <p className={"w-25"}>Specification</p>
@@ -111,6 +113,8 @@ const EditAsset = () => {
                                         type={"radio"}
                                         label={"Available"}
                                         className={"w-75"}
+                                        name={"status"}
+                                        onChange={() => values.state = 1}
                                     >
                                     </FormCheck>
                                     <FormCheck
@@ -118,6 +122,8 @@ const EditAsset = () => {
                                         type={"radio"}
                                         label={"Not available"}
                                         className={"w-75"}
+                                        name={"status"}
+                                        onChange={() => values.state = 2}
                                     >
                                     </FormCheck>
                                     <FormCheck
@@ -125,6 +131,8 @@ const EditAsset = () => {
                                         type={"radio"}
                                         label={"Waiting for recycling"}
                                         className={"w-75"}
+                                        name={"status"}
+                                        onChange={() => values.state = 3}
                                     >
                                     </FormCheck>
                                     <FormCheck
@@ -132,6 +140,8 @@ const EditAsset = () => {
                                         type={"radio"}
                                         label={"Recycled"}
                                         className={"w-75"}
+                                        name={"status"}
+                                        onChange={() => values.state = 4}
                                     >
                                     </FormCheck>
                                 </div>
