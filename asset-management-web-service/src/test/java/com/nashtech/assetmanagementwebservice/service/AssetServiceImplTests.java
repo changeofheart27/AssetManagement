@@ -116,12 +116,12 @@ public class AssetServiceImplTests {
         @Test
         public void testEditAssetGivenAssetIdIsNullShouldThrowException(){
             AssetDTO assetDTO = mock(AssetDTO.class);
-            IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> underTest.editAsset(assetDTO, null));
+            IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> underTest.editAsset(null, assetDTO));
             assertEquals("asset id can not be null", exception.getMessage());
         }
         @Test
         public void testEditAssetGivenAssetPayLoadIsNullShouldBeThrowException(){
-            IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> underTest.editAsset(null, 1));
+            IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> underTest.editAsset(1,null ));
             assertEquals("request asset can not be null", exception.getMessage());
         }
 
