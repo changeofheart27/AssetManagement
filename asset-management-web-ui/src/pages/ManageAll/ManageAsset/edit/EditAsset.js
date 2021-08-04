@@ -36,7 +36,7 @@ const EditAsset = () => {
             state: values.state
         }
         axios
-            .post(`http://localhost:8080/api/v1/edit/${id}`, edit)
+            .put(`http://localhost:8080/api/v1/edit/${id}`, edit)
             .then(response => {
                 setSubmitting(false);
                 history.push("/asset");

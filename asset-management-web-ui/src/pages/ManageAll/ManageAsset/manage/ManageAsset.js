@@ -12,7 +12,10 @@ const ManageAsset = () => {
         assetName: null,
         specification: null,
         category: null,
-        state: null
+        state: null,
+        categoryDTO: {
+            name:null
+        }
     }]);
     const history = useHistory();
     useEffect(() => {
@@ -68,7 +71,7 @@ const ManageAsset = () => {
                         <tr key={asset.id}>
                             <td>{asset.assetCode}</td>
                             <td>{asset.assetName}</td>
-                            <td>{asset.category}</td>
+                            <td>{asset.categoryDTO.name}</td>
                             <td>{check(asset.state)}</td>
                             <td><i className="bi bi-pen btn m-0 text-muted p-0"
                                    onClick={() => history.push(`/editasset/${asset.id}`)}/></td>

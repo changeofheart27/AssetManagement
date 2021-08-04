@@ -15,6 +15,7 @@ import com.nashtech.assetmanagementwebservice.model.dto.AssetDTO;
 import com.nashtech.assetmanagementwebservice.service.AssetService;
 
 import io.swagger.annotations.ApiOperation;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1")
@@ -54,7 +55,7 @@ public class AssetController {
 	
 	@ApiOperation(value = "Update An Asset Using id", response = AssetDTO.class)
     @PutMapping(value = "/assets/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AssetDTO> updatePost(@PathVariable Integer id, @RequestBody AssetDTO payload) {
+    public ResponseEntity<AssetDTO> updateAsset(@PathVariable Integer id, @RequestBody AssetDTO payload) {
     	AssetDTO asset = assetService.editAsset(id, payload);
     	return ResponseEntity.ok(asset);
     }
