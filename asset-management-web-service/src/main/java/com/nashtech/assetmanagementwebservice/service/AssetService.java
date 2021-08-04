@@ -10,4 +10,8 @@ public interface AssetService {
 	AssetDTO findAssetById(Integer id);
 	
 	AssetDTO createAsset(Integer categoryId, AssetDTO payload);
+	
+	AssetDTO editAsset(Integer assetId, AssetDTO payload);
+	
+	void deleteAssetById(Integer id);
 }
