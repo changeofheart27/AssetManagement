@@ -5,8 +5,11 @@ import org.springframework.stereotype.Controller;
 
 import com.nashtech.assetmanagementwebservice.model.dto.CategoryDTO;
 import com.nashtech.assetmanagementwebservice.service.CategoryService;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
+@CrossOrigin
 public class CategoryController {
 	private final CategoryService categoryService;
 	
