@@ -1,12 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
-import {Button, Row, FormControl, Dropdown, SplitButton, Table, Container, Form, InputGroup} from 'react-bootstrap';
-import axios from "axios";
+import {Button, Row, FormControl, Dropdown, SplitButton, Table, Container, InputGroup} from 'react-bootstrap';
+
 import {useHistory} from 'react-router-dom'
 import './Manage.css'
 
 const ManageUser = () => {
-    const [list, setList] = useState();
     const history = useHistory();
     
     return (

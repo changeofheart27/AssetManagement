@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.nashtech.assetmanagementwebservice.model.dto.AssetDTO;
 
+
 public interface AssetService {
 	List<AssetDTO> getAssetList();
 	
