@@ -118,7 +118,7 @@ public class AssetServiceImpl implements AssetService {
             throw new NotFoundException("No record found with id " + id);
         }
         // 4 Assigned => can not delete
-        if (asset.getState() == 4) {
+        if (asset.getState() == 3) {
             throw new InternalServerException("Asset is current assigned to someone");
         }
         logger.info("Successfully delete an Asset with id=" + asset.getId() + "!");
