@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.nashtech.assetmanagementwebservice.model.dto.AssetDTO;
 import com.nashtech.assetmanagementwebservice.entity.Asset;
 import com.nashtech.assetmanagementwebservice.entity.Category;
+import com.nashtech.assetmanagementwebservice.exception.InternalServerException;
 import com.nashtech.assetmanagementwebservice.exception.NotFoundException;
 
 import com.nashtech.assetmanagementwebservice.model.mapper.AssetMapper;
@@ -31,8 +32,7 @@ public class AssetServiceImpl implements AssetService {
     private final CategoryService categoryService;
     private final AssetMapper assetMapper;
     private final CategoryMapper categoryMapper;
-
-    Logger log = LoggerFactory.getLogger(AssetServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(AssetServiceImpl.class);
 
     @Autowired
     public AssetServiceImpl(AssetRepository assetRepository, CategoryService categoryService) {
@@ -45,24 +45,29 @@ public class AssetServiceImpl implements AssetService {
     @Override
     @Transactional
     public List<AssetDTO> getAssetList() {
+    	logger.info("Attempting to get all Asset...");
         List<Asset> assets = assetRepository.findAll();
+        logger.info("Successfully got all " + assets.size() + " Asset!");
         return assets.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
     }
 
     @Override
     @Transactional
     public AssetDTO findAssetById(Integer id) {
-        log.info("FIND ASSET WITH ID: " + id);
+    	logger.info("Attempting to find Asset with id " + id + "...");
         Asset asset = assetRepository.getById(id);
         if (asset == null) {
             throw new NotFoundException("No record found with id " + id);
         }
+        logger.info("Successfully found an Asset with id=" + asset.getId() + ",title=" + asset.getAssetCode() 
+        + ",assetName=" + asset.getAssetName() + ",category=" + asset.getCategory().getName() + "!");
         return assetMapper.fromEntity(asset);
     }
 
     @Override
     @Transactional
     public AssetDTO createAsset(Integer categoryId, AssetDTO payload) {
+    	logger.info("Attempting to create new Asset...");
         if (categoryId == null) {
             throw new IllegalArgumentException("Category id can not be null");
         }
@@ -72,7 +77,7 @@ public class AssetServiceImpl implements AssetService {
         Asset asset = assetMapper.fromDTO(payload);
         // 0 Available, 1 Not Available, 2 Waiting for recycling, 3 Recycled, 4 Assigned
         if (asset.getState() > 1) {
-            throw new IllegalArgumentException("Option is not available");
+            throw new InternalServerException("Option is not available");
         }
         asset.setInstalledDate(LocalDate.now());
         asset.setLocation("HN");
@@ -82,12 +87,14 @@ public class AssetServiceImpl implements AssetService {
         asset.setAssetCode(assetCode);
 
         assetRepository.save(asset);
-
+        logger.info("Successfully created an Asset with id=" + asset.getId() + ",title=" + asset.getAssetCode() 
+        + ",assetName=" + asset.getAssetName() + ",category=" + asset.getCategory().getName() + "!");
         return assetMapper.fromEntity(asset);
     }
 
     @Override
     public AssetDTO editAsset(Integer assetId, AssetDTO payload) {
+    	logger.info("Attempting to update Asset with id " + assetId + "...");
         if (assetId == null) {
             throw new IllegalArgumentException("Asset id can not be null");
         }
@@ -97,20 +104,24 @@ public class AssetServiceImpl implements AssetService {
         Asset asset = assetRepository.getById(assetId);
         Asset assetEdit = assetMapper.merge(asset, payload);
         Asset assetResult = assetRepository.save(assetEdit);
+        logger.info("Successfully updated an Asset with id=" + asset.getId() + ",title=" + assetResult.getAssetCode() 
+        + ",assetName=" + assetResult.getAssetName() + ",category=" + assetResult.getCategory().getName() + "!");
         return assetMapper.fromEntity(assetResult);
     }
 
     @Override
     @Transactional(readOnly = false)
     public void deleteAssetById(Integer id) {
+    	logger.info("Attempting to delete Asset with id " + id + "...");
         Asset asset = assetRepository.getById(id);
         if (asset == null) {
-            throw new NotFoundException("Ne record found with id " + id);
+            throw new NotFoundException("No record found with id " + id);
         }
         // 4 Assigned => can not delete
         if (asset.getState() == 4) {
-            throw new IllegalArgumentException("Asset is current assigned to someone");
+            throw new InternalServerException("Asset is current assigned to someone");
         }
+        logger.info("Successfully delete an Asset with id=" + asset.getId() + "!");
         assetRepository.delete(asset);
     }
 
