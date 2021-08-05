@@ -28,38 +28,48 @@ public class AssetController {
     		responseContainer = "List")
     @GetMapping(value = "/assets", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<AssetDTO>> getAllAssets() {
+		logger.info("Execute getAllAssets() inside AssetController");
         List<AssetDTO> assets = assetService.getAssetList();
+        logger.info("Executed successful!");
         return ResponseEntity.ok(assets);
     }
 	
 	@ApiOperation(value = "Get An Asset Using id", response = AssetDTO.class)
     @GetMapping(value = "/assets/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AssetDTO> getAsset(@PathVariable Integer id) {
+		logger.info("Execute getAsset() inside AssetController");
         AssetDTO asset = assetService.findAssetById(id);
         if (asset == null) {
             return ResponseEntity.notFound().build();
         }
+        logger.info("Executed successful!");
         return ResponseEntity.ok(asset);
     }
 	
 	@ApiOperation(value = "Create A New Asset", response = AssetDTO.class)
     @PostMapping(value = "/assets", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<AssetDTO> createAsset(@RequestBody AssetDTO payload) {
+		logger.info("Execute createAsset() inside AssetController");
 		AssetDTO result = assetService.createAsset(payload.getCategoryDTO().getId(), payload);
+		logger.info("Executed successful!");
 		return ResponseEntity.ok(result);
 	}
 	
 	@ApiOperation(value = "Update An Asset Using id", response = AssetDTO.class)
     @PutMapping(value = "/assets/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AssetDTO> updateAsset(@PathVariable Integer id, @RequestBody AssetDTO payload) {
-    	AssetDTO asset = assetService.editAsset(id, payload);
+		logger.info("Execute updateAsset() inside AssetController");
+		AssetDTO asset = assetService.editAsset(id, payload);
+		logger.info("Executed successful!");
     	return ResponseEntity.ok(asset);
     }
 	
 	@ApiOperation(value = "Delete An Asset Using id")
     @DeleteMapping(value = "/assets/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> deletePost(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteAsset(@PathVariable Integer id) {
+		logger.info("Execute deleteAsset() inside AssetController");
     	assetService.deleteAssetById(id);
+    	logger.info("Executed successful!");
         return ResponseEntity.ok().build();
     }
 }

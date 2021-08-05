@@ -4,13 +4,11 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 
@@ -54,14 +52,9 @@ public class Asset {
 	}
 	
 	//used for testing purpose (JUnit)
-	public Asset(int id, String assetName) {
-		this.id = id;
-		this.assetName = assetName;
-	}
-	
-	public Asset(String assetName, String specification, LocalDate installedDate, int state, 
+	public Asset(int id, String assetName, String specification, LocalDate installedDate, int state, 
 			String location) {
-		super();
+		this.id = id;
 		this.assetName = assetName;
 		this.specification = specification;
 		this.installedDate = installedDate;
