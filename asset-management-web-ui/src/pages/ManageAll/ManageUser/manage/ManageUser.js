@@ -1,21 +1,43 @@
-import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
-import {Button, Row, FormControl, Dropdown, SplitButton, Table, Container, InputGroup} from 'react-bootstrap';
+import './Manage.css';
 
+import {Button, Container, Dropdown, FormControl, InputGroup, Row, SplitButton, Table} from 'react-bootstrap';
+import {useEffect, useState} from 'react';
+
+import React from 'react';
+import axios from "axios";
 import {useHistory} from 'react-router-dom'
-import './Manage.css'
 
 const ManageUser = () => {
     const history = useHistory();
-    
+    const [search, setSearch] = useState("Select");
+    const [list, setList] = useState([{
+        staffCode:null,
+        firstName:null,
+        lastName: null,
+        username: null,
+        joinedDate: null,
+        type: null
+    }]);
+    useEffect(() => {
+        axios.get('http://localhost:8080/api/v1/users')
+            .then(function (response) {
+                setList(response.data);
+                console.log(response.data)
+            })
+    }, [])
     return (
         <Container className={"d-block ms-5"}>
             <h1 className={"text-danger mb-5"}>User List</h1>
             <Row className={"mb-5"}>
                 <Dropdown className={"w-25"}>
-                    <SplitButton title={"Type"}>
-                        <Dropdown.Item>Type</Dropdown.Item>
-                    </SplitButton>
+                <Dropdown.Toggle variant={"danger"}>
+                        {search}
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                        <Dropdown.Item onClick={()=>setSearch("Type")}>Type</Dropdown.Item>
+                        <Dropdown.Item  onClick={()=>setSearch("Staff Code")}>Staff Code</Dropdown.Item>
+                    </Dropdown.Menu>
                 </Dropdown>
                 <InputGroup className={"w-auto"}>
                     <FormControl
@@ -39,15 +61,18 @@ const ManageUser = () => {
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>SD1901</td>
-                        <td>An Nguyen Thuy</td>
-                        <td>annt</td>
-                        <td>20/06/2019</td>
-                        <td>Staff</td>
-                        <td><i className="bi bi-pen btn m-0 text-muted p-0" onClick={() => history.push('/edituser')}/></td>
-                        <td><i className="bi bi-x-circle text-danger btn p-0"/></td>
-                    </tr>
+                    {list.map(user =>
+                        <tr key={user.id}>
+                            <td>{user.staffCode}</td>
+                            <td>{user.firstName} {user.lastName}</td>
+                            <td>{user.username}</td>
+                            <td>{user.joinedDate}</td>
+                            <td>{user.type}</td>
+                            <td><i className="bi bi-pen btn m-0 text-muted p-0"
+                                   onClick={() => history.push(`/edituser/${user.id}`)}/></td>
+                            <td><i className="bi bi-x-circle text-danger btn p-0"/></td>
+                        </tr>
+                    )}
                     </tbody>
                 </Table>
             </Row>

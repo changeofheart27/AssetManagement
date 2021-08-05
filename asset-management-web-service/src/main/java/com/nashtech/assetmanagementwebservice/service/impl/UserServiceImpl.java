@@ -95,6 +95,8 @@ public class UserServiceImpl implements UserService {
         user = UserMapper.toUser(request);
         user.setStaffCode(staffCode);
         user.setStatus("enable");
+        user.setPassword("123");
+        user.setLocation("HN");
         userRepository.save(user);
         return UserMapper.toUserDTO(user);
     }

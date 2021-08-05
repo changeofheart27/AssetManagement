@@ -18,8 +18,8 @@ import java.util.Date;
 @Getter
 @Setter
 public class UpdateUserRequest {
-    @NotNull(message = "Username is required")
-    @NotEmpty(message = "Username is required")
+//    @NotNull(message = "Username is required")
+//    @NotEmpty(message = "Username is required")
     @ApiModelProperty(
             example="thaimeo1",
             notes="Username cannot be empty",
@@ -28,8 +28,8 @@ public class UpdateUserRequest {
     @JsonProperty("username")
     private String username;
 
-    @NotNull(message = "First name is required")
-    @NotEmpty(message = "First name is required")
+//    @NotNull(message = "First name is required")
+//    @NotEmpty(message = "First name is required")
     @ApiModelProperty(
             example="Da1",
             notes="First name cannot be empty",
@@ -38,8 +38,8 @@ public class UpdateUserRequest {
     @JsonProperty("first_name")
     private String  firstName;
 
-    @NotNull(message = "Last name is required")
-    @NotEmpty(message = "Last name is required")
+//    @NotNull(message = "Last name is required")
+//    @NotEmpty(message = "Last name is required")
     @ApiModelProperty(
             example="Th1",
             notes="Last name cannot be empty",
