@@ -27,14 +27,15 @@ const ManageUser = () => {
 
 
     const history = useHistory();
-    const [search, setSearch] = useState("Select");
+    const [search, setSearch] = useState("");
     const [list, setList] = useState([{
         staffCode:null,
         firstName:null,
         lastName: null,
         username: null,
         joinedDate: null,
-        type: null
+        type: null,
+        status: null
     }]);
     useEffect(() => {
         axios.get('http://localhost:8080/api/v1/users')
@@ -43,26 +44,31 @@ const ManageUser = () => {
                 console.log(response.data)
             })
     }, [])
+    const handleChange = evt => {
+        setSearch(evt.target.value)
+        console.log(search)
+    }
+    const filterSearchBySearchTerm = () => {
+        axios.get(`http://localhost:8080/api/v1/users/search?keyword=${search}`)
+            .then(function (response) {
+                setList(response.data);
+                console.log(response.data)
+            })
+    }
     return (
         <Container className={"d-block ms-5"}>
             <h1 className={"text-danger mb-5"}>User List</h1>
             <Row className={"mb-5"}>
-                <Dropdown className={"w-25"}>
-                <Dropdown.Toggle variant={"danger"}>
-                        {search}
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                        <Dropdown.Item onClick={()=>setSearch("Type")}>Type</Dropdown.Item>
-                        <Dropdown.Item  onClick={()=>setSearch("Staff Code")}>Staff Code</Dropdown.Item>
-                    </Dropdown.Menu>
-                </Dropdown>
-                <InputGroup className={"w-auto"}>
+                <InputGroup className={"w-25"}>
                     <FormControl
                         type={"input"}
                         className={"w-25"}
+                        name={"searchTerm"}
+                        onChange={handleChange}
+                        placeholder={"TYPE"}
                     >
                     </FormControl>
-                    <InputGroup.Text>Search</InputGroup.Text>
+                    <Button variant={"outline-secondary"} className="bi bi-funnel-fill" onClick={filterSearchBySearchTerm}/>
                 </InputGroup>
                 <Button variant={"danger"} className={"w-25 ms-5"} onClick={() => history.push('/createuser')}>Create new User</Button>
             </Row>
@@ -88,7 +94,11 @@ const ManageUser = () => {
                             <td><i className="bi bi-pen btn m-0 text-muted p-0"
                                    onClick={() => history.push(`/edituser/${user.id}`)}/></td>
                              <Popup contentStyle={{width: "25%" ,border: "1px solid black" , borderRadius: 10,
-              overflow: 'hidden', padding: "20px"}} trigger={<td><i className="bi bi-x-circle text-danger btn p-0 "/></td>} offsetX={200} modal> 
+              overflow: 'hidden', padding: "20px"}} trigger={user.status==="enable"
+                                 ?
+                                 <td><i className="bi bi-eye text-danger btn p-0"/></td>
+                                 :
+                                 <td><i className="bi bi-eye disabled text-danger btn p-0"/></td>} modal>
                                <ChangeStatus id={user.id}/>
                             </Popup>
                         </tr>

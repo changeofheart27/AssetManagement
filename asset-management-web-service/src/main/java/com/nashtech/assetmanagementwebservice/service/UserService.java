@@ -15,4 +15,5 @@ public interface UserService {
     public UserDTO ChangeUserStatus(UpdateUserRequest request, int id);
 
     public UserDTO createUser(CreateUserRequest request);
+    public List<UserDTO> searchByType(String keyword);
 }

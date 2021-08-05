@@ -58,7 +58,7 @@ const ChangeStatus = props => {
             <p>Do you want to change status this user</p>
             <Row>
                 <ButtonGroup>
-                    <Button variant={"danger"} className={"mx-5"} onClick={onSubmit} >Disabled</Button>
+                    <Button variant={"danger"} className={"mx-5"} onClick={onSubmit} >Change</Button>
                     <Button variant={"secondary"} className={"mx-5"}onClick={()=> refreshPage()}>Cancel</Button>
                 </ButtonGroup>
             </Row>

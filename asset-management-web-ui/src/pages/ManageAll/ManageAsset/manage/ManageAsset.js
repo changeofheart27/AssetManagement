@@ -41,29 +41,79 @@ const ManageAsset = () => {
             return <p>Recycle</p>
         }
     }
-    const [search, setSearch] = useState("Select");
+    const handleChange = evt => {
+        setSearch(evt.target.value)
+    }
+    const [search, setSearch] = useState("");
+
+    const filterSearchByState = () => {
+        axios.get(`http://localhost:8080/api/v1/assets/state/${search}`)
+            .then(function (response) {
+                setList(response.data);
+                console.log(response.data)
+            })
+    }
+    const filterSearchByCategory = () => {
+        axios.get(`http://localhost:8080/api/v1/assets/category/${search}`)
+            .then(function (response) {
+                setList(response.data);
+                console.log(response.data)
+            })
+    }
+    const filterSearchBySearchTerm = () => {
+        axios.get(`http://localhost:8080/api/v1/assets/search?keyword=${search}`)
+            .then(function (response) {
+                setList(response.data);
+                console.log(response.data)
+            })
+    }
+    if (search === null) {
+        axios.get('http://localhost:8080/api/v1/assets')
+            .then(function (response) {
+                setList(response.data);
+                console.log(response.data)
+            })
+    }
+
     return (
         <Container className={"d-block ms-5"}>
             <h1 className={"text-danger mb-5"}>Asset List</h1>
             <Row className={"mb-5"}>
-                <Dropdown className={"w-25"}>
-                    <Dropdown.Toggle variant={"danger"}>
-                        {search}
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                        <Dropdown.Item onClick={() => setSearch("Type")}>Type</Dropdown.Item>
-                        <Dropdown.Item onClick={() => setSearch("Staff Code")}>Staff Code</Dropdown.Item>
-                    </Dropdown.Menu>
-                </Dropdown>
-                <InputGroup className={"w-auto"}>
+                <InputGroup className={"w-25"}>
                     <FormControl
                         type={"input"}
                         className={"w-25"}
+                        placeholder={"State"}
+                        name={"type"}
+                        onChange={handleChange}
                     >
                     </FormControl>
-                    <InputGroup.Text>Search</InputGroup.Text>
+                    <Button variant={"outline-secondary"} onClick={filterSearchByState}><i
+                        className="bi bi-funnel-fill"/></Button>
                 </InputGroup>
-                <Button variant={"danger"} className={"w-25 ms-5"} onClick={() => history.push('/createasset')}>Create
+                <InputGroup className={"w-25"}>
+                    <FormControl
+                        type={"input"}
+                        className={"w-25"}
+                        placeholder={"Category"}
+                        name={"category"}
+                        onChange={handleChange}
+                    >
+                    </FormControl>
+                    <Button variant={"outline-secondary"} onClick={filterSearchByCategory}><i
+                        className="bi bi-funnel-fill"/></Button>
+                </InputGroup>
+                <InputGroup className={"w-25"}>
+                    <FormControl
+                        type={"input"}
+                        className={"w-25"}
+                        name={"searchTerm"}
+                        onChange={handleChange}
+                    >
+                    </FormControl>
+                    <Button variant={"outline-secondary"} onClick={filterSearchBySearchTerm}>Search</Button>
+                </InputGroup>
+                <Button variant={"danger"} className={"w-25"} onClick={() => history.push('/createasset')}>Create
                     new Asset</Button>
             </Row>
             <Row>
@@ -85,7 +135,9 @@ const ManageAsset = () => {
                             <td>{check(asset.state)}</td>
                             <td><i className="bi bi-pen btn m-0 text-muted p-0"
                                    onClick={() => history.push(`/editasset/${asset.id}`)}/></td>
-                            <Popup trigger={<td><i className="bi bi-x-circle text-danger btn p-0"/></td>} offsetX={200}
+                            <Popup contentStyle={{width: "25%" ,border: "1px solid black" , borderRadius: 10,
+                                overflow: 'hidden', padding: "20px"}}
+                                trigger={<td><i className="bi bi-x-circle text-danger btn p-0"/></td>} offsetX={200}
                                    modal>
                                 {asset.state !== 1 ? <Delete id={asset.id}/> : <DeleteFail id={asset.id}/>}
                             </Popup>

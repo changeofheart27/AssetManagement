@@ -1,5 +1,6 @@
 package com.nashtech.assetmanagementwebservice.service.impl;
 
+import com.nashtech.assetmanagementwebservice.entity.Asset;
 import com.nashtech.assetmanagementwebservice.entity.User;
 import com.nashtech.assetmanagementwebservice.exception.DuplicateRecordException;
 import com.nashtech.assetmanagementwebservice.exception.InternalServerException;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -99,5 +101,12 @@ public class UserServiceImpl implements UserService {
         user.setLocation("HN");
         userRepository.save(user);
         return UserMapper.toUserDTO(user);
+    }
+
+    @Override
+    public List<UserDTO> searchByType(String keyword) {
+        System.out.println("find user by type");
+        List<User> users = userRepository.findUserByType(keyword);
+        return users.stream().map(UserMapper::toUserDTO).collect(Collectors.toList());
     }
 }
