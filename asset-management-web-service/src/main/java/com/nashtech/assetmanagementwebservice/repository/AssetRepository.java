@@ -2,6 +2,7 @@ package com.nashtech.assetmanagementwebservice.repository;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.nashtech.assetmanagementwebservice.entity.Asset;
@@ -12,6 +13,14 @@ import java.util.List;
 @Repository
 @Transactional
 public interface AssetRepository extends JpaRepository<Asset, Integer> {
-    public Asset findAssetByAssetCode(String assetCode);
-    public List<Asset> findAssetsByAssetNameContains(String assetName);
+	//used for searching
+	@Query(value = "SELECT a FROM Asset a WHERE a.assetName LIKE :assetName OR a.assetCode = :assetCode")
+	public List<Asset> findAssetsByAssetNameContainsOrAssetCode(String assetName, String assetCode);
+	
+	//used for filtering
+	@Query("SELECT a FROM Asset a WHERE a.category.name = :category")
+	public List<Asset> findAssetByCategory(String category);
+	
+	public List<Asset> findAssetByState(int state);
+
 }

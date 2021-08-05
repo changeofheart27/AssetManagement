@@ -73,17 +73,34 @@ public class AssetController {
         return ResponseEntity.ok().build();
     }
 
-	@ApiOperation(value = "Get An Asset Using assetCode", response = AssetDTO.class)
-	@GetMapping(value = "/assets/assetcode/{assetCode}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<AssetDTO> findAssetByAssetCode(@PathVariable String assetCode) {
-		AssetDTO asset = assetService.findAssetByAssetCode(assetCode);
-		return ResponseEntity.ok(asset);
+	@ApiOperation(value = "Search All Assets By assetName Or assetCode", response = AssetDTO.class, 
+			responseContainer = "List")
+	@GetMapping(value = "/assets/search", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<AssetDTO>> searchAssetByAssetNameOrAssetCode(@RequestParam String keyword) {
+		logger.info("Execute searchAssetByAssetNameOrAssetCode() inside AssetController");
+    	List<AssetDTO> assets = assetService.searchAssetByAssetNameOrAssetCode(keyword);
+    	logger.info("Executed successful!");
+        return ResponseEntity.ok(assets);
 	}
 
-	@ApiOperation(value = "Get An Asset Using assetName", response = AssetDTO.class)
-	@GetMapping(value = "/assets/assetname/{assetName}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<AssetDTO>> findAssetByAssetName(@PathVariable String assetName) {
-		List<AssetDTO> assets = assetService.findAssetByAssetName(assetName);
-		return ResponseEntity.ok(assets);
+	@ApiOperation(value = "Filter All Assets With category", response = AssetDTO.class, 
+			responseContainer = "List")
+	@GetMapping(value = "/assets/category/{category}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<AssetDTO>> filterAssetByCategory(@PathVariable String category) {
+		logger.info("Execute filterAssetByCategory() inside AssetController");
+    	List<AssetDTO> assets = assetService.filterAssetByCategory(category);
+    	logger.info("Executed successful!");
+        return ResponseEntity.ok(assets);
 	}
+	
+	@ApiOperation(value = "Filter All Assets With state", response = AssetDTO.class, 
+			responseContainer = "List")
+	@GetMapping(value = "/assets/state/{state}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<AssetDTO>> filterAssetByState(@PathVariable int state) {
+		logger.info("Execute filterAssetByState() inside AssetController");
+    	List<AssetDTO> assets = assetService.filterAssetByState(state);
+    	logger.info("Executed successful!");
+        return ResponseEntity.ok(assets);
+	}
+
 }

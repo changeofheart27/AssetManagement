@@ -79,8 +79,7 @@ public class AssetServiceImpl implements AssetService {
         if (asset.getState() > 1) {
             throw new InternalServerException("Option is not available");
         }
-        asset.setInstalledDate(LocalDate.now());
-        asset.setLocation("HN");
+        
         Category category = categoryMapper.fromDTO(categoryService.findCategoryById(categoryId));
         asset.setCategory(category);
         String assetCode = generateAssetCode(category);
@@ -126,21 +125,34 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    @Transactional(readOnly = false)
-    public AssetDTO findAssetByAssetCode(String assetCode) {
-        Asset asset = assetRepository.findAssetByAssetCode(assetCode);
-        if (asset == null) {
-            throw new NotFoundException("Ne record found with assetCode " + assetCode);
-        }
-        return assetMapper.fromEntity(asset);
-    }
-
-    @Override
-    @Transactional(readOnly = false)
-    public List<AssetDTO> findAssetByAssetName(String assetName) {
-        List<Asset> assets = assetRepository.findAssetsByAssetNameContains(assetName);
+    @Transactional
+    public List<AssetDTO> searchAssetByAssetNameOrAssetCode(String keyword) {
+    	logger.info("Attempting to search Asset with keyword " + keyword + "...");
+    	String assetName = "%" + keyword + "%";
+    	String assetCode = keyword;
+        List<Asset> assets = assetRepository.findAssetsByAssetNameContainsOrAssetCode(assetName, assetCode);
+        logger.info("Successfully got " + assets.size() + " Asset!");
         return assets.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
     }
+    
+    @Override
+    @Transactional
+	public List<AssetDTO> filterAssetByCategory(String category) {
+    	logger.info("Attempting to filter Asset with Category " + category + "...");
+        List<Asset> assets = assetRepository.findAssetByCategory(category);
+    	logger.info("Successfully got " + assets.size() + " Asset!");
+        return assets.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
+	}
+
+	@Override
+	@Transactional
+	public List<AssetDTO> filterAssetByState(int state) {
+		logger.info("Attempting to filter Asset with State " + state + "...");
+		List<Asset> assets = assetRepository.findAssetByState(state);
+		logger.info("Successfully got " + assets.size() + " Asset!");
+		return assets.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
+	}
+
 
     /**
      * generate assetCode for Asset (Example format: Laptop -> LA000001,
