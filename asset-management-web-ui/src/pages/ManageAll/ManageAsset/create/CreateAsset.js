@@ -102,7 +102,7 @@ const CreateAsset = () => {
                                         type={"radio"}
                                         label={"Available"}
                                         className={"w-75"}
-                                        onChange={() => values.state = 1}
+                                        onChange={() => values.state = 0}
                                     >
                                     </FormCheck>
                                     <FormCheck
@@ -111,7 +111,7 @@ const CreateAsset = () => {
                                         type={"radio"}
                                         label={"Not available"}
                                         className={"w-75"}
-                                        onChange={() => values.state = 2}
+                                        onChange={() => values.state = 1}
                                     >
                                     </FormCheck>
                                 </div>
