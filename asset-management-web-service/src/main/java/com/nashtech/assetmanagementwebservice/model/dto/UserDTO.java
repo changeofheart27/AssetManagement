@@ -47,6 +47,9 @@ public class UserDTO {
     private String status;
 
 
+    private String password;
+
+
     private String location;
 
 

@@ -28,6 +28,18 @@ public class UpdateUserRequest {
     @JsonProperty("username")
     private String username;
 
+
+
+    @ApiModelProperty(
+            example="123",
+            notes="",
+            required=true
+    )
+    @JsonProperty("password")
+    private String password;
+
+
+
 //    @NotNull(message = "First name is required")
 //    @NotEmpty(message = "First name is required")
     @ApiModelProperty(

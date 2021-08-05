@@ -19,7 +19,10 @@ const EditUser = () => {
         dob: null,
         gender: null,
         joinedDate: null,
-        type: null
+        type: null,
+        password: null,
+        location: null,
+        status:null
     });
     useEffect(() => {
         axios.get(`http://localhost:8080/api/v1/users/${id}`)
@@ -36,7 +39,11 @@ const EditUser = () => {
             dob: user.dob,
             gender: user.gender,
             joinedDate: user.joinedDate,
-            type: user.type
+            type: user.type,
+            status: user.status,
+            location: user.location,
+            password: user.password
+
     }
     const onSubmit = (values, {setSubmitting}) => {
         let editUser = {
@@ -47,7 +54,10 @@ const EditUser = () => {
             dob: values.dob,
             gender: values.gender,
             joined_date: values.joinedDate,
-            type: values.type
+            type: values.type,
+            status: user.status,
+            location: user.location,
+            password: user.password
         }
         axios
             .put(`http://localhost:8080/api/v1/users/${id}`, editUser)
