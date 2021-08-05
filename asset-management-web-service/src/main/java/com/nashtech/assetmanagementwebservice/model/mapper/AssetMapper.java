@@ -1,6 +1,9 @@
 package com.nashtech.assetmanagementwebservice.model.mapper;
 
 import com.nashtech.assetmanagementwebservice.model.dto.AssetDTO;
+
+import java.time.LocalDate;
+
 import com.nashtech.assetmanagementwebservice.entity.Asset;
 import com.nashtech.assetmanagementwebservice.entity.Category;
 
@@ -26,8 +29,9 @@ public class AssetMapper {
 		Asset asset = new Asset();
 		asset.setAssetName(payload.getAssetName());
 		asset.setSpecification(payload.getSpecification());
+		asset.setInstalledDate(LocalDate.now());
 		asset.setState(payload.getState());
-		asset.setLocation(payload.getLocation());
+		asset.setLocation("HN");
 		return asset;
 	}
 			
@@ -37,7 +41,7 @@ public class AssetMapper {
 		entity.setSpecification(payload.getSpecification());
 		entity.setInstalledDate(payload.getInstalledDate());
 		entity.setState(payload.getState());
-		entity.setLocation(payload.getLocation());
+		entity.setLocation("HN");
 		return entity;
 	}
 

@@ -15,7 +15,9 @@ public interface AssetService {
 	
 	void deleteAssetById(Integer id);
 
-	AssetDTO findAssetByAssetCode(String assetCode);
-
-	List<AssetDTO> findAssetByAssetName(String assetName);
+	List<AssetDTO> searchAssetByAssetNameOrAssetCode(String keyword);
+	
+	List<AssetDTO> filterAssetByCategory(String category);
+	
+	List<AssetDTO> filterAssetByState(int state);
 }
