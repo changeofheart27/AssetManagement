@@ -4,6 +4,11 @@ import {Button, Row, FormControl, Dropdown, SplitButton, Table, Container, Input
 import axios from "axios";
 import {useHistory} from 'react-router-dom'
 import './Manage.css'
+import Popup from "reactjs-popup";
+import 'reactjs-popup/dist/index.css';
+import DeleteAsset from "../delete/DeleteAsset";
+import Delete from "../delete/Delete";
+import DeleteFail from "../delete/DeleteFail";
 
 const ManageAsset = () => {
     const [list, setList] = useState([{
@@ -46,8 +51,8 @@ const ManageAsset = () => {
                         {search}
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                        <Dropdown.Item onClick={()=>setSearch("Type")}>Type</Dropdown.Item>
-                        <Dropdown.Item  onClick={()=>setSearch("Staff Code")}>Staff Code</Dropdown.Item>
+                        <Dropdown.Item onClick={() => setSearch("Type")}>Type</Dropdown.Item>
+                        <Dropdown.Item onClick={() => setSearch("Staff Code")}>Staff Code</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
                 <InputGroup className={"w-auto"}>
@@ -80,7 +85,10 @@ const ManageAsset = () => {
                             <td>{check(asset.state)}</td>
                             <td><i className="bi bi-pen btn m-0 text-muted p-0"
                                    onClick={() => history.push(`/editasset/${asset.id}`)}/></td>
-                            <td><i className="bi bi-x-circle text-danger btn p-0"/></td>
+                            <Popup trigger={<td><i className="bi bi-x-circle text-danger btn p-0"/></td>} offsetX={200}
+                                   modal>
+                                {asset.state !== 1 ? <Delete id={asset.id}/> : <DeleteFail id={asset.id}/>}
+                            </Popup>
                         </tr>
                     )}
                     </tbody>
