@@ -48,6 +48,12 @@ public class User {
     @Column(name = "location")
     private String location;
 
+    @Column(name ="type")
+    private String type;
+
+    @Column(name ="status" )
+    private String status;
+
     @Column(name = "staff_code")
     private String staffCode;
 

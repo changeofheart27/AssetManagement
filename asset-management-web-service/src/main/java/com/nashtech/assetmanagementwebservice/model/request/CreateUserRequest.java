@@ -57,6 +57,24 @@ public class CreateUserRequest {
     @JsonProperty("gender")
     private int gender;
 
+    //@NotNull(message = "Gender is required")
+//    @NotEmpty(message = "Gender  is required")
+    @ApiModelProperty(
+            example="user",
+            notes="Gender cannot be empty , 1-Admin , 2-User",
+            required=true
+    )
+    @JsonProperty("type")
+    private String type;
+
+
+    @ApiModelProperty(
+            example="enable",
+            notes="Status cannot be empty , 1-Enable , 2-Disable",
+            required=true
+    )
+    @JsonProperty("status")
+    private String status;
 
 
   //  @NotNull(message = "  Date Of Birth is required")

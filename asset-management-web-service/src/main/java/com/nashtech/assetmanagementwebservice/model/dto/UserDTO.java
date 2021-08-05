@@ -43,6 +43,12 @@ public class UserDTO {
     private LocalDateTime joinedDate;
 
 
+    private String status;
+
+
     private String location;
+
+
+    private String type;
 
 }

@@ -7,12 +7,9 @@ import com.nashtech.assetmanagementwebservice.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import org.slf4j.Logger;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -78,6 +75,18 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@Valid @RequestBody UpdateUserRequest request, @PathVariable int id) {
         UserDTO result = userService.updateUser(request, id);
+        return ResponseEntity.ok(result);
+    }
+
+
+    @ApiOperation(value = "Change user status", response = UserDTO.class)
+    @ApiResponses({
+            @ApiResponse(code=404,message = "No user found"),
+            @ApiResponse(code=500,message = "")
+    })
+    @PutMapping("/status/{id}")
+    public ResponseEntity<?> changeUserStatus(@Valid @RequestBody UpdateUserRequest request, @PathVariable int id) {
+        UserDTO result = userService.ChangeUserStatus(request, id);
         return ResponseEntity.ok(result);
     }
 }
