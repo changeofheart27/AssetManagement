@@ -114,7 +114,7 @@ const EditAsset = () => {
                                         label={"Available"}
                                         className={"w-75"}
                                         name={"status"}
-                                        onChange={() => values.state = 1}
+                                        onChange={() => values.state = 0}
                                     >
                                     </FormCheck>
                                     <FormCheck
@@ -123,7 +123,7 @@ const EditAsset = () => {
                                         label={"Not available"}
                                         className={"w-75"}
                                         name={"status"}
-                                        onChange={() => values.state = 2}
+                                        onChange={() => values.state = 1}
                                     >
                                     </FormCheck>
                                     <FormCheck
@@ -132,7 +132,7 @@ const EditAsset = () => {
                                         label={"Waiting for recycling"}
                                         className={"w-75"}
                                         name={"status"}
-                                        onChange={() => values.state = 3}
+                                        onChange={() => values.state = 2}
                                     >
                                     </FormCheck>
                                     <FormCheck
@@ -141,7 +141,7 @@ const EditAsset = () => {
                                         label={"Recycled"}
                                         className={"w-75"}
                                         name={"status"}
-                                        onChange={() => values.state = 4}
+                                        onChange={() => values.state = 3}
                                     >
                                     </FormCheck>
                                 </div>

@@ -14,7 +14,7 @@ const ManageAsset = () => {
         category: null,
         state: null,
         categoryDTO: {
-            name:null
+            name: null
         }
     }]);
     const history = useHistory();
@@ -26,24 +26,29 @@ const ManageAsset = () => {
             })
     }, [])
     const check = state => {
-        if (state === 1) {
+        if (state === 0) {
             return <p>Avaiable</p>
+        } else if (state === 1) {
+            return <p>Not Avaiable</p>
         } else if (state === 2) {
-            return <p>Non Avaiable</p>
-        } else if (state === 3) {
             return <p>Waiting for recycling</p>
-        } else {
+        } else if (state === 3) {
             return <p>Recycle</p>
         }
     }
+    const [search, setSearch] = useState("Select");
     return (
         <Container className={"d-block ms-5"}>
             <h1 className={"text-danger mb-5"}>Asset List</h1>
             <Row className={"mb-5"}>
                 <Dropdown className={"w-25"}>
-                    <SplitButton title={"Type"}>
-                        <Dropdown.Item>Type</Dropdown.Item>
-                    </SplitButton>
+                    <Dropdown.Toggle variant={"danger"}>
+                        {search}
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                        <Dropdown.Item onClick={()=>setSearch("Type")}>Type</Dropdown.Item>
+                        <Dropdown.Item  onClick={()=>setSearch("Staff Code")}>Staff Code</Dropdown.Item>
+                    </Dropdown.Menu>
                 </Dropdown>
                 <InputGroup className={"w-auto"}>
                     <FormControl
