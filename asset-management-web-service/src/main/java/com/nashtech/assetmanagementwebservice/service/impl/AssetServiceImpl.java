@@ -125,6 +125,23 @@ public class AssetServiceImpl implements AssetService {
         assetRepository.delete(asset);
     }
 
+    @Override
+    @Transactional(readOnly = false)
+    public AssetDTO findAssetByAssetCode(String assetCode) {
+        Asset asset = assetRepository.findAssetByAssetCode(assetCode);
+        if (asset == null) {
+            throw new NotFoundException("Ne record found with assetCode " + assetCode);
+        }
+        return assetMapper.fromEntity(asset);
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public List<AssetDTO> findAssetByAssetName(String assetName) {
+        List<Asset> assets = assetRepository.findAssetsByAssetNameContains(assetName);
+        return assets.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
+    }
+
     /**
      * generate assetCode for Asset (Example format: Laptop -> LA000001,
      * Monitor: MO000001, Personal Computer: PC000001)

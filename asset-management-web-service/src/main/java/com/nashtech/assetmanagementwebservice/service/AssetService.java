@@ -14,4 +14,8 @@ public interface AssetService {
 	AssetDTO editAsset(Integer assetId, AssetDTO payload);
 	
 	void deleteAssetById(Integer id);
+
+	AssetDTO findAssetByAssetCode(String assetCode);
+
+	List<AssetDTO> findAssetByAssetName(String assetName);
 }
