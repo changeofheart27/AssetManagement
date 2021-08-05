@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -50,12 +51,12 @@ public class CreateUserRequest {
 //    @NotNull(message = "Gender is required")
 //    @NotEmpty(message = "Gender  is required")
     @ApiModelProperty(
-            example="1",
+            example="male",
             notes="Gender cannot be empty , 1-Male , 2-Female",
             required=true
     )
     @JsonProperty("gender")
-    private int gender;
+    private String gender;
 
     //@NotNull(message = "Gender is required")
 //    @NotEmpty(message = "Gender  is required")
@@ -85,7 +86,7 @@ public class CreateUserRequest {
             required=true
     )
     @JsonProperty("dob")
-    private LocalDateTime dob;
+    private LocalDate dob;
 
 
  //   @NotNull(message = "Joined  Date is required")
@@ -96,7 +97,7 @@ public class CreateUserRequest {
             required=true
     )
     @JsonProperty("joined_date")
-    private LocalDateTime joinedDate;
+    private LocalDate joinedDate;
 
  //   @NotNull(message = "Location is required")
   //  @NotEmpty(message = "Location is required")
