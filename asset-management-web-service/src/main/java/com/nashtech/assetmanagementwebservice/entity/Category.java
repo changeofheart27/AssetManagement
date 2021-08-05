@@ -7,9 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -30,7 +28,8 @@ public class Category {
 	public Category() {
 		super();
 	}
-
+	
+	//used for testing purpose (JUnit)
 	public Category(int id, String name) {
 		super();
 		this.id = id;
