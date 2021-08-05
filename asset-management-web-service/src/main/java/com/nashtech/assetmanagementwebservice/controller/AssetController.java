@@ -72,4 +72,18 @@ public class AssetController {
     	logger.info("Executed successful!");
         return ResponseEntity.ok().build();
     }
+
+	@ApiOperation(value = "Get An Asset Using assetCode", response = AssetDTO.class)
+	@GetMapping(value = "/assets/assetcode/{assetCode}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<AssetDTO> findAssetByAssetCode(@PathVariable String assetCode) {
+		AssetDTO asset = assetService.findAssetByAssetCode(assetCode);
+		return ResponseEntity.ok(asset);
+	}
+
+	@ApiOperation(value = "Get An Asset Using assetName", response = AssetDTO.class)
+	@GetMapping(value = "/assets/assetname/{assetName}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<AssetDTO>> findAssetByAssetName(@PathVariable String assetName) {
+		List<AssetDTO> assets = assetService.findAssetByAssetName(assetName);
+		return ResponseEntity.ok(assets);
+	}
 }
