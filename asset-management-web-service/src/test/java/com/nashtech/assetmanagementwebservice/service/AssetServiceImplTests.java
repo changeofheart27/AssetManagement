@@ -181,15 +181,13 @@ public class AssetServiceImplTests {
         	AssetDTO mockPayload = mock(AssetDTO.class);
         	when(mockPayload.getAssetName()).thenReturn("updated Asset name");
             when(mockPayload.getSpecification()).thenReturn("updated Asset specification");
-            when(mockPayload.getLocation()).thenReturn("HCM");
-            
             
             when(assetMapper.merge(testAsset, mockPayload)).thenCallRealMethod();
             when(assetRepository.save(any(Asset.class))).thenReturn(testAsset);
         	
             assertDoesNotThrow(() -> underTest.editAsset(2, mockPayload));
             assertEquals(testAsset.getAssetName(), "updated Asset name");
-            assertEquals(testAsset.getLocation(), "HCM");
+            assertEquals(testAsset.getLocation(), "HN");
             verify(assetRepository).save(any(Asset.class));
         }
     }
