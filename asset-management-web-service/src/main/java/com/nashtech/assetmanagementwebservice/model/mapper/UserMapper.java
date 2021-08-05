@@ -19,6 +19,7 @@ public class UserMapper {
         tmp.setStaffCode(user.getStaffCode());
         tmp.setType(user.getType());
         tmp.setStatus(user.getStatus());
+        tmp.setPassword(user.getPassword());
         return tmp;
     }
     public static User toUser(CreateUserRequest request) {
@@ -49,6 +50,7 @@ public class UserMapper {
         user.setStaffCode(request.getStaffCode());
         user.setStatus(request.getStatus());
         user.setType(request.getType());
+        user.setPassword(request.getPassword());
         return user;
 
     }

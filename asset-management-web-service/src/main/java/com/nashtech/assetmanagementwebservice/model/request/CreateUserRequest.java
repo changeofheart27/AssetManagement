@@ -69,6 +69,9 @@ public class CreateUserRequest {
     private String type;
 
 
+
+
+
     @ApiModelProperty(
             example="enable",
             notes="Status cannot be empty , 1-Enable , 2-Disable",

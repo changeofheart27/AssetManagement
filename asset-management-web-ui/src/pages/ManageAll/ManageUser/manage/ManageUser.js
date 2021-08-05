@@ -1,14 +1,31 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import './Manage.css';
+import './Manage.css'
+import 'reactjs-popup/dist/index.css';
 
 import {Button, Container, Dropdown, FormControl, InputGroup, Row, SplitButton, Table} from 'react-bootstrap';
 import {useEffect, useState} from 'react';
 
+import ChangeStatus from '../changeStatus/ChangeStatus';
+import Pagination from '../../../../components/Pagination/Pagination'
+import Popup from "reactjs-popup";
 import React from 'react';
 import axios from "axios";
 import {useHistory} from 'react-router-dom'
 
 const ManageUser = () => {
+
+   
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [usersPerPage] = useState(10);
+    const indexOfLastUser = currentPage * usersPerPage;
+    const indexOfFirstUser = indexOfLastUser - usersPerPage;
+ 
+    const paginate = pageNumber => setCurrentPage(pageNumber);
+
+
+
     const history = useHistory();
     const [search, setSearch] = useState("Select");
     const [list, setList] = useState([{
@@ -61,7 +78,7 @@ const ManageUser = () => {
                     </tr>
                     </thead>
                     <tbody>
-                    {list.map(user =>
+                    {list.slice(indexOfFirstUser, indexOfLastUser).map(user =>
                         <tr key={user.id}>
                             <td>{user.staffCode}</td>
                             <td>{user.firstName} {user.lastName}</td>
@@ -70,12 +87,23 @@ const ManageUser = () => {
                             <td>{user.type}</td>
                             <td><i className="bi bi-pen btn m-0 text-muted p-0"
                                    onClick={() => history.push(`/edituser/${user.id}`)}/></td>
-                            <td><i className="bi bi-x-circle text-danger btn p-0"/></td>
+                             <Popup contentStyle={{width: "25%" ,border: "1px solid black" , borderRadius: 10,
+              overflow: 'hidden', padding: "20px"}} trigger={<td><i className="bi bi-x-circle text-danger btn p-0 "/></td>} offsetX={200} modal> 
+                               <ChangeStatus id={user.id}/>
+                            </Popup>
                         </tr>
                     )}
                     </tbody>
                 </Table>
             </Row>
+            <Pagination className="pagnition"
+           
+           usersPerPage={usersPerPage}
+           totalUsers={list.length}
+           paginate={paginate}
+         > 
+
+         </Pagination>
         </Container>
     );
 };
