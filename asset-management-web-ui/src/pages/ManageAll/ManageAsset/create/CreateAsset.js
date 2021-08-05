@@ -64,7 +64,7 @@ const CreateAsset = () => {
                             </Row>
                             <Row className="mb-3">
                                 <p className={"col-3"}>Category</p>
-                                <Form.Select name={"category"} size="sm" className={"w-75"} onSubmit={handleSubmit}>
+                                <Form.Select name={"category"} size="sm" className={"w-75"} onChange={handleChange}>
                                     <option selected></option>
                                     <option value={"1"}>Laptop</option>
                                     <option value={"2"}>Monitor</option>
