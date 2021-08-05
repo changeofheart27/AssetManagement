@@ -3,6 +3,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -35,18 +36,24 @@ public class User {
     @Column(name ="dob")
 //    @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern="yyyy-MM-dd")
-    private LocalDateTime dob;
+    private LocalDate dob;
 
     @Column(name ="gender")
-    private int gender;
+    private String gender;
 
     @Column(name ="joined_date")
 //    @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern="yyyy-MM-dd")
-    private LocalDateTime joinedDate;
+    private LocalDate joinedDate;
 
     @Column(name = "location")
     private String location;
+
+    @Column(name ="type")
+    private String type;
+
+    @Column(name ="status" )
+    private String status;
 
     @Column(name = "staff_code")
     private String staffCode;

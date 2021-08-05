@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -17,8 +18,8 @@ import java.util.Date;
 @Getter
 @Setter
 public class UpdateUserRequest {
-    @NotNull(message = "Username is required")
-    @NotEmpty(message = "Username is required")
+//    @NotNull(message = "Username is required")
+//    @NotEmpty(message = "Username is required")
     @ApiModelProperty(
             example="thaimeo1",
             notes="Username cannot be empty",
@@ -27,8 +28,8 @@ public class UpdateUserRequest {
     @JsonProperty("username")
     private String username;
 
-    @NotNull(message = "First name is required")
-    @NotEmpty(message = "First name is required")
+//    @NotNull(message = "First name is required")
+//    @NotEmpty(message = "First name is required")
     @ApiModelProperty(
             example="Da1",
             notes="First name cannot be empty",
@@ -37,8 +38,8 @@ public class UpdateUserRequest {
     @JsonProperty("first_name")
     private String  firstName;
 
-    @NotNull(message = "Last name is required")
-    @NotEmpty(message = "Last name is required")
+//    @NotNull(message = "Last name is required")
+//    @NotEmpty(message = "Last name is required")
     @ApiModelProperty(
             example="Th1",
             notes="Last name cannot be empty",
@@ -50,14 +51,31 @@ public class UpdateUserRequest {
  //   @NotNull(message = "Gender is required")
  //   @NotEmpty(message = "Gender  is required")
     @ApiModelProperty(
-            example="1",
+            example="male",
             notes="Gender cannot be empty , 1-Male , 2-Female",
             required=true
     )
     @JsonProperty("gender")
-    private int gender;
+    private String gender;
 
 
+    //   @NotNull(message = "Gender is required")
+    //   @NotEmpty(message = "Gender  is required")
+    @ApiModelProperty(
+            example="user",
+            notes="Type cannot be empty , 1-Admin , 2-User",
+            required=true
+    )
+    @JsonProperty("type")
+    private String type;
+
+    @ApiModelProperty(
+            example="enable",
+            notes="Status cannot be empty , 1-Enable , 2-Disable",
+            required=true
+    )
+    @JsonProperty("status")
+    private String status;
 
 //    @NotNull(message = " Date Of Birth is required")
  //   @NotEmpty(message = "Date Of Birth is required")
@@ -67,7 +85,7 @@ public class UpdateUserRequest {
             required=true
     )
     @JsonProperty("dob")
-    private LocalDateTime dob;
+    private LocalDate dob;
 
 //    @NotNull(message = "Staff Code is required")
  //   @NotEmpty(message = "Staff Code is required")
@@ -87,7 +105,7 @@ public class UpdateUserRequest {
             required=true
     )
     @JsonProperty("joined_date")
-    private LocalDateTime joinedDate;
+    private LocalDate joinedDate;
 
 //    @NotNull(message = "Location is required")
   //  @NotEmpty(message = "Location is required")

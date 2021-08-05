@@ -17,6 +17,8 @@ public class UserMapper {
         tmp.setDob(user.getDob());
         tmp.setLocation(user.getLocation());
         tmp.setStaffCode(user.getStaffCode());
+        tmp.setType(user.getType());
+        tmp.setStatus(user.getStatus());
         return tmp;
     }
     public static User toUser(CreateUserRequest request) {
@@ -27,10 +29,10 @@ public class UserMapper {
         user.setGender(request.getGender());
         user.setDob(request.getDob());
         user.setJoinedDate(request.getJoinedDate());
-
-
         user.setLocation(request.getLocation());
         user.setStaffCode(user.getStaffCode());
+        user.setStatus(request.getStatus());
+        user.setType(request.getType());
         return user;
     }
 
@@ -43,10 +45,15 @@ public class UserMapper {
         user.setGender(request.getGender());
         user.setDob(request.getDob());
         user.setJoinedDate(request.getJoinedDate());
-
         user.setLocation(request.getLocation());
         user.setStaffCode(request.getStaffCode());
+        user.setStatus(request.getStatus());
+        user.setType(request.getType());
         return user;
 
     }
+
+
+
+
 }

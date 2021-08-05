@@ -55,7 +55,7 @@ const Navbar = () => {
             <Route path={"/createuser"}>
               <CreateUser/>
             </Route>
-            <Route path={"/edituser"}>
+            <Route path={"/edituser/:id"}>
               <EditUser/>
             </Route>
             <Route path={"/asset"}>

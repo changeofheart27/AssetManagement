@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -31,18 +32,24 @@ public class UserDTO {
     private String lastName;
 
 
-    private LocalDateTime dob;
+    private LocalDate dob;
 
 
-    private int gender;
+    private String gender;
 
 
     private String staffCode;
 
 
-    private LocalDateTime joinedDate;
+    private LocalDate joinedDate;
+
+
+    private String status;
 
 
     private String location;
+
+
+    private String type;
 
 }

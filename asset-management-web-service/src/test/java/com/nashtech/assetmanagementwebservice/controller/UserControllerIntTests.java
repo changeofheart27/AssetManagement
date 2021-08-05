@@ -86,7 +86,7 @@ public class UserControllerIntTests {
                         .content(asJsonString(updateUserRequest))
                         .contentType(MediaType.APPLICATION_JSON))
                         .andDo(print())
-
+                        .andExpect(status().isOk())
                         .andExpect(jsonPath("$.username").value("username updated"))
                         .andExpect(jsonPath("$.firstName").value("first name updated"))
                         .andExpect(jsonPath("$.lastName").value("last name updated"));
@@ -106,7 +106,7 @@ public class UserControllerIntTests {
                         .content(asJsonString(createUserRequest))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                //.andExpect(status().isOk())
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username").value("daz"))
                 .andExpect(jsonPath("$.firstName").value("a"))
                 .andExpect(jsonPath("$.lastName").value("b"));

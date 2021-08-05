@@ -62,9 +62,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(int id) {
+    public UserDTO ChangeUserStatus(UpdateUserRequest request, int id) {
+        Optional<User> user = userRepository.findById(id);
+        String status = user.get().getStatus();
+        User changeUserStatus = UserMapper.toUser(request, id);
+        try {
+            if(status.equals("enable")){
 
+                changeUserStatus.setStatus("disable");
+            }
+            else {
+                changeUserStatus.setStatus("enable");
+            }
+            userRepository.save(changeUserStatus);
+        } catch (Exception ex) {
+            throw new InternalServerException("Can't change user status");
+        }
+        return UserMapper.toUserDTO(changeUserStatus);
     }
+
+
 
     @Override
     public UserDTO createUser(CreateUserRequest request) {
@@ -77,6 +94,9 @@ public class UserServiceImpl implements UserService {
 
         user = UserMapper.toUser(request);
         user.setStaffCode(staffCode);
+        user.setStatus("enable");
+        user.setPassword("123");
+        user.setLocation("HN");
         userRepository.save(user);
         return UserMapper.toUserDTO(user);
     }
