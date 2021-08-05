@@ -1,4 +1,3 @@
-CREATE DATABASE asset_management;
 USE asset_management;
 CREATE TABLE user (
   id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -6,10 +5,12 @@ CREATE TABLE user (
   last_name VARCHAR(50) NOT NULL,
   dob DATE,
   joined_date DATE,
-  gender TINYINT(1), -- 0 (female) or 1 (male)
+  gender VARCHAR(10), -- 0 (female) or 1 (male)
   staff_code CHAR(6), -- SD0001
   username VARCHAR(50), -- Binh Nguyen Van -> binhnv
   location VARCHAR(50),
+  status VARCHAR(10),
+  type VARCHAR(10),
   password VARCHAR(45)
 )
 ;
@@ -40,8 +41,10 @@ insert into category(id,name)
 values(id,"laptop");
 --
 
-insert into user(id,first_name,last_name,dob,joined_date,gender,staff_code,username,location,password) values(id,"Dao","Thai",DATE '1999-01-29',DATE '1999-01-20',1,"NV1234","daoninhthai","HN","123");
+insert into user(id,first_name,last_name,dob,joined_date,gender,staff_code,username,location,password,type,status) values(id,"Dao","Thai",DATE '1999-01-29',DATE '1999-01-20',1,"NV1233","thaimedaaaaaaaa","HN","123",1,1);
 insert into user(id,first_name,last_name,dob,joined_date,gender,staff_code,username,location,password) values(id,"Dao","Ninh",DATE '1999-01-29',DATE '1999-01-20',1,"NV1233","daoninhthai1","HN","321");
 
 select * from user;
 select * from asset;
+
+
