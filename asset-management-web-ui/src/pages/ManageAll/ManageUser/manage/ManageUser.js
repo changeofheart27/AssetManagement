@@ -49,7 +49,14 @@ const ManageUser = () => {
         console.log(search)
     }
     const filterSearchBySearchTerm = () => {
-        axios.get(`http://localhost:8080/api/v1/users/search?keyword=${search}`)
+        axios.get(`http://localhost:8080/api/v1/users/searchby?keyword=${search}`)
+            .then(function (response) {
+                setList(response.data);
+                console.log(response.data)
+            })
+    }
+    const filterSearchByType = () => {
+        axios.get(`http://localhost:8080/api/v1/users/filter?type=${search}`)
             .then(function (response) {
                 setList(response.data);
                 console.log(response.data)
@@ -63,12 +70,23 @@ const ManageUser = () => {
                     <FormControl
                         type={"input"}
                         className={"w-25"}
-                        name={"searchTerm"}
+                        placeholder={"Type"}
+                        name={"type"}
                         onChange={handleChange}
-                        placeholder={"TYPE"}
                     >
                     </FormControl>
-                    <Button variant={"outline-secondary"} className="bi bi-funnel-fill" onClick={filterSearchBySearchTerm}/>
+                    <Button variant={"outline-secondary"} onClick={filterSearchByType}><i
+                        className="bi bi-funnel-fill"/></Button>
+                </InputGroup>
+                <InputGroup className={"w-25"}>
+                    <FormControl
+                        type={"input"}
+                        className={"w-25"}
+                        name={"searchTerm"}
+                        onChange={handleChange}
+                    >
+                    </FormControl>
+                    <Button variant={"outline-secondary"} onClick={filterSearchBySearchTerm}>Search</Button>
                 </InputGroup>
                 <Button variant={"danger"} className={"w-25 ms-5"} onClick={() => history.push('/createuser')}>Create new User</Button>
             </Row>
