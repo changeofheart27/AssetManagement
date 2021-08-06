@@ -26,7 +26,7 @@ const CreateAsset = () => {
             },
         }
         axios
-          .post(`http://18.142.87.28:8080/api/v1/assets`, edit)
+          .post(`http://localhost:8080/api/v1/assets`, edit)
           .then((response) => {
             setSubmitting(false);
             history.push("/asset");

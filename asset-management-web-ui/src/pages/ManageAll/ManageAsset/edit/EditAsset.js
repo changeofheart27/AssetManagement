@@ -21,7 +21,7 @@ const EditAsset = () => {
     });
     useEffect(() => {
         axios
-          .get(`http://18.142.87.28:8080/api/v1/assets/${id}`)
+          .get(`http:localhost:8080/api/v1/assets/${id}`)
           .then(function (response) {
             setAsset(response.data);
             setState(response.data.state);
@@ -47,7 +47,7 @@ const EditAsset = () => {
             state: state
         }
         axios
-          .put(`http://18.142.87.28:8080/api/v1/assets/${id}`, edit)
+          .put(`http://localhost:8080/api/v1/assets/${id}`, edit)
           .then((response) => {
             setSubmitting(false);
             history.push("/asset");

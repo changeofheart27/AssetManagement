@@ -27,7 +27,7 @@ const ChangeStatus = props => {
     });
     useEffect(() => {
         axios
-          .get(`http://18.142.87.28:8080/api/v1/users/${id}`)
+          .get(`http://localhost:8080/api/v1/users/${id}`)
           .then(function (response) {
             setUser(response.data);
           })
@@ -49,7 +49,7 @@ const ChangeStatus = props => {
          }
 
         axios
-          .put(`http://18.142.87.28:8080/api/v1/users/status/${id}`, data)
+          .put(`http://localhost:8080/api/v1/users/status/${id}`, data)
           .then(function (response) {
             refreshPage();
           });

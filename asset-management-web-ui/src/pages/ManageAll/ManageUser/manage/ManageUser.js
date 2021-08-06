@@ -38,7 +38,7 @@ const ManageUser = () => {
         status: null
     }]);
     useEffect(() => {
-        axios.get('http://18.142.87.28:8080/api/v1/users')
+        axios.get('http://localhost:8080/api/v1/users')
             .then(function (response) {
                 setList(response.data);
                 console.log(response.data)
@@ -49,14 +49,14 @@ const ManageUser = () => {
         console.log(search)
     }
     const filterSearchBySearchTerm = () => {
-        axios.get(`http://18.142.87.28:8080/api/v1/users/searchby?keyword=${search}`)
+        axios.get(`http://localhost:8080/api/v1/users/searchby?keyword=${search}`)
             .then(function (response) {
                 setList(response.data);
                 console.log(response.data)
             })
     }
     const filterSearchByType = () => {
-        axios.get(`http://18.142.87.28:8080/api/v1/users/filter?type=${search}`)
+        axios.get(`http://localhost:8080/api/v1/users/filter?type=${search}`)
             .then(function (response) {
                 setList(response.data);
                 console.log(response.data)

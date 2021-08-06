@@ -31,7 +31,7 @@ const CreateUser = () => {
             type: values.type
         }
         axios
-          .post(`http://18.142.87.28:8080/api/v1/users`, create)
+          .post(`http://localhost:8080/api/v1/users`, create)
           .then((response) => {
             setSubmitting(false);
             history.push("/user");

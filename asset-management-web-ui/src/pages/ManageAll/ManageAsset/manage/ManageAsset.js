@@ -36,7 +36,7 @@ const ManageAsset = () => {
   }]);
   const history = useHistory();
   useEffect(() => {
-    axios.get('http://18.142.87.28:8080/api/v1/assets')
+    axios.get('http://localhost:8080/api/v1/assets')
         .then(function (response) {
           setList(response.data);
           console.log(response.data)
@@ -59,28 +59,28 @@ const ManageAsset = () => {
   const [search, setSearch] = useState("");
 
   const filterSearchByState = () => {
-    axios.get(`http://18.142.87.28:8080/api/v1/assets/state/${search}`)
+    axios.get(`http://localhost:8080/api/v1/assets/state/${search}`)
         .then(function (response) {
           setList(response.data);
           console.log(response.data)
         })
   }
   const filterSearchByCategory = () => {
-    axios.get(`http://18.142.87.28:8080/api/v1/assets/category/${search}`)
+    axios.get(`http://localhost:8080/api/v1/assets/category/${search}`)
         .then(function (response) {
           setList(response.data);
           console.log(response.data)
         })
   }
   const filterSearchBySearchTerm = () => {
-    axios.get(`http://18.142.87.28:8080/api/v1/assets/search?keyword=${search}`)
+    axios.get(`http://localhost:8080/api/v1/assets/search?keyword=${search}`)
         .then(function (response) {
           setList(response.data);
           console.log(response.data)
         })
   }
   if (search === null) {
-    axios.get('http://18.142.87.28:8080/api/v1/assets')
+    axios.get('http://localhost:8080/api/v1/assets')
         .then(function (response) {
           setList(response.data);
           console.log(response.data)

@@ -26,7 +26,7 @@ const EditUser = () => {
     });
     useEffect(() => {
         axios
-            .get(`http://18.142.87.28:8080/api/v1/users/${id}`)
+            .get(`http://localhost:8080/api/v1/users/${id}`)
             .then(function (response) {
                 setUser(response.data);
                 setGender(response.data.gender);
@@ -64,7 +64,7 @@ const EditUser = () => {
             password: user.password
         }
         axios
-            .put(`http://18.142.87.28:8080/api/v1/users/${id}`, editUser)
+            .put(`http://localhost:8080/api/v1/users/${id}`, editUser)
             .then((response) => {
                 setSubmitting(false);
                 history.push("/user");
