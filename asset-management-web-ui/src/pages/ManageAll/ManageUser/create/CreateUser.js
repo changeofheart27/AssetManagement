@@ -31,11 +31,11 @@ const CreateUser = () => {
             type: values.type
         }
         axios
-            .post(`http://localhost:8080/api/v1/users`, create)
-            .then(response => {
-                setSubmitting(false);
-                history.push("/user");
-            });
+          .post(`http://localhost:8080/api/v1/users`, create)
+          .then((response) => {
+            setSubmitting(false);
+            history.push("/user");
+          });
     };
     return (
         <div className={"container ps-5 d-block"}>

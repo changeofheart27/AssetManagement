@@ -26,11 +26,11 @@ const CreateAsset = () => {
             },
         }
         axios
-            .post(`http://localhost:8080/api/v1/assets`, edit)
-            .then(response => {
-                setSubmitting(false);
-                history.push("/asset");
-            });
+          .post(`http://localhost:8080/api/v1/assets`, edit)
+          .then((response) => {
+            setSubmitting(false);
+            history.push("/asset");
+          });
     };
     return (
         <div className={"container ps-5 d-block"}>
@@ -116,7 +116,7 @@ const CreateAsset = () => {
                                     </FormCheck>
                                 </div>
                             </Row>
-                            <Button variant={"danger"} type={"submit"} className={"ms-5"} style={{float: 'right'}}>
+                            <Button variant={"danger"}  onClick={()=> history.push('/asset')}  className={"ms-5"} style={{float: 'right'}}>
                                 Cancel
                             </Button>
                             <Button variant={"danger"} type={"submit"} style={{float: 'right'}} on>
