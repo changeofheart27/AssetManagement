@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './Manage.css'
 import 'reactjs-popup/dist/index.css';
 
-import {Button, Container, Dropdown, FormControl, InputGroup, Row, SplitButton, Table} from 'react-bootstrap';
+import {Button, Container, Dropdown, Form, FormControl, InputGroup, Row, SplitButton, Table} from 'react-bootstrap';
 import {useEffect, useState} from 'react';
 
 import ChangeStatus from '../changeStatus/ChangeStatus';
@@ -14,14 +14,14 @@ import {useHistory} from 'react-router-dom'
 
 const ManageUser = () => {
 
-   
+
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(10);
     const indexOfLastUser = currentPage * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
- 
+
     const paginate = pageNumber => setCurrentPage(pageNumber);
 
 
@@ -38,7 +38,7 @@ const ManageUser = () => {
         status: null
     }]);
     useEffect(() => {
-        axios.get('http://localhost:8080/api/v1/users')
+        axios.get('http://18.142.87.28:8080/api/v1/users')
             .then(function (response) {
                 setList(response.data);
                 console.log(response.data)
@@ -49,14 +49,14 @@ const ManageUser = () => {
         console.log(search)
     }
     const filterSearchBySearchTerm = () => {
-        axios.get(`http://localhost:8080/api/v1/users/searchby?keyword=${search}`)
+        axios.get(`http://18.142.87.28:8080/api/v1/users/searchby?keyword=${search}`)
             .then(function (response) {
                 setList(response.data);
                 console.log(response.data)
             })
     }
     const filterSearchByType = () => {
-        axios.get(`http://localhost:8080/api/v1/users/filter?type=${search}`)
+        axios.get(`http://18.142.87.28:8080/api/v1/users/filter?type=${search}`)
             .then(function (response) {
                 setList(response.data);
                 console.log(response.data)
@@ -67,14 +67,18 @@ const ManageUser = () => {
             <h1 className={"text-danger mb-5"}>User List</h1>
             <Row className={"mb-5"}>
                 <InputGroup className={"w-25"}>
-                    <FormControl
-                        type={"input"}
+                    <Form.Control
+                        as="select"
+                        custom
                         className={"w-25"}
                         placeholder={"Type"}
                         name={"type"}
                         onChange={handleChange}
                     >
-                    </FormControl>
+                        <option value="Admin">Admin</option>
+                        <option value="Staff">Staff</option>
+
+                    </Form.Control>
                     <Button variant={"outline-secondary"} onClick={filterSearchByType}><i
                         className="bi bi-funnel-fill"/></Button>
                 </InputGroup>
@@ -111,13 +115,13 @@ const ManageUser = () => {
                             <td>{user.type}</td>
                             <td><i className="bi bi-pen btn m-0 text-muted p-0"
                                    onClick={() => history.push(`/edituser/${user.id}`)}/></td>
-                             <Popup contentStyle={{width: "25%" ,border: "1px solid black" , borderRadius: 10,
-              overflow: 'hidden', padding: "20px"}} trigger={user.status==="enable"
-                                 ?
-                                 <td><i className="bi bi-eye text-danger btn p-0"/></td>
-                                 :
-                                 <td><i className="bi bi-eye disabled text-danger btn p-0"/></td>} modal>
-                               <ChangeStatus id={user.id}/>
+                            <Popup contentStyle={{width: "25%" ,border: "1px solid black" , borderRadius: 10,
+                                overflow: 'hidden', padding: "20px"}} trigger={user.status==="enable"
+                                ?
+                                <td><i className="bi bi-eye text-danger btn p-0"/></td>
+                                :
+                                <td><i className="bi bi-eye disabled text-danger btn p-0"/></td>} modal>
+                                <ChangeStatus id={user.id}/>
                             </Popup>
                         </tr>
                     )}
@@ -125,13 +129,13 @@ const ManageUser = () => {
                 </Table>
             </Row>
             <Pagination className="pagnition"
-           
-           usersPerPage={usersPerPage}
-           totalUsers={list.length}
-           paginate={paginate}
-         > 
 
-         </Pagination>
+                        usersPerPage={usersPerPage}
+                        totalUsers={list.length}
+                        paginate={paginate}
+            >
+
+            </Pagination>
         </Container>
     );
 };

@@ -22,10 +22,12 @@ const DeleteAsset = () => {
     },
   ]);
   useEffect(() => {
-    axios.delete(`http://localhost:8080/api/v1/assets/${id}`).then(function (response) {
-      setList(response.data);
-      console.log(response.data);
-    });
+    axios
+      .delete(`http://18.142.87.28:8080/api/v1/assets/${id}`)
+      .then(function (response) {
+        setList(response.data);
+        console.log(response.data);
+      });
   }, [id]);
 
   return (

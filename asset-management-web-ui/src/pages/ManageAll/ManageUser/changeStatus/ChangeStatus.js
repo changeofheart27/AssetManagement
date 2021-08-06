@@ -26,10 +26,12 @@ const ChangeStatus = props => {
         type: null
     });
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/v1/users/${id}`)
-            .then(function (response) {
-                setUser(response.data);
-            }).catch(console.log(id))
+        axios
+          .get(`http://18.142.87.28:8080/api/v1/users/${id}`)
+          .then(function (response) {
+            setUser(response.data);
+          })
+          .catch(console.log(id));
     }, [id])
 
 
@@ -46,10 +48,11 @@ const ChangeStatus = props => {
              type: user.type
          }
 
-        axios.put(`http://localhost:8080/api/v1/users/status/${id}`,data)
-            .then(function (response){
-                refreshPage()
-            } )
+        axios
+          .put(`http://18.142.87.28:8080/api/v1/users/status/${id}`, data)
+          .then(function (response) {
+            refreshPage();
+          });
     }
     return (
         <div>

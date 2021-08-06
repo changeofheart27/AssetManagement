@@ -9,16 +9,17 @@ const Delete = props => {
         window.location.reload();
     }
     const onSubmit = () => {
-        axios.delete(`http://localhost:8080/api/v1/assets/${id}`)
-            .then(function (response){
-                refreshPage()
-            } )
+        axios
+          .delete(`http://18.142.87.28:8080/api/v1/assets/${id}`)
+          .then(function (response) {
+            refreshPage();
+          });
     }
     return (
         <div>
-           <h3 className={"text-danger"}>Are you sure</h3>
+           <h3 className={"text-danger"}>Are you sure?</h3>
             <hr/>
-            <p>Do you want to delete this asset</p>
+            <p>Do you want to delete this asset?</p>
             <Row>
                 <ButtonGroup>
                     <Button variant={"danger"} className={"mx-5"} onClick={onSubmit} >Yes</Button>

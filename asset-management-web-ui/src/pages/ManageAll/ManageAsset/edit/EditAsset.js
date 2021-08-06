@@ -20,12 +20,15 @@ const EditAsset = () => {
         }
     });
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/v1/assets/${id}`)
-            .then(function (response) {
-                setAsset(response.data);
-            })
+        axios
+          .get(`http://18.142.87.28:8080/api/v1/assets/${id}`)
+          .then(function (response) {
+            setAsset(response.data);
+            setState(response.data.state);
+          });
     }, [id])
-
+    const [state, setState] = useState("");
+    console.log('state '+state);
     const initialValues = {
         assetName: asset.assetName,
         specification: asset.specification,
@@ -41,14 +44,14 @@ const EditAsset = () => {
             assetName: values.assetName,
             specification: values.specification,
             installedDate: values.installedDate,
-            state: values.state
+            state: state
         }
         axios
-            .put(`http://localhost:8080/api/v1/assets/${id}`, edit)
-            .then(response => {
-                setSubmitting(false);
-                history.push("/asset");
-            });
+          .put(`http://18.142.87.28:8080/api/v1/assets/${id}`, edit)
+          .then((response) => {
+            setSubmitting(false);
+            history.push("/asset");
+          });
     };
     return (
         <div className={"container ps-5 d-block"}>
@@ -96,7 +99,7 @@ const EditAsset = () => {
                                 />
                             </Row>
                             <Row className="mb-3">
-                                <p className={"w-25"} id="basic-addon1">Install Date</p>
+                                <p className={"w-25"} id="basic-addon1">Installed Date</p>
                                 <FormControl
                                     name={"installedDate"}
                                     type={"date"}
@@ -116,7 +119,8 @@ const EditAsset = () => {
                                         label={"Available"}
                                         className={"w-75"}
                                         name={"status"}
-                                        onChange={() => values.state = 0}
+                                        checked={state === 0}
+                                        onChange={() => setState(0)}
                                     >
                                     </FormCheck>
                                     <FormCheck
@@ -125,7 +129,9 @@ const EditAsset = () => {
                                         label={"Not available"}
                                         className={"w-75"}
                                         name={"status"}
-                                        onChange={() => values.state = 1}
+                                        checked={state === 1}
+                                        onChange={() => setState(1)}
+                                        // onChange={() => values.state = 1}
                                     >
                                     </FormCheck>
                                     <FormCheck
@@ -134,7 +140,9 @@ const EditAsset = () => {
                                         label={"Waiting for recycling"}
                                         className={"w-75"}
                                         name={"status"}
-                                        onChange={() => values.state = 2}
+                                        checked={state === 2}
+                                        onChange={() => setState(2)}
+                                        // onChange={() => values.state = 2}
                                     >
                                     </FormCheck>
                                     <FormCheck
@@ -143,12 +151,14 @@ const EditAsset = () => {
                                         label={"Recycled"}
                                         className={"w-75"}
                                         name={"status"}
-                                        onChange={() => values.state = 3}
+                                        checked={state === 3}
+                                        onChange={() => setState(3)}
+                                        // onChange={() => values.state = 3}
                                     >
                                     </FormCheck>
                                 </div>
                             </Row>
-                            <Button variant={"danger"} type={"submit"} className={"ms-5"} style={{float: 'right'}}>
+                            <Button variant={"danger"} onClick={()=> history.push('/asset')} className={"ms-5"} style={{float: 'right'}}>
                                 Cancel
                             </Button>
                             <Button variant={"danger"} type={"submit"} style={{float: 'right'}}>

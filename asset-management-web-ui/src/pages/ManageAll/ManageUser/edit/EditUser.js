@@ -1,19 +1,19 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { Button, Form, FormCheck, FormControl, Row } from "react-bootstrap";
-import React, {useEffect, useState}  from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import {Button, Form, FormCheck, FormControl, Row} from "react-bootstrap";
+import React, {useEffect, useState} from 'react';
+import {useHistory, useParams} from 'react-router-dom';
 
-import { Formik } from 'formik';
+import {Formik} from 'formik';
 import axios from "axios";
 
 const EditUser = () => {
     let {id} = useParams();
     const history = useHistory();
     const [user, setUser] = useState({
-        id:null,
-        username:null,
-        staffCode:null,
+        id: null,
+        username: null,
+        staffCode: null,
         firstName: null,
         lastName: null,
         dob: null,
@@ -22,37 +22,41 @@ const EditUser = () => {
         type: null,
         password: null,
         location: null,
-        status:null
+        status: null
     });
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/v1/users/${id}`)
+        axios
+            .get(`http://18.142.87.28:8080/api/v1/users/${id}`)
             .then(function (response) {
                 setUser(response.data);
-            }).catch(console.log(id))
+                setGender(response.data.gender);
+            })
+            .catch(console.log(id));
     }, [id])
 
+    const [gender, setGender] = useState("");
     const initialValues = {
-            staffCode:user.staffCode,
-            firstName: user.firstName,
-            username: user.username,
-            lastName: user.lastName,
-            dob: user.dob,
-            gender: user.gender,
-            joinedDate: user.joinedDate,
-            type: user.type,
-            status: user.status,
-            location: user.location,
-            password: user.password
+        staffCode: user.staffCode,
+        firstName: user.firstName,
+        username: user.username,
+        lastName: user.lastName,
+        dob: user.dob,
+        gender: user.gender,
+        joinedDate: user.joinedDate,
+        type: user.type,
+        status: user.status,
+        location: user.location,
+        password: user.password
 
     }
     const onSubmit = (values, {setSubmitting}) => {
         let editUser = {
-           staff_code:values.staffCode,
-           username:values.username,
+            staff_code: values.staffCode,
+            username: values.username,
             first_name: values.firstName,
             last_name: values.lastName,
             dob: values.dob,
-            gender: values.gender,
+            gender: gender,
             joined_date: values.joinedDate,
             type: values.type,
             status: user.status,
@@ -60,8 +64,8 @@ const EditUser = () => {
             password: user.password
         }
         axios
-            .put(`http://localhost:8080/api/v1/users/${id}`, editUser)
-            .then(response => {
+            .put(`http://18.142.87.28:8080/api/v1/users/${id}`, editUser)
+            .then((response) => {
                 setSubmitting(false);
                 history.push("/user");
             });
@@ -72,7 +76,7 @@ const EditUser = () => {
                 <h1 className={"text-danger mb-5"}>Edit User</h1>
             </Row>
             <Row className={"mt-5"}>
-            <Formik initialValues={initialValues} onSubmit={onSubmit} enableReinitialize={"true"}>
+                <Formik initialValues={initialValues} onSubmit={onSubmit} enableReinitialize={"true"}>
                     {({
                           values,
                           errors,
@@ -83,98 +87,100 @@ const EditUser = () => {
                           isSubmitting,
                           /* and other goodies */
                       }) => (
-                <Form onSubmit={handleSubmit}>
-                    <Row className={"mb-3"}>
-                        <p className={"w-25"}>First Name</p>
-                        <FormControl
-                            aria-label="Username"
-                            aria-describedby="basic-addon1"
-                            className={"w-75"}
-                            name="firstName"
-                           
-                            style={{backgroundColor:'#eff1f5'}}
-                            value={values.firstName}
-                            onChange={handleChange}
-                        />
-                    </Row>
-                    <Row className={"mb-3"}>
-                        <p className={"w-25"}>Last Name</p>
-                        <FormControl
-                            aria-label="Username"
-                            aria-describedby="basic-addon1"
-                            className={"w-75"}
-                            name="lastName"
-                            style={{backgroundColor:'#eff1f5'}}
-                            value={values.lastName}
-                            onChange={handleChange}
-                        />
-                    </Row>
-                    <Row className="mb-3">
-                        <p className={"w-25"} id="basic-addon1">Date of Birth</p>
-                        <FormControl
-                            type={"date"}
-                            aria-describedby="basic-addon1"
-                            className={"w-75"}
-                            value={values.dob}
-                            onChange={handleChange}
-                        />
-                    </Row>
-                    <Row >
-                        <p id="basic-addon1" className={"w-25"}>Gender</p>
-                        <div className={"container w-75"}>
-                            <FormCheck
-                                inline
-                                type={"radio"}
-                                label={"Female"}
-                                className={"w-75"}
-                                name={"gender"}
-                                onChange={() => values.gender = "Female"}
-                            >
-                            </FormCheck>
-                            <FormCheck
-                                inline
-                                type={"radio"}
-                                label={"Male"}
-                                className={"w-75"}
-                                name={"gender"}
-                                onChange={() => values.gender = "Male"}
-                            >
-                            </FormCheck>
-                        </div>
-                    </Row>
-                    <Row className="mb-3">
-                        <p className={"w-25"} id="basic-addon1">Joined Date</p>
-                        <FormControl
-                            type={"date"}
-                            aria-describedby="basic-addon1"
-                            className={"w-75"}
-                            name={"joinedDate"}
-                            value={values.joinedDate}
-                            onChange={handleChange}
-                        />
-                    </Row>
-                    <Row className="mb-3">
-                        <p className={"col-3"}>Type</p>
-                        <Form.Select 
-                            size="sm" 
-                            className={"w-75"}
-                            name={"type"}
-                            value = {values.type}
-                            onChange={handleChange}
-                        >
-                            <option selected></option>
-                            <option>Admin</option>
-                            <option>Staff</option>
-                        </Form.Select>
-                    </Row>
-                    <Button variant={"danger"} type={"submit"} className={"ms-5"} style={{float:'right'}}>
-                        Cancel
-                    </Button>
-                    <Button variant={"danger"} type="submit" style={{float:'right'}}>
-                        Save
-                    </Button>
-                </Form>
-                )}
+                        <Form onSubmit={handleSubmit}>
+                            <Row className={"mb-3"}>
+                                <p className={"w-25"}>First Name</p>
+                                <FormControl
+                                    aria-label="Username"
+                                    aria-describedby="basic-addon1"
+                                    className={"w-75"}
+                                    name="firstName"
+
+                                    style={{backgroundColor: '#eff1f5'}}
+                                    value={values.firstName}
+                                    onChange={handleChange}
+                                />
+                            </Row>
+                            <Row className={"mb-3"}>
+                                <p className={"w-25"}>Last Name</p>
+                                <FormControl
+                                    aria-label="Username"
+                                    aria-describedby="basic-addon1"
+                                    className={"w-75"}
+                                    name="lastName"
+                                    style={{backgroundColor: '#eff1f5'}}
+                                    value={values.lastName}
+                                    onChange={handleChange}
+                                />
+                            </Row>
+                            <Row className="mb-3">
+                                <p className={"w-25"} id="basic-addon1">Date of Birth</p>
+                                <FormControl
+                                    type={"date"}
+                                    aria-describedby="basic-addon1"
+                                    className={"w-75"}
+                                    value={values.dob}
+                                    onChange={handleChange}
+                                />
+                            </Row>
+                            <Row>
+                                <p id="basic-addon1" className={"w-25"}>Gender</p>
+                                <div className={"container w-75"}>
+                                    <FormCheck
+                                        inline
+                                        type={"radio"}
+                                        label={"Female"}
+                                        className={"w-75"}
+                                        name={"gender"}
+                                        checked={gender === "Female"}
+                                        onChange={() => setGender("Female")}
+                                    >
+                                    </FormCheck>
+                                    <FormCheck
+                                        inline
+                                        type={"radio"}
+                                        label={"Male"}
+                                        className={"w-75"}
+                                        name={"gender"}
+                                        checked={gender === "Male"}
+                                        onChange={() => setGender("Male")}
+                                    >
+                                    </FormCheck>
+                                </div>
+                            </Row>
+                            <Row className="mb-3">
+                                <p className={"w-25"} id="basic-addon1">Joined Date</p>
+                                <FormControl
+                                    type={"date"}
+                                    aria-describedby="basic-addon1"
+                                    className={"w-75"}
+                                    name={"joinedDate"}
+                                    value={values.joinedDate}
+                                    onChange={handleChange}
+                                />
+                            </Row>
+                            <Row className="mb-3">
+                                <p className={"col-3"}>Type</p>
+                                <Form.Select
+                                    size="sm"
+                                    className={"w-75"}
+                                    name={"type"}
+                                    value={values.type}
+                                    onChange={handleChange}
+                                >
+                                    <option selected></option>
+                                    <option>Admin</option>
+                                    <option>Staff</option>
+                                </Form.Select>
+                            </Row>
+                            <Button variant={"danger"} type={"submit"} className={"ms-5"} style={{float: 'right'}}>
+                                Cancel
+                            </Button>
+                            <Button variant={"danger"} type="submit" style={{float: 'right'}}>
+                                Save
+                            </Button>
+                        </Form>
+                    )}
                 </Formik>
             </Row>
         </div>
