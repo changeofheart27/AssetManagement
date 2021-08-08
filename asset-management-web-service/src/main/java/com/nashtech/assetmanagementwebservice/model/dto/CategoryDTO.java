@@ -3,6 +3,8 @@ package com.nashtech.assetmanagementwebservice.model.dto;
 public class CategoryDTO {
 	private int id;
 	
+	private String prefix;
+	
 	private String name;
 
 	public int getId() {
@@ -11,6 +13,14 @@ public class CategoryDTO {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getPrefix() {
+		return prefix;
+	}
+
+	public void setPrefix(String prefix) {
+		this.prefix = prefix;
 	}
 
 	public String getName() {

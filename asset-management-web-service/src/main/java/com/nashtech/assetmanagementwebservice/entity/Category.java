@@ -19,6 +19,9 @@ public class Category {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
+	@Column(name = "prefix", nullable = false)
+	private String prefix;
+	
 	@Column(name = "name", nullable = false)
 	private String name;
 	
@@ -42,6 +45,14 @@ public class Category {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public String getPrefix() {
+		return prefix;
+	}
+
+	public void setPrefix(String prefix) {
+		this.prefix = prefix;
 	}
 
 	public String getName() {

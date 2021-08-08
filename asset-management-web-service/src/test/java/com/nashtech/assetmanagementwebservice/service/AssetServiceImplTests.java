@@ -100,20 +100,20 @@ public class AssetServiceImplTests {
     public class testGetAssetList {
         @Test
         public void testGetAssetListGivenAssetExistShouldReturnDataSuccessfully() {
-            when(assetRepository.findAll()).thenReturn(testList);
+            when(assetRepository.findAllByOrderByAssetName()).thenReturn(testList);
             List<AssetDTO> assets = underTest.getAssetList();
             assertEquals(testList.size(), assets.size());
             assertEquals(testList.get(1).getId(), assets.get(1).getId());
             assertEquals(testList.get(1).getAssetName(), assets.get(1).getAssetName());
-            verify(assetRepository).findAll();
+            verify(assetRepository).findAllByOrderByAssetName();
         }
 
         @Test
         public void testGetAssetListGivenNoAssetShouldReturnNoData() {
-            when(assetRepository.findAll()).thenReturn(new ArrayList<Asset>());
+            when(assetRepository.findAllByOrderByAssetName()).thenReturn(new ArrayList<Asset>());
             List<AssetDTO> noAssets = underTest.getAssetList();
             assertEquals(noAssets.size(), 0);
-            verify(assetRepository).findAll();
+            verify(assetRepository).findAllByOrderByAssetName();
         }
 
     }
