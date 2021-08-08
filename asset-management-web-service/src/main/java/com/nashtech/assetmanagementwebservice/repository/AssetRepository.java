@@ -13,6 +13,11 @@ import java.util.List;
 @Repository
 @Transactional
 public interface AssetRepository extends JpaRepository<Asset, Integer> {
+	public List<Asset> findAllByOrderByAssetName();
+	
+	@Query("SELECT COUNT(*) FROM Asset a INNER JOIN a.category c WHERE c.id = :categoryId")
+	public long count(int categoryId);
+	
 	//used for searching
 	@Query(value = "SELECT a FROM Asset a WHERE a.assetName LIKE :assetName OR a.assetCode = :assetCode")
 	public List<Asset> findAssetsByAssetNameContainsOrAssetCode(String assetName, String assetCode);

@@ -46,7 +46,7 @@ public class AssetServiceImpl implements AssetService {
     @Transactional
     public List<AssetDTO> getAssetList() {
     	logger.info("Attempting to get all Asset...");
-        List<Asset> assets = assetRepository.findAll();
+        List<Asset> assets = assetRepository.findAllByOrderByAssetName();
         logger.info("Successfully got all " + assets.size() + " Asset!");
         return assets.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
     }
@@ -162,14 +162,8 @@ public class AssetServiceImpl implements AssetService {
      * @return String
      */
     private String generateAssetCode(Category category) {
-        String prefix = "";
-        String categoryName = category.getName();
-        if (categoryName.split(" ").length > 1) {
-            prefix = categoryName.split(" ")[0].substring(0, 1).toUpperCase() + categoryName.split(" ")[1].substring(0, 1).toUpperCase();
-        } else {
-            prefix = categoryName.substring(0, 2).toUpperCase();
-        }
-        long count = assetRepository.count();
+        String prefix = category.getPrefix();
+        long count = assetRepository.count(category.getId()) + 1;
         String assetCode = prefix + String.format("%06d", count);
         return assetCode;
     }

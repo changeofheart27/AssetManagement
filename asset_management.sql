@@ -28,17 +28,24 @@ CREATE TABLE asset (
   FOREIGN KEY(category_id) REFERENCES category(id)
 );
 
+-- CREATE TABLE category (
+--   id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+--   name VARCHAR(100) NOT NULL
+-- );
+
 CREATE TABLE category (
   id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  prefix VARCHAR(10) NOT NULL,
   name VARCHAR(100) NOT NULL
 );
+
 --
 insert into asset(id,asset_code,asset_name,specification,installed_date,state,location,user_id,category_id) 
 values(id,asset_code,"laptop123","laptop xin lam nha",DATE '1999-01-29',1,"HN",1,1);
 
 -- 
-insert into category(id,name) 
-values(id,"laptop");
+insert into category(id, prefix, name) 
+values(id, "LA", "Laptop");
 --
 
 insert into user(id,first_name,last_name,dob,joined_date,gender,staff_code,username,location,password,type,status) values(id,"Dao","Thai",DATE '1999-01-29',DATE '1999-01-20',1,"NV1233","thaimedaaaaaaaa","HN","123",1,1);

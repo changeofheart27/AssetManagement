@@ -29,7 +29,7 @@ public class AssetMapper {
 		Asset asset = new Asset();
 		asset.setAssetName(payload.getAssetName());
 		asset.setSpecification(payload.getSpecification());
-		asset.setInstalledDate(LocalDate.now());
+		asset.setInstalledDate(payload.getInstalledDate());
 		asset.setState(payload.getState());
 		asset.setLocation("HN");
 		return asset;
