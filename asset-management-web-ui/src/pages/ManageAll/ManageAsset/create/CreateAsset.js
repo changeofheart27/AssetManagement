@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Form, FormControl, Button, FormCheck, Row} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Formik} from "formik";
@@ -6,6 +6,13 @@ import axios from "axios";
 import {useHistory} from "react-router-dom";
 
 const CreateAsset = () => {
+    const [categories, setCategories] = useState([]);
+    useEffect(() => {
+        axios.get("http://localhost:8080/api/v1/categories").then((response) => {
+            setCategories(response.data);
+        }, []);
+    }, []);
+
     const history = useHistory();
     const initialValues = {
         assetName: null,
@@ -13,7 +20,6 @@ const CreateAsset = () => {
         installedDate: null,
         state: null,
         category: null,
-        cars: null
     }
     const onSubmit = (values, {setSubmitting}) => {
         let edit = {
@@ -26,11 +32,11 @@ const CreateAsset = () => {
             },
         }
         axios
-          .post(`http://localhost:8080/api/v1/assets`, edit)
-          .then((response) => {
-            setSubmitting(false);
-            history.push("/asset");
-          });
+            .post(`http://localhost:8080/api/v1/assets`, edit)
+            .then((response) => {
+                setSubmitting(false);
+                history.push("/asset");
+            });
     };
     return (
         <div className={"container ps-5 d-block"}>
@@ -64,11 +70,16 @@ const CreateAsset = () => {
                             </Row>
                             <Row className="mb-3">
                                 <p className={"col-3"}>Category</p>
-                                <Form.Select name={"category"} size="sm" className={"w-75"} onChange={handleChange}>
+                                <Form.Select
+                                    name={"category"}
+                                    size="sm"
+                                    className={"w-75"}
+                                    onChange={handleChange}
+                                >
                                     <option selected></option>
-                                    <option value={"1"}>Laptop</option>
-                                    <option value={"2"}>Monitor</option>
-                                    <option value={"3"}>Personal Computer</option>
+                                    {categories.map((category) => (
+                                        <option value={category.id}>{category.name}</option>
+                                    ))}
                                 </Form.Select>
                             </Row>
                             <Row className="mb-3">
@@ -116,7 +127,8 @@ const CreateAsset = () => {
                                     </FormCheck>
                                 </div>
                             </Row>
-                            <Button variant={"danger"}  onClick={()=> history.push('/asset')}  className={"ms-5"} style={{float: 'right'}}>
+                            <Button variant={"danger"} onClick={() => history.push('/asset')} className={"ms-5"}
+                                    style={{float: 'right'}}>
                                 Cancel
                             </Button>
                             <Button variant={"danger"} type={"submit"} style={{float: 'right'}} on>
