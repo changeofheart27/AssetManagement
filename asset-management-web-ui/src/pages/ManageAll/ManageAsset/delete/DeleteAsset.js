@@ -6,6 +6,7 @@ import "./DeleteAsset.css";
 import { Link, useHistory } from "react-router-dom";
 
 const DeleteAsset = () => {
+  const rootAPI = process.env.REACT_APP_SERVER_URL;
   let {id} = useParams();
   const history = useHistory();
   const [list, setList] = useState([
@@ -23,7 +24,7 @@ const DeleteAsset = () => {
   ]);
   useEffect(() => {
     axios
-      .delete(`http://localhost:8080/api/v1/assets/${id}`)
+      .delete(rootAPI+`/assets/${id}`)
       .then(function (response) {
         setList(response.data);
         console.log(response.data);
@@ -34,7 +35,7 @@ const DeleteAsset = () => {
     <Card style={{ width: "30rem" }}>
       <Card.Header>
         <p>Cannot delete asset</p>
-        <i className="bi bi-x-square"></i>
+        <i className="bi bi-x-square"/>
       </Card.Header>
       <Card.Body className={"p-4"}>
         <Card.Text>
@@ -47,19 +48,6 @@ const DeleteAsset = () => {
         </Card.Text>
       </Card.Body>
     </Card>
-
-    // <Card style={{ width: "30rem" }}>
-    //   <Card.Header>Are you sure?</Card.Header>
-    //   <Card.Body className={"p-4"}>
-    //     <Card.Text>
-    //       Do you want to delete this asset?
-    //     </Card.Text>
-    //     <div className="card-button">
-    //         <Button variant={"danger"}>Delete</Button>
-    //         <Button variant={"outline-secondary"}>Cancel</Button>
-    //     </div>
-    //   </Card.Body>
-    // </Card>
   );
 };
 

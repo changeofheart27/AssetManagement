@@ -1,11 +1,10 @@
 import {Button, ButtonGroup, Row} from "react-bootstrap";
 import  {useEffect, useState}  from 'react';
-import { useHistory, useParams } from 'react-router-dom';
-
 import React from 'react';
 import axios from "axios";
 
 const ChangeStatus = props => {
+    const rootAPI = process.env.REACT_APP_SERVER_URL;
     let {id} = props;
     console.log(id);
     const refreshPage = ()=>{
@@ -27,7 +26,7 @@ const ChangeStatus = props => {
     });
     useEffect(() => {
         axios
-          .get(`http://localhost:8080/api/v1/users/${id}`)
+          .get(rootAPI+`/users/${id}`)
           .then(function (response) {
             setUser(response.data);
           })
@@ -49,7 +48,7 @@ const ChangeStatus = props => {
          }
 
         axios
-          .put(`http://localhost:8080/api/v1/users/status/${id}`, data)
+          .put(rootAPI+`/users/status/${id}`, data)
           .then(function (response) {
             refreshPage();
           });

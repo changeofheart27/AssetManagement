@@ -12,7 +12,8 @@ import Popup from "reactjs-popup";
 import axios from "axios";
 import {useHistory} from 'react-router-dom'
 
-const ManageAsset = () => {
+const ManageAsset = ({responseDataAsset}) => {
+    const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(10);
     const indexOfLastUser = currentPage * usersPerPage;
@@ -30,11 +31,26 @@ const ManageAsset = () => {
         }
     }]);
     const history = useHistory();
+    const [categories, setCategories] = useState([]);
     useEffect(() => {
-        axios.get('http://localhost:8080/api/v1/assets')
+        axios.get(rootAPI + "/categories").then((response) => {
+            setCategories(response.data);
+        }, []);
+    }, []);
+
+    useEffect(() => {
+        axios.get(rootAPI + '/assets')
             .then(function (response) {
-                setList(response.data);
-                console.log(response.data)
+                let result = response.data.map(asset => asset.id);
+                if (result.includes(responseDataAsset.id)) {
+                    const index = response.data.indexOf(responseDataAsset);
+                    response.data.splice(index, 1);
+                    response.data.unshift(responseDataAsset);
+                    setList(response.data);
+                } else {
+                    setList(response.data);
+                }
+                console.log(response.data);
             })
     }, [])
     const check = state => {
@@ -54,28 +70,28 @@ const ManageAsset = () => {
     const [search, setSearch] = useState("");
 
     const filterSearchByState = () => {
-        axios.get(`http://localhost:8080/api/v1/assets/state/${search}`)
+        axios.get(rootAPI + `/assets/state/${search}`)
             .then(function (response) {
                 setList(response.data);
                 console.log(response.data)
             })
     }
     const filterSearchByCategory = () => {
-        axios.get(`http://localhost:8080/api/v1/assets/category/${search}`)
+        axios.get(rootAPI + `/assets/category/${search}`)
             .then(function (response) {
                 setList(response.data);
                 console.log(response.data)
             })
     }
     const filterSearchBySearchTerm = () => {
-        axios.get(`http://localhost:8080/api/v1/assets/search?keyword=${search}`)
+        axios.get(rootAPI + `/assets/search?keyword=${search}`)
             .then(function (response) {
                 setList(response.data);
                 console.log(response.data)
             })
     }
     if (search === null) {
-        axios.get('http://localhost:8080/api/v1/assets')
+        axios.get(rootAPI + '/assets')
             .then(function (response) {
                 setList(response.data);
                 console.log(response.data)
@@ -95,12 +111,11 @@ const ManageAsset = () => {
                         name={"type"}
                         onChange={handleChange}
                     >
+                        <option>None</option>
                         <option value="0">Available</option>
-                        <option value="3">Recycle</option>
+                        <option value="1">Not Available</option>
                         <option value="2">Waiting for recycling</option>
-
-                        <option value="1">Not Avaiable</option>
-
+                        <option value="3">Recycle</option>
                     </Form.Control>
                     <Button variant={"outline-secondary"} onClick={filterSearchByState}><i
                         className="bi bi-funnel-fill"/></Button>
@@ -114,9 +129,10 @@ const ManageAsset = () => {
                         name={"category"}
                         onChange={handleChange}
                     >
-                        <option value="Monitor">Monitor</option>
-                        <option value="Laptop">Laptop</option>
-                        <option value="Personal Computer">Personal Computer</option>
+                        <option>None</option>
+                        {categories.map((category) => (
+                            <option value={category.name}>{category.name}</option>
+                        ))}
 
                     </Form.Control>
                     <Button variant={"outline-secondary"} onClick={filterSearchByCategory}><i
@@ -125,7 +141,7 @@ const ManageAsset = () => {
                 <InputGroup className={"w-25"}>
                     <FormControl
                         type={"input"}
-                        className={"w-25"}
+                        className={""}
                         name={"searchTerm"}
                         onChange={handleChange}
                     >
@@ -134,6 +150,7 @@ const ManageAsset = () => {
                 </InputGroup>
                 <Button variant={"danger"} className={"w-25"} onClick={() => history.push('/createasset')}>Create
                     new Asset</Button>
+
             </Row>
             <Row>
                 <Table>

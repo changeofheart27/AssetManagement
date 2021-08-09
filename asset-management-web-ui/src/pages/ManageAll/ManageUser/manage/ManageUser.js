@@ -12,9 +12,8 @@ import React from 'react';
 import axios from "axios";
 import {useHistory} from 'react-router-dom'
 
-const ManageUser = () => {
-
-
+const ManageUser = ({responseUser}) => {
+    const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
@@ -38,10 +37,18 @@ const ManageUser = () => {
         status: null
     }]);
     useEffect(() => {
-        axios.get('http://localhost:8080/api/v1/users')
-            .then(function (response) {
-                setList(response.data);
-                console.log(response.data)
+        axios.get(rootAPI+'/users')
+            .then( response => {
+                let result = response.data.map(asset => asset.id);
+                if (result.includes(responseUser.id)) {
+                    const index = response.data.indexOf(responseUser);
+                    response.data.splice(index, 1);
+                    response.data.unshift(responseUser);
+                    setList(response.data);
+                } else {
+                    setList(response.data);
+                }
+                console.log(response.data);
             })
     }, [])
     const handleChange = evt => {
@@ -49,14 +56,14 @@ const ManageUser = () => {
         console.log(search)
     }
     const filterSearchBySearchTerm = () => {
-        axios.get(`http://localhost:8080/api/v1/users/searchby?keyword=${search}`)
+        axios.get(rootAPI+`/users/searchby?keyword=${search}`)
             .then(function (response) {
                 setList(response.data);
                 console.log(response.data)
             })
     }
     const filterSearchByType = () => {
-        axios.get(`http://localhost:8080/api/v1/users/filter?type=${search}`)
+        axios.get(rootAPI+`/users/filter?type=${search}`)
             .then(function (response) {
                 setList(response.data);
                 console.log(response.data)
@@ -118,9 +125,9 @@ const ManageUser = () => {
                             <Popup contentStyle={{width: "25%" ,border: "1px solid black" , borderRadius: 10,
                                 overflow: 'hidden', padding: "20px"}} trigger={user.status==="enable"
                                 ?
-                                <td><i className="bi bi-eye text-danger btn p-0"/></td>
+                                <td><i className="bi bi-x-circle text-danger btn p-0"/></td>
                                 :
-                                <td><i className="bi bi-eye disabled text-danger btn p-0"/></td>} modal>
+                                <td><i className="bi bi-x-circle text-danger btn p-0 disabled text-dark"/></td>} modal>
                                 <ChangeStatus id={user.id}/>
                             </Popup>
                         </tr>
@@ -129,7 +136,6 @@ const ManageUser = () => {
                 </Table>
             </Row>
             <Pagination className="pagnition"
-
                         usersPerPage={usersPerPage}
                         totalUsers={list.length}
                         paginate={paginate}

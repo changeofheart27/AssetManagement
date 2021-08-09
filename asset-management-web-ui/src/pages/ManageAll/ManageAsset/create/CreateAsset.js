@@ -5,14 +5,14 @@ import {Formik} from "formik";
 import axios from "axios";
 import {useHistory} from "react-router-dom";
 
-const CreateAsset = () => {
+const CreateAsset = ({setResponseDataAsset}) => {
+    const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [categories, setCategories] = useState([]);
     useEffect(() => {
-        axios.get("http://localhost:8080/api/v1/categories").then((response) => {
+        axios.get(rootAPI+"/categories").then((response) => {
             setCategories(response.data);
         }, []);
     }, []);
-
     const history = useHistory();
     const initialValues = {
         assetName: null,
@@ -22,7 +22,7 @@ const CreateAsset = () => {
         category: null,
     }
     const onSubmit = (values, {setSubmitting}) => {
-        let edit = {
+        let create = {
             assetName: values.assetName,
             specification: values.specification,
             installedDate: values.installedDate,
@@ -30,11 +30,20 @@ const CreateAsset = () => {
             categoryDTO: {
                 id: values.category
             },
-        }
-        axios
-            .post(`http://localhost:8080/api/v1/assets`, edit)
+        };
+
+        axios.post(rootAPI+`/assets`, create)
             .then((response) => {
                 setSubmitting(false);
+                setResponseDataAsset({
+                    id: response.data.id,
+                    assetCode: response.data.assetCode,
+                    assetName: response.data.assetName,
+                    specification: response.data.specification,
+                    installedDate: response.data.installedDate,
+                    state: response.data.state,
+                    categoryDTO: response.data.categoryDTO,
+                });
                 history.push("/asset");
             });
     };
@@ -76,7 +85,7 @@ const CreateAsset = () => {
                                     className={"w-75"}
                                     onChange={handleChange}
                                 >
-                                    <option selected></option>
+                                    <option selected/>
                                     {categories.map((category) => (
                                         <option value={category.id}>{category.name}</option>
                                     ))}
@@ -101,7 +110,8 @@ const CreateAsset = () => {
                                     className={"w-75"}
                                     name={"installedDate"}
                                     onChange={handleChange}
-                                />
+                                >
+                                </FormControl>
                             </Row>
                             <Row>
                                 <p id="basic-addon1" className={"w-25"}>State</p>
@@ -109,8 +119,7 @@ const CreateAsset = () => {
                                      style={{display: 'flex', flexDirection: 'column'}}>
                                     <FormCheck
                                         inline
-                                        name={"status"}
-                                        type={"radio"}
+                                        name={"status"} type={"radio"}
                                         label={"Available"}
                                         className={"w-75"}
                                         onChange={() => values.state = 0}

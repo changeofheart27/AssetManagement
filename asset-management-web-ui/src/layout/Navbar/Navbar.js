@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { Link } from "react-router-dom";
 import logo from "../../resources/logo.jpg";
 import Home from "../../pages/home/Home";
@@ -13,8 +13,32 @@ import ManageAsset from "../../pages/ManageAll/ManageAsset/manage/ManageAsset"
 import CreateAsset from "../../pages/ManageAll/ManageAsset/create/CreateAsset"
 import EditAsset from "../../pages/ManageAll/ManageAsset/edit/EditAsset";
 import 'bootstrap/dist/css/bootstrap.min.css'
+import CreateCategory from "../../pages/ManageAll/ManageAsset/create/CreateCategory";
 
 const Navbar = () => {
+  const [responseDataAsset, setResponseDataAsset] = useState({
+    id: null,
+    assetCode: null,
+    assetName: null,
+    specification: null,
+    installedDate: null,
+    state: null,
+    categoryDTO: {
+      id: null,
+      name : null
+    }
+  });
+  const [responseUser, setResponseUser] = useState({
+    id:null,
+    staffCode: null,
+    firstName: null,
+    lastName: null,
+    username:null,
+    dob: null,
+    gender: null,
+    joinedDate: null,
+    type: null
+  });
   return (
     <div className="container">
       <Router>
@@ -50,22 +74,25 @@ const Navbar = () => {
               <Home />
             </Route>
             <Route path={"/user"}>
-              <ManageUser/>
+              <ManageUser responseUser = {responseUser}/>
             </Route>
             <Route path={"/createuser"}>
-              <CreateUser/>
+              <CreateUser setResponseUser = {setResponseUser}/>
             </Route>
             <Route path={"/edituser/:id"}>
-              <EditUser/>
+              <EditUser setResponseUser = {setResponseUser}/>
             </Route>
             <Route path={"/asset"}>
-              <ManageAsset />
+              <ManageAsset responseDataAsset={responseDataAsset} />
             </Route>
             <Route path={"/createasset"}>
-              <CreateAsset />
+              <CreateAsset setResponseDataAsset={setResponseDataAsset} />
             </Route>
             <Route path={"/editasset/:id"}>
-              <EditAsset/>
+              <EditAsset setResponseDataAsset={setResponseDataAsset}/>
+            </Route>
+            <Route path={"/createcategory"}>
+              <CreateCategory/>
             </Route>
           </Switch>
         </div>
