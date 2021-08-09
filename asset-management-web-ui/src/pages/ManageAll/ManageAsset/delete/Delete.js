@@ -3,6 +3,7 @@ import {Button, ButtonGroup, Row} from "react-bootstrap";
 import axios from "axios";
 
 const Delete = props => {
+    const rootAPI = process.env.REACT_APP_SERVER_URL;
     let {id} = props;
     console.log(id);
     const refreshPage = ()=>{
@@ -10,7 +11,7 @@ const Delete = props => {
     }
     const onSubmit = () => {
         axios
-          .delete(`http://localhost:8080/api/v1/assets/${id}`)
+          .delete(rootAPI+`/assets/${id}`)
           .then(function (response) {
             refreshPage();
           });

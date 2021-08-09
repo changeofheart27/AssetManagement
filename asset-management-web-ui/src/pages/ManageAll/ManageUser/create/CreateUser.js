@@ -1,13 +1,14 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Button, Form, FormCheck, FormControl, Row } from "react-bootstrap";
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { Formik } from 'formik';
 import React from 'react';
 import axios from "axios";
 
-const CreateUser = () => {
+const CreateUser = ({setResponseUser}) => {
+    const rootAPI = process.env.REACT_APP_SERVER_URL;
     const history = useHistory();
     const initialValues = {
         id:null,
@@ -31,12 +32,24 @@ const CreateUser = () => {
             type: values.type
         }
         axios
-          .post(`http://localhost:8080/api/v1/users`, create)
+          .post(rootAPI+`/users`, create)
           .then((response) => {
             setSubmitting(false);
+              setResponseUser({
+                  id:response.data.id,
+                  staffCode: response.data.staffCode,
+                  firstName: response.data.firstName,
+                  lastName: response.data.lastName,
+                  username:response.data.username,
+                  dob: response.data.dob,
+                  gender: response.data.gender,
+                  joinedDate: response.data.joinedDate,
+                  type: response.data.type
+              });
             history.push("/user");
           });
     };
+
     return (
         <div className={"container ps-5 d-block"}>
             <Row>
@@ -121,8 +134,8 @@ const CreateUser = () => {
                     </Row>
                     <Row className="mb-3">
                         <p className={"col-3"}>Type</p>
-                        <Form.Select 
-                            size="sm" 
+                        <Form.Select
+                            size="sm"
                             className={"w-75"}
                             name={"type"}
                             value = {values.type}

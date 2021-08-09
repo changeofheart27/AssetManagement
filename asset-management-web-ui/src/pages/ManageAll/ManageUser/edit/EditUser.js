@@ -1,13 +1,12 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import {Button, Form, FormCheck, FormControl, Row} from "react-bootstrap";
 import React, {useEffect, useState} from 'react';
 import {useHistory, useParams} from 'react-router-dom';
-
 import {Formik} from 'formik';
 import axios from "axios";
 
-const EditUser = () => {
+const EditUser = ({setResponseUser}) => {
+    const rootAPI = process.env.REACT_APP_SERVER_URL;
     let {id} = useParams();
     const history = useHistory();
     const [user, setUser] = useState({
@@ -26,7 +25,7 @@ const EditUser = () => {
     });
     useEffect(() => {
         axios
-            .get(`http://localhost:8080/api/v1/users/${id}`)
+            .get(rootAPI+`/users/${id}`)
             .then(function (response) {
                 setUser(response.data);
                 setGender(response.data.gender);
@@ -64,19 +63,39 @@ const EditUser = () => {
             password: user.password
         }
         axios
-            .put(`http://localhost:8080/api/v1/users/${id}`, editUser)
+            .put(rootAPI+`/users/${id}`, editUser)
             .then((response) => {
                 setSubmitting(false);
+                setResponseUser({
+                    id:response.data.id,
+                    staffCode: response.data.staffCode,
+                    firstName: response.data.firstName,
+                    lastName: response.data.lastName,
+                    username:response.data.username,
+                    dob: response.data.dob,
+                    gender: response.data.gender,
+                    joinedDate: response.data.joinedDate,
+                    type: response.data.type
+                });
                 history.push("/user");
             });
     };
+    const validate = (values, props) => {
+        const errors = {};
+
+        if (!values.username) {
+            errors.username = 'Required';
+        }
+
+        return errors;
+    }
     return (
         <div className={"container ps-5 d-block"}>
             <Row>
                 <h1 className={"text-danger mb-5"}>Edit User</h1>
             </Row>
             <Row className={"mt-5"}>
-                <Formik initialValues={initialValues} onSubmit={onSubmit} enableReinitialize={"true"}>
+                <Formik initialValues={initialValues} onSubmit={onSubmit} enableReinitialize={"true"} validate={validate}>
                     {({
                           values,
                           errors,
@@ -95,11 +114,11 @@ const EditUser = () => {
                                     aria-describedby="basic-addon1"
                                     className={"w-75"}
                                     name="firstName"
-
                                     style={{backgroundColor: '#eff1f5'}}
                                     value={values.firstName}
                                     onChange={handleChange}
                                 />
+                                {errors.username}
                             </Row>
                             <Row className={"mb-3"}>
                                 <p className={"w-25"}>Last Name</p>

@@ -3,11 +3,12 @@ import {Form, FormControl, Button, FormCheck, Row} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import axios from "axios";
-import { Formik } from 'formik';
-import { useHistory, useParams } from 'react-router-dom';
+import {Formik} from 'formik';
+import {useHistory, useParams} from 'react-router-dom';
 
 
-const EditAsset = () => {
+const EditAsset = ({setResponseDataAsset}) => {
+    const rootAPI = process.env.REACT_APP_SERVER_URL;
     let {id} = useParams();
     const history = useHistory();
     const [asset, setAsset] = useState({
@@ -15,27 +16,27 @@ const EditAsset = () => {
         specification: null,
         installedDate: null,
         state: null,
-        categoryDTO:{
-            name:null
+        categoryDTO: {
+            name: null
         }
     });
     useEffect(() => {
         axios
-          .get(`http:localhost:8080/api/v1/assets/${id}`)
-          .then(function (response) {
-            setAsset(response.data);
-            setState(response.data.state);
-          });
+            .get(rootAPI + `/assets/${id}`)
+            .then(function (response) {
+                setAsset(response.data);
+                setState(response.data.state);
+            });
     }, [id])
     const [state, setState] = useState("");
-    console.log('state '+state);
+    console.log('state ' + state);
     const initialValues = {
         assetName: asset.assetName,
         specification: asset.specification,
         installedDate: asset.installedDate,
         state: asset.state,
-        categoryDTO:{
-            name:asset.categoryDTO.name
+        categoryDTO: {
+            name: asset.categoryDTO.name
         }
     }
     const onSubmit = (values, {setSubmitting}) => {
@@ -47,12 +48,27 @@ const EditAsset = () => {
             state: state
         }
         axios
-          .put(`http://localhost:8080/api/v1/assets/${id}`, edit)
-          .then((response) => {
-            setSubmitting(false);
-            history.push("/asset");
-          });
+            .put(rootAPI + `/assets/${id}`, edit)
+            .then((response) => {
+                setSubmitting(false);
+                setResponseDataAsset({
+                    id: response.data.id,
+                    assetCode: response.data.assetCode,
+                    assetName: response.data.assetName,
+                    specification: response.data.specification,
+                    installedDate: response.data.installedDate,
+                    state: response.data.state,
+                    categoryDTO: response.data.categoryDTO,
+                });
+                history.push("/asset");
+            });
     };
+    const [categories, setCategories] = useState([]);
+    useEffect(() => {
+        axios.get(rootAPI + "/categories").then((response) => {
+            setCategories(response.data);
+        }, []);
+    }, []);
     return (
         <div className={"container ps-5 d-block"}>
             <Row>
@@ -84,7 +100,8 @@ const EditAsset = () => {
                             </Row>
                             <Row className="mb-3">
                                 <p className={"col-3"}>Category</p>
-                                <Form.Control size="sm" className={"w-75"} name={"category"} value={values.categoryDTO.name} disabled/>
+                                <Form.Control size="sm" className={"w-75"} name={"category"}
+                                              value={values.categoryDTO.name} disabled/>
                             </Row>
                             <Row className="mb-3">
                                 <p className={"w-25"}>Specification</p>
@@ -131,7 +148,6 @@ const EditAsset = () => {
                                         name={"status"}
                                         checked={state === 1}
                                         onChange={() => setState(1)}
-                                        // onChange={() => values.state = 1}
                                     >
                                     </FormCheck>
                                     <FormCheck
@@ -142,7 +158,6 @@ const EditAsset = () => {
                                         name={"status"}
                                         checked={state === 2}
                                         onChange={() => setState(2)}
-                                        // onChange={() => values.state = 2}
                                     >
                                     </FormCheck>
                                     <FormCheck
@@ -153,12 +168,12 @@ const EditAsset = () => {
                                         name={"status"}
                                         checked={state === 3}
                                         onChange={() => setState(3)}
-                                        // onChange={() => values.state = 3}
                                     >
                                     </FormCheck>
                                 </div>
                             </Row>
-                            <Button variant={"danger"} onClick={()=> history.push('/asset')} className={"ms-5"} style={{float: 'right'}}>
+                            <Button variant={"danger"} onClick={() => history.push('/asset')} className={"ms-5"}
+                                    style={{float: 'right'}}>
                                 Cancel
                             </Button>
                             <Button variant={"danger"} type={"submit"} style={{float: 'right'}}>
