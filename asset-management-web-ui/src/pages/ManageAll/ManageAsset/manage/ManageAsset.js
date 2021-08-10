@@ -44,7 +44,8 @@ const ManageAsset = ({responseDataAsset}) => {
             .then(function (response) {
                 let result = response.data.map(asset => asset.id);
                 if (result.includes(responseDataAsset.id)) {
-                    const index = response.data.indexOf(responseDataAsset);
+                    const index = response.data.findIndex(() => responseDataAsset.id);
+                    console.log(index, " index")
                     response.data.splice(index, 1);
                     response.data.unshift(responseDataAsset);
                     setList(response.data);
@@ -65,18 +66,27 @@ const ManageAsset = ({responseDataAsset}) => {
             return <p>Recycle</p>
         }
     }
-    const handleChange = evt => {
-        setSearch(evt.target.value)
-    }
     const [search, setSearch] = useState("");
-
-    const filterSearchByState = () => {
-        axios.get(rootAPI + `/assets/state/${search}`)
+    const handleChange = evt => {
+        setSearch(evt.target.value);
+    }
+    const handleChangeState = evt => {
+        const target = evt.target.value;
+        axios.get(rootAPI + `/assets/state/${target}`)
+            .then(function (response) {
+                setList(response.data);
+                console.log(response.data)
+            });
+    }
+    const handleChangeCategory = evt => {
+        const target = evt.target.value;
+        axios.get(rootAPI + `/assets/category/${target}`)
             .then(function (response) {
                 setList(response.data);
                 console.log(response.data)
             })
     }
+
     const filterSearchByCategory = () => {
         axios.get(rootAPI + `/assets/category/${search}`)
             .then(function (response) {
@@ -100,59 +110,61 @@ const ManageAsset = ({responseDataAsset}) => {
     }
 
     return (
-        <Container className={"d-block ms-5"}>
-            <h1 className={"text-danger mb-5"}>Asset List</h1>
-            <Row className={"mb-5"}>
-                <InputGroup className={"w-25"}>
+        <Container fluid className={"d-block ps-5"}>
+            <h1 className={"text-danger"}>Asset List</h1>
+            <InputGroup className={"justify-content-between"}>
+                <div className={"col-5 d-flex"}>
                     <Form.Control
                         as="select"
                         custom
                         className={"w-25"}
-                        placeholder={"State"}
                         name={"type"}
-                        onChange={handleChange}
+                        onChange={handleChangeState}
                     >
-                        <option>None</option>
+                        <option value={"999"}>State</option>
                         <option value="0">Available</option>
                         <option value="1">Not Available</option>
                         <option value="2">Waiting for recycling</option>
                         <option value="3">Recycle</option>
                     </Form.Control>
-                    <Button variant={"outline-secondary"} onClick={filterSearchByState}><i
-                        className="bi bi-funnel-fill"/></Button>
-                </InputGroup>
-                <InputGroup className={"w-25"}>
+                    <Button
+                        variant={"outline-secondary"}
+                    >
+                        <i className="bi bi-funnel-fill"/></Button>
                     <Form.Control
                         as="select"
                         custom
-                        className={"w-25"}
+                        className={"w-25 ms-5"}
                         placeholder={"Category"}
                         name={"category"}
-                        onChange={handleChange}
+                        onChange={handleChangeCategory}
                     >
-                        <option>None</option>
+                        <option>Category</option>
                         {categories.map((category) => (
                             <option value={category.name}>{category.name}</option>
                         ))}
-
                     </Form.Control>
                     <Button variant={"outline-secondary"} onClick={filterSearchByCategory}><i
                         className="bi bi-funnel-fill"/></Button>
-                </InputGroup>
-                <InputGroup className={"w-25"}>
+                </div>
+                <div className={"col-5 d-flex"}>
                     <FormControl
                         type={"input"}
-                        className={""}
+                        className={"w-25"}
                         name={"searchTerm"}
                         onChange={handleChange}
                     >
                     </FormControl>
-                    <Button variant={"outline-secondary"} onClick={filterSearchBySearchTerm}>Search</Button>
-                </InputGroup>
-                <Button variant={"danger"} className={"w-25"} onClick={() => history.push('/createasset')}>Create
-                    new Asset</Button>
+                    <Button variant={"outline-secondary"}
+                            onClick={filterSearchBySearchTerm}
+                            className={"me-5"}
+                    ><i className="bi bi-search"/>
+                    </Button>
+                    <Button variant={"danger"} className={"w-25"} onClick={() => history.push('/createasset')}>Create
+                        new Asset</Button>
+                </div>
 
-            </Row>
+            </InputGroup>
             <Row>
                 <Table>
                     <thead>
@@ -165,33 +177,34 @@ const ManageAsset = ({responseDataAsset}) => {
                     </thead>
                     <tbody>
                     {list.slice(indexOfFirstUser, indexOfLastUser).map(asset =>
-                       <Popup contentStyle={{width: "25%" ,border: "1px solid black" , borderRadius: 10,
-                       overflow: 'hidden', padding: "20px"}} trigger={  
-                       <tr key={asset.id}>
-                            
-                            <td>{asset.assetCode}</td>
-                            <td>{asset.assetName}</td>
-                            <td>{asset.categoryDTO.name}</td>
-                            <td>{check(asset.state)}</td>
-                            <td><i className="bi bi-pen btn m-0 text-muted p-0"
-                                   onClick={() => history.push(`/editasset/${asset.id}`)}/></td>
-                            <Popup contentStyle={{
-                                width: "25%", border: "1px solid black", borderRadius: 10,
-                                overflow: 'hidden', padding: "20px"
-                            }}
-                                   trigger={<td><i className="bi bi-x-circle text-danger btn p-0"/></td>} offsetX={200}
-                                   modal>
-                                {asset.state !== 1 ? <Delete id={asset.id}/> : <DeleteFail id={asset.id}/>}
-                            </Popup>
-                        </tr>
-                        } modal>{close=>(  <div>
-                            <ViewDetailedAsset id={asset.id} />
-                           <Button onClick={close} variant="success" className="btn-view-detail">&times;</Button>
-                      
-                     </div>)} 
-                      
-                     
-                   </Popup>
+                        <Popup contentStyle={{
+                            width: "25%", border: "1px solid black", borderRadius: 10,
+                            overflow: 'hidden', padding: "20px"
+                        }} trigger={
+                            <tr key={asset.id}>
+                                <td>{asset.assetCode}</td>
+                                <td>{asset.assetName}</td>
+                                <td>{asset.categoryDTO.name}</td>
+                                <td>{check(asset.state)}</td>
+                                <td><i className="bi bi-pen btn m-0 text-muted p-0"
+                                       onClick={() => history.push(`/editasset/${asset.id}`)}/></td>
+                                <Popup contentStyle={{
+                                    width: "25%", border: "1px solid black", borderRadius: 10,
+                                    overflow: 'hidden', padding: "20px"
+                                }}
+                                       trigger={<td><i className="bi bi-x-circle text-danger btn p-0"/></td>}
+                                       modal>
+                                    {asset.state !== 1 ? <Delete id={asset.id}/> : <DeleteFail id={asset.id}/>}
+                                </Popup>
+                            </tr>
+                        } modal>{close => (<div>
+                            <ViewDetailedAsset id={asset.id}/>
+                            <Button onClick={close} variant="success" className="btn-view-detail">&times;</Button>
+
+                        </div>)}
+
+
+                        </Popup>
                     )}
                     </tbody>
                 </Table>

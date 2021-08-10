@@ -4,7 +4,6 @@ import logo from "../../resources/logo.jpg";
 import Home from "../../pages/home/Home";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./Navbar.css";
-
 import ManageUser from "../../pages/ManageAll/ManageUser/manage/ManageUser";
 import CreateUser from "../../pages/ManageAll/ManageUser/create/CreateUser";
 import EditUser from "../../pages/ManageAll/ManageUser/edit/EditUser"
@@ -14,6 +13,7 @@ import CreateAsset from "../../pages/ManageAll/ManageAsset/create/CreateAsset"
 import EditAsset from "../../pages/ManageAll/ManageAsset/edit/EditAsset";
 import 'bootstrap/dist/css/bootstrap.min.css'
 import CreateCategory from "../../pages/ManageAll/ManageAsset/create/CreateCategory";
+import Assignment from "../../pages/Assignment/Assignment";
 
 const Navbar = ({setCurrentPage}) => {
   const [responseDataAsset, setResponseDataAsset] = useState({
@@ -40,11 +40,11 @@ const Navbar = ({setCurrentPage}) => {
     type: null
   });
   return (
-    <div className="container">
+    <div className="container-fluid d-flex">
       <Router>
-        <div className="navbar-container w-25">
+        <div className="navbar-container col-2">
           <img src={logo} alt="logo_NashTech" />
-          <p>Online Asset Management</p>
+          <h5 className={"text-danger"}>Online Asset Management</h5>
           <div className="navbar">
             <ul className="navbar-list">
               <Link to="/home" onClick = {()=> setCurrentPage("Home")}>
@@ -56,7 +56,7 @@ const Navbar = ({setCurrentPage}) => {
               <Link to="/asset" onClick = {()=> setCurrentPage("Manage Asset")} >
                 <li className="navbar-list--item">Manage Asset</li>
               </Link>
-              <Link to="/asset" onClick = {()=> setCurrentPage("Manage Assignment")}>
+              <Link to="/assignment" onClick = {()=> setCurrentPage("Manage Assignment")}>
                 <li className="navbar-list--item">Manage Assignment</li>
               </Link>
               <Link to="/asset" onClick = {()=> setCurrentPage("Request For Returning")}>
@@ -68,7 +68,7 @@ const Navbar = ({setCurrentPage}) => {
             </ul>
           </div>
         </div>
-        <div className="pages-container w-75">
+        <div className="pages-container col-10">
           <Switch>
             <Route path={"/home"} exact>
               <Home />
@@ -93,6 +93,9 @@ const Navbar = ({setCurrentPage}) => {
             </Route>
             <Route path={"/createcategory"}>
               <CreateCategory/>
+            </Route>
+            <Route path={"/assignment"}>
+              <Assignment/>
             </Route>
           </Switch>
         </div>
