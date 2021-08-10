@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../../layout/header/Header";
 import Footer from "../../layout/footer/Footer";
 import Navbar from "../../layout/Navbar/Navbar";
 
 const Mainpage = () => {
-  
+  const [currentPage,setCurrentPage] = useState("Home");
   return (
     <>
-      <Header />
-      <Navbar />
+      <Header currentPage = {currentPage} />
+      <Navbar setCurrentPage = {setCurrentPage} />
       <Footer />
     </>
   );

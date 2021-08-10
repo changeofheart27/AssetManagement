@@ -15,7 +15,7 @@ import EditAsset from "../../pages/ManageAll/ManageAsset/edit/EditAsset";
 import 'bootstrap/dist/css/bootstrap.min.css'
 import CreateCategory from "../../pages/ManageAll/ManageAsset/create/CreateCategory";
 
-const Navbar = () => {
+const Navbar = ({setCurrentPage}) => {
   const [responseDataAsset, setResponseDataAsset] = useState({
     id: null,
     assetCode: null,
@@ -47,23 +47,23 @@ const Navbar = () => {
           <p>Online Asset Management</p>
           <div className="navbar">
             <ul className="navbar-list">
-              <Link to="/home">
+              <Link to="/home" onClick = {()=> setCurrentPage("Home")}>
                 <li className="navbar-list--item">Home</li>
               </Link>
-              <Link to="/user">
+              <Link to="/user" onClick = {()=> setCurrentPage("Manage User")}>
                 <li className="navbar-list--item">Manage User</li>
               </Link>
-              <Link to="/asset">
+              <Link to="/asset" onClick = {()=> setCurrentPage("Manage Asset")} >
                 <li className="navbar-list--item">Manage Asset</li>
               </Link>
-              <Link to="/asset">
+              <Link to="/asset" onClick = {()=> setCurrentPage("Manage Assignment")}>
                 <li className="navbar-list--item">Manage Assignment</li>
               </Link>
-              <Link to="/asset">
+              <Link to="/asset" onClick = {()=> setCurrentPage("Request For Returning")}>
                 <li className="navbar-list--item">Request For Returning</li>
               </Link>
               <Link to="/asset">
-                <li className="navbar-list--item">Report</li>
+                <li className="navbar-list--item" onClick = {()=> setCurrentPage("Report")}>Report</li>
               </Link>
             </ul>
           </div>

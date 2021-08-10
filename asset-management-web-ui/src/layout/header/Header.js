@@ -1,11 +1,11 @@
 import React from "react";
 import "./Header.css";
 
-const Header = () => {
+const Header = ({currentPage}) => {
   return (
     <>
       <header className="main-header">
-        <p>Home</p>
+        <p>{currentPage}</p>
       </header>
     </>
   );
