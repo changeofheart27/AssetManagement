@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
 import {Formik} from 'formik';
 import {useHistory, useParams} from 'react-router-dom';
+import * as Yup from "yup";
 
 
 const EditAsset = ({setResponseDataAsset}) => {
@@ -69,13 +70,26 @@ const EditAsset = ({setResponseDataAsset}) => {
             setCategories(response.data);
         }, []);
     }, []);
+    const ValidateSchema = Yup.object().shape({
+        assetName: Yup.string()
+            .min(5)
+            .max(50)
+            .required('Required'),
+        category: Yup.string().required('Required'),
+        installedDate: Yup.string().required('Required'),
+        state: Yup.number().required('Required')
+    });
     return (
         <div className={"container ps-5 d-block"}>
             <Row>
                 <h1 className={"text-danger mb-5"}>Edit Asset</h1>
             </Row>
             <Row className={"mt-5"}>
-                <Formik initialValues={initialValues} onSubmit={onSubmit} enableReinitialize={"true"}>
+                <Formik initialValues={initialValues}
+                        onSubmit={onSubmit}
+                        enableReinitialize={"true"}
+                        validationSchema={ValidateSchema}
+                >
                     {({
                           values,
                           errors,
@@ -97,11 +111,17 @@ const EditAsset = ({setResponseDataAsset}) => {
                                     value={values.assetName}
                                     onChange={handleChange}
                                 />
+                                {errors.assetName && touched.assetName ? (
+                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>Asset Name must be between 5-50 character</div>
+                                ) : null}
                             </Row>
                             <Row className="mb-3">
                                 <p className={"col-3"}>Category</p>
                                 <Form.Control size="sm" className={"w-75"} name={"category"}
                                               value={values.categoryDTO.name} disabled/>
+                                {errors.category && touched.category ? (
+                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>Please select one category</div>
+                                ) : null}
                             </Row>
                             <Row className="mb-3">
                                 <p className={"w-25"}>Specification</p>
@@ -125,6 +145,9 @@ const EditAsset = ({setResponseDataAsset}) => {
                                     value={values.installedDate}
                                     onChange={handleChange}
                                 />
+                                {errors.installedDate && touched.installedDate ? (
+                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>Please select Install Date</div>
+                                ) : null}
                             </Row>
                             <Row>
                                 <p id="basic-addon1" className={"w-25"}>State</p>

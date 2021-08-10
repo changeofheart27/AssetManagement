@@ -177,7 +177,7 @@ const ManageAsset = ({responseDataAsset}) => {
                     </thead>
                     <tbody>
                     {list.slice(indexOfFirstUser, indexOfLastUser).map(asset =>
-                        <Popup contentStyle={{
+                        <Popup key={asset.id} contentStyle={{
                             width: "25%", border: "1px solid black", borderRadius: 10,
                             overflow: 'hidden', padding: "20px"
                         }} trigger={
@@ -200,10 +200,7 @@ const ManageAsset = ({responseDataAsset}) => {
                         } modal>{close => (<div>
                             <ViewDetailedAsset id={asset.id}/>
                             <Button onClick={close} variant="success" className="btn-view-detail">&times;</Button>
-
                         </div>)}
-
-
                         </Popup>
                     )}
                     </tbody>

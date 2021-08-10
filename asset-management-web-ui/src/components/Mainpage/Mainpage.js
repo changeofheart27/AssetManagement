@@ -9,7 +9,7 @@ const Mainpage = () => {
     <>
       <Header currentPage = {currentPage} />
       <Navbar setCurrentPage = {setCurrentPage} />
-      <Footer />
+      <Footer/>
     </>
   );
 };
