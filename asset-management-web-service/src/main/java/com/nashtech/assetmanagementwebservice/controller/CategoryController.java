@@ -7,10 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 
 import com.nashtech.assetmanagementwebservice.exception.DuplicateRecordException;
-import com.nashtech.assetmanagementwebservice.model.dto.AssetDTO;
 import com.nashtech.assetmanagementwebservice.model.dto.CategoryDTO;
 import com.nashtech.assetmanagementwebservice.service.CategoryService;
 

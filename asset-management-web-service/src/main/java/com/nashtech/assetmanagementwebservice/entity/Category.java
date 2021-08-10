@@ -39,6 +39,13 @@ public class Category {
 		this.name = name;
 	}
 
+	public Category(int id, String prefix, String name) {
+		super();
+		this.id = id;
+		this.prefix = prefix;
+		this.name = name;
+	}
+
 	public int getId() {
 		return id;
 	}
