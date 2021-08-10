@@ -9,6 +9,7 @@ import ChangeStatus from '../changeStatus/ChangeStatus';
 import Pagination from '../../../../components/Pagination/Pagination'
 import Popup from "reactjs-popup";
 import React from 'react';
+import ViewDetailedUser from "../viewDetails/ViewDetailedUser"
 import axios from "axios";
 import {useHistory} from 'react-router-dom'
 
@@ -114,6 +115,9 @@ const ManageUser = ({responseUser}) => {
                     </thead>
                     <tbody>
                     {list.slice(indexOfFirstUser, indexOfLastUser).map(user =>
+                    <Popup contentStyle={{width: "25%" ,border: "1px solid black" , borderRadius: 10,
+                    overflow: 'hidden', padding: "20px"}} trigger={  
+                    
                         <tr key={user.id}>
                             <td>{user.staffCode}</td>
                             <td>{user.firstName} {user.lastName}</td>
@@ -131,6 +135,15 @@ const ManageUser = ({responseUser}) => {
                                 <ChangeStatus id={user.id}/>
                             </Popup>
                         </tr>
+                          } modal>{close=>(  <div>
+                        
+                            <ViewDetailedUser id={user.id} />
+                           <Button onClick={close} variant="success" className="btn-view-detail">&times;</Button>
+                      
+                     </div>)} 
+                      
+                     
+                   </Popup>
                     )}
                     </tbody>
                 </Table>

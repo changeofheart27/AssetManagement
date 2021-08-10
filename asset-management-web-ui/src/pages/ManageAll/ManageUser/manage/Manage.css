@@ -2,3 +2,15 @@
 .pagnition{
     margin-left: 100px;
 }
+.btn-view-detail{
+    cursor: pointer;
+  position: absolute;
+  display: block;
+  padding: 2px 5px;
+  line-height: 20px;
+  right: 18px;
+  top: 16px;
+  font-size: 24px;
+  border-radius: 18px;
+  
+}

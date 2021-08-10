@@ -9,6 +9,7 @@ import Delete from "../delete/Delete";
 import DeleteFail from "../delete/DeleteFail";
 import Pagination from '../../../../components/Pagination/Pagination'
 import Popup from "reactjs-popup";
+import ViewDetailedAsset from "../viewDetails/ViewDetailedAsset"
 import axios from "axios";
 import {useHistory} from 'react-router-dom'
 
@@ -164,7 +165,10 @@ const ManageAsset = ({responseDataAsset}) => {
                     </thead>
                     <tbody>
                     {list.slice(indexOfFirstUser, indexOfLastUser).map(asset =>
-                        <tr key={asset.id}>
+                       <Popup contentStyle={{width: "25%" ,border: "1px solid black" , borderRadius: 10,
+                       overflow: 'hidden', padding: "20px"}} trigger={  
+                       <tr key={asset.id}>
+                            
                             <td>{asset.assetCode}</td>
                             <td>{asset.assetName}</td>
                             <td>{asset.categoryDTO.name}</td>
@@ -180,6 +184,14 @@ const ManageAsset = ({responseDataAsset}) => {
                                 {asset.state !== 1 ? <Delete id={asset.id}/> : <DeleteFail id={asset.id}/>}
                             </Popup>
                         </tr>
+                        } modal>{close=>(  <div>
+                            <ViewDetailedAsset id={asset.id} />
+                           <Button onClick={close} variant="success" className="btn-view-detail">&times;</Button>
+                      
+                     </div>)} 
+                      
+                     
+                   </Popup>
                     )}
                     </tbody>
                 </Table>
