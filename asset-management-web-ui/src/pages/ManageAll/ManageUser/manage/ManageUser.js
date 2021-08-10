@@ -124,7 +124,7 @@ const ManageUser = ({responseUser}) => {
                     </thead>
                     <tbody>
                     {list.slice(indexOfFirstUser, indexOfLastUser).map(user =>
-                        <Popup contentStyle={{
+                        <Popup key={user.id} contentStyle={{
                             width: "25%", border: "1px solid black", borderRadius: 10,
                             overflow: 'hidden', padding: "20px"
                         }} trigger={

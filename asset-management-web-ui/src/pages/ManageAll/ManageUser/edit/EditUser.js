@@ -4,6 +4,7 @@ import React, {useEffect, useState} from 'react';
 import {useHistory, useParams} from 'react-router-dom';
 import {Formik} from 'formik';
 import axios from "axios";
+import * as Yup from "yup";
 
 const EditUser = ({setResponseUser}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
@@ -29,8 +30,7 @@ const EditUser = ({setResponseUser}) => {
             .then(function (response) {
                 setUser(response.data);
                 setGender(response.data.gender);
-            })
-            .catch(console.log(id));
+            });
     }, [id])
 
     const [gender, setGender] = useState("");
@@ -80,22 +80,26 @@ const EditUser = ({setResponseUser}) => {
                 history.push("/user");
             });
     };
-    const validate = (values, props) => {
-        const errors = {};
-
-        if (!values.username) {
-            errors.username = 'Required';
-        }
-
-        return errors;
-    }
+    const ValidateSchema = Yup.object().shape({
+        firstName: Yup.string()
+            .max(50)
+            .required('Required'),
+        lastName: Yup.string()
+            .max(50)
+            .required('Required'),
+        type: Yup.string()
+            .required('Required')
+    });
     return (
         <div className={"container ps-5 d-block"}>
             <Row>
                 <h1 className={"text-danger mb-5"}>Edit User</h1>
             </Row>
             <Row className={"mt-5"}>
-                <Formik initialValues={initialValues} onSubmit={onSubmit} enableReinitialize={"true"} validate={validate}>
+                <Formik initialValues={initialValues}
+                        onSubmit={onSubmit}
+                        enableReinitialize={"true"}
+                        validationSchema={ValidateSchema}>
                     {({
                           values,
                           errors,
@@ -119,7 +123,9 @@ const EditUser = ({setResponseUser}) => {
                                     onChange={handleChange}
                                     onError={errors}
                                 />
-                                {errors.username}
+                                {errors.firstName && touched.firstName ? (
+                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>User first name must be between 5-50 character</div>
+                                ) : null}
                             </Row>
                             <Row className={"mb-3"}>
                                 <p className={"w-25"}>Last Name</p>
@@ -132,6 +138,9 @@ const EditUser = ({setResponseUser}) => {
                                     value={values.lastName}
                                     onChange={handleChange}
                                 />
+                                {errors.firstName && touched.firstName ? (
+                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>User last name must be between 5-50 character</div>
+                                ) : null}
                             </Row>
                             <Row className="mb-3">
                                 <p className={"w-25"} id="basic-addon1">Date of Birth</p>
@@ -192,6 +201,9 @@ const EditUser = ({setResponseUser}) => {
                                     <option>Admin</option>
                                     <option>Staff</option>
                                 </Form.Select>
+                                {errors.type && touched.type ? (
+                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>Must select type of user</div>
+                                ) : null}
                             </Row>
                             <Button variant={"danger"} type={"submit"} className={"ms-5"} style={{float: 'right'}}>
                                 Cancel

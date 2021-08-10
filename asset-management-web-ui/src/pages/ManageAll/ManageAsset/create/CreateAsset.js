@@ -12,7 +12,7 @@ const CreateAsset = ({setResponseDataAsset}) => {
     useEffect(() => {
         axios.get(rootAPI+"/categories").then((response) => {
             setCategories(response.data);
-        }, []);
+        });
     }, []);
     const history = useHistory();
     const initialValues = {
