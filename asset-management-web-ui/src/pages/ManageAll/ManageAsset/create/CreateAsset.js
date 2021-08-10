@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Formik} from "formik";
 import axios from "axios";
 import {useHistory} from "react-router-dom";
+import * as Yup from 'yup'
 
 const CreateAsset = ({setResponseDataAsset}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
@@ -47,13 +48,22 @@ const CreateAsset = ({setResponseDataAsset}) => {
                 history.push("/asset");
             });
     };
+    const ValidateSchema = Yup.object().shape({
+        assetName: Yup.string()
+            .min(5)
+            .max(50)
+            .required('Required'),
+        category: Yup.string().required('Required'),
+        installedDate: Yup.string().required('Required'),
+        state: Yup.number().required('Required')
+    });
     return (
         <div className={"container ps-5 d-block"}>
             <Row>
                 <h1 className={"text-danger mb-5"}>Create New Asset</h1>
             </Row>
             <Row className={"mt-5"}>
-                <Formik initialValues={initialValues} onSubmit={onSubmit}>
+                <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={ValidateSchema}>
                     {({
                           values,
                           errors,
@@ -74,8 +84,10 @@ const CreateAsset = ({setResponseDataAsset}) => {
                                     name={"assetName"}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    onError={errors}
                                 />
+                                {errors.assetName && touched.assetName ? (
+                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>Asset Name must be between 5-50 character</div>
+                                ) : null}
                             </Row>
                             <Row className="mb-3">
                                 <p className={"col-3"}>Category</p>
@@ -90,6 +102,9 @@ const CreateAsset = ({setResponseDataAsset}) => {
                                         <option value={category.id}>{category.name}</option>
                                     ))}
                                 </Form.Select>
+                                {errors.category && touched.category ? (
+                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>Please select one category</div>
+                                ) : null}
                             </Row>
                             <Row className="mb-3">
                                 <p className={"w-25"}>Specification</p>
@@ -112,28 +127,35 @@ const CreateAsset = ({setResponseDataAsset}) => {
                                     onChange={handleChange}
                                 >
                                 </FormControl>
+                                {errors.installedDate && touched.installedDate ? (
+                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>Please select Install Date</div>
+                                ) : null}
                             </Row>
                             <Row>
                                 <p id="basic-addon1" className={"w-25"}>State</p>
-                                <div className={"container w-75"}
+                                <div className={"container-lg w-75"}
                                      style={{display: 'flex', flexDirection: 'column'}}>
                                     <FormCheck
                                         inline
-                                        name={"status"} type={"radio"}
+                                        name={"status"}
+                                        type={"radio"}
                                         label={"Available"}
                                         className={"w-75"}
                                         onChange={() => values.state = 0}
                                     >
                                     </FormCheck>
                                     <FormCheck
-                                        name={"status"}
                                         inline
+                                        name={"status"}
                                         type={"radio"}
                                         label={"Not available"}
                                         className={"w-75"}
                                         onChange={() => values.state = 1}
                                     >
                                     </FormCheck>
+                                    {errors.state && touched.state ? (
+                                        <div className={"text-danger"}>Please select status</div>
+                                    ) : null}
                                 </div>
                             </Row>
                             <Button variant={"danger"} onClick={() => history.push('/asset')} className={"ms-5"}
