@@ -5,7 +5,7 @@ import './index.css'
 
 const Assignment = () => {
     return (
-        <Container fluid>
+        <Container fluid className={"ps-5"}>
             <Row className={"mb-3"}>
                 <h3 className={"text-danger"}>Assignment List</h3>
             </Row>
@@ -42,10 +42,11 @@ const Assignment = () => {
                             variant={"outline-secondary"}
                             className={"me-5"}
                         >
-                            <i className="bi bi-search"/></Button>
+                            <i className="bi bi-search"/>
+                        </Button>
                         <Button
                             variant={"danger"}
-                            className={"w-25 border-0 ms-5"}
+                            className={"w-auto border-0 ms-5"}
                         >
                             Create new assignment
                         </Button>
