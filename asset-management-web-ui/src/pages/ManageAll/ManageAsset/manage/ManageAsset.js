@@ -44,7 +44,8 @@ const ManageAsset = ({responseDataAsset}) => {
             .then(function (response) {
                 let result = response.data.map(asset => asset.id);
                 if (result.includes(responseDataAsset.id)) {
-                    const index = response.data.indexOf(responseDataAsset);
+                    const index = response.data.findIndex(() => responseDataAsset.id);
+                    console.log(index," index")
                     response.data.splice(index, 1);
                     response.data.unshift(responseDataAsset);
                     setList(response.data);
@@ -100,7 +101,7 @@ const ManageAsset = ({responseDataAsset}) => {
     }
 
     return (
-        <Container className={"d-block ms-5"}>
+        <Container fluid className={"d-block ms-5 pe-5"}>
             <h1 className={"text-danger mb-5"}>Asset List</h1>
             <Row className={"mb-5"}>
                 <InputGroup className={"w-25"}>

@@ -4,24 +4,18 @@ import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.nashtech.assetmanagementwebservice.model.dto.AssetDTO;
 import com.nashtech.assetmanagementwebservice.entity.Asset;
 import com.nashtech.assetmanagementwebservice.entity.Category;
 import com.nashtech.assetmanagementwebservice.exception.InternalServerException;
 import com.nashtech.assetmanagementwebservice.exception.NotFoundException;
-
 import com.nashtech.assetmanagementwebservice.model.mapper.AssetMapper;
-
-
 import com.nashtech.assetmanagementwebservice.model.mapper.CategoryMapper;
-
 import com.nashtech.assetmanagementwebservice.repository.AssetRepository;
 import com.nashtech.assetmanagementwebservice.service.AssetService;
 import com.nashtech.assetmanagementwebservice.service.CategoryService;
@@ -70,7 +64,7 @@ public class AssetServiceImpl implements AssetService {
     public AssetDTO createAsset(Integer categoryId, AssetDTO payload) {
     	logger.info("Attempting to create new Asset...");
         if (categoryId == null) {
-            throw new IllegalArgumentException("Category id can not be null");
+            throw new IllegalArgumentException("Catuegory id can not be nll");
         }
         if (payload == null) {
             throw new IllegalArgumentException("Request payload can not be null");
