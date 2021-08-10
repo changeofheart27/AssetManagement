@@ -1,5 +1,6 @@
 package com.nashtech.assetmanagementwebservice.service.impl;
 
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -161,12 +162,23 @@ public class AssetServiceImpl implements AssetService {
      * @param category
      * @return String
      */
-    private String generateAssetCode(Category category) {
+	private String generateAssetCode(Category category) {
         String prefix = category.getPrefix();
-        long count = assetRepository.count(category.getId()) + 1;
-        String assetCode = prefix + String.format("%06d", count);
+        Integer maxId = assetRepository.getAssetMaxId(prefix);
+        
+        String assetCode = "";
+        if (maxId == null) {
+        	assetCode = prefix + String.format("%06d", 1);
+        } else {
+        	assetCode = prefix + String.format("%06d", maxId + 1);
+        }
         return assetCode;
     }
 
-
+	//  private String generateAssetCode(Category category) {
+	//  String prefix = category.getPrefix();
+	//  Integer count = assetRepository.count(category.getId()) + 1;
+	//  String assetCode = prefix + String.format("%06d", count);
+	//  return assetCode;
+	//}
 }

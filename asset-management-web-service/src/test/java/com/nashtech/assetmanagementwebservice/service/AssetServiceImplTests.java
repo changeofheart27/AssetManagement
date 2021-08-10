@@ -121,7 +121,7 @@ public class AssetServiceImplTests {
     
     @Nested
 	@DisplayName("Test createAsset() Method")
-	class TestAssetPost {
+	class TestCreateAsset {
     	@Test
 		public void testCreateAssetGivenNullIdShouldThrowException() {
     		AssetDTO mockPayload = mock(AssetDTO.class);

@@ -15,8 +15,12 @@ import java.util.List;
 public interface AssetRepository extends JpaRepository<Asset, Integer> {
 	public List<Asset> findAllByOrderByAssetName();
 	
-	@Query("SELECT COUNT(*) FROM Asset a INNER JOIN a.category c WHERE c.id = :categoryId")
-	public long count(int categoryId);
+	//get the latest id of the asset based on their category prefix
+	@Query(value = "SELECT MAX(CONVERT(SUBSTRING_INDEX(a.asset_code,c.prefix,-1), SIGNED)) as maxIdForEachCategory "
+			+ "FROM asset a inner join category c on a.category_id = c.id "
+			+ "WHERE c.prefix = :prefix GROUP BY c.prefix", 
+			nativeQuery = true)
+	public Integer getAssetMaxId(String prefix);
 	
 	//used for searching
 	@Query(value = "SELECT a FROM Asset a WHERE a.assetName LIKE :assetName OR a.assetCode = :assetCode")
