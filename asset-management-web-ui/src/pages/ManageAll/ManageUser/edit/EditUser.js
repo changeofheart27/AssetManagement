@@ -117,6 +117,7 @@ const EditUser = ({setResponseUser}) => {
                                     style={{backgroundColor: '#eff1f5'}}
                                     value={values.firstName}
                                     onChange={handleChange}
+                                    onError={errors}
                                 />
                                 {errors.username}
                             </Row>

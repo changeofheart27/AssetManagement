@@ -44,7 +44,7 @@ const Navbar = ({setCurrentPage}) => {
       <Router>
         <div className="navbar-container col-2">
           <img src={logo} alt="logo_NashTech" />
-          <p>Online Asset Management</p>
+          <h5 className={"text-danger"}>Online Asset Management</h5>
           <div className="navbar">
             <ul className="navbar-list">
               <Link to="/home" onClick = {()=> setCurrentPage("Home")}>
@@ -56,7 +56,7 @@ const Navbar = ({setCurrentPage}) => {
               <Link to="/asset" onClick = {()=> setCurrentPage("Manage Asset")} >
                 <li className="navbar-list--item">Manage Asset</li>
               </Link>
-              <Link to="/asset" onClick = {()=> setCurrentPage("Manage Assignment")}>
+              <Link to="/assignment" onClick = {()=> setCurrentPage("Manage Assignment")}>
                 <li className="navbar-list--item">Manage Assignment</li>
               </Link>
               <Link to="/asset" onClick = {()=> setCurrentPage("Request For Returning")}>
