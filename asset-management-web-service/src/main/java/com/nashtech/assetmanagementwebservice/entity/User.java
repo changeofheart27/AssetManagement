@@ -63,5 +63,9 @@ public class User {
 
 //    @OneToOne(mappedBy = "user")
 //    private Authority authority;
+    
+    @OneToMany(mappedBy = "user")
+    private List<Assignment> assignments;
+
 
 }

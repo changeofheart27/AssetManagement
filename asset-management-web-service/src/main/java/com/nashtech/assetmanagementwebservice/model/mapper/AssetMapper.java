@@ -44,5 +44,5 @@ public class AssetMapper {
 		entity.setLocation("HN");
 		return entity;
 	}
-
+	
 }

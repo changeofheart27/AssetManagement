@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 
@@ -47,6 +48,10 @@ public class Asset {
 	@ManyToOne()
 	@JoinColumn(name = "category_id")
 	private Category category;
+	
+	@OneToOne(mappedBy = "asset")
+	private Assignment assignment;
+
 
 	public Asset() {
 		super();
@@ -145,6 +150,15 @@ public class Asset {
 	public void setCategory(Category category) {
 		this.category = category;
 	}
+
+	public Assignment getAssignment() {
+		return assignment;
+	}
+
+	public void setAssignment(Assignment assignment) {
+		this.assignment = assignment;
+	}
+	
 	
 	
 }

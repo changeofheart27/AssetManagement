@@ -31,5 +31,6 @@ public interface AssetRepository extends JpaRepository<Asset, Integer> {
 	public List<Asset> findAssetByCategory(String category);
 	
 	public List<Asset> findAssetByState(int state);
+	
 
 }

@@ -17,5 +17,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
   @Query(value = "SELECT * from user u where u.type LIKE %:type%", nativeQuery = true)
   public List<User> getUserByType(String type);
+  
 
 }

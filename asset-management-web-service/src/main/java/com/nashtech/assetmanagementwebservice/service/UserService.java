@@ -23,4 +23,5 @@ public interface UserService {
   public List<UserDTO> searchByNameOrStaffCode(String keyword);
 
   public List<UserDTO> getUserByType(String type);
+  
 }

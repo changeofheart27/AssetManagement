@@ -55,7 +55,21 @@ public class UserMapper {
 
     }
 
-
+    
+    public User fromDTO(UserDTO payload) {
+    	User user = new User();
+        user.setUsername(payload.getUsername());
+        user.setFirstName(payload.getFirstName());
+        user.setLastName(payload.getLastName());
+        user.setGender(payload.getGender());
+        user.setDob(payload.getDob());
+        user.setJoinedDate(payload.getJoinedDate());
+        user.setLocation(payload.getLocation());
+        user.setStaffCode(user.getStaffCode());
+        user.setStatus(payload.getStatus());
+        user.setType(payload.getType());
+        return user;
+    }
 
 
 }

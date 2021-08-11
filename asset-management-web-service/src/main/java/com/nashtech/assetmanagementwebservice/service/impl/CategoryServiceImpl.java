@@ -18,7 +18,7 @@ import com.nashtech.assetmanagementwebservice.repository.CategoryRepository;
 import com.nashtech.assetmanagementwebservice.service.CategoryService;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class CategoryServiceImpl implements CategoryService {
 	private final CategoryRepository categoryRepository;
 	private final CategoryMapper categoryMapper;
@@ -31,7 +31,6 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	@Transactional
 	public List<CategoryDTO> getCategoryList() {
 		logger.info("Attempting to get all Category...");
 		List<Category> categories = categoryRepository.findAll();
@@ -40,7 +39,6 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 	
 	@Override
-	@Transactional
 	public CategoryDTO findCategoryById(Integer id) {
 		logger.info("Attempting to find Category with id " + id + "...");
 		Category category = categoryRepository.getById(id);
@@ -53,7 +51,6 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	@Transactional
 	public CategoryDTO createCategory(CategoryDTO payload) {
 		logger.info("Attempting to create new Category...");
 		if (categoryRepository.getPrefixList().contains(payload.getPrefix())) {
