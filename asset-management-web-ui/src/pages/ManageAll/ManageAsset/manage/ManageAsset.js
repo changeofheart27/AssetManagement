@@ -3,7 +3,7 @@ import './Manage.css'
 import 'reactjs-popup/dist/index.css';
 
 import {Button, Container, Form, FormControl, InputGroup, Row, Table} from 'react-bootstrap';
-import React, {useEffect, useState} from 'react';
+import React, { useMemo, useEffect, useState} from 'react';
 
 import Delete from "../delete/Delete";
 import DeleteFail from "../delete/DeleteFail";
@@ -17,6 +17,7 @@ const ManageAsset = ({responseDataAsset}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(10);
+    const [sortConfig, setSortConfig] = useState(null);
     const indexOfLastUser = currentPage * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
     const paginate = pageNumber => setCurrentPage(pageNumber);
@@ -108,6 +109,34 @@ const ManageAsset = ({responseDataAsset}) => {
                 console.log(response.data)
             })
     }
+    
+    const sortingData = useMemo(() => {
+        let listData = list;
+        if (sortConfig !== null) {
+        listData.sort((a, b) => {
+            if(a[sortConfig.key] < (b[sortConfig.key])) { 
+                return sortConfig.direction === "asc" ? -1 : 1;
+            }
+            if(a[sortConfig.key] > (b[sortConfig.key])) {
+                return sortConfig.direction === "asc" ? 1 : -1;
+            }
+            return 0;
+            })
+        }
+    },[list, sortConfig]);
+    const requestSort = key => {
+        let direction = "asc";
+        if(sortConfig && sortConfig.key === key && sortConfig.direction === "asc") {
+            direction = "desc";
+        }
+        setSortConfig({key, direction});
+    }
+    const getClassNamesFor = (name) => {
+        if (!sortConfig) {
+          return;
+        }
+        return sortConfig.key === name ? sortConfig.direction : undefined;
+    };
 
     return (
         <Container fluid className={"d-block ps-5"}>
@@ -167,12 +196,24 @@ const ManageAsset = ({responseDataAsset}) => {
             </InputGroup>
             <Row>
                 <Table>
-                    <thead>
+                <thead>
                     <tr>
-                        <th className={"border-bottom"}>Asset Code <i className="bi bi-caret-down-fill"/></th>
-                        <th className={"border-bottom"}>Asset Name <i className="bi bi-caret-down-fill"/></th>
-                        <th className={"border-bottom"}>Category<i className="bi bi-caret-down-fill"/></th>
-                        <th className={"border-bottom"}>State<i className="bi bi-caret-down-fill"/></th>
+                        <th className={"border-bottom"} 
+                            className={getClassNamesFor('assetCode')} 
+                            onClick={() => requestSort('assetCode') }>Asset Code<i className="bi bi-caret-down-fill"/>
+                        </th>
+                        <th className={"border-bottom"} 
+                            className={getClassNamesFor('assetName')} 
+                            onClick={() => requestSort('assetName')}>Asset Name<i className="bi bi-caret-down-fill"/>
+                        </th>
+                        <th className={"border-bottom"} 
+                            className={getClassNamesFor('categoryDTO.name')} 
+                            onClick={() => requestSort('category')}>Category<i className="bi bi-caret-down-fill"/>
+                        </th>
+                        <th className={"border-bottom"} 
+                            className={getClassNamesFor('state')} 
+                            onClick={() => requestSort('state')}>State<i className="bi bi-caret-down-fill"/>
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
