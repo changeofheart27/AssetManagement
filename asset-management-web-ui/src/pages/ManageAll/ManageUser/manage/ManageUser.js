@@ -3,7 +3,7 @@ import './Manage.css'
 import 'reactjs-popup/dist/index.css';
 
 import {Button, Container, Dropdown, Form, FormControl, InputGroup, Row, SplitButton, Table} from 'react-bootstrap';
-import {useEffect, useState} from 'react';
+import {useMemo, useEffect, useState} from 'react';
 
 import ChangeStatus from '../changeStatus/ChangeStatus';
 import Pagination from '../../../../components/Pagination/Pagination'
@@ -19,6 +19,7 @@ const ManageUser = ({responseUser}) => {
     const [error, setError] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(10);
+    const [sortConfig, setSortConfig] = useState(null);
     const indexOfLastUser = currentPage * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
 
@@ -77,6 +78,35 @@ const ManageUser = ({responseUser}) => {
                 console.log(response.data)
             })
     }
+
+    const sortingData = useMemo(() => {
+        let listData = list;
+        if (sortConfig !== null) {
+        listData.sort((a, b) => {
+            if(a[sortConfig.key] < (b[sortConfig.key])) { 
+                return sortConfig.direction === "asc" ? -1 : 1;
+            }
+            if(a[sortConfig.key] > (b[sortConfig.key])) {
+                return sortConfig.direction === "asc" ? 1 : -1;
+            }
+            return 0;
+            })
+        }
+    },[list, sortConfig]);
+    const requestSort = key => {
+        let direction = "asc";
+        if(sortConfig && sortConfig.key === key && sortConfig.direction === "asc") {
+            direction = "desc";
+        }
+        setSortConfig({key, direction});
+    }
+    const getClassNamesFor = (name) => {
+        if (!sortConfig) {
+          return;
+        }
+        return sortConfig.key === name ? sortConfig.direction : undefined;
+    };
+
     return (
         <Container fluid className={"d-block ps-5"}>
             <h1 className={"text-danger mb-3"}>User List</h1>
@@ -113,13 +143,28 @@ const ManageUser = ({responseUser}) => {
             </InputGroup>
             <Row className={"mt-5"}>
                 <Table>
-                    <thead>
+                <thead>
                     <tr>
-                        <th className={"border-bottom"}>Staff Code <i className="bi bi-caret-down-fill"/></th>
-                        <th className={"border-bottom"}>Full Name <i className="bi bi-caret-down-fill"/></th>
-                        <th className={"border-bottom"}>User Name </th>
-                        <th className={"border-bottom"}>Joined Date <i className="bi bi-caret-down-fill"/></th>
-                        <th className={"border-bottom"}>Type <i className="bi bi-caret-down-fill"/></th>
+                        <th className={"border-bottom"}
+                            className={getClassNamesFor('staffCode')} 
+                            onClick={() => requestSort('staffCode') }>Staff Code<i className="bi bi-caret-down-fill"/>
+                        </th>
+                        <th className={"border-bottom"}
+                            className={getClassNamesFor('lastName')} 
+                            onClick={() => requestSort('lastName') }>Full Name<i className="bi bi-caret-down-fill"/>
+                        </th>
+                        <th className={"border-bottom"}
+                            className={getClassNamesFor('username')} 
+                            onClick={() => requestSort('username') }>User Name<i className="bi bi-caret-down-fill"/>
+                        </th>
+                        <th className={"border-bottom"}
+                            className={getClassNamesFor('joinedDate')} 
+                            onClick={() => requestSort('joinedDate') }>Joined Date<i className="bi bi-caret-down-fill"/>
+                        </th>
+                        <th className={"border-bottom"}
+                            className={getClassNamesFor('type')} 
+                            onClick={() => requestSort('type') }>Type<i className="bi bi-caret-down-fill"/>
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
@@ -152,10 +197,7 @@ const ManageUser = ({responseUser}) => {
                         } modal>{close => (<div>
                             <ViewDetailedUser id={user.id}/>
                             <Button onClick={close} variant="success" className="btn-view-detail">&times;</Button>
-
                         </div>)}
-
-
                         </Popup>
                     )}
                     </tbody>
