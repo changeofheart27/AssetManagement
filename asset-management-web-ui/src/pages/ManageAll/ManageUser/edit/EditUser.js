@@ -5,6 +5,7 @@ import {useHistory, useParams} from 'react-router-dom';
 import {Formik} from 'formik';
 import axios from "axios";
 import * as Yup from "yup";
+import {differenceInYears} from "date-fns";
 
 const EditUser = ({setResponseUser}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
@@ -83,12 +84,21 @@ const EditUser = ({setResponseUser}) => {
     const ValidateSchema = Yup.object().shape({
         firstName: Yup.string()
             .max(50)
-            .required('Required'),
+            .required('Required')
+            .typeError('First name is required'),
         lastName: Yup.string()
             .max(50)
-            .required('Required'),
+            .required('Required')
+            .typeError('Last name is required'),
         type: Yup.string()
             .required('Required')
+            .typeError('Please select type'),
+        dob: Yup.date()
+            .required()
+            .typeError('DOB is required')
+            .test("dob", "Should be greater than 18", function (value) {
+                return differenceInYears(new Date(), new Date(value)) >= 18;
+            }),
     });
     return (
         <div className={"container ps-5 d-block"}>
@@ -122,9 +132,11 @@ const EditUser = ({setResponseUser}) => {
                                     value={values.firstName}
                                     onChange={handleChange}
                                     onError={errors}
+                                    isValid={touched.firstName && !errors.firstName}
+                                    isInvalid={touched.firstName && errors.firstName}
                                 />
                                 {errors.firstName && touched.firstName ? (
-                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>User first name must be between 5-50 character</div>
+                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>{errors.firstName}</div>
                                 ) : null}
                             </Row>
                             <Row className={"mb-3"}>
@@ -137,9 +149,11 @@ const EditUser = ({setResponseUser}) => {
                                     style={{backgroundColor: '#eff1f5'}}
                                     value={values.lastName}
                                     onChange={handleChange}
+                                    isValid={touched.lastName && !errors.lastName}
+                                    isInvalid={touched.lastName && errors.lastName}
                                 />
-                                {errors.firstName && touched.firstName ? (
-                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>User last name must be between 5-50 character</div>
+                                {errors.lastName && touched.lastName ? (
+                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>{errors.lastName}</div>
                                 ) : null}
                             </Row>
                             <Row className="mb-3">
@@ -147,14 +161,20 @@ const EditUser = ({setResponseUser}) => {
                                 <FormControl
                                     type={"date"}
                                     aria-describedby="basic-addon1"
+                                    name={"dob"}
                                     className={"w-75"}
                                     value={values.dob}
                                     onChange={handleChange}
+                                    isValid={touched.dob && !errors.dob}
+                                    isInvalid={touched.dob && errors.dob}
                                 />
+                                {errors.dob && touched.dob ? (
+                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>{errors.dob}</div>
+                                ) : null}
                             </Row>
-                            <Row>
+                            <Row className={"mb-3"}>
                                 <p id="basic-addon1" className={"w-25"}>Gender</p>
-                                <div className={"container w-75"}>
+                                <div className={"container-lg w-75"}>
                                     <FormCheck
                                         inline
                                         type={"radio"}
@@ -196,13 +216,15 @@ const EditUser = ({setResponseUser}) => {
                                     name={"type"}
                                     value={values.type}
                                     onChange={handleChange}
+                                    isValid={touched.type && !errors.type}
+                                    isInvalid={touched.type && errors.type}
                                 >
                                     <option selected></option>
                                     <option>Admin</option>
                                     <option>Staff</option>
                                 </Form.Select>
                                 {errors.type && touched.type ? (
-                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>Must select type of user</div>
+                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>{errors.type}</div>
                                 ) : null}
                             </Row>
                             <Button variant={"danger"} type={"submit"} className={"ms-5"} style={{float: 'right'}}>

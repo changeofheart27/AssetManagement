@@ -21,6 +21,7 @@ const CreateAsset = ({setResponseDataAsset}) => {
         installedDate: null,
         state: null,
         category: null,
+        status: false
     }
     const onSubmit = (values, {setSubmitting}) => {
         let create = {
@@ -50,12 +51,19 @@ const CreateAsset = ({setResponseDataAsset}) => {
     };
     const ValidateSchema = Yup.object().shape({
         assetName: Yup.string()
-            .min(5)
+            .min(2)
             .max(50)
-            .required('Required'),
-        category: Yup.string().required('Required'),
-        installedDate: Yup.string().required('Required'),
-        state: Yup.number().required('Required')
+            .required('Required')
+            .typeError('Name can not empty'),
+        category: Yup.string()
+            .required('Required')
+            .typeError('Category can not empty'),
+        installedDate: Yup.string()
+            .required('Required')
+            .typeError('Installed date can not empty'),
+        status: Yup.boolean()
+            .required('Required')
+            .typeError('State can not empty'),
     });
     return (
         <div className={"container ps-5 d-block"}>
@@ -84,9 +92,11 @@ const CreateAsset = ({setResponseDataAsset}) => {
                                     name={"assetName"}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
+                                    isValid={touched.assetName && !errors.assetName}
+                                    isInvalid={touched.assetName && errors.assetName}
                                 />
                                 {errors.assetName && touched.assetName ? (
-                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>Asset Name must be between 5-50 character</div>
+                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>{errors.assetName}</div>
                                 ) : null}
                             </Row>
                             <Row className="mb-3">
@@ -96,6 +106,8 @@ const CreateAsset = ({setResponseDataAsset}) => {
                                     size="sm"
                                     className={"w-75"}
                                     onChange={handleChange}
+                                    isValid={touched.category && !errors.category}
+                                    isInvalid={touched.category && errors.category}
                                 >
                                     <option selected/>
                                     {categories.map((category) => (
@@ -103,7 +115,7 @@ const CreateAsset = ({setResponseDataAsset}) => {
                                     ))}
                                 </Form.Select>
                                 {errors.category && touched.category ? (
-                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>Please select one category</div>
+                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>{errors.category}</div>
                                 ) : null}
                             </Row>
                             <Row className="mb-3">
@@ -125,10 +137,12 @@ const CreateAsset = ({setResponseDataAsset}) => {
                                     className={"w-75"}
                                     name={"installedDate"}
                                     onChange={handleChange}
+                                    isValid={touched.installedDate && !errors.installedDate}
+                                    isInvalid={touched.installedDate && errors.installedDate}
                                 >
                                 </FormControl>
                                 {errors.installedDate && touched.installedDate ? (
-                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>Please select Install Date</div>
+                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>{errors.installedDate}</div>
                                 ) : null}
                             </Row>
                             <Row>
@@ -153,8 +167,8 @@ const CreateAsset = ({setResponseDataAsset}) => {
                                         onChange={() => values.state = 1}
                                     >
                                     </FormCheck>
-                                    {errors.state && touched.state ? (
-                                        <div className={"text-danger"}>Please select status</div>
+                                    {errors.status && touched.status ? (
+                                        <div className={"text-danger"}>{errors.status}</div>
                                     ) : null}
                                 </div>
                             </Row>

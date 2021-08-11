@@ -2,11 +2,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import {Button, Form, FormCheck, FormControl, Row} from "react-bootstrap";
 import {useHistory} from 'react-router-dom';
-
 import {Formik} from 'formik';
 import React from 'react';
 import axios from "axios";
 import * as Yup from "yup";
+import {differenceInYears} from "date-fns";
 
 const CreateUser = ({setResponseUser}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
@@ -53,17 +53,27 @@ const CreateUser = ({setResponseUser}) => {
     const ValidateSchema = Yup.object().shape({
         firstName: Yup.string()
             .max(50)
-            .required('Required'),
+            .required('Required')
+            .typeError('First name is required'),
         lastName: Yup.string()
             .max(50)
-            .required('Required'),
-        dob: Yup.string()
-            .required('Required'),
+            .required('Required')
+            .typeError('Last name is required'),
+        dob: Yup.date()
+            .required()
+            .typeError('DOB is required')
+            .test("dob", "Should be greater than 18", function (value) {
+                return differenceInYears(new Date(), new Date(value)) >= 18;
+            }),
         type: Yup.string()
-            .required('Required'),
+            .required('Required')
+            .typeError('Please select type'),
         joinedDate: Yup.string()
-            .required('Required'),
+            .required('Required')
+            .typeError('Please select date')
+        ,
     });
+
     return (
         <div className={"container ps-5 d-block"}>
             <Row>
@@ -93,10 +103,11 @@ const CreateUser = ({setResponseUser}) => {
                                     className={"w-75"}
                                     name={"firstName"}
                                     onChange={handleChange}
+                                    isValid={touched.firstName && !errors.firstName}
+                                    isInvalid={touched.firstName && errors.firstName}
                                 />
                                 {errors.firstName && touched.firstName ? (
-                                    <div className={"text-danger"} style={{paddingLeft: "25%"}}>User first name must be
-                                        between 5-50 character</div>
+                                    <div className={"text-danger"} style={{paddingLeft: "25%"}}>{errors.firstName}</div>
                                 ) : null}
                             </Row>
                             <Row className={"mb-3"}>
@@ -107,10 +118,11 @@ const CreateUser = ({setResponseUser}) => {
                                     className={"w-75"}
                                     name={"lastName"}
                                     onChange={handleChange}
+                                    isValid={touched.lastName && !errors.lastName}
+                                    isInvalid={touched.lastName && errors.lastName}
                                 />
                                 {errors.lastName && touched.lastName ? (
-                                    <div className={"text-danger"} style={{paddingLeft: "25%"}}>User first name must be
-                                        between 5-50 character</div>
+                                    <div className={"text-danger"} style={{paddingLeft: "25%"}}>{errors.lastName}</div>
                                 ) : null}
                             </Row>
                             <Row className="mb-3">
@@ -121,9 +133,11 @@ const CreateUser = ({setResponseUser}) => {
                                     className={"w-75"}
                                     name={"dob"}
                                     onChange={handleChange}
+                                    isValid={touched.dob && !errors.dob}
+                                    isInvalid={touched.dob && errors.dob}
                                 />
                                 {errors.dob && touched.dob ? (
-                                    <div className={"text-danger"} style={{paddingLeft: "25%"}}>Please select DOB</div>
+                                    <div className={"text-danger"} style={{paddingLeft: "25%"}}>{errors.dob}</div>
                                 ) : null}
                             </Row>
                             <Row>
@@ -157,10 +171,11 @@ const CreateUser = ({setResponseUser}) => {
                                     className={"w-75"}
                                     name={"joinedDate"}
                                     onChange={handleChange}
+                                    isValid={touched.joinedDate && !errors.joinedDate}
+                                    isInvalid={touched.joinedDate && errors.joinedDate}
                                 />
                                 {errors.joinedDate && touched.joinedDate ? (
-                                    <div className={"text-danger"} style={{paddingLeft: "25%"}}>Please select Joined
-                                        Date</div>
+                                    <div className={"text-danger"} style={{paddingLeft: "25%"}}>{errors.joinedDate}</div>
                                 ) : null}
                             </Row>
                             <Row className="mb-3">
@@ -171,13 +186,15 @@ const CreateUser = ({setResponseUser}) => {
                                     name={"type"}
                                     value={values.type}
                                     onChange={handleChange}
+                                    isValid={touched.type && !errors.type}
+                                    isInvalid={touched.type && errors.type}
                                 >
                                     <option selected></option>
                                     <option>Admin</option>
                                     <option>Staff</option>
                                 </Form.Select>
                                 {errors.type && touched.type ? (
-                                    <div className={"text-danger"} style={{paddingLeft: "25%"}}>Please select TYPE</div>
+                                    <div className={"text-danger"} style={{paddingLeft: "25%"}}>{errors.type}</div>
                                 ) : null}
                             </Row>
                             <Button variant={"danger"} type={"submit"} className={"ms-5"} style={{float: 'right'}}>

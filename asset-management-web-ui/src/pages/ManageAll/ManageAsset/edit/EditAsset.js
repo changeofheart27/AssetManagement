@@ -72,12 +72,16 @@ const EditAsset = ({setResponseDataAsset}) => {
     }, []);
     const ValidateSchema = Yup.object().shape({
         assetName: Yup.string()
-            .min(5)
+            .min(2)
             .max(50)
-            .required('Required'),
-        category: Yup.string().required('Required'),
-        installedDate: Yup.string().required('Required'),
-        state: Yup.number().required('Required')
+            .required('Required')
+            .typeError('Name can not empty'),
+        category: Yup.string()
+            .required('Required')
+            .typeError('Category can not empty'),
+        installedDate: Yup.string()
+            .required('Required')
+            .typeError('Install date can not empty'),
     });
     return (
         <div className={"container ps-5 d-block"}>
@@ -110,18 +114,21 @@ const EditAsset = ({setResponseDataAsset}) => {
                                     className={"w-75"}
                                     value={values.assetName}
                                     onChange={handleChange}
+                                    isValid={touched.assetName && !errors.assetName}
+                                    isInvalid={touched.assetName && errors.assetName}
                                 />
                                 {errors.assetName && touched.assetName ? (
-                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>Asset Name must be between 5-50 character</div>
+                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>{errors.assetName}</div>
                                 ) : null}
                             </Row>
                             <Row className="mb-3">
                                 <p className={"col-3"}>Category</p>
-                                <Form.Control size="sm" className={"w-75"} name={"category"}
-                                              value={values.categoryDTO.name} disabled/>
-                                {errors.category && touched.category ? (
-                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>Please select one category</div>
-                                ) : null}
+                                <Form.Control
+                                    size="sm"
+                                    className={"w-75"}
+                                    name={"category"}
+                                    value={values.categoryDTO.name}
+                                    disabled/>
                             </Row>
                             <Row className="mb-3">
                                 <p className={"w-25"}>Specification</p>
@@ -133,6 +140,7 @@ const EditAsset = ({setResponseDataAsset}) => {
                                     name={"specification"}
                                     value={values.specification}
                                     onChange={handleChange}
+
                                 />
                             </Row>
                             <Row className="mb-3">
@@ -144,14 +152,16 @@ const EditAsset = ({setResponseDataAsset}) => {
                                     className={"w-75"}
                                     value={values.installedDate}
                                     onChange={handleChange}
+                                    isValid={touched.installedDate && !errors.installedDate}
+                                    isInvalid={touched.installedDate && errors.installedDate}
                                 />
                                 {errors.installedDate && touched.installedDate ? (
-                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>Please select Install Date</div>
+                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>{errors.installedDate}</div>
                                 ) : null}
                             </Row>
                             <Row>
                                 <p id="basic-addon1" className={"w-25"}>State</p>
-                                <div className={"container w-75"}
+                                <div className={"container-lg w-75"}
                                      style={{display: 'flex', flexDirection: 'column'}}>
                                     <FormCheck
                                         inline
