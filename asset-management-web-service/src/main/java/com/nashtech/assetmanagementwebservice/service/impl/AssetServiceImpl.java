@@ -1,7 +1,5 @@
 package com.nashtech.assetmanagementwebservice.service.impl;
 
-import java.math.BigInteger;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +20,7 @@ import com.nashtech.assetmanagementwebservice.service.AssetService;
 import com.nashtech.assetmanagementwebservice.service.CategoryService;
 
 @Service
-@Transactional(readOnly = false)
+@Transactional
 public class AssetServiceImpl implements AssetService {
     private final AssetRepository assetRepository;
     private final CategoryService categoryService;
@@ -39,7 +37,6 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    @Transactional
     public List<AssetDTO> getAssetList() {
         logger.info("Attempting to get all Asset...");
         List<Asset> assets = assetRepository.findAllByOrderByAssetName();
@@ -48,7 +45,6 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    @Transactional
     public AssetDTO findAssetById(Integer id) {
         logger.info("Attempting to find Asset with id " + id + "...");
         Asset asset = assetRepository.getById(id);
@@ -61,11 +57,10 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    @Transactional
     public AssetDTO createAsset(Integer categoryId, AssetDTO payload) {
         logger.info("Attempting to create new Asset...");
         if (categoryId == null) {
-            throw new IllegalArgumentException("Category id can not be nll");
+            throw new IllegalArgumentException("Category id can not be null");
         }
         if (payload == null) {
             throw new IllegalArgumentException("Request payload can not be null");
@@ -105,7 +100,6 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    @Transactional(readOnly = false)
     public void deleteAssetById(Integer id) {
         logger.info("Attempting to delete Asset with id " + id + "...");
         Asset asset = assetRepository.getById(id);
@@ -113,7 +107,7 @@ public class AssetServiceImpl implements AssetService {
             throw new NotFoundException("No record found with id " + id);
         }
         // 4 Assigned => can not delete
-        if (asset.getState() == 3) {
+        if (asset.getState() == 4) {
             throw new InternalServerException("Asset is current assigned to someone");
         }
         logger.info("Successfully delete an Asset with id=" + asset.getId() + "!");
@@ -121,7 +115,6 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    @Transactional
     public List<AssetDTO> searchAssetByAssetNameOrAssetCode(String keyword) {
 
         logger.info("Attempting to search Asset with keyword " + keyword + "...");
@@ -133,7 +126,6 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    @Transactional
     public List<AssetDTO> filterAssetByCategory(String category) {
         logger.info("Attempting to filter Asset with Category " + category + "...");
         List<Asset> assets;
@@ -147,7 +139,6 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    @Transactional
     public List<AssetDTO> filterAssetByState(int state) {
         logger.info("Attempting to filter Asset with State " + state + "...");
         List<Asset> assets;
@@ -181,6 +172,7 @@ public class AssetServiceImpl implements AssetService {
         }
         return assetCode;
     }
+
 
     //  private String generateAssetCode(Category category) {
     //  String prefix = category.getPrefix();

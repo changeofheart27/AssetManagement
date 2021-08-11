@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
     if (user != null) {
       throw new DuplicateRecordException("User name already exist !");
     }
-    long count = userRepository.count();
+    long count = userRepository.count() + 1;
     String staffCode = "SD" + String.format("%04d", count);
 
     user = UserMapper.toUser(request);
@@ -129,4 +129,5 @@ public class UserServiceImpl implements UserService {
     return result;
 
   }
+
 }
