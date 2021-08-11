@@ -17,7 +17,7 @@ public class UserMapper {
         tmp.setDob(user.getDob());
         tmp.setLocation(user.getLocation());
         tmp.setStaffCode(user.getStaffCode());
-        tmp.setType(user.getType());
+        tmp.setAuthority(user.getAuthority());
         tmp.setStatus(user.getStatus());
         tmp.setPassword(user.getPassword());
         return tmp;
@@ -33,7 +33,8 @@ public class UserMapper {
         user.setLocation(request.getLocation());
         user.setStaffCode(user.getStaffCode());
         user.setStatus(request.getStatus());
-        user.setType(request.getType());
+//        user.setType(request.getType());
+        user.setAuthority(request.getAuthority());
         return user;
     }
 
@@ -49,7 +50,8 @@ public class UserMapper {
         user.setLocation(request.getLocation());
         user.setStaffCode(request.getStaffCode());
         user.setStatus(request.getStatus());
-        user.setType(request.getType());
+//        user.setType(request.getType());
+        user.setAuthority(request.getAuthority());
         user.setPassword(request.getPassword());
         return user;
 

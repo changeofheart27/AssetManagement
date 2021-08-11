@@ -26,7 +26,7 @@ import io.swagger.annotations.ApiResponses;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1/admin/users")
 public class UserController {
 
   private final UserService userService;
@@ -106,12 +106,12 @@ public class UserController {
     return ResponseEntity.ok(users);
   }
 
-  @ApiOperation(value = "Filter By Type of User", response = UserDTO.class, responseContainer = "List")
-  @GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<List<UserDTO>> getBy(@RequestParam(name = "type") String type) {
-    List<UserDTO> users = userService.getUserByType(type);
-
-    return ResponseEntity.ok(users);
-  }
+//  @ApiOperation(value = "Filter By Type of User", response = UserDTO.class, responseContainer = "List")
+//  @GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
+//  public ResponseEntity<List<UserDTO>> getBy(@RequestParam(name = "type") String type) {
+//    List<UserDTO> users = userService.getUserByType(type);
+//
+//    return ResponseEntity.ok(users);
+//  }
 
 }

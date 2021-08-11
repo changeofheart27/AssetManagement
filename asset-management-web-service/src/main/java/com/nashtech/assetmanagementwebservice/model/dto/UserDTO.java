@@ -53,6 +53,6 @@ public class UserDTO {
     private String location;
 
 
-    private String type;
+    private Authority authority;
 
 }

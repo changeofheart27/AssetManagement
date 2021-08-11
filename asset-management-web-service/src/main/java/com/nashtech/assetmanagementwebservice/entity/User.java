@@ -49,8 +49,8 @@ public class User {
     @Column(name = "location")
     private String location;
 
-    @Column(name ="type")
-    private String type;
+//    @Column(name ="type")
+//    private String type;
 
     @Column(name ="status" )
     private String status;
@@ -61,7 +61,7 @@ public class User {
 //    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 //    private List<Asset> assets;
 
-//    @OneToOne(mappedBy = "user")
-//    private Authority authority;
+    @OneToOne(mappedBy = "user")
+    private Authority authority;
 
 }

@@ -14,6 +14,7 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.nashtech.assetmanagementwebservice.exception.DuplicateRecordException;
 import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -25,7 +26,6 @@ import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.nashtech.assetmanagementwebservice.entity.Category;
-import com.nashtech.assetmanagementwebservice.exception.DuplicateRecordException;
 import com.nashtech.assetmanagementwebservice.exception.NotFoundException;
 import com.nashtech.assetmanagementwebservice.model.dto.CategoryDTO;
 import com.nashtech.assetmanagementwebservice.model.mapper.CategoryMapper;
@@ -113,7 +113,7 @@ public class CategoryServiceImplTests {
     		List prefixes = Arrays.asList(new String[] {"LA", "MO"});
 			when(categoryRepository.getPrefixList()).thenReturn(prefixes);
 			assertTrue(prefixes.contains(mockPayload.getPrefix()));
-			DuplicateRecordException exception = assertThrows(DuplicateRecordException.class, 
+			DuplicateRecordException exception = assertThrows(DuplicateRecordException.class,
 					() -> underTest.createCategory(mockPayload));
 			assertEquals("Prefix must be unique", exception.getMessage());
 		}

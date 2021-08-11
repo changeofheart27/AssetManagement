@@ -1,6 +1,7 @@
 package com.nashtech.assetmanagementwebservice.model.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.nashtech.assetmanagementwebservice.entity.Authority;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -60,16 +61,22 @@ public class CreateUserRequest {
 
     //@NotNull(message = "Gender is required")
 //    @NotEmpty(message = "Gender  is required")
-    @ApiModelProperty(
+//    @ApiModelProperty(
+//            example="user",
+//            notes="Gender cannot be empty , 1-Admin , 2-User",
+//            required=true
+//    )
+//    @JsonProperty("type")
+//    private String type;
+
+
+        @ApiModelProperty(
             example="user",
             notes="Gender cannot be empty , 1-Admin , 2-User",
             required=true
     )
-    @JsonProperty("type")
-    private String type;
-
-
-
+    @JsonProperty("authority")
+    private Authority authority;
 
 
     @ApiModelProperty(

@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import com.nashtech.assetmanagementwebservice.exception.DuplicateRecordException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.nashtech.assetmanagementwebservice.entity.User;
-import com.nashtech.assetmanagementwebservice.exception.DuplicateRecordException;
 import com.nashtech.assetmanagementwebservice.exception.InternalServerException;
 import com.nashtech.assetmanagementwebservice.exception.NotFoundException;
 import com.nashtech.assetmanagementwebservice.model.dto.UserDTO;
@@ -34,6 +35,11 @@ public class UserServiceImpl implements UserService {
       result.add(UserMapper.toUserDTO(user));
     }
     return result;
+  }
+
+  @Override
+  public User findUserByUsername(String username) {
+    return null;
   }
 
   @Override
@@ -119,14 +125,14 @@ public class UserServiceImpl implements UserService {
 
   }
 
-  @Override
-  public List<UserDTO> getUserByType(String type) {
-    List<User> users = userRepository.getUserByType(type);
-    List<UserDTO> result = new ArrayList<>();
-    for (User user : users) {
-      result.add(UserMapper.toUserDTO(user));
-    }
-    return result;
-
-  }
+//  @Override
+//  public List<UserDTO> getUserByType(String type) {
+//    List<User> users = userRepository.getUserByType(type);
+//    List<UserDTO> result = new ArrayList<>();
+//    for (User user : users) {
+//      result.add(UserMapper.toUserDTO(user));
+//    }
+//    return result;
+//
+//  }
 }

@@ -2,13 +2,13 @@ package com.nashtech.assetmanagementwebservice.controller;
 
 import java.util.List;
 
+import com.nashtech.assetmanagementwebservice.exception.DuplicateRecordException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
-import com.nashtech.assetmanagementwebservice.exception.DuplicateRecordException;
 import com.nashtech.assetmanagementwebservice.model.dto.CategoryDTO;
 import com.nashtech.assetmanagementwebservice.service.CategoryService;
 
