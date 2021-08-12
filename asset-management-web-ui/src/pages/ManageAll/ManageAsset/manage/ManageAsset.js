@@ -72,25 +72,32 @@ const ManageAsset = ({responseDataAsset}) => {
     const handleChange = evt => {
         setSearch(evt.target.value);
     }
+    const [type, setType] = useState();
+    const [category, setCategory] = useState();
     const request = {
         params:{
-            type:1,
-            category:"Laptop",
+            type,
+            category
         }
     }
-    const handleFilter = evt => {
-        const request = {
-            params:{
-                [evt.target.name]:evt.target.value,
-            }
-        }
-      axios.get(rootAPI + `/assets/filter`, request)
-            .then(function (response) {
-                setList(response.data);
-                console.log(response.data)
-            })
+    const handleFilterType = evt => {
+        const name = evt.target.name;
+        setType(evt.target.value)
     }
-
+    const handleFilterCategory = evt => {
+        const name = evt.target.name;
+        setCategory(evt.target.value)
+    }
+    useEffect(()=>{
+        console.log("use Effect Run")
+        console.log(request)
+          axios.get(rootAPI + `/assets/filter`,request)
+                .then(function (response) {
+                    setList(response.data);
+                    console.log(response.data)
+                })
+    },[type,category])
+    
     const filterSearchBySearchTerm = () => {
         axios.get(rootAPI + `/assets/search?keyword=${search}`)
             .then(function (response) {
@@ -144,7 +151,7 @@ const ManageAsset = ({responseDataAsset}) => {
                         custom
                         className={"w-25"}
                         name={"type"}
-                        onChange={handleFilter}
+                        onChange={handleFilterType}
                     >
                         <option value={"999"}>State</option>
                         <option value="0">Available</option>
@@ -162,7 +169,7 @@ const ManageAsset = ({responseDataAsset}) => {
                         className={"w-25 ms-5"}
                         placeholder={"Category"}
                         name={"category"}
-                        onChange={handleFilter}
+                        onChange={handleFilterCategory}
                     >
                         <option>Category</option>
                         {categories.map((category) => (
