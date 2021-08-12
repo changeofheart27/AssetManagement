@@ -39,6 +39,18 @@ const Navbar = ({setCurrentPage}) => {
     joinedDate: null,
     type: null
   });
+  const [responseAssigment,setResponseAssigment] = useState({
+    id: null,
+    assetDTO: {
+      assetCode: null,
+      assetName: null,
+    },
+    userDTO: {
+      name: null,
+    },
+    assignedDate:null,
+    state:null
+  });
   return (
     <div className="container-fluid d-flex">
       <Router>
@@ -71,7 +83,7 @@ const Navbar = ({setCurrentPage}) => {
         <div className="pages-container col-10">
           <Switch>
             <Route path={"/home"} exact>
-              <Home />
+              <Home responseAssigment = {responseAssigment}/>
             </Route>
             <Route path={"/user"}>
               <ManageUser responseUser = {responseUser}/>

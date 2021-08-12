@@ -1,20 +1,13 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-
 import 'reactjs-popup/dist/index.css';
-
 import {Button, Container, Form, FormControl, InputGroup, Row, Table} from 'react-bootstrap';
 import React, {useEffect, useState} from 'react';
-
-
 import Popup from "reactjs-popup";
-
 import axios from "axios";
 import {useHistory} from 'react-router-dom'
-import ViewDetailedAsset from '../ManageAll/ManageAsset/viewDetails/ViewDetailedAsset';
 import Pagination from '../../components/Pagination/Pagination';
-import DeleteFail from '../ManageAll/ManageAsset/delete/DeleteFail';
-import Delete from '../ManageAll/ManageAsset/delete/Delete';
-const Home = ({responseDataAsset}) => {
+
+const Home = ({responseAssigment}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(10);
@@ -23,31 +16,27 @@ const Home = ({responseDataAsset}) => {
     const paginate = pageNumber => setCurrentPage(pageNumber);
     const [list, setList] = useState([{
         id: null,
-        assetCode: null,
-        assetName: null,
-        specification: null,
-        category: null,
-        state: null,
-        categoryDTO: {
-            name: null
-        }
+        assetDTO: {
+            assetCode: null,
+            assetName: null,
+        },
+        userDTO: {
+            username: null,
+        },
+        assignedDate:null,
+        state:null
+
     }]);
     const history = useHistory();
     const [categories, setCategories] = useState([]);
     useEffect(() => {
-        axios.get(rootAPI + "/categories").then((response) => {
-            setCategories(response.data);
-        }, []);
-    }, []);
-
-    useEffect(() => {
-        axios.get(rootAPI + '/assets')
+        axios.get(rootAPI + '/assignments')
             .then(function (response) {
-                let result = response.data.map(asset => asset.id);
-                if (result.includes(responseDataAsset.id)) {
-                    const index = response.data.indexOf(responseDataAsset);
+                let result = response.data.map(assigment => assigment.id);
+                if (result.includes(responseAssigment.id)) {
+                    const index = response.data.indexOf(responseAssigment);
                     response.data.splice(index, 1);
-                    response.data.unshift(responseDataAsset);
+                    response.data.unshift(responseAssigment);
                     setList(response.data);
                 } else {
                     setList(response.data);
@@ -152,7 +141,7 @@ const Home = ({responseDataAsset}) => {
                     <Button variant={"outline-secondary"} onClick={filterSearchBySearchTerm}>Search</Button>
                 </InputGroup>
                 <Button variant={"danger"} className={"w-25"} onClick={() => history.push('/createasset')}>Create
-                    new Asset</Button>
+                    new Assigment</Button>
 
             </Row>
             <Row>
@@ -169,30 +158,30 @@ const Home = ({responseDataAsset}) => {
                     </tr>
                     </thead>
                     <tbody>
-                    {list.slice(indexOfFirstUser, indexOfLastUser).map(asset =>
+                    {list.slice(indexOfFirstUser, indexOfLastUser).map(assigment =>
                        <Popup contentStyle={{width: "25%" ,border: "1px solid black" , borderRadius: 10,
                        overflow: 'hidden', padding: "20px"}} trigger={  
-                       <tr key={asset.id}>
-                            <td>"No."</td>
-                            <td>{asset.assetCode}</td>
-                            <td>{asset.assetName}</td>
-                            <td>"Asigned To"</td>
-                            <td>"Asigned By"</td>
-                            <td>"Asigned Date"</td>
-                            <td>{check(asset.state)}</td>
+                       <tr key={assigment.id}>
+                            <td>{assigment.id}</td>
+                            <td>{assigment.assetDTO.assetCode}</td>
+                            <td>{assigment.assetDTO.assetName}</td>
+                            <td>{assigment.userDTO.username}</td>
+                            <td>{assigment.userDTO.username}</td>
+                            <td>{assigment.assignedDate}</td>
+                            <td>{check(assigment.state)}</td>
                             <td><i className="bi bi-pen btn m-0 text-muted p-0"
-                                   onClick={() => history.push(`/editasset/${asset.id}`)}/></td>
+                                   onClick={() => history.push(`/edit/${assigment.id}`)}/></td>
                             <Popup contentStyle={{
                                 width: "25%", border: "1px solid black", borderRadius: 10,
                                 overflow: 'hidden', padding: "20px"
                             }}
                                    trigger={<td><i className="bi bi-x-circle text-danger btn p-0"/></td>} offsetX={200}
                                    modal>
-                                {asset.state !== 1 ? <Delete id={asset.id}/> : <DeleteFail id={asset.id}/>}
+                                
                             </Popup>
                         </tr>
                         } modal>{close=>(  <div>
-                            <ViewDetailedAsset id={asset.id} />
+                            
                            <Button onClick={close} variant="success" className="btn-view-detail">&times;</Button>
                       
                      </div>)} 

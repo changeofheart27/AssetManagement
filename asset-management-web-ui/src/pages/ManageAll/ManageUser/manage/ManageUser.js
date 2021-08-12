@@ -40,7 +40,7 @@ const ManageUser = ({responseUser}) => {
     useEffect(() => {
         axios.get(rootAPI + '/users')
             .then(response => {
-                let result = response.data.map(asset => asset.id);
+                let result = response.data.map(user => user.id);
                 if (result.includes(responseUser.id)) {
                     const index = response.data.indexOf(responseUser);
                     response.data.splice(index, 1);
