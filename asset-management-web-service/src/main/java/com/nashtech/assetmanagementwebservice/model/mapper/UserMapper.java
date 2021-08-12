@@ -55,7 +55,6 @@ public class UserMapper {
 
     }
 
-    
     public User fromDTO(UserDTO payload) {
     	User user = new User();
         user.setUsername(payload.getUsername());
