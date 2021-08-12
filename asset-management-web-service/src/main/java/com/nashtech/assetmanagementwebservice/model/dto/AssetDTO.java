@@ -93,7 +93,20 @@ public class AssetDTO {
 
 	public void setCategoryDTO(CategoryDTO categoryDTO) {
 		this.categoryDTO = categoryDTO;
-	}	
-	
-	
+	}
+
+	@Override
+	public String toString() {
+		return "AssetDTO{" +
+				"id=" + id +
+				", assetCode='" + assetCode + '\'' +
+				", assetName='" + assetName + '\'' +
+				", specification='" + specification + '\'' +
+				", installedDate=" + installedDate +
+				", state=" + state +
+				", location='" + location + '\'' +
+				", user=" + user +
+				", categoryDTO=" + categoryDTO +
+				'}';
+	}
 }

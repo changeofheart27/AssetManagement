@@ -1,5 +1,8 @@
 package com.nashtech.assetmanagementwebservice.entity;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import java.time.LocalDate;
 
 import javax.persistence.Column;
@@ -108,6 +111,18 @@ public class Assignment {
 
 	public void setNote(String note) {
 		this.note = note;
-	}	
-	
+	}
+
+	@Override
+	public String toString() {
+		return "Assignment{" +
+				"id=" + id +
+				", user=" + user +
+				", asset=" + asset +
+				", assignedBy='" + assignedBy + '\'' +
+				", assignedDate=" + assignedDate +
+				", state=" + state +
+				", note='" + note + '\'' +
+				'}';
+	}
 }

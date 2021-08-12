@@ -72,6 +72,17 @@ public class AssignmentDTO {
 	public void setNote(String note) {
 		this.note = note;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "AssignmentDTO{" +
+				"id=" + id +
+				", userDTO=" + userDTO +
+				", assetDTO=" + assetDTO +
+				", assignedBy='" + assignedBy + '\'' +
+				", assignedDate=" + assignedDate +
+				", state=" + state +
+				", note='" + note + '\'' +
+				'}';
+	}
 }

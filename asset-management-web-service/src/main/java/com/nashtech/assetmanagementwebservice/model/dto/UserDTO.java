@@ -55,4 +55,21 @@ public class UserDTO {
 
     private String type;
 
+    @Override
+    public String toString() {
+        return "UserDTO{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dob=" + dob +
+                ", gender='" + gender + '\'' +
+                ", staffCode='" + staffCode + '\'' +
+                ", joinedDate=" + joinedDate +
+                ", status='" + status + '\'' +
+                ", password='" + password + '\'' +
+                ", location='" + location + '\'' +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }

@@ -8,8 +8,12 @@ import com.nashtech.assetmanagementwebservice.model.dto.UserDTO;
 
 public interface AssignmentService {
 	List<AssignmentDTO> getAssignmentList();
-	
+
 	AssignmentDTO findAssignmentById(int id);
-	
+
 	AssignmentDTO createAssignment(AssignmentDTO payload);
+
+	void delete(Integer id);
+
+	AssignmentDTO edit(AssignmentDTO payload);
 }
