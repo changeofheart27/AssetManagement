@@ -78,8 +78,8 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public AssignmentDTO edit(AssignmentDTO payload) {
-        assignmentRepository.saveAssign(payload.getAssetDTO().getId(),payload.getUserDTO().getId(),payload.getId());
+    public AssignmentDTO edit(Integer id, AssignmentDTO payload) {
+        assignmentRepository.saveAssign(payload.getAssetDTO().getId(),payload.getUserDTO().getId(), id);
         return payload;
     }
 

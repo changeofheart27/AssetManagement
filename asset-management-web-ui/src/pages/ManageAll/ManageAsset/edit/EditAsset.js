@@ -76,9 +76,6 @@ const EditAsset = ({setResponseDataAsset}) => {
             .max(50)
             .required('Required')
             .typeError('Name can not empty'),
-        category: Yup.string()
-            .required('Required')
-            .typeError('Category can not empty'),
         installedDate: Yup.string()
             .required('Required')
             .typeError('Install date can not empty'),
@@ -114,6 +111,7 @@ const EditAsset = ({setResponseDataAsset}) => {
                                     className={"w-75"}
                                     value={values.assetName}
                                     onChange={handleChange}
+                                    onBlur={handleBlur}
                                     isValid={touched.assetName && !errors.assetName}
                                     isInvalid={touched.assetName && errors.assetName}
                                 />
@@ -152,6 +150,7 @@ const EditAsset = ({setResponseDataAsset}) => {
                                     className={"w-75"}
                                     value={values.installedDate}
                                     onChange={handleChange}
+                                    onBlur={handleBlur}
                                     isValid={touched.installedDate && !errors.installedDate}
                                     isInvalid={touched.installedDate && errors.installedDate}
                                 />

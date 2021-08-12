@@ -15,5 +15,5 @@ public interface AssignmentService {
 
 	void delete(Integer id);
 
-	AssignmentDTO edit(AssignmentDTO payload);
+	AssignmentDTO edit(Integer id, AssignmentDTO payload);
 }

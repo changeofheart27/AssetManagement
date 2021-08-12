@@ -1,6 +1,7 @@
 package com.nashtech.assetmanagementwebservice.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,24 +92,13 @@ public class AssetController {
         }
     }
 
-    @ApiOperation(value = "Filter All Assets With category", response = AssetDTO.class,
-            responseContainer = "List")
-    @GetMapping(value = "/assets/category/{category}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<AssetDTO>> filterAssetByCategory(@PathVariable String category) {
-        logger.info("Execute filterAssetByCategory() inside AssetController");
-        List<AssetDTO> assets = assetService.filterAssetByCategory(category);
-        logger.info("Executed successful!");
+    @ApiOperation(value = "Filter Asset", response = AssetDTO.class, responseContainer = "List")
+    @GetMapping(value = "/assets/filter", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<AssetDTO>> filterAsset(@RequestParam(value = "category",required = false) String category,
+                                                      @RequestParam(value= "type",required = false) Integer state) {
+        List<AssetDTO> assets = assetService.filterAssets(category,state);
         return ResponseEntity.ok(assets);
-    }
 
-    @ApiOperation(value = "Filter All Assets With state", response = AssetDTO.class,
-            responseContainer = "List")
-    @GetMapping(value = "/assets/state/{state}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<AssetDTO>> filterAssetByState(@PathVariable int state) {
-        logger.info("Execute filterAssetByState() inside AssetController");
-        List<AssetDTO> assets = assetService.filterAssetByState(state);
-        logger.info("Executed successful!");
-        return ResponseEntity.ok(assets);
     }
 
 }

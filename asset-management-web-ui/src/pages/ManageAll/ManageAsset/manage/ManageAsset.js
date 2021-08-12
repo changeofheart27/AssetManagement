@@ -3,7 +3,7 @@ import './Manage.css'
 import 'reactjs-popup/dist/index.css';
 
 import {Button, Container, Form, FormControl, InputGroup, Row, Table} from 'react-bootstrap';
-import React, { useMemo, useEffect, useState} from 'react';
+import React, {useMemo, useEffect, useState} from 'react';
 
 import Delete from "../delete/Delete";
 import DeleteFail from "../delete/DeleteFail";
@@ -33,6 +33,7 @@ const ManageAsset = ({responseDataAsset}) => {
         }
     }]);
     const history = useHistory();
+
     const [categories, setCategories] = useState([]);
     useEffect(() => {
         axios.get(rootAPI + "/categories").then((response) => {
@@ -45,7 +46,7 @@ const ManageAsset = ({responseDataAsset}) => {
             .then(function (response) {
                 let result = response.data.map(asset => asset.id);
                 if (result.includes(responseDataAsset.id)) {
-                    const index = response.data.findIndex(() => responseDataAsset.id);
+                    const index = result.indexOf(responseDataAsset.id);
                     console.log(index, " index")
                     response.data.splice(index, 1);
                     response.data.unshift(responseDataAsset);
@@ -71,30 +72,25 @@ const ManageAsset = ({responseDataAsset}) => {
     const handleChange = evt => {
         setSearch(evt.target.value);
     }
-    const handleChangeState = evt => {
-        const target = evt.target.value;
-        axios.get(rootAPI + `/assets/state/${target}`)
-            .then(function (response) {
-                setList(response.data);
-                console.log(response.data)
-            });
+    const request = {
+        params:{
+            type:1,
+            category:"Laptop",
+        }
     }
-    const handleChangeCategory = evt => {
-        const target = evt.target.value;
-        axios.get(rootAPI + `/assets/category/${target}`)
+    const handleFilter = evt => {
+        const request = {
+            params:{
+                [evt.target.name]:evt.target.value,
+            }
+        }
+      axios.get(rootAPI + `/assets/filter`, request)
             .then(function (response) {
                 setList(response.data);
                 console.log(response.data)
             })
     }
 
-    const filterSearchByCategory = () => {
-        axios.get(rootAPI + `/assets/category/${search}`)
-            .then(function (response) {
-                setList(response.data);
-                console.log(response.data)
-            })
-    }
     const filterSearchBySearchTerm = () => {
         axios.get(rootAPI + `/assets/search?keyword=${search}`)
             .then(function (response) {
@@ -109,38 +105,38 @@ const ManageAsset = ({responseDataAsset}) => {
                 console.log(response.data)
             })
     }
-    
+
     const sortingData = useMemo(() => {
         let listData = list;
         if (sortConfig !== null) {
-        listData.sort((a, b) => {
-            if(a[sortConfig.key] < (b[sortConfig.key])) { 
-                return sortConfig.direction === "asc" ? -1 : 1;
-            }
-            if(a[sortConfig.key] > (b[sortConfig.key])) {
-                return sortConfig.direction === "asc" ? 1 : -1;
-            }
-            return 0;
+            listData.sort((a, b) => {
+                if (a[sortConfig.key] < (b[sortConfig.key])) {
+                    return sortConfig.direction === "asc" ? -1 : 1;
+                }
+                if (a[sortConfig.key] > (b[sortConfig.key])) {
+                    return sortConfig.direction === "asc" ? 1 : -1;
+                }
+                return 0;
             })
         }
-    },[list, sortConfig]);
+    }, [list, sortConfig]);
     const requestSort = key => {
         let direction = "asc";
-        if(sortConfig && sortConfig.key === key && sortConfig.direction === "asc") {
+        if (sortConfig && sortConfig.key === key && sortConfig.direction === "asc") {
             direction = "desc";
         }
         setSortConfig({key, direction});
     }
     const getClassNamesFor = (name) => {
         if (!sortConfig) {
-          return;
+            return;
         }
         return sortConfig.key === name ? sortConfig.direction : undefined;
     };
 
     return (
         <Container fluid className={"d-block ps-5"}>
-            <h1 className={"text-danger"}>Asset List</h1>
+            <h1 className={"text-danger mb-3"}>Asset List</h1>
             <InputGroup className={"justify-content-between"}>
                 <div className={"col-5 d-flex"}>
                     <Form.Control
@@ -148,7 +144,7 @@ const ManageAsset = ({responseDataAsset}) => {
                         custom
                         className={"w-25"}
                         name={"type"}
-                        onChange={handleChangeState}
+                        onChange={handleFilter}
                     >
                         <option value={"999"}>State</option>
                         <option value="0">Available</option>
@@ -166,14 +162,14 @@ const ManageAsset = ({responseDataAsset}) => {
                         className={"w-25 ms-5"}
                         placeholder={"Category"}
                         name={"category"}
-                        onChange={handleChangeCategory}
+                        onChange={handleFilter}
                     >
                         <option>Category</option>
                         {categories.map((category) => (
                             <option value={category.name}>{category.name}</option>
                         ))}
                     </Form.Control>
-                    <Button variant={"outline-secondary"} onClick={filterSearchByCategory}><i
+                    <Button variant={"outline-secondary"}><i
                         className="bi bi-funnel-fill"/></Button>
                 </div>
                 <div className={"col-5 d-flex"}>
@@ -189,29 +185,28 @@ const ManageAsset = ({responseDataAsset}) => {
                             className={"me-5"}
                     ><i className="bi bi-search"/>
                     </Button>
-                    <Button variant={"danger"} className={"w-25"} onClick={() => history.push('/createasset')}>Create
+                    <Button variant={"danger"} className={"w-auto"} onClick={() => history.push('/createasset')}>Create
                         new Asset</Button>
                 </div>
-
             </InputGroup>
-            <Row>
+            <Row className={"mt-5"}>
                 <Table>
-                <thead>
+                    <thead>
                     <tr>
-                        <th className={"border-bottom"} 
-                            className={getClassNamesFor('assetCode')} 
-                            onClick={() => requestSort('assetCode') }>Asset Code<i className="bi bi-caret-down-fill"/>
+                        <th className={"border-bottom"}
+                            className={getClassNamesFor('assetCode')}
+                            onClick={() => requestSort('assetCode')}>Asset Code<i className="bi bi-caret-down-fill"/>
                         </th>
-                        <th className={"border-bottom"} 
-                            className={getClassNamesFor('assetName')} 
+                        <th className={"border-bottom"}
+                            className={getClassNamesFor('assetName')}
                             onClick={() => requestSort('assetName')}>Asset Name<i className="bi bi-caret-down-fill"/>
                         </th>
-                        <th className={"border-bottom"} 
-                            className={getClassNamesFor('categoryDTO.name')} 
+                        <th className={"border-bottom"}
+                            className={getClassNamesFor('categoryDTO.name')}
                             onClick={() => requestSort('category')}>Category<i className="bi bi-caret-down-fill"/>
                         </th>
-                        <th className={"border-bottom"} 
-                            className={getClassNamesFor('state')} 
+                        <th className={"border-bottom"}
+                            className={getClassNamesFor('state')}
                             onClick={() => requestSort('state')}>State<i className="bi bi-caret-down-fill"/>
                         </th>
                     </tr>
