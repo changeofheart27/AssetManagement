@@ -1,6 +1,7 @@
 package com.nashtech.assetmanagementwebservice.service.impl;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -126,30 +127,37 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    public List<AssetDTO> filterAssetByCategory(String category) {
-        logger.info("Attempting to filter Asset with Category " + category + "...");
+    public List<AssetDTO> filterAssets(String category, Integer state) {
         List<Asset> assets;
-        if (category.equals("Category")) {
-            assets = assetRepository.findAllByOrderByAssetName();
-        } else {
-            assets = assetRepository.findAssetByCategory(category);
-            logger.info("Successfully got " + assets.size() + " Asset!");
+        if (state == null) {
+            if (category.equals("Category")) {
+                assets = assetRepository.findAllByOrderByAssetName();
+            } else {
+                assets = assetRepository.findAssetByCategory(category);
+                logger.info("Successfully got " + assets.size() + " Asset!");
+            }
+            return assets.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
         }
-        return assets.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
-    }
+        else if(category == null) {
+            if (state == 999) {
+                assets = assetRepository.findAllByOrderByAssetName();
+                logger.info("Successfully got " + assets.size() + " Asset!");
+            } else {
+                assets = assetRepository.findAssetByState(state);
+                logger.info("Successfully got " + assets.size() + " Asset!");
+            }
+            return assets.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
+        } else {
+            if (category.equals("Category")) {
+                assets = assetRepository.findAllByOrderByAssetName();
+            } else {
+                assets = assetRepository.findAssetByCategory(category);
+                logger.info("Successfully got " + assets.size() + " Asset!");
+            }
+            List<Asset> result = assets.stream().filter(asset -> asset.getState() == state).collect(Collectors.toList());
+            return result.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
+        }
 
-    @Override
-    public List<AssetDTO> filterAssetByState(int state) {
-        logger.info("Attempting to filter Asset with State " + state + "...");
-        List<Asset> assets;
-        if (state == 999) {
-            assets = assetRepository.findAllByOrderByAssetName();
-            logger.info("Successfully got " + assets.size() + " Asset!");
-        } else {
-            assets = assetRepository.findAssetByState(state);
-            logger.info("Successfully got " + assets.size() + " Asset!");
-        }
-        return assets.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
     }
 
 

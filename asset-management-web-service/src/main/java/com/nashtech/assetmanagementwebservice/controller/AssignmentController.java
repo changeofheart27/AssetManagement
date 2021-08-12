@@ -66,9 +66,9 @@ public class AssignmentController {
     }
 
     @ApiOperation(value = "Edit assignment", response = AssignmentDTO.class)
-    @PutMapping(value = "/assignments/edit", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AssignmentDTO> edit(@RequestBody AssignmentDTO payload) {
-        AssignmentDTO assignmentDTO = assignmentService.edit(payload);
+    @PutMapping(value = "/assignments/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AssignmentDTO> edit(@PathVariable Integer id, @RequestBody AssignmentDTO payload) {
+        AssignmentDTO assignmentDTO = assignmentService.edit(id,payload);
         return ResponseEntity.ok(assignmentDTO);
     }
 }

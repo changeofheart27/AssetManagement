@@ -1,6 +1,7 @@
 package com.nashtech.assetmanagementwebservice.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.nashtech.assetmanagementwebservice.model.dto.AssetDTO;
 
@@ -16,8 +17,6 @@ public interface AssetService {
 	void deleteAssetById(Integer id);
 
 	List<AssetDTO> searchAssetByAssetNameOrAssetCode(String keyword);
-	
-	List<AssetDTO> filterAssetByCategory(String category);
-	
-	List<AssetDTO> filterAssetByState(int state);
+
+	List<AssetDTO> filterAssets(String category, Integer state);
 }

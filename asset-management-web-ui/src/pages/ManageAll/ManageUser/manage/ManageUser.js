@@ -42,7 +42,7 @@ const ManageUser = ({responseUser}) => {
             .then(response => {
                 let result = response.data.map(user => user.id);
                 if (result.includes(responseUser.id)) {
-                    const index = response.data.indexOf(responseUser);
+                    const index = result.indexOf(responseUser.id);
                     response.data.splice(index, 1);
                     response.data.unshift(responseUser);
                     setList(response.data);
@@ -137,7 +137,7 @@ const ManageUser = ({responseUser}) => {
                     </FormControl>
                     <Button variant={"outline-secondary"} onClick={filterSearchBySearchTerm}>Search</Button>
 
-                    <Button variant={"danger"} className={"w-25 ms-5"} onClick={() => history.push('/createuser')}>Create
+                    <Button variant={"danger"} className={"w-auto ms-5"} onClick={() => history.push('/createuser')}>Create
                         new User</Button>
                 </div>
             </InputGroup>
