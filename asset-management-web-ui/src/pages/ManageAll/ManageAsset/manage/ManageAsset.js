@@ -1,10 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './Manage.css'
 import 'reactjs-popup/dist/index.css';
-
 import {Button, Container, Form, FormControl, InputGroup, Row, Table} from 'react-bootstrap';
 import React, {useMemo, useEffect, useState} from 'react';
-
 import Delete from "../delete/Delete";
 import DeleteFail from "../delete/DeleteFail";
 import Pagination from '../../../../components/Pagination/Pagination'
@@ -97,7 +95,7 @@ const ManageAsset = ({responseDataAsset}) => {
                     console.log(response.data)
                 })
     },[type,category])
-    
+
     const filterSearchBySearchTerm = () => {
         axios.get(rootAPI + `/assets/search?keyword=${search}`)
             .then(function (response) {
