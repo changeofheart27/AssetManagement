@@ -1,5 +1,6 @@
 package com.nashtech.assetmanagementwebservice.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nashtech.assetmanagementwebservice.entity.Asset;
 import com.nashtech.assetmanagementwebservice.entity.Authority;
 import lombok.AllArgsConstructor;
@@ -46,7 +47,7 @@ public class UserDTO {
 
     private String status;
 
-
+    @JsonIgnore
     private String password;
 
 

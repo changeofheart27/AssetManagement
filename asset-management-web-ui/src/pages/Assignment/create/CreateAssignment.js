@@ -38,7 +38,7 @@ const CreateAssignment = ({setResponseAssigment}) => {
         axios.post(rootAPI+`/assets`, create)
             .then((response) => {
                 setSubmitting(false);
-                setResponseDataAsset({
+                setResponseAssigment({
                     id: response.data.id,
                     assetCode: response.data.assetCode,
                     assetName: response.data.assetName,
