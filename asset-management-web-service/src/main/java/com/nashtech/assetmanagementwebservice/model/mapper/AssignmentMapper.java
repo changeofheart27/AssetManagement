@@ -2,7 +2,9 @@ package com.nashtech.assetmanagementwebservice.model.mapper;
 
 import com.nashtech.assetmanagementwebservice.entity.Assignment;
 import com.nashtech.assetmanagementwebservice.model.dto.AssignmentDTO;
+import org.springframework.stereotype.Component;
 
+@Component
 public class AssignmentMapper {
     private final AssetMapper assetMapper = new AssetMapper();
 

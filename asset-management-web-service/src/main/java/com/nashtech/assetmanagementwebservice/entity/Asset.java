@@ -42,7 +42,7 @@ public class Asset {
 	@JoinColumn(name = "category_id")
 	private Category category;
 	
-	@OneToOne(mappedBy = "asset", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "asset")
 	private Assignment assignment;
 
 

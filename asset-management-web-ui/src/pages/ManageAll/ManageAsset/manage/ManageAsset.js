@@ -138,6 +138,12 @@ const ManageAsset = ({responseDataAsset}) => {
         }
         return sortConfig.key === name ? sortConfig.direction : undefined;
     };
+    const initialState = {
+
+    }
+    const clearTypeState = () => {
+        setType(null)
+    }
 
     return (
         <Container fluid className={"d-block ps-5"}>
@@ -151,7 +157,7 @@ const ManageAsset = ({responseDataAsset}) => {
                         name={"type"}
                         onChange={handleFilterType}
                     >
-                        <option value={"999"}>State</option>
+                        <option onChange={clearTypeState} >State</option>
                         <option value="0">Available</option>
                         <option value="1">Not Available</option>
                         <option value="2">Waiting for recycling</option>

@@ -1,5 +1,6 @@
 package com.nashtech.assetmanagementwebservice.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -61,8 +62,11 @@ public class User {
 //    @OneToOne(mappedBy = "user")
 //    private Authority authority;
     
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
     private List<Assignment> assignments;
+
+//    @OneToOne(mappedBy = "user")
+//    private Request request;
 
 
 }
