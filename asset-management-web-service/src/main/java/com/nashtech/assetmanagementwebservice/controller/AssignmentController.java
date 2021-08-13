@@ -28,7 +28,7 @@ public class AssignmentController {
     @ApiOperation(value = "Get All Assignments", response = AssignmentDTO.class,
             responseContainer = "List")
     @GetMapping(value = "/assignments", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<AssignmentDTO>> getAllAssets() {
+    public ResponseEntity<List<AssignmentDTO>> getAllAssignments() {
         logger.info("Execute getAllAssignments() inside AssignmentController");
         List<AssignmentDTO> assignments = assignmentService.getAssignmentList();
         logger.info("Executed successful!");

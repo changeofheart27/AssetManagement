@@ -140,7 +140,7 @@ const ManageAsset = ({responseDataAsset}) => {
 
     return (
         <Container fluid className={"d-block ps-5"}>
-            <h1 className={"text-danger"}>Asset List</h1>
+            <h1 className={"text-danger mb-3"}>Asset List</h1>
             <InputGroup className={"justify-content-between"}>
                 <div className={"col-5 d-flex"}>
                     <Form.Control
@@ -194,7 +194,7 @@ const ManageAsset = ({responseDataAsset}) => {
                 </div>
 
             </InputGroup>
-            <Row>
+            <Row className={"mt-5"}>
                 <Table>
                 <thead>
                     <tr>

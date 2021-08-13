@@ -10,6 +10,7 @@
     "axios": "^0.21.1",
     "bootstrap": "5.0.2",
     "date-fns": "^2.23.0",
+    "dateformat": "^4.5.1",
     "env-cmd": "^10.1.0",
     "formik": "^2.2.9",
     "react": "^17.0.2",

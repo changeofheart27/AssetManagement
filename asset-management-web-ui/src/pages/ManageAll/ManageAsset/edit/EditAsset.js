@@ -76,9 +76,6 @@ const EditAsset = ({setResponseDataAsset}) => {
             .max(50)
             .required('Required')
             .typeError('Name can not empty'),
-        category: Yup.string()
-            .required('Required')
-            .typeError('Category can not empty'),
         installedDate: Yup.string()
             .required('Required')
             .typeError('Install date can not empty'),

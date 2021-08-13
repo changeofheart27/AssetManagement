@@ -68,11 +68,11 @@ public class UserServiceImpl implements UserService {
     String status = user.get().getStatus();
     User changeUserStatus = UserMapper.toUser(request, id);
     try {
-      if (status.equals("enable")) {
+      if (status.equals("enabled")) {
 
-        changeUserStatus.setStatus("disable");
+        changeUserStatus.setStatus("disabled");
       } else {
-        changeUserStatus.setStatus("enable");
+        changeUserStatus.setStatus("enabled");
       }
       userRepository.save(changeUserStatus);
     } catch (Exception ex) {
@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
 
     user = UserMapper.toUser(request);
     user.setStaffCode(staffCode);
-    user.setStatus("enable");
+    user.setStatus("enabled");
     user.setPassword("123");
     user.setLocation("HN");
     userRepository.save(user);
