@@ -3,10 +3,12 @@ package com.nashtech.assetmanagementwebservice.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
+import com.nashtech.assetmanagementwebservice.entity.Authority;
 import com.nashtech.assetmanagementwebservice.exception.DuplicateRecordException;
+import com.nashtech.assetmanagementwebservice.repository.AuthorityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.nashtech.assetmanagementwebservice.entity.User;
 import com.nashtech.assetmanagementwebservice.exception.InternalServerException;
@@ -20,13 +22,15 @@ import com.nashtech.assetmanagementwebservice.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {
-  private final UserRepository userRepository;
 
+  private final UserRepository userRepository;
   @Autowired
-  public UserServiceImpl(UserRepository userRepository) {
+  public UserServiceImpl( UserRepository userRepository) {
+
     this.userRepository = userRepository;
   }
-
+  @Autowired
+  private PasswordEncoder passwordEncoder;
   @Override
   public List<UserDTO> getAllUser() {
     List<User> users = userRepository.findAll();
@@ -39,7 +43,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public User findUserByUsername(String username) {
-    return null;
+    return userRepository.findByUsername(username);
   }
 
   @Override
@@ -92,6 +96,8 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserDTO createUser(CreateUserRequest request) {
     User user = userRepository.findByUsername(request.getUsername());
+
+
     if (user != null) {
       throw new DuplicateRecordException("User name already exist !");
     }
@@ -99,20 +105,31 @@ public class UserServiceImpl implements UserService {
     String staffCode = "SD" + String.format("%04d", count);
 
     user = UserMapper.toUser(request);
+
     user.setStaffCode(staffCode);
     user.setStatus("enable");
-    user.setPassword("123");
+    user.setPassword(passwordEncoder.encode("123"));
     user.setLocation("HN");
-    userRepository.save(user);
+
+    Authority authority = new Authority();
+    authority.setAuthority(request.getAuthority());
+
+    authority.setUser(user);
+
+
+    user.setAuthority(authority);
+
+    userRepository.saveAndFlush(user);
+
     return UserMapper.toUserDTO(user);
   }
 
-  @Override
-  public List<UserDTO> searchByType(String keyword) {
-    System.out.println("find user by type");
-    List<User> users = userRepository.findUserByType(keyword);
-    return users.stream().map(UserMapper::toUserDTO).collect(Collectors.toList());
-  }
+//  @Override
+//  public List<UserDTO> searchByType(String keyword) {
+//    System.out.println("find user by type");
+//    List<User> users = userRepository.findUserByType(keyword);
+//    return users.stream().map(UserMapper::toUserDTO).collect(Collectors.toList());
+//  }
 
   @Override
   public List<UserDTO> searchByNameOrStaffCode(String keyword) {

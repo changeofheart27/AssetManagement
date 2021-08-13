@@ -1,5 +1,7 @@
 package com.nashtech.assetmanagementwebservice.config;
 
+import com.nashtech.assetmanagementwebservice.config.JwtAuthenticationEntryPoint;
+import com.nashtech.assetmanagementwebservice.config.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -48,17 +50,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 
-				httpSecurity.csrf().disable().authorizeRequests().antMatchers("/authenticate").permitAll()
-						.antMatchers("/api/v1/admin/**").hasAnyRole("admin")
+		httpSecurity.csrf().disable().authorizeRequests()
+				.antMatchers("/api/v1",
+						"/configuration/ui",
+						"/swagger-resources/**",
+						"/configuration/security",
+						"/swagger-ui.html",
+						"/webjars/**").anonymous()
+				.antMatchers("/authenticate").permitAll()
 
-						.antMatchers("/api/v1/staff/**").hasAnyRole("staff")
-						.anyRequest().authenticated().and().exceptionHandling()
-
-						.authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
-						.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().formLogin().loginPage("/login").defaultSuccessUrl("/home");
-
+				.antMatchers("/**/admin/**").hasAnyRole("ADMIN")
+				.antMatchers("/**/staff/**").hasAnyRole("STAFF")
+				.anyRequest().authenticated().and().exceptionHandling()
+				.authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		httpSecurity.cors();
 		// Add a filter to validate the tokens with every request
 		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 	}
+
 }

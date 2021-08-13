@@ -22,7 +22,7 @@ public interface UserService {
 
   public UserDTO createUser(CreateUserRequest request);
 
-  public List<UserDTO> searchByType(String keyword);
+//  public List<UserDTO> searchByType(String keyword);
 
   public List<UserDTO> searchByNameOrStaffCode(String keyword);
 

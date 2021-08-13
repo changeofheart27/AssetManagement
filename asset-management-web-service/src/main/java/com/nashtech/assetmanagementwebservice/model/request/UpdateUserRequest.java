@@ -83,13 +83,7 @@ public class UpdateUserRequest {
 //    private String type;
 
 
-    @ApiModelProperty(
-            example="user",
-            notes="Gender cannot be empty , 1-Admin , 2-User",
-            required=true
-    )
-    @JsonProperty("authority")
-    private Authority authority;
+
 
 
 

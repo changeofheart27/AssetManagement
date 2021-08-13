@@ -21,7 +21,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "username", unique = true, nullable = false)
     private String username;
 
     @Column(name = "password")
@@ -61,7 +61,12 @@ public class User {
 //    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 //    private List<Asset> assets;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user" ,cascade = CascadeType.ALL)
     private Authority authority;
 
+    public User(String username2, String password, Authority authorities) {
+        this.username=username2;
+        this.password=password;
+        this.authority=authorities;
+    }
 }

@@ -25,7 +25,7 @@ public class JwtTokenUtil implements Serializable {
 
 	/**
 	 * Retrieve username from jwt token
-	 * 
+	 *
 	 * @param token
 	 * @return
 	 */
@@ -35,19 +35,19 @@ public class JwtTokenUtil implements Serializable {
 
 	/**
 	 * Retrieve expiration date from jwt token
-	 * 
+	 *
 	 * @param token
 	 * @return
 	 */
 	public Date getExpirationDateFromToken(String token) {
 		return getClaimFromToken(token, Claims::getExpiration);
 	}
-	
+
 
 
 	/**
 	 * Claims from token
-	 * 
+	 *
 	 * @param token
 	 * @param claimsResolver
 	 * @return
@@ -59,7 +59,7 @@ public class JwtTokenUtil implements Serializable {
 
 	/**
 	 * Validate the token
-	 * 
+	 *
 	 * @param token
 	 * @param userDetails
 	 * @return
@@ -77,7 +77,7 @@ public class JwtTokenUtil implements Serializable {
 
 	/**
 	 * for retrieving any information from token we will need the secret key
-	 * 
+	 *
 	 * @param token
 	 * @return
 	 */
@@ -87,7 +87,7 @@ public class JwtTokenUtil implements Serializable {
 
 	/**
 	 * Check if the token has expired
-	 * 
+	 *
 	 * @param token
 	 * @return
 	 */
@@ -97,11 +97,11 @@ public class JwtTokenUtil implements Serializable {
 	}
 
 	/**
-	 * Generate the token 
-	 * 1. Define claims of the token, like Issuer, Expiration, Subject, and the ID 
-	 * 2. Sign the JWT using the HS512 algorithm and secret key. 
+	 * Generate the token
+	 * 1. Define claims of the token, like Issuer, Expiration, Subject, and the ID
+	 * 2. Sign the JWT using the HS512 algorithm and secret key.
 	 * 3. According to JWS Compact Serialization(https://tools.ietf.org/html/draft-ietf-jose-json-web-signature-41#section-3.1)
-	 * 
+	 *
 	 * @param claims
 	 * @param subject
 	 * @return

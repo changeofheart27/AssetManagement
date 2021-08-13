@@ -1,5 +1,6 @@
 package com.nashtech.assetmanagementwebservice.model.mapper;
 
+import com.nashtech.assetmanagementwebservice.entity.Authority;
 import com.nashtech.assetmanagementwebservice.entity.User;
 import com.nashtech.assetmanagementwebservice.model.dto.UserDTO;
 import com.nashtech.assetmanagementwebservice.model.request.CreateUserRequest;
@@ -17,13 +18,14 @@ public class UserMapper {
         tmp.setDob(user.getDob());
         tmp.setLocation(user.getLocation());
         tmp.setStaffCode(user.getStaffCode());
-        tmp.setAuthority(user.getAuthority());
+
         tmp.setStatus(user.getStatus());
         tmp.setPassword(user.getPassword());
         return tmp;
     }
     public static User toUser(CreateUserRequest request) {
         User user = new User();
+
         user.setUsername(request.getUsername());
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
@@ -34,7 +36,7 @@ public class UserMapper {
         user.setStaffCode(user.getStaffCode());
         user.setStatus(request.getStatus());
 //        user.setType(request.getType());
-        user.setAuthority(request.getAuthority());
+
         return user;
     }
 
@@ -51,7 +53,7 @@ public class UserMapper {
         user.setStaffCode(request.getStaffCode());
         user.setStatus(request.getStatus());
 //        user.setType(request.getType());
-        user.setAuthority(request.getAuthority());
+
         user.setPassword(request.getPassword());
         return user;
 
