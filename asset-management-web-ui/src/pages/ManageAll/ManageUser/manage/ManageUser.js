@@ -22,9 +22,7 @@ const ManageUser = ({responseUser}) => {
     const [sortConfig, setSortConfig] = useState(null);
     const indexOfLastUser = currentPage * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
-
     const paginate = pageNumber => setCurrentPage(pageNumber);
-
 
     const history = useHistory();
     const [search, setSearch] = useState("");

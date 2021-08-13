@@ -13,7 +13,8 @@ import CreateAsset from "../../pages/ManageAll/ManageAsset/create/CreateAsset"
 import EditAsset from "../../pages/ManageAll/ManageAsset/edit/EditAsset";
 import 'bootstrap/dist/css/bootstrap.min.css'
 import CreateCategory from "../../pages/ManageAll/ManageAsset/create/CreateCategory";
-import Assignment from "../../pages/Assignment/Assignment";
+import ManageAssignment from "../../pages/Assignment/manage/ManageAssignment";
+import CreateAssignment from "../../pages/Assignment/create/CreateAssignment"
 
 const Navbar = ({setCurrentPage}) => {
   const [responseDataAsset, setResponseDataAsset] = useState({
@@ -95,7 +96,7 @@ const Navbar = ({setCurrentPage}) => {
               <EditUser setResponseUser = {setResponseUser}/>
             </Route>
             <Route path={"/asset"}>
-              <ManageAsset responseDataAsset={responseDataAsset} />
+              <ManageAsset responseDataAsset={responseDataAsset}/>
             </Route>
             <Route path={"/createasset"}>
               <CreateAsset setResponseDataAsset={setResponseDataAsset} />
@@ -107,7 +108,10 @@ const Navbar = ({setCurrentPage}) => {
               <CreateCategory/>
             </Route>
             <Route path={"/assignment"}>
-              <Assignment/>
+              <ManageAssignment responseAssigment={responseAssigment}/>
+            </Route>
+            <Route path={"/createassignment"}>
+              <CreateAssignment setResponseAssigment={setResponseAssigment}/>
             </Route>
           </Switch>
         </div>

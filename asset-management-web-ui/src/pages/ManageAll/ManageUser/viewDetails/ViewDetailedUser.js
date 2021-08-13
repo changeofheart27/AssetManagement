@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 
 import axios from "axios";
+import dateFormat from 'dateformat';
 
 const ViewDetailedUser = props => {
   const rootAPI = process.env.REACT_APP_SERVER_URL;
@@ -19,7 +20,6 @@ const ViewDetailedUser = props => {
     joined_date: "",
     location: "",
     status:""
-   
   });
   
   useEffect(() => {
@@ -29,28 +29,29 @@ const ViewDetailedUser = props => {
     const res = await axios.get(rootAPI+`/users/${id}`);
     setUser(res.data);
   };
+
+  const checkStatus = (status) => {
+    if(status == 0){
+      return <span>Disable</span>
+    }
+    if(status == 1){
+      return <span>Enabled</span>
+    }
+  }
   return (
    <div >
-      
     <div><h3 className="title-detail-user">
          Detailed information of user
-        
-         </h3></div> 
-      
+         </h3></div>  
      <div>
      <table> 
        <tbody>
-       
-       <tr>
-         <td className="fields-name">ID</td>
-         <td>: {user.id}</td>
-       </tr>
        <tr>
          <td className="fields-name">Staff Code </td>
          <td>: {user.staffCode}</td>
        </tr>
        <tr>
-         <td className="fields-name">Username </td>
+         <td className="fields-name">Username</td>
          <td>: {user.username}</td>
        </tr>
        <tr>
@@ -67,11 +68,11 @@ const ViewDetailedUser = props => {
        </tr>
        <tr>
          <td className="fields-name">Date of Birth </td>
-         <td>: {user.dob}</td>
+         <td>: {dateFormat(user.dob, "dd/mm/yyyy")}</td>
        </tr>
        <tr>
          <td className="fields-name">Joined Date </td>
-         <td>: {user.joinedDate}</td>
+         <td>: {dateFormat(user.joinedDate, "dd/mm/yyyy")}</td>
        </tr>
        <tr>
          <td className="fields-name">Location </td>
@@ -79,7 +80,7 @@ const ViewDetailedUser = props => {
        </tr>
        <tr>
          <td className="fields-name">Status </td>
-         <td>: {user.status}</td>
+         <td>: {checkStatus(user.status)}</td>
        </tr>
        </tbody>
      </table>
