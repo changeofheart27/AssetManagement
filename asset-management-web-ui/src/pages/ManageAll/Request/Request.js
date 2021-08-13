@@ -5,7 +5,25 @@ import axios from "axios";
 
 const Request = () => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
-    const [list, setList] = useState([{}]);
+    const [list, setList] = useState([{
+        id:null,
+        returned_date:null,
+        state: null,
+        assignmentDTO:{
+            assignedDate: null,
+            assetDTO:{
+                assetCode: null,
+                assetName: null,
+
+            },
+            userDTO:{
+                username: null,
+            }
+        },
+        userDTO:{
+            username: null
+        }
+    }]);
     useEffect(() => {
         axios.get(rootAPI + `/request`)
             .then(response => {
@@ -69,18 +87,20 @@ const Request = () => {
                     </tr>
                     </thead>
                     <tbody>
+                    {list.map(assign =>
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>binhnv</td>
-                            <td>12/10/2018</td>
-                            <td>Complete</td>
+                            <td>{assign.id}</td>
+                            <td>{assign.assignmentDTO.assetDTO.assetCode}</td>
+                            <td>{assign.assignmentDTO.assetDTO.assetName}</td>
+                            <td>{assign.assignmentDTO.userDTO.username}</td>
+                            <td>{assign.assignmentDTO.assignedDate}</td>
+                            <td>{assign.userDTO.username}</td>
+                            <td>{assign.returned_date}</td>
+                            <td>{assign.state === 5 ? <p>Complete</p> : null}</td>
                             <td><i className="bi bi-check-lg text-danger"/></td>
                             <td><i className="bi bi-x-lg text-dark fw-bold"/></td>
                         </tr>
+                    )}
                     </tbody>
                 </Table>
             </Row>
