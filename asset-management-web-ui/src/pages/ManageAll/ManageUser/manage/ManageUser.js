@@ -171,7 +171,7 @@ const ManageUser = ({responseUser}) => {
                             width: "25%", border: "1px solid black", borderRadius: 10,
                             overflow: 'hidden', padding: "20px"
                         }} trigger={
-                            user.status === "enable" ?
+                            user.status === "enabled" ?
                             <tr key={user.id}>
                                 <td>{user.staffCode}</td>
                                 <td>{user.firstName} {user.lastName}</td>

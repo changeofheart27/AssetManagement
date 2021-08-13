@@ -6,7 +6,7 @@ import {Formik} from 'formik';
 import axios from "axios";
 import * as Yup from "yup";
 import {differenceInYears} from "date-fns";
-
+import differenceInDays from 'date-fns/differenceInDays/index.js';
 const EditUser = ({setResponseUser}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     let {id} = useParams();
@@ -99,6 +99,13 @@ const EditUser = ({setResponseUser}) => {
             .test("dob", "Should be greater than 18", function (value) {
                 return differenceInYears(new Date(), new Date(value)) >= 18;
             }),
+        joinedDate: Yup.date()
+            .required()
+            .typeError('Joined Date is required')
+            .min(Yup.ref('dob'),"Should be greater than DOB")
+            .test("dob", "Should be greater than DOB", function (value) {
+                return differenceInDays(new Date(value), new Date(this.parent.dob)) != 0;
+        }),
     });
     return (
         <div className={"container ps-5 d-block"}>
@@ -206,7 +213,12 @@ const EditUser = ({setResponseUser}) => {
                                     name={"joinedDate"}
                                     value={values.joinedDate}
                                     onChange={handleChange}
+                                    isValid={touched.joinedDate && !errors.joinedDate}
+                                    isInvalid={touched.joinedDate && errors.joinedDate}
                                 />
+                                {errors.joinedDate && touched.joinedDate ? (
+                                    <div className={"text-danger"} style={{paddingLeft: "25%"}}>{errors.joinedDate}</div>
+                                ) : null}
                             </Row>
                             <Row className="mb-3">
                                 <p className={"col-3"}>Type</p>

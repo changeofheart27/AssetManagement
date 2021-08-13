@@ -7,6 +7,7 @@ import React from 'react';
 import axios from "axios";
 import * as Yup from "yup";
 import {differenceInYears} from "date-fns";
+import differenceInDays from 'date-fns/differenceInDays/index.js';
 
 const CreateUser = ({setResponseUser}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
@@ -24,7 +25,7 @@ const CreateUser = ({setResponseUser}) => {
     }
     const onSubmit = (values, {setSubmitting}) => {
         let create = {
-            username: values.lastName + values.firstName + Math.floor(Math.random() * 999),
+            username: values.lastName + " " + values.firstName+" " + Math.floor(Math.random() * 999),
             first_name: values.firstName,
             last_name: values.lastName,
             dob: values.dob,
@@ -68,10 +69,13 @@ const CreateUser = ({setResponseUser}) => {
         type: Yup.string()
             .required('Required')
             .typeError('Please select type'),
-        joinedDate: Yup.string()
-            .required('Required')
-            .typeError('Please select date')
-        ,
+        joinedDate: Yup.date()
+            .required()
+            .typeError('Joined Date is required')
+            .min(Yup.ref('dob'),"Should be greater than DOB")
+            .test("dob", "Should be greater than DOB", function (value) {
+                return differenceInDays(new Date(value), new Date(this.parent.dob)) != 0;
+        }),
     });
 
     return (
