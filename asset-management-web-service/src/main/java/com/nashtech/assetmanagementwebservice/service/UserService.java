@@ -22,9 +22,10 @@ public interface UserService {
 
   public UserDTO createUser(CreateUserRequest request);
 
-//  public List<UserDTO> searchByType(String keyword);
 
   public List<UserDTO> searchByNameOrStaffCode(String keyword);
 
-//  public List<UserDTO> getUserByType(String type);
+  public List<UserDTO> getUserByType(String type);
+
+  public UserDTO changePassword(UpdateUserRequest request ,int id);
 }

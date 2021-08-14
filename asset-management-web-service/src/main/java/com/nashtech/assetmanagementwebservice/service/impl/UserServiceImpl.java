@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import com.nashtech.assetmanagementwebservice.entity.Authority;
 import com.nashtech.assetmanagementwebservice.exception.DuplicateRecordException;
-import com.nashtech.assetmanagementwebservice.repository.AuthorityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,7 +32,7 @@ public class UserServiceImpl implements UserService {
   private PasswordEncoder passwordEncoder;
   @Override
   public List<UserDTO> getAllUser() {
-    List<User> users = userRepository.findAll();
+    List<User> users = userRepository.findAllUser();
     List<UserDTO> result = new ArrayList<>();
     for (User user : users) {
       result.add(UserMapper.toUserDTO(user));
@@ -48,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserDTO getUserById(int id) {
-    Optional<User> user = userRepository.findById(id);
+    Optional<User> user = userRepository.findUserByUserId(id);
     if (user.isEmpty()) {
       throw new NotFoundException("No user found");
     }
@@ -130,12 +129,7 @@ public class UserServiceImpl implements UserService {
     return UserMapper.toUserDTO(user);
   }
 
-//  @Override
-//  public List<UserDTO> searchByType(String keyword) {
-//    System.out.println("find user by type");
-//    List<User> users = userRepository.findUserByType(keyword);
-//    return users.stream().map(UserMapper::toUserDTO).collect(Collectors.toList());
-//  }
+
 
   @Override
   public List<UserDTO> searchByNameOrStaffCode(String keyword) {
@@ -148,14 +142,33 @@ public class UserServiceImpl implements UserService {
 
   }
 
-//  @Override
-//  public List<UserDTO> getUserByType(String type) {
-//    List<User> users = userRepository.getUserByType(type);
-//    List<UserDTO> result = new ArrayList<>();
-//    for (User user : users) {
-//      result.add(UserMapper.toUserDTO(user));
-//    }
-//    return result;
-//
-//  }
+  @Override
+  public UserDTO changePassword(UpdateUserRequest request, int id) {
+    Optional<User> user = userRepository.findById(id);
+    if (user.isEmpty()) {
+      throw new NotFoundException("No user found");
+    }
+    User updateUser = UserMapper.toUser(request, id);
+
+    try {
+      updateUser.setPassword(passwordEncoder.encode(request.getPassword()));
+      userRepository.save(updateUser);
+    } catch (Exception ex) {
+      throw new InternalServerException("Can't update password");
+    }
+
+    return UserMapper.toUserDTO(updateUser);
+
+  }
+
+  @Override
+  public List<UserDTO> getUserByType(String type) {
+    List<User> users = userRepository.getUserByType(type);
+    List<UserDTO> result = new ArrayList<>();
+    for (User user : users) {
+      result.add(UserMapper.toUserDTO(user));
+    }
+    return result;
+
+  }
 }
