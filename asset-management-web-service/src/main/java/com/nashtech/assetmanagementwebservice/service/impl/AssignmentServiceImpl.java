@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.nashtech.assetmanagementwebservice.exception.InternalServerException;
+import com.nashtech.assetmanagementwebservice.service.AssetService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,6 @@ import com.nashtech.assetmanagementwebservice.exception.NotFoundException;
 import com.nashtech.assetmanagementwebservice.model.dto.AssignmentDTO;
 import com.nashtech.assetmanagementwebservice.model.mapper.AssetMapper;
 import com.nashtech.assetmanagementwebservice.model.mapper.AssignmentMapper;
-import com.nashtech.assetmanagementwebservice.model.mapper.UserMapper;
 import com.nashtech.assetmanagementwebservice.repository.AssetRepository;
 import com.nashtech.assetmanagementwebservice.repository.AssignmentRepository;
 import com.nashtech.assetmanagementwebservice.repository.UserRepository;
@@ -31,14 +31,16 @@ public class AssignmentServiceImpl implements AssignmentService {
     private final UserRepository userRepository;
     private final AssignmentMapper assignmentMapper;
     private final AssetMapper assetMapper;
+    private final AssetService assetService;
     private final Logger log = LoggerFactory.getLogger(AssignmentServiceImpl.class);
 
     @Autowired
-    public AssignmentServiceImpl(AssignmentRepository assignmentRepository, AssetRepository assetRepository, UserRepository userRepository, AssetMapper assetMapper) {
+    public AssignmentServiceImpl(AssignmentRepository assignmentRepository, AssetRepository assetRepository, UserRepository userRepository, AssetMapper assetMapper, AssetService assetService) {
         this.assignmentRepository = assignmentRepository;
         this.assetRepository = assetRepository;
         this.userRepository = userRepository;
         this.assetMapper = assetMapper;
+        this.assetService = assetService;
         assignmentMapper = new AssignmentMapper();
     }
 
@@ -61,7 +63,9 @@ public class AssignmentServiceImpl implements AssignmentService {
     public AssignmentDTO createAssignment(AssignmentDTO payload) {
         User user = userRepository.getById(payload.getUserDTO().getId());
         Asset asset = assetRepository.getById(payload.getAssetDTO().getId());
+        asset.setState(1);
         Assignment assignment = assignmentMapper.fromDTO(payload);
+        assetService.editAsset(asset.getId(),assetMapper.fromEntity(asset));
         assignment.setAsset(asset);
         assignment.setUser(user);
         assignmentRepository.save(assignment);

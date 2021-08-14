@@ -136,7 +136,7 @@ const ManageAssignment = ({responseAssigment}) => {
                     >Search
                     </Button>
                     <Button variant={"danger"} 
-                        className={"w-25"} 
+                        className={"w-auto"}
                         onClick={() => history.push('/createAssignment')}
                     >Create new Assigment
                     </Button>
