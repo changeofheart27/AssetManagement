@@ -1,41 +1,48 @@
 import React, {useEffect, useState} from 'react';
-import {Form, FormControl, Button, FormCheck, Row} from "react-bootstrap";
+import {Form, FormControl, Button, FormCheck, Row, InputGroup} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Formik} from "formik";
 import axios from "axios";
 import {useHistory} from "react-router-dom";
 import * as Yup from 'yup'
+import Popup from "reactjs-popup";
+import SearchUser from "./SearchUser";
+import SearchAsset from "./SearchAsset";
 
 const CreateAssignment = ({setResponseAssigment}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
-    const [categories, setCategories] = useState([]);
+    const [asset, setAsset] = useState([]);
     useEffect(() => {
-        axios.get(rootAPI+"/categories").then((response) => {
-            setCategories(response.data);
+        axios.get(rootAPI + "/assets").then((response) => {
+            setAsset(response.data);
         });
     }, []);
     const history = useHistory();
     const initialValues = {
-        id: null,
         assetDTO: {
-            assetName: null,
+            assetID: null,
         },
         userDTO: {
-            name: null,
+            userID: null,
         },
-        assignedDate:null,
-        state:null
-        }
+        assignedDate: null,
+        state: null,
+        note: null
+    }
     const onSubmit = (values, {setSubmitting}) => {
         let create = {
             assetDTO: {
-                assetName: values.assetName,
+                id: assetSelect.id,
+            },
+            userDTO: {
+                id: singleUser.id,
             },
             assignedDate: values.assignedDate,
-            state: values.state
+            state: 5,
+            note: values.note
         };
 
-        axios.post(rootAPI+`/assets`, create)
+        axios.post(rootAPI + `/assignments`, create)
             .then((response) => {
                 setSubmitting(false);
                 setResponseAssigment({
@@ -43,34 +50,29 @@ const CreateAssignment = ({setResponseAssigment}) => {
                     assetCode: response.data.assetCode,
                     assetName: response.data.assetName,
                     assignedDate: response.data.assignedDate,
-                    state: response.data.state,
+                    state: 5,
                 });
                 history.push("/assignment");
             });
     };
-    const ValidateSchema = Yup.object().shape({
-        assetName: Yup.string()
-            .min(2)
-            .max(50)
-            .required('Required')
-            .typeError('Name can not empty'),
-        category: Yup.string()
-            .required('Required')
-            .typeError('Category can not empty'),
-        installedDate: Yup.string()
-            .required('Required')
-            .typeError('Installed date can not empty'),
-        status: Yup.boolean()
-            .required('Required')
-            .typeError('State can not empty'),
-    });
+    const [singleUser, setSingleUser] = useState({
+        id: null,
+        username: null
+    })
+    const [assetSelect, setAssetSelect]= useState({
+        id: null,
+        assetCode: null
+    })
+    useEffect(() => {
+        console.log(singleUser)
+    }, [singleUser])
     return (
         <div className={"container ps-5 d-block"}>
             <Row>
                 <h1 className={"text-danger mb-5"}>Create New Assignment</h1>
             </Row>
             <Row className={"mt-5"}>
-                <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={ValidateSchema}>
+                <Formik initialValues={initialValues} onSubmit={onSubmit}>
                     {({
                           values,
                           errors,
@@ -83,39 +85,54 @@ const CreateAssignment = ({setResponseAssigment}) => {
                       }) => (
                         <Form onSubmit={handleSubmit}>
                             <Row className={"mb-3"}>
-                                <p className={"w-25"}>User</p>
-                                <FormControl
-                                    type=""
-                                    aria-label="Username"
-                                    className={"w-75"}
-                                    name={"assetName"}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    isValid={touched.assetName && !errors.assetName}
-                                    isInvalid={touched.assetName && errors.assetName}
-                                />
-                                {errors.assetName && touched.assetName ? (
-                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>{errors.assetName}</div>
-                                ) : null}
+                                <InputGroup>
+                                    <p className={"w-25"}>User</p>
+                                    <Form.Control
+                                        disabled
+                                        className={"bg-white"}
+                                        aria-label="Username"
+                                        name={"userID"}
+                                        value={singleUser.username}
+                                        onBlur={handleBlur}
+                                        isValid={touched.userID && !errors.userID}
+                                        isInvalid={touched.userID && errors.userID}
+                                    />
+                                    <Popup
+                                        trigger={
+                                            <InputGroup.Text className={"bg-white"}><i className="bi bi-search"/>
+                                            </InputGroup.Text>
+                                        }
+                                        position={"left top"}
+                                        contentStyle={{width: "750px"}}
+                                    >
+                                        {close => <SearchUser close={close} setSingleUser={setSingleUser}/>}
+                                    </Popup>
+                                </InputGroup>
                             </Row>
                             <Row className="mb-3">
-                                <p className={"col-3"}>Asset</p>
-                                <Form.Select
-                                    name={"category"}
-                                    size="sm"
-                                    className={"w-75"}
-                                    onChange={handleChange}
-                                    isValid={touched.category && !errors.category}
-                                    isInvalid={touched.category && errors.category}
-                                >
-                                    <option selected/>
-                                    {categories.map((category) => (
-                                        <option value={category.id}>{category.name}</option>
-                                    ))}
-                                </Form.Select>
-                                {errors.category && touched.category ? (
-                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>{errors.category}</div>
-                                ) : null}
+                                <InputGroup>
+                                    <p className={"w-25"}>Asset</p>
+                                    <Form.Control
+                                        disabled
+                                        className={"bg-white"}
+                                        aria-label="Username"
+                                        name={"assetID"}
+                                        value={assetSelect.assetCode}
+                                        onBlur={handleBlur}
+                                        isValid={touched.assetID && !errors.assetID}
+                                        isInvalid={touched.assetID && errors.assetID}
+                                    />
+                                    <Popup
+                                        trigger={
+                                            <InputGroup.Text className={"bg-white"}><i className="bi bi-search"/>
+                                            </InputGroup.Text>
+                                        }
+                                        position={"left top"}
+                                        contentStyle={{width: "750px"}}
+                                    >
+                                        {close => <SearchAsset close={close} setAssetSelect={setAssetSelect}/>}
+                                    </Popup>
+                                </InputGroup>
                             </Row>
                             <Row className="mb-3">
                                 <p className={"w-25"} id="basic-addon1">Assigned Date</p>
@@ -123,19 +140,16 @@ const CreateAssignment = ({setResponseAssigment}) => {
                                     type={"date"}
                                     aria-describedby="basic-addon1"
                                     className={"w-75"}
-                                    name={"installedDate"}
+                                    name={"assignedDate"}
                                     onChange={handleChange}
                                     isValid={touched.installedDate && !errors.installedDate}
                                     isInvalid={touched.installedDate && errors.installedDate}
                                 />
-                                {errors.installedDate && touched.installedDate ? (
-                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>{errors.installedDate}</div>
-                                ) : null}
                             </Row>
                             <Row className="mb-3">
                                 <p className={"w-25"}>Note</p>
                                 <FormControl
-                                    name={"specification"}
+                                    name={"note"}
                                     aria-label="Username"
                                     aria-describedby="basic-addon1"
                                     className={"w-75"}
@@ -143,7 +157,7 @@ const CreateAssignment = ({setResponseAssigment}) => {
                                     onChange={handleChange}
                                 />
                             </Row>
-                            <Button variant={"danger"} onClick={() => history.push('/asset')} className={"ms-5"}
+                            <Button variant={"danger"} onClick={() => history.push('/assignment')} className={"ms-5"}
                                     style={{float: 'right'}}>
                                 Cancel
                             </Button>
