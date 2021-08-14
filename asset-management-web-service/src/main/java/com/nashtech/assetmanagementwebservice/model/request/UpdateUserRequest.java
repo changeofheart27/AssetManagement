@@ -2,6 +2,7 @@ package com.nashtech.assetmanagementwebservice.model.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.nashtech.assetmanagementwebservice.entity.Authority;
+import com.nashtech.assetmanagementwebservice.entity.User;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -135,4 +136,21 @@ public class UpdateUserRequest {
     @JsonProperty("location")
     private String location;
 
+
+    @ApiModelProperty(
+            example="user",
+            notes="Gender cannot be empty , 1-ADMIN , 2-STAFF",
+            required=true
+    )
+    @JsonProperty("authority")
+    private String authority;
+
+
+    @ApiModelProperty(
+            example="user",
+            notes="Gender cannot be empty , 1-ADMIN , 2-STAFF",
+            required=true
+    )
+    @JsonProperty("user_id")
+    private User user;
 }

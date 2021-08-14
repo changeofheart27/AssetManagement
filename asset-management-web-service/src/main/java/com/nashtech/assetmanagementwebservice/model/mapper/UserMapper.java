@@ -59,6 +59,14 @@ public class UserMapper {
 
     }
 
+    public static Authority toAuthority(UpdateUserRequest request ,int id){
+        Authority authority = new Authority();
+        authority.setId(id);
+        authority.setAuthority(request.getAuthority());
+        authority.setUser(request.getUser());
+        return authority;
+    }
+
 
 
 

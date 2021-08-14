@@ -61,9 +61,15 @@ public class UserServiceImpl implements UserService {
     if (user.isEmpty()) {
       throw new NotFoundException("No user found");
     }
-
+    int idAuthority = userRepository.findAuthorityByUserId(id);
     User updateUser = UserMapper.toUser(request, id);
+    Authority updateAuthority = UserMapper.toAuthority(request, idAuthority );
     try {
+
+      updateAuthority.setUser(updateUser);
+      updateUser.setAuthority(updateAuthority);
+
+
       userRepository.save(updateUser);
     } catch (Exception ex) {
       throw new InternalServerException("Can't update user");
