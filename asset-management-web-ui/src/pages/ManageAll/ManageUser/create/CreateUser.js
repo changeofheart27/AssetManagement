@@ -25,7 +25,7 @@ const CreateUser = ({setResponseUser}) => {
     }
     const onSubmit = (values, {setSubmitting}) => {
         let create = {
-            username: values.lastName + " " + values.firstName+" " + Math.floor(Math.random() * 999),
+            username: "",
             first_name: values.firstName,
             last_name: values.lastName,
             dob: values.dob,
@@ -33,6 +33,7 @@ const CreateUser = ({setResponseUser}) => {
             joined_date: values.joinedDate,
             type: values.type
         }
+
         axios
             .post(rootAPI + `/users`, create)
             .then((response) => {
@@ -75,7 +76,8 @@ const CreateUser = ({setResponseUser}) => {
             .min(Yup.ref('dob'),"Should be greater than DOB")
             .test("dob", "Should be greater than DOB", function (value) {
                 return differenceInDays(new Date(value), new Date(this.parent.dob)) != 0;
-        }),
+            })
+        ,
     });
 
     return (

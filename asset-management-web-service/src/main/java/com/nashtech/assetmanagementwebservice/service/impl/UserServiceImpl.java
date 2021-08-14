@@ -1,5 +1,6 @@
 package com.nashtech.assetmanagementwebservice.service.impl;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -7,7 +8,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.nashtech.assetmanagementwebservice.entity.User;
-import com.nashtech.assetmanagementwebservice.exception.DuplicateRecordException;
 import com.nashtech.assetmanagementwebservice.exception.InternalServerException;
 import com.nashtech.assetmanagementwebservice.exception.NotFoundException;
 import com.nashtech.assetmanagementwebservice.model.dto.UserDTO;
@@ -85,17 +85,26 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserDTO createUser(CreateUserRequest request) {
-    User user = userRepository.findByUsername(request.getUsername());
-    if (user != null) {
-      throw new DuplicateRecordException("User name already exist !");
-    }
     long count = userRepository.count() + 1;
     String staffCode = "SD" + String.format("%04d", count);
-
-    user = UserMapper.toUser(request);
+    User user = UserMapper.toUser(request);
+    String username = user.getFirstName().toLowerCase();
+    String lastName = user.getLastName().toLowerCase();
+    String[] tmp = lastName.split("\\s+");
+    for (int i = 0; i < tmp.length; i++) {
+      username = username + tmp[i].charAt(0);
+    }
+    Integer countUsername = userRepository.countByDuplicateFullName(username);
+    if (countUsername > 0) {
+      user.setUsername(username + countUsername.toString());
+    } else {
+      user.setUsername(username);
+    }
+    DateTimeFormatter formatters = DateTimeFormatter.ofPattern("ddMMuuuu");
+    String dob = user.getDob().format(formatters);
     user.setStaffCode(staffCode);
     user.setStatus("enabled");
-    user.setPassword("123");
+    user.setPassword(username + "@" + dob);
     user.setLocation("HN");
     userRepository.save(user);
     return UserMapper.toUserDTO(user);
