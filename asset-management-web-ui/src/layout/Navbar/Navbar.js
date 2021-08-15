@@ -1,22 +1,23 @@
-import React, {useState} from "react";
-import { Link } from "react-router-dom";
-import logo from "../../resources/logo.jpg";
-import Home from "../../pages/home/Home";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./Navbar.css";
-import ManageUser from "../../pages/ManageAll/ManageUser/manage/ManageUser";
-import CreateUser from "../../pages/ManageAll/ManageUser/create/CreateUser";
-import EditUser from "../../pages/ManageAll/ManageUser/edit/EditUser"
-
-import ManageAsset from "../../pages/ManageAll/ManageAsset/manage/ManageAsset"
-import CreateAsset from "../../pages/ManageAll/ManageAsset/create/CreateAsset"
-import EditAsset from "../../pages/ManageAll/ManageAsset/edit/EditAsset";
 import 'bootstrap/dist/css/bootstrap.min.css'
-import CreateCategory from "../../pages/ManageAll/ManageAsset/create/CreateCategory";
-import ManageAssignment from "../../pages/Assignment/manage/ManageAssignment";
+
+import React, {useState} from "react";
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+
+import CreateAsset from "../../pages/ManageAll/ManageAsset/create/CreateAsset"
 import CreateAssignment from "../../pages/Assignment/create/CreateAssignment"
+import CreateCategory from "../../pages/ManageAll/ManageAsset/create/CreateCategory";
+import CreateUser from "../../pages/ManageAll/ManageUser/create/CreateUser";
+import EditAsset from "../../pages/ManageAll/ManageAsset/edit/EditAsset";
+import EditUser from "../../pages/ManageAll/ManageUser/edit/EditUser"
+import Home from "../../pages/home/Home";
+import { Link } from "react-router-dom";
+import LoginFormPage from "../header/LoginFormPage"
+import ManageAsset from "../../pages/ManageAll/ManageAsset/manage/ManageAsset"
+import ManageAssignment from "../../pages/Assignment/manage/ManageAssignment";
+import ManageUser from "../../pages/ManageAll/ManageUser/manage/ManageUser";
 import Request from "../../pages/ManageAll/Request/Request";
-import LoginFormPage from "../header/LoginFormPage";
+import logo from "../../resources/logo.jpg";
 
 const Navbar = ({setCurrentPage}) => {
   const [responseDataAsset, setResponseDataAsset] = useState({
@@ -89,6 +90,12 @@ const Navbar = ({setCurrentPage}) => {
             {/*</Route>*/}
             <Route path={"/user"}>
               <ManageUser responseUser = {responseUser}/>
+            </Route>
+            <Route path={"/login"}>
+              <LoginFormPage/>
+            </Route>
+            <Route path={"/home"}>
+              <Home/>
             </Route>
             <Route path={"/createuser"}>
               <CreateUser setResponseUser = {setResponseUser}/>

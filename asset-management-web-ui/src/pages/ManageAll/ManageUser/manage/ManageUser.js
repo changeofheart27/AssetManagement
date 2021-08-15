@@ -3,7 +3,7 @@ import './Manage.css'
 import 'reactjs-popup/dist/index.css';
 
 import {Button, Container, Dropdown, Form, FormControl, InputGroup, Row, SplitButton, Table} from 'react-bootstrap';
-import {useMemo, useEffect, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 
 import ChangeStatus from '../changeStatus/ChangeStatus';
 import Pagination from '../../../../components/Pagination/Pagination'
@@ -36,7 +36,9 @@ const ManageUser = ({responseUser}) => {
         status: null
     }]);
     useEffect(() => {
-        axios.get(rootAPI + '/users')
+
+        axios.get(rootAPI + '/admin/users')
+
             .then(function (response) {
                 let result = response.data.map(user => user.id);
                 if (result.includes(responseUser.id)) {

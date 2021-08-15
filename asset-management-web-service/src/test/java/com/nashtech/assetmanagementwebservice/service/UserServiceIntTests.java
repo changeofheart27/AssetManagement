@@ -4,11 +4,9 @@ import com.nashtech.assetmanagementwebservice.exception.NotFoundException;
 import com.nashtech.assetmanagementwebservice.model.dto.UserDTO;
 import com.nashtech.assetmanagementwebservice.repository.UserRepository;
 import com.nashtech.assetmanagementwebservice.service.impl.UserServiceImpl;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.*;

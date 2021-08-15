@@ -1,5 +1,6 @@
 package com.nashtech.assetmanagementwebservice.model.mapper;
 
+import com.nashtech.assetmanagementwebservice.entity.Authority;
 import com.nashtech.assetmanagementwebservice.entity.User;
 import com.nashtech.assetmanagementwebservice.model.dto.UserDTO;
 import com.nashtech.assetmanagementwebservice.model.request.CreateUserRequest;
@@ -17,13 +18,14 @@ public class UserMapper {
         tmp.setDob(user.getDob());
         tmp.setLocation(user.getLocation());
         tmp.setStaffCode(user.getStaffCode());
-        tmp.setType(user.getType());
+        tmp.setAuthority(user.getAuthority().getAuthority());
         tmp.setStatus(user.getStatus());
         tmp.setPassword(user.getPassword());
         return tmp;
     }
     public static User toUser(CreateUserRequest request) {
         User user = new User();
+
         user.setUsername(request.getUsername());
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
@@ -33,7 +35,8 @@ public class UserMapper {
         user.setLocation(request.getLocation());
         user.setStaffCode(user.getStaffCode());
         user.setStatus(request.getStatus());
-        user.setType(request.getType());
+//        user.setType(request.getType());
+
         return user;
     }
 
@@ -49,26 +52,26 @@ public class UserMapper {
         user.setLocation(request.getLocation());
         user.setStaffCode(request.getStaffCode());
         user.setStatus(request.getStatus());
-        user.setType(request.getType());
+//        user.setType(request.getType());
+
         user.setPassword(request.getPassword());
         return user;
 
     }
 
-    public User fromDTO(UserDTO payload) {
-    	User user = new User();
-        user.setUsername(payload.getUsername());
-        user.setFirstName(payload.getFirstName());
-        user.setLastName(payload.getLastName());
-        user.setGender(payload.getGender());
-        user.setDob(payload.getDob());
-        user.setJoinedDate(payload.getJoinedDate());
-        user.setLocation(payload.getLocation());
-        user.setStaffCode(user.getStaffCode());
-        user.setStatus(payload.getStatus());
-        user.setType(payload.getType());
-        return user;
+
+    public static Authority toAuthority(UpdateUserRequest request ,int id){
+        Authority authority = new Authority();
+        authority.setId(id);
+        authority.setAuthority(request.getAuthority());
+        authority.setUser(request.getUser());
+        return authority;
     }
+
+
+
+
+
 
 
 }

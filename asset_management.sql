@@ -11,7 +11,16 @@ CREATE TABLE user (
   location VARCHAR(50),
   status VARCHAR(10),
   type VARCHAR(10),
-  password VARCHAR(45)
+  password VARCHAR(1000),
+  authority VARCHAR(5)
+  
+)
+;
+CREATE TABLE authorities (
+  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  user_id INT ,
+  authority VARCHAR(5),
+  FOREIGN KEY(user_id) REFERENCES user(id)
 )
 ;
 CREATE TABLE asset (

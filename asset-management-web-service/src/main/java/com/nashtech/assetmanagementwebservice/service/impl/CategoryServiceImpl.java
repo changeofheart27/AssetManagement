@@ -3,6 +3,7 @@ package com.nashtech.assetmanagementwebservice.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.nashtech.assetmanagementwebservice.exception.DuplicateRecordException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.nashtech.assetmanagementwebservice.model.dto.CategoryDTO;
 import com.nashtech.assetmanagementwebservice.entity.Category;
-import com.nashtech.assetmanagementwebservice.exception.DuplicateRecordException;
 import com.nashtech.assetmanagementwebservice.exception.NotFoundException;
 import com.nashtech.assetmanagementwebservice.model.mapper.CategoryMapper;
 import com.nashtech.assetmanagementwebservice.repository.CategoryRepository;

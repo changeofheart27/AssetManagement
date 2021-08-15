@@ -1,13 +1,15 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import * as Yup from "yup";
+
 import {Button, Form, FormCheck, FormControl, Row} from "react-bootstrap";
-import {useHistory} from 'react-router-dom';
+
 import {Formik} from 'formik';
 import React from 'react';
 import axios from "axios";
-import * as Yup from "yup";
-import {differenceInYears} from "date-fns";
 import differenceInDays from 'date-fns/differenceInDays/index.js';
+import {differenceInYears} from "date-fns";
+import {useHistory} from 'react-router-dom';
 
 const CreateUser = ({setResponseUser}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
@@ -21,7 +23,7 @@ const CreateUser = ({setResponseUser}) => {
         dob: null,
         gender: null,
         joinedDate: null,
-        type: null
+        authority: null
     }
     const onSubmit = (values, {setSubmitting}) => {
         let create = {
@@ -31,7 +33,7 @@ const CreateUser = ({setResponseUser}) => {
             dob: values.dob,
             gender: values.gender,
             joined_date: values.joinedDate,
-            type: values.type
+            authority: values.authority
         }
 
         axios

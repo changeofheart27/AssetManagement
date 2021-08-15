@@ -1,42 +1,61 @@
-import React from 'react';
-import { Formik } from 'formik';
-import { useState } from "react";
-import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 import * as Yup from "yup";
+
 import {Button, Form, FormCheck, FormControl, Row} from "react-bootstrap";
-const LoginFormPage = ({setCurrentUser}) => {
-  
+
+import { Formik } from 'formik';
+import React from 'react';
+import axios from 'axios';
+import { useState } from "react";
+
+const LoginFormPage = ({setCurrentUser,props,loginSuccess}) => {
+  const [showLoginSuccess, setShowLoginSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState("");
     
     const initialValues = { username:'', password:''};
-    const [loginSuccess, setLoginSuccess] = useState(false);
+  
     const ValidateSchema = Yup.object().shape({
       username: Yup.string()
-          .max(10)
+          .max(50)
           .required('Required')
           .typeError('Username is required'),
       password: Yup.string()
-          .max(15)
+          .max(500)
           .required('Required')
           .typeError('Password is required'),    
   });
     const onSubmit = (values, { setSubmitting }) => {
-      axios.post('',{
-        username: values.username,
-        password: values.password
-      })
-      .then( response => {
-        console.log (response.data.jwttoken)
-        console.log (response.data.authorization)
-        setLoginSuccess(true)
-            setCurrentUser({
-                token: response.data.jwttoken,
-                authority: response.data.authorization
-            });
-        
-      }).catch(error => {
-        console.error();
-      });
+      axios({
+        method: "POST",
+        url: "http://localhost:8080/authenticate",
+        headers: {},
+        data: {
+          username: values.username,
+          password: values.password,
+        },
+      }
+      )
+        .then((response) => {
+          setSubmitting(false);
+          console.log(response);
+          localStorage.clear();
+          setShowLoginSuccess(true);
+          loginSuccess({  token:"Bearer "+ response.data.jwttoken });
+          localStorage.setItem("jwttoken","Bearer "+response.data.jwttoken);
+          localStorage.setItem("username",values.username);
+
+       
+          window.location.href = "/home";
+      }).catch(() => {
+        })
+        .catch((error) => {
+          setSubmitting(false);
+          console.log(error);
+          setSubmitError(
+            "Login fails status code: " + error.response.status
+          );
+        });
     }
     return (
     <div className={"container ps-5 d-block"} >
@@ -95,19 +114,21 @@ const LoginFormPage = ({setCurrentUser}) => {
                                 Cancel
                             </Button>
                           
-                            <Button variant={"danger"} type={"submit"} style={{float: 'right'}} on>
+                            <Button variant={"danger"} type={"submit"} style={{float: 'right'}}  disabled={isSubmitting} on>
                                 Submit
                             </Button>
                             
                       </Form>
-                  
-              
-          
-          
+  
         )
         } 
       </Formik>
+
     </Row>
+    { showLoginSuccess &&
+            <div className="form--login-success">
+              Login success
+            </div> }
    </div>
     );
 }

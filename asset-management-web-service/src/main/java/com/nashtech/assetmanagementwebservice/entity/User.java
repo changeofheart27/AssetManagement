@@ -19,7 +19,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "username", unique = true, nullable = false)
     private String username;
 
     @Column(name = "password")
@@ -47,9 +47,6 @@ public class User {
     @Column(name = "location")
     private String location;
 
-    @Column(name ="type")
-    private String type;
-
     @Column(name ="status" )
     private String status;
 
@@ -59,8 +56,11 @@ public class User {
 //    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 //    private List<Asset> assets;
 
-//    @OneToOne(mappedBy = "user")
-//    private Authority authority;
+
+    @OneToOne(mappedBy = "user" ,cascade = CascadeType.ALL)
+    private Authority authority;
+
+
     
     @OneToMany(mappedBy = "user")
     private List<Assignment> assignments;
@@ -69,4 +69,10 @@ public class User {
 //    private Request request;
 
 
+
+    public User(String username2, String password, Authority authorities) {
+        this.username=username2;
+        this.password=password;
+        this.authority=authorities;
+    }
 }
