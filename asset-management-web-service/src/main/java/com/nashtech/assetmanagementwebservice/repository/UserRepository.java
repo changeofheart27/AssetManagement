@@ -14,7 +14,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
           "          user.joined_date,user.dob,user.location,user.gender,user.password," +
           "          user.username ,user.status ,authorities.authority" +
           "          from user  INNER JOIN  authorities " +
-          "          on user.id = authorities.user_id " , nativeQuery = true)
+          "          on user.id = authorities.user_id where user.status = 'enabled' " , nativeQuery = true)
   public List<User> findAllUser();
 
   @Query(value = "SELECT user.id ,user.staff_code ,user.first_name,user.last_Name," +
@@ -46,6 +46,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
   @Query(value = "SELECT COUNT(*) FROM user u WHERE u.username LIKE :username% ", nativeQuery = true)
   public Integer countByDuplicateFullName(String username);
 
-  @Query(value = "SELECT * FROM user u WHERE u.status = 'enabled'", nativeQuery = true)
-  public List<User> findUserEnabled();
+//  @Query(value = "SELECT * FROM user u WHERE u.status = 'enabled'", nativeQuery = true)
+//  public List<User> findUserEnabled();
 }
