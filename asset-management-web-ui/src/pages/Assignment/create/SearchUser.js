@@ -3,6 +3,7 @@ import axios from "axios";
 import {Button, Container, Form, FormControl, InputGroup, Row, Table} from "react-bootstrap";
 
 const SearchUser = ({setSingleUser,close}) => {
+    const [searchTerm, setSearchTerm] = useState("");
     const [user, setUser] = useState([{
         username: null,
         id: null,
@@ -11,13 +12,20 @@ const SearchUser = ({setSingleUser,close}) => {
         type: null,
         status: null
     }]);
-    const rootAPI = process.env.REACT_APP_SERVER_URL;
     useEffect(() => {
         axios.get(rootAPI + '/users')
             .then(response => {
                 setUser(response.data)
             })
     }, [])
+    useEffect(()=>{
+        axios.get(rootAPI+'/search?keyword='+searchTerm)
+            .then(response => {
+                setUser(response.data);
+            })
+    },[searchTerm])
+    const rootAPI = process.env.REACT_APP_SERVER_URL;
+
     const [value, setValue]= useState({
         username: null
     })
@@ -28,12 +36,13 @@ const SearchUser = ({setSingleUser,close}) => {
         <>
             <Container fluid>
                 <Row>
-                    <h3 className={"text-danger w-50"}>Select Asset</h3>
+                    <h3 className={"text-danger w-50"}>Select User</h3>
                     <InputGroup className={"w-50"}>
                         <FormControl
                             type={"input"}
                             className={"w-25"}
                             name={"searchTerm"}
+                            onChange={evt=>{setSearchTerm(evt.target.value)}}
                         >
                         </FormControl>
                         <Button variant={"outline-secondary"}
@@ -52,7 +61,7 @@ const SearchUser = ({setSingleUser,close}) => {
                     <tbody>
                     {user.map(user => (
                         user.status === "enable" ?
-                        <tr>
+                        <tr key={user.id}>
                             <td><Form.Check name={"singleUser"} color={"red"} type={"radio"} onChange={()=> setSingleUser({id: user.id, username: user.username})} /></td>
                             <td>{user.username}</td>
                             <td>{user.firstName} {user.lastName}</td>
@@ -66,7 +75,7 @@ const SearchUser = ({setSingleUser,close}) => {
                 <Row className={"justify-content-end"}>
                     <Button variant={"danger"} className={"w-25 mx-5"} onClick={()=> close()}>Save</Button>
                     <Button variant={"danger"} className={"w-25"} onClick={()=>{
-                        setSingleUser({id:"", username:""})
+                        setSingleUser({id:null, username:""})
                         close()
                     }} >Cancel</Button>
                 </Row>
