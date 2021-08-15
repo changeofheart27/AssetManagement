@@ -18,6 +18,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
   @Query(value = "SELECT * from user u where u.type LIKE %:type%", nativeQuery = true)
   public List<User> getUserByType(String type);
 
-  @Query(value = "SELECT COUNT(*) FROM user u WHERE u.username LIKE %:username% ", nativeQuery = true)
+  @Query(value = "SELECT COUNT(*) FROM user u WHERE u.username LIKE :username% ", nativeQuery = true)
   public Integer countByDuplicateFullName(String username);
+
+  @Query(value = "SELECT * FROM user u WHERE u.status = 'enabled'", nativeQuery = true)
+  public List<User> findUserEnabled();
 }

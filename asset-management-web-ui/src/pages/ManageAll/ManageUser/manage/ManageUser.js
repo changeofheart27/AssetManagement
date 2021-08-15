@@ -37,10 +37,11 @@ const ManageUser = ({responseUser}) => {
     }]);
     useEffect(() => {
         axios.get(rootAPI + '/users')
-            .then(response => {
+            .then(function (response) {
                 let result = response.data.map(user => user.id);
                 if (result.includes(responseUser.id)) {
                     const index = result.indexOf(responseUser.id);
+                    console.log(index, " index")
                     response.data.splice(index, 1);
                     response.data.unshift(responseUser);
                     setList(response.data);
@@ -171,7 +172,7 @@ const ManageUser = ({responseUser}) => {
                             width: "25%", border: "1px solid black", borderRadius: 10,
                             overflow: 'hidden', padding: "20px"
                         }} trigger={
-                            user.status === "enabled" ?
+                            
                             <tr key={user.id}>
                                 <td>{user.staffCode}</td>
                                 <td>{user.firstName} {user.lastName}</td>
@@ -183,16 +184,13 @@ const ManageUser = ({responseUser}) => {
                                 <Popup contentStyle={{
                                     width: "25%", border: "1px solid black", borderRadius: 10,
                                     overflow: 'hidden', padding: "20px"
-                                }} trigger={user.status === "enable"
-                                    ?
-                                    <td><i className="bi bi-x-circle text-danger btn p-0"/></td>
-                                    :
-                                    <td><i className="bi bi-x-circle text-danger btn p-0 disabled text-dark"/></td>}
-                                       modal>
+                                }} trigger={
+                                    <td><i className="bi bi-x-circle text-danger btn p-0"/></td>}
+                                modal>
                                     <ChangeStatus id={user.id}/>
                                 </Popup>
                             </tr>
-                                : null
+                                
                         } modal>{close => (<div>
                             <ViewDetailedUser id={user.id}/>
                             <Button onClick={close} variant="success" className="btn-view-detail">&times;</Button>
