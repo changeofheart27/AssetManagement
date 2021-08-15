@@ -110,6 +110,7 @@ const CreateUser = ({setResponseUser}) => {
                                     aria-describedby="basic-addon1"
                                     className={"w-75"}
                                     name={"firstName"}
+                                    onBlur={handleBlur}
                                     onChange={handleChange}
                                     isValid={touched.firstName && !errors.firstName}
                                     isInvalid={touched.firstName && errors.firstName}
@@ -125,6 +126,7 @@ const CreateUser = ({setResponseUser}) => {
                                     aria-describedby="basic-addon1"
                                     className={"w-75"}
                                     name={"lastName"}
+                                    onBlur={handleBlur}
                                     onChange={handleChange}
                                     isValid={touched.lastName && !errors.lastName}
                                     isInvalid={touched.lastName && errors.lastName}
@@ -150,9 +152,10 @@ const CreateUser = ({setResponseUser}) => {
                             </Row>
                             <Row>
                                 <p id="basic-addon1" className={"w-25"}>Gender</p>
-                                <div className={"container w-75"}>
+                                <div className={"container-lg w-75"}>
                                     <FormCheck
                                         inline
+                                        color={"red"}
                                         type={"radio"}
                                         label={"Female"}
                                         className={"w-75"}
@@ -179,6 +182,7 @@ const CreateUser = ({setResponseUser}) => {
                                     className={"w-75"}
                                     name={"joinedDate"}
                                     onChange={handleChange}
+                                    onBlur={handleBlur}
                                     isValid={touched.joinedDate && !errors.joinedDate}
                                     isInvalid={touched.joinedDate && errors.joinedDate}
                                 />
@@ -196,6 +200,7 @@ const CreateUser = ({setResponseUser}) => {
                                     onChange={handleChange}
                                     isValid={touched.authority && !errors.authority}
                                     isInvalid={touched.authority && errors.authority}
+                                    onBlur={handleBlur}
                                 >
                                     <option selected></option>
                                     <option>Admin</option>

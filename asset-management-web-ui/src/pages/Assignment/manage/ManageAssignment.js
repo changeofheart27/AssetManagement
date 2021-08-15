@@ -46,9 +46,9 @@ const ManageAssignment = ({responseAssigment}) => {
     }, [])
     const check = state => {
         if (state === 5) {
-            return <p>Accepted</p>
+            return <td>Accepted</td>
         } else if (state === 6) {
-            return <p>Waiting for acceptance</p>
+            return <td>Waiting for acceptance</td>
         }
     }
     const handleChange = evt => {
@@ -166,7 +166,7 @@ const ManageAssignment = ({responseAssigment}) => {
                                 <td>{assigment.userDTO.username}</td>
                                 <td>{assigment.userDTO.username}</td>
                                 <td>{assigment.assignedDate}</td>
-                                <td>{check(assigment.state)}</td>
+                                {check(assigment.state)}
                                 <td><i className="bi bi-pen btn m-0 text-muted p-0"
                                        onClick={() => history.push(`/edit/${assigment.id}`)}/></td>
                                 <Popup contentStyle={{

@@ -19,7 +19,7 @@ const SearchUser = ({setSingleUser,close}) => {
             })
     }, [])
     useEffect(()=>{
-        axios.get(rootAPI+'/search?keyword='+searchTerm)
+        axios.get(rootAPI+'/users/search?keyword='+searchTerm)
             .then(response => {
                 setUser(response.data);
             })
@@ -60,7 +60,7 @@ const SearchUser = ({setSingleUser,close}) => {
                     </thead>
                     <tbody>
                     {user.map(user => (
-                        user.status === "enable" ?
+                        user.status === "enabled" ?
                         <tr key={user.id}>
                             <td><Form.Check name={"singleUser"} color={"red"} type={"radio"} onChange={()=> setSingleUser({id: user.id, username: user.username})} /></td>
                             <td>{user.username}</td>
@@ -68,7 +68,6 @@ const SearchUser = ({setSingleUser,close}) => {
                             <td>{user.type}</td>
                         </tr>
                         : null
-
                     ))}
                     </tbody>
                 </Table>

@@ -57,13 +57,13 @@ const ManageAsset = ({responseDataAsset}) => {
     }, [])
     const check = state => {
         if (state === 0) {
-            return <p>Available</p>
+            return <td>Available</td>
         } else if (state === 1) {
-            return <p>Not Available</p>
+            return <td>Not Available</td>
         } else if (state === 2) {
-            return <p>Waiting for recycling</p>
+            return <td>Waiting for recycling</td>
         } else if (state === 3) {
-            return <p>Recycle</p>
+            return <td>Recycle</td>
         }
     }
     const [search, setSearch] = useState("");
@@ -73,7 +73,7 @@ const ManageAsset = ({responseDataAsset}) => {
     const [type, setType] = useState();
     const [category, setCategory] = useState();
     const request = {
-        params:{
+        params: {
             type,
             category
         }
@@ -86,23 +86,23 @@ const ManageAsset = ({responseDataAsset}) => {
         const name = evt.target.name;
         setCategory(evt.target.value)
     }
-    useEffect(()=>{
+    useEffect(() => {
         console.log("use Effect Run")
         console.log(request)
-        if(request.params.type === 'State'){
+        if (request.params.type === 'State') {
             request.params.type = null;
             console.log(request)
         }
-        if(request.params.category === 'Category'){
+        if (request.params.category === 'Category') {
             request.params.category = null;
             console.log(request)
         }
-          axios.get(rootAPI + `/assets/filter`,request)
-                .then(function (response) {
-                    setList(response.data);
-                    console.log(response.data)
-                })
-    },[type,category])
+        axios.get(rootAPI + `/assets/filter`, request)
+            .then(function (response) {
+                setList(response.data);
+                console.log(response.data)
+            })
+    }, [type, category])
 
     const filterSearchBySearchTerm = () => {
         axios.get(rootAPI + `/assets/search?keyword=${search}`)
@@ -146,9 +146,7 @@ const ManageAsset = ({responseDataAsset}) => {
         }
         return sortConfig.key === name ? sortConfig.direction : undefined;
     };
-    const initialState = {
-
-    }
+    const initialState = {}
     const clearTypeState = () => {
         setType(null)
     }
@@ -156,58 +154,62 @@ const ManageAsset = ({responseDataAsset}) => {
     return (
         <Container fluid className={"d-block ps-5"}>
             <h1 className={"text-danger mb-3"}>Asset List</h1>
-            <InputGroup className={"justify-content-between"}>
-                <div className={"col-5 d-flex"}>
-                    <Form.Control
-                        as="select"
-                        custom
-                        className={"w-25"}
-                        name={"type"}
-                        onChange={handleFilterType}
-                    >
-                        <option value={null} >State</option>
-                        <option value="0">Available</option>
-                        <option value="1">Not Available</option>
-                        <option value="2">Waiting for recycling</option>
-                        <option value="3">Recycle</option>
-                    </Form.Control>
-                    <Button
-                        variant={"outline-secondary"}
-                    >
-                        <i className="bi bi-funnel-fill"/></Button>
-                    <Form.Control
-                        as="select"
-                        custom
-                        className={"w-25 ms-5"}
-                        placeholder={"Category"}
-                        name={"category"}
-                        onChange={handleFilterCategory}
-                    >
-                        <option>Category</option>
-                        {categories.map((category) => (
-                            <option value={category.name}>{category.name}</option>
-                        ))}
-                    </Form.Control>
-                    <Button variant={"outline-secondary"}><i
-                        className="bi bi-funnel-fill"/></Button>
+            <div className={"justify-content-between d-flex"}>
+                <div className={"col-3 d-flex"}>
+                    <InputGroup>
+                        <Form.Control
+                            as="select"
+                            custom
+                            className={"w-25"}
+                            name={"type"}
+                            onChange={handleFilterType}
+                        >
+                            <option value={null}>State</option>
+                            <option value="0">Available</option>
+                            <option value="1">Not Available</option>
+                            <option value="2">Waiting for recycling</option>
+                            <option value="3">Recycle</option>
+                        </Form.Control>
+                        <Button
+                            variant={"outline-secondary"}
+                        >
+                            <i className="bi bi-funnel-fill"/></Button>
+                        <Form.Control
+                            as="select"
+                            custom
+                            className={"w-25 ms-5"}
+                            placeholder={"Category"}
+                            name={"category"}
+                            onChange={handleFilterCategory}
+                        >
+                            <option>Category</option>
+                            {categories.map((category) => (
+                                <option value={category.name}>{category.name}</option>
+                            ))}
+                        </Form.Control>
+                        <Button variant={"outline-secondary"}><i
+                            className="bi bi-funnel-fill"/></Button>
+                    </InputGroup>
                 </div>
-                <div className={"col-5 d-flex"}>
-                    <FormControl
-                        type={"input"}
-                        className={"w-25"}
-                        name={"searchTerm"}
-                        onChange={handleChange}
-                    >
-                    </FormControl>
-                    <Button variant={"outline-secondary"}
-                            onClick={filterSearchBySearchTerm}
-                            className={"me-5"}
-                    ><i className="bi bi-search"/>
-                    </Button>
-                    <Button variant={"danger"} className={"w-auto"} onClick={() => history.push('/createasset')}>Create
-                        new Asset</Button>
+                <div className={"col-9 d-flex justify-content-end"}>
+                    <InputGroup className={"w-25"}>
+                        <FormControl
+                            type={"input"}
+                            name={"searchTerm"}
+                            onChange={handleChange}
+                        >
+                        </FormControl>
+                        <Button variant={"outline-secondary"}
+                                onClick={filterSearchBySearchTerm}
+                                className={"me-5"}
+                        ><i className="bi bi-search"/>
+                        </Button>
+                    </InputGroup>
+                        <Button variant={"danger"} className={"w-auto"} onClick={() => history.push('/createasset')}>Create
+                            new Asset</Button>
+
                 </div>
-            </InputGroup>
+            </div>
             <Row className={"mt-5"}>
                 <Table>
                     <thead>
@@ -240,7 +242,7 @@ const ManageAsset = ({responseDataAsset}) => {
                                 <td>{asset.assetCode}</td>
                                 <td>{asset.assetName}</td>
                                 <td>{asset.categoryDTO.name}</td>
-                                <td>{check(asset.state)}</td>
+                                {check(asset.state)}
                                 <td><i className="bi bi-pen btn m-0 text-muted p-0"
                                        onClick={() => history.push(`/editasset/${asset.id}`)}/></td>
                                 <Popup contentStyle={{
