@@ -72,7 +72,7 @@ const Request = () => {
                     </Button>
                 </div>
             </InputGroup>
-            <Row>
+            <Row className={"mt-5"}>
                 <Table>
                     <thead>
                     <tr>
