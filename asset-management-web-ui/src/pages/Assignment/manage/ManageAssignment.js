@@ -23,8 +23,8 @@ const ManageAssignment = ({responseAssigment}) => {
         userDTO: {
             username: null,
         },
-        assignedDate:null,
-        state:null
+        assignedDate: null,
+        state: null
 
     }]);
     const history = useHistory();
@@ -45,14 +45,10 @@ const ManageAssignment = ({responseAssigment}) => {
             })
     }, [])
     const check = state => {
-        if (state === 0) {
-            return <p>Available</p>
-        } else if (state === 1) {
-            return <p>Not Available</p>
-        } else if (state === 2) {
-            return <p>Waiting for recycling</p>
-        } else if (state === 3) {
-            return <p>Recycle</p>
+        if (state === 5) {
+            return <p>Accepted</p>
+        } else if (state === 6) {
+            return <p>Waiting for acceptance</p>
         }
     }
     const handleChange = evt => {
@@ -93,55 +89,57 @@ const ManageAssignment = ({responseAssigment}) => {
             <h1 className={"text-danger mb-3"}>My Assigment</h1>
             <InputGroup className={"justify-content-between"}>
                 <div className={"col-5 d-flex"}>
-                    <Form.Control
-                        as="select"
-                        custom
-                        className={"w-25"}
-                        placeholder={"State"}
-                        name={"state"}
-                        onChange={handleChange}
-                    >
-                        <option>State</option>
-                        <option value="0">Available</option>
-                        <option value="1">Not Available</option>
-                        <option value="2">Waiting for recycling</option>
-                        <option value="3">Recycle</option>
-                    </Form.Control>
-                    <Button variant={"outline-secondary"} onClick={filterSearchByState}><i
-                        className="bi bi-funnel-fill"/></Button>
-                    <Form.Control
-                        type="input"
-                        className={"w-26 ms-5"}
-                        placeholder={"Assigned Date"}
-                        name={"assignedDate"}
-                        onChange={handleChange}
-                    >
-                    </Form.Control>
-                    <Button variant={"outline-secondary"} 
-                        onClick={filterSearchByCategory}>
-                        <i class="bi bi-calendar2-week-fill"/>
-                    </Button>
+                    <InputGroup>
+                        <Form.Control
+                            as="select"
+                            custom
+                            className={"w-25"}
+                            placeholder={"State"}
+                            name={"state"}
+                            onChange={handleChange}
+                        >
+                            <option>State</option>
+                            <option value="5">Accepted</option>
+                            <option value="6">Waiting for acceptance</option>
+                        </Form.Control>
+                        <Button variant={"outline-secondary"} onClick={filterSearchByState}><i
+                            className="bi bi-funnel-fill"/></Button>
+                        <Form.Control
+                            type="input"
+                            className={"w-25 ms-5"}
+                            placeholder={"Assigned Date"}
+                            name={"assignedDate"}
+                            onChange={handleChange}
+                        >
+                        </Form.Control>
+                        <Button variant={"outline-secondary"}
+                                onClick={filterSearchByCategory}>
+                            <i class="bi bi-calendar2-week-fill"/>
+                        </Button>
+                    </InputGroup>
                 </div>
                 <div className={"col-5 d-flex"}>
-                    <FormControl
-                        type={"input"}
-                        className={"w-25"}
-                        name={"searchTerm"}
-                        onChange={handleChange}
-                    >
-                    </FormControl>
-                    <Button variant={"outline-secondary"} 
-                        onClick={filterSearchBySearchTerm} 
-                        className={"me-5"}
-                    >Search
-                    </Button>
-                    <Button variant={"danger"} 
-                        className={"w-auto"}
-                        onClick={() => history.push('/createAssignment')}
-                    >Create new Assigment
-                    </Button>
+                    <InputGroup>
+                        <FormControl
+                            type={"input"}
+                            className={"w-25"}
+                            name={"searchTerm"}
+                            onChange={handleChange}
+                        >
+                        </FormControl>
+                        <Button variant={"outline-secondary"}
+                                onClick={filterSearchBySearchTerm}
+                                className={"me-5"}
+                        >Search
+                        </Button>
+                        <Button variant={"danger"}
+                                className={"w-auto"}
+                                onClick={() => history.push('/createAssignment')}
+                        >Create new Assigment
+                        </Button>
+                    </InputGroup>
                 </div>
-                </InputGroup>
+            </InputGroup>
             <Row className={"mt-5"}>
                 <Table>
                     <thead>
@@ -149,39 +147,42 @@ const ManageAssignment = ({responseAssigment}) => {
                         <th className={"border-bottom"}>No.<i className="bi bi-caret-down-fill"/></th>
                         <th className={"border-bottom"}>Asset Code <i className="bi bi-caret-down-fill"/></th>
                         <th className={"border-bottom"}>Asset Name <i className="bi bi-caret-down-fill"/></th>
-                        <th className={"border-bottom"}>Asigned To<i className="bi bi-caret-down-fill"/></th>
-                        <th className={"border-bottom"}>Asigned By<i className="bi bi-caret-down-fill"/></th>
-                        <th className={"border-bottom"}>Asigned Date<i className="bi bi-caret-down-fill"/></th>
+                        <th className={"border-bottom"}>Assigned To<i className="bi bi-caret-down-fill"/></th>
+                        <th className={"border-bottom"}>Assigned By<i className="bi bi-caret-down-fill"/></th>
+                        <th className={"border-bottom"}>Assigned Date<i className="bi bi-caret-down-fill"/></th>
                         <th className={"border-bottom"}>State<i className="bi bi-caret-down-fill"/></th>
                     </tr>
                     </thead>
                     <tbody>
                     {list.slice(indexOfFirstUser, indexOfLastUser).map(assigment =>
-                       <Popup contentStyle={{width: "25%" ,border: "1px solid black" , borderRadius: 10,
-                       overflow: 'hidden', padding: "20px"}} trigger={  
-                       <tr key={assigment.id}>
-                            <td>{assigment.id}</td>
-                            <td>{assigment.assetDTO.assetCode}</td>
-                            <td>{assigment.assetDTO.assetName}</td>
-                            <td>{assigment.userDTO.username}</td>
-                            <td>{assigment.userDTO.username}</td>
-                            <td>{assigment.assignedDate}</td>
-                            <td>{check(assigment.state)}</td>
-                            <td><i className="bi bi-pen btn m-0 text-muted p-0"
-                                   onClick={() => history.push(`/edit/${assigment.id}`)}/></td>
-                            <Popup contentStyle={{
-                                width: "25%", border: "1px solid black", borderRadius: 10,
-                                overflow: 'hidden', padding: "20px"
-                            }}
-                                   trigger={<td><i className="bi bi-x-circle text-danger btn p-0"/></td>} offsetX={200}
-                                   modal>
-                            </Popup>
-                            <td><i className="bi bi-arrow-counterclockwise text-blue fw-bold"/></td>
-                        </tr>
-                        } modal>{close=>(  <div>
-                           <Button onClick={close} variant="success" className="btn-view-detail">&times;</Button>
-                     </div>)} 
-                   </Popup>
+                        <Popup contentStyle={{
+                            width: "25%", border: "1px solid black", borderRadius: 10,
+                            overflow: 'hidden', padding: "20px"
+                        }} trigger={
+                            <tr key={assigment.id}>
+                                <td>{assigment.id}</td>
+                                <td>{assigment.assetDTO.assetCode}</td>
+                                <td>{assigment.assetDTO.assetName}</td>
+                                <td>{assigment.userDTO.username}</td>
+                                <td>{assigment.userDTO.username}</td>
+                                <td>{assigment.assignedDate}</td>
+                                <td>{check(assigment.state)}</td>
+                                <td><i className="bi bi-pen btn m-0 text-muted p-0"
+                                       onClick={() => history.push(`/edit/${assigment.id}`)}/></td>
+                                <Popup contentStyle={{
+                                    width: "25%", border: "1px solid black", borderRadius: 10,
+                                    overflow: 'hidden', padding: "20px"
+                                }}
+                                       trigger={<td><i className="bi bi-x-circle text-danger btn p-0"/></td>}
+                                       offsetX={200}
+                                       modal>
+                                </Popup>
+                                <td><i className="bi bi-arrow-counterclockwise text-blue fw-bold"/></td>
+                            </tr>
+                        } modal>{close => (<div>
+                            <Button onClick={close} variant="success" className="btn-view-detail">&times;</Button>
+                        </div>)}
+                        </Popup>
                     )}
                     </tbody>
                 </Table>

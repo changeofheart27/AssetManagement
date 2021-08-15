@@ -36,7 +36,9 @@ const ManageUser = ({responseUser}) => {
         status: null
     }]);
     useEffect(() => {
+
         axios.get(rootAPI + '/admin/users')
+
             .then(function (response) {
                 let result = response.data.map(user => user.id);
                 if (result.includes(responseUser.id)) {

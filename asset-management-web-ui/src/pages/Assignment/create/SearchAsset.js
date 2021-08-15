@@ -6,6 +6,7 @@ const SearchAsset = ({setAssetSelect,close}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [searchTerm, setSearchTerm] = useState("");
     const [asset, setAsset] = useState([{
+        id:null,
         assetCode:null,
         assetName:null,
         categoryDTO:{
@@ -14,7 +15,6 @@ const SearchAsset = ({setAssetSelect,close}) => {
         state:null
 
     }]);
-
     useEffect(() => {
         axios.get(rootAPI + '/assets')
             .then(response => {
@@ -56,8 +56,12 @@ const SearchAsset = ({setAssetSelect,close}) => {
                     <tbody>
                     {asset.map(asset => (
                         asset.state === 0 ?
-                        <tr>
-                            <td><Form.Check name={"singleUser"} color={"red"} type={"radio"} onChange={()=> setAssetSelect({id: asset.id, assetCode: asset.assetCode})} /></td>
+                        <tr key={asset.id}>
+                            <td><Form.Check name={"singleUser"}
+                                            color={"red"}
+                                            type={"radio"}
+                                            onChange={()=> setAssetSelect({id: asset.id, assetCode: asset.assetCode})}
+                            /></td>
                             <td>{asset.assetCode}</td>
                             <td>{asset.assetName}</td>
                             <td>{asset.categoryDTO.name}</td>
@@ -69,7 +73,7 @@ const SearchAsset = ({setAssetSelect,close}) => {
                 <Row className={"justify-content-end"}>
                     <Button variant={"danger"} className={"w-25 mx-5"} onClick={()=> close()}>Save</Button>
                     <Button variant={"danger"} className={"w-25"} onClick={()=>{
-                        setAssetSelect({id:"", username:""})
+                        setAssetSelect({id:null, assetCode:""})
                         close()
                     }} >Cancel</Button>
                 </Row>

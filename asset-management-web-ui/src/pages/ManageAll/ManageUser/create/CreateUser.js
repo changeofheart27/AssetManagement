@@ -205,7 +205,7 @@ const CreateUser = ({setResponseUser}) => {
                                     <div className={"text-danger"} style={{paddingLeft: "25%"}}>{errors.type}</div>
                                 ) : null}
                             </Row>
-                            <Button variant={"danger"} type={"submit"} className={"ms-5"} style={{float: 'right'}}>
+                            <Button variant={"danger"} onClick={() => history.push('/user')} type={"submit"} className={"ms-5"} style={{float: 'right'}}>
                                 Cancel
                             </Button>
                             <Button variant={"danger"} type={"submit"} style={{float: 'right'}} on>

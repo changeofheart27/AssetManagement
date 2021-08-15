@@ -33,7 +33,11 @@ public class UserServiceImpl implements UserService {
   private PasswordEncoder passwordEncoder;
   @Override
   public List<UserDTO> getAllUser() {
+
     List<User> users = userRepository.findAllUser();
+
+//    List<User> users = userRepository.findUserEnabled();
+
     List<UserDTO> result = new ArrayList<>();
     for (User user : users) {
       result.add(UserMapper.toUserDTO(user));

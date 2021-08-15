@@ -57,7 +57,6 @@ const Navbar = ({setCurrentPage}) => {
   });
   return (
     <div className="container-fluid d-flex">
-      <Router>
         <div className="navbar-container col-2">
           <img src={logo} alt="logo_NashTech" />
           <h5 className={"text-danger"}>Online Asset Management</h5>
@@ -125,9 +124,9 @@ const Navbar = ({setCurrentPage}) => {
             <Route path={"/request"}>
               <Request/>
             </Route>
+
           </Switch>
         </div>
-      </Router>
     </div>
   );
 };

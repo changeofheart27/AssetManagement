@@ -13,12 +13,11 @@ const Header = ({currentPage}) => {
     <>
       <header className="main-header">
         <div className="container">
-         
             <div className = "content-info">
               <p>{currentPage}</p>
             </div>
             <div className = "login-page">
-              <a href = "/login"><p>Login</p></a>
+              <Link to = "/login"><p>Login</p></Link>
             </div>
         </div>
       </header>
