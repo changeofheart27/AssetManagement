@@ -16,6 +16,7 @@ import CreateCategory from "../../pages/ManageAll/ManageAsset/create/CreateCateg
 import ManageAssignment from "../../pages/Assignment/manage/ManageAssignment";
 import CreateAssignment from "../../pages/Assignment/create/CreateAssignment"
 import Request from "../../pages/ManageAll/Request/Request";
+import LoginFormPage from "../header/LoginFormPage";
 
 const Navbar = ({setCurrentPage}) => {
   const [responseDataAsset, setResponseDataAsset] = useState({
@@ -55,7 +56,6 @@ const Navbar = ({setCurrentPage}) => {
   });
   return (
     <div className="container-fluid d-flex">
-      <Router>
         <div className="navbar-container col-2">
           <img src={logo} alt="logo_NashTech" />
           <h5 className={"text-danger"}>Online Asset Management</h5>
@@ -117,9 +117,9 @@ const Navbar = ({setCurrentPage}) => {
             <Route path={"/request"}>
               <Request/>
             </Route>
+
           </Switch>
         </div>
-      </Router>
     </div>
   );
 };

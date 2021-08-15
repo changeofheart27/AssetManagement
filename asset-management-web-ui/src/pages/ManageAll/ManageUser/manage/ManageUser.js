@@ -41,6 +41,7 @@ const ManageUser = ({responseUser}) => {
                 let result = response.data.map(user => user.id);
                 if (result.includes(responseUser.id)) {
                     const index = result.indexOf(responseUser.id);
+                    console.log(index, " index")
                     response.data.splice(index, 1);
                     response.data.unshift(responseUser);
                     setList(response.data);
@@ -183,7 +184,7 @@ const ManageUser = ({responseUser}) => {
                                 <Popup contentStyle={{
                                     width: "25%", border: "1px solid black", borderRadius: 10,
                                     overflow: 'hidden', padding: "20px"
-                                }} trigger={user.status === "enable"
+                                }} trigger={user.status === "enabled"
                                     ?
                                     <td><i className="bi bi-x-circle text-danger btn p-0"/></td>
                                     :

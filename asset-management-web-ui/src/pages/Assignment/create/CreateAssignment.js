@@ -8,15 +8,11 @@ import * as Yup from 'yup'
 import Popup from "reactjs-popup";
 import SearchUser from "./SearchUser";
 import SearchAsset from "./SearchAsset";
+import moment from 'moment'
+import SelectDate from "./SelectDate";
 
 const CreateAssignment = ({setResponseAssigment}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
-    const [asset, setAsset] = useState([]);
-    useEffect(() => {
-        axios.get(rootAPI + "/assets").then((response) => {
-            setAsset(response.data);
-        });
-    }, []);
     const history = useHistory();
     const initialValues = {
         assetDTO: {
@@ -29,6 +25,8 @@ const CreateAssignment = ({setResponseAssigment}) => {
         state: null,
         note: null
     }
+
+
     const onSubmit = (values, {setSubmitting}) => {
         let create = {
             assetDTO: {
@@ -37,7 +35,7 @@ const CreateAssignment = ({setResponseAssigment}) => {
             userDTO: {
                 id: singleUser.id,
             },
-            assignedDate: values.assignedDate,
+            assignedDate: moment(selectDate, "DD-MM-YYYY").format("YYYY-MM-DD"),
             state: 5,
             note: values.note
         };
@@ -59,28 +57,41 @@ const CreateAssignment = ({setResponseAssigment}) => {
         id: null,
         username: null
     })
-    const [assetSelect, setAssetSelect]= useState({
+    const [assetSelect, setAssetSelect] = useState({
         id: null,
         assetCode: null
     })
-    useEffect(() => {
-        console.log(singleUser)
-    }, [singleUser])
+    const myDate = moment().format('DD/MM/YYYY');
+    const [selectDate, setSelectDate] = useState(myDate);
+    const validate = (singleUser, assetSelect) => {
+        const errors = {};
+
+        if (!singleUser.username) {
+            errors.username = 'Require'
+        }
+        if (!assetSelect.assetCode) {
+            errors.assetCode = 'require'
+        }
+
+        return errors;
+    };
     return (
         <div className={"container ps-5 d-block"}>
             <Row>
                 <h1 className={"text-danger mb-5"}>Create New Assignment</h1>
             </Row>
             <Row className={"mt-5"}>
-                <Formik initialValues={initialValues} onSubmit={onSubmit}>
+                <Formik
+                    initialValues={initialValues}
+                    onSubmit={onSubmit}
+                >
+
                     {({
                           values,
                           errors,
-                          touched,
                           handleChange,
                           handleBlur,
                           handleSubmit,
-                          isSubmitting,
                           /* and other goodies */
                       }) => (
                         <Form onSubmit={handleSubmit}>
@@ -88,14 +99,12 @@ const CreateAssignment = ({setResponseAssigment}) => {
                                 <InputGroup>
                                     <p className={"w-25"}>User</p>
                                     <Form.Control
-                                        disabled
+                                        readOnly
                                         className={"bg-white"}
                                         aria-label="Username"
                                         name={"userID"}
                                         value={singleUser.username}
                                         onBlur={handleBlur}
-                                        isValid={touched.userID && !errors.userID}
-                                        isInvalid={touched.userID && errors.userID}
                                     />
                                     <Popup
                                         trigger={
@@ -113,14 +122,12 @@ const CreateAssignment = ({setResponseAssigment}) => {
                                 <InputGroup>
                                     <p className={"w-25"}>Asset</p>
                                     <Form.Control
-                                        disabled
+                                        readOnly
                                         className={"bg-white"}
                                         aria-label="Username"
                                         name={"assetID"}
                                         value={assetSelect.assetCode}
                                         onBlur={handleBlur}
-                                        isValid={touched.assetID && !errors.assetID}
-                                        isInvalid={touched.assetID && errors.assetID}
                                     />
                                     <Popup
                                         trigger={
@@ -135,33 +142,50 @@ const CreateAssignment = ({setResponseAssigment}) => {
                                 </InputGroup>
                             </Row>
                             <Row className="mb-3">
-                                <p className={"w-25"} id="basic-addon1">Assigned Date</p>
-                                <FormControl
-                                    type={"date"}
-                                    aria-describedby="basic-addon1"
-                                    className={"w-75"}
-                                    name={"assignedDate"}
-                                    onChange={handleChange}
-                                    isValid={touched.installedDate && !errors.installedDate}
-                                    isInvalid={touched.installedDate && errors.installedDate}
-                                />
+                                <InputGroup>
+                                    <p className={"w-25"} id="basic-addon1">Assigned Date</p>
+                                    <Form.Control
+                                        readOnly
+                                        aria-describedby="basic-addon1"
+                                        className={"bg-white"}
+                                        name={"assignedDate"}
+                                        value={selectDate}
+                                    />
+                                    <Popup
+                                        trigger={
+                                            <InputGroup.Text className={"bg-white"}><i
+                                                className="bi bi-calendar-event-fill"/>
+                                            </InputGroup.Text>
+                                        }
+                                        position={"left top"}
+                                        contentStyle={{width: "auto"}}
+                                    >
+                                        {close => <SelectDate setSelectDate={setSelectDate}/>}
+                                    </Popup>
+
+                                </InputGroup>
                             </Row>
                             <Row className="mb-3">
-                                <p className={"w-25"}>Note</p>
-                                <FormControl
-                                    name={"note"}
-                                    aria-label="Username"
-                                    aria-describedby="basic-addon1"
-                                    className={"w-75"}
-                                    style={{height: '5em'}}
-                                    onChange={handleChange}
-                                />
+                                <InputGroup>
+                                    <p className={"w-25"}>Note</p>
+                                    <FormControl
+                                        name={"note"}
+                                        aria-describedby="basic-addon1"
+                                        className={"w-75"}
+                                        style={{height: '5em'}}
+                                        onChange={handleChange}
+                                    />
+                                </InputGroup>
                             </Row>
                             <Button variant={"danger"} onClick={() => history.push('/assignment')} className={"ms-5"}
                                     style={{float: 'right'}}>
                                 Cancel
                             </Button>
-                            <Button variant={"danger"} type={"submit"} style={{float: 'right'}} on>
+                            <Button
+                                variant={"danger"}
+                                type={"submit"}
+                                style={{float: 'right'}}
+                            >
                                 Save
                             </Button>
                         </Form>
