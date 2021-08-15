@@ -75,7 +75,7 @@ const SearchUser = ({setSingleUser,close}) => {
                 <Row className={"justify-content-end"}>
                     <Button variant={"danger"} className={"w-25 mx-5"} onClick={()=> close()}>Save</Button>
                     <Button variant={"danger"} className={"w-25"} onClick={()=>{
-                        setSingleUser({id:"", username:""})
+                        setSingleUser({id:null, username:""})
                         close()
                     }} >Cancel</Button>
                 </Row>

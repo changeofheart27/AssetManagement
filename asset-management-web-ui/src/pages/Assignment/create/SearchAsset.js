@@ -73,7 +73,7 @@ const SearchAsset = ({setAssetSelect,close}) => {
                 <Row className={"justify-content-end"}>
                     <Button variant={"danger"} className={"w-25 mx-5"} onClick={()=> close()}>Save</Button>
                     <Button variant={"danger"} className={"w-25"} onClick={()=>{
-                        setAssetSelect({id:"", assetCode:""})
+                        setAssetSelect({id:null, assetCode:""})
                         close()
                     }} >Cancel</Button>
                 </Row>

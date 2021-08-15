@@ -75,6 +75,16 @@ const CreateAssignment = ({setResponseAssigment}) => {
 
         return errors;
     };
+    const formValid = () => {
+        if (singleUser.id === null) {
+            return false;
+        }
+        if (assetSelect.id === null) {
+            return false
+        }
+        return true;
+
+    }
     return (
         <div className={"container ps-5 d-block"}>
             <Row>
@@ -185,6 +195,7 @@ const CreateAssignment = ({setResponseAssigment}) => {
                                 variant={"danger"}
                                 type={"submit"}
                                 style={{float: 'right'}}
+                                disabled={!formValid()}
                             >
                                 Save
                             </Button>
