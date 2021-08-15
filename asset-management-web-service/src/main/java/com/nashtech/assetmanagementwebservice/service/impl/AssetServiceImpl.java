@@ -67,7 +67,7 @@ public class AssetServiceImpl implements AssetService {
             throw new IllegalArgumentException("Request payload can not be null");
         }
         Asset asset = assetMapper.fromDTO(payload);
-        // 0 Available, 1 Not Available, 2 Waiting for recycling, 3 Recycled, 4 Assigned
+        // 0 Available, 1 Not Available, 2 Waiting for recycling, 3 Recycled, 4 Assigned, 5 Waiting for acceptance, 6 Accepted
         if (asset.getState() > 1) {
             throw new InternalServerException("Option is not available");
         }
@@ -129,35 +129,20 @@ public class AssetServiceImpl implements AssetService {
     @Override
     public List<AssetDTO> filterAssets(String category, Integer state) {
         List<Asset> assets;
-        if (state == null) {
-            if (category.equals("Category")) {
-                assets = assetRepository.findAllByOrderByAssetName();
-            } else {
-                assets = assetRepository.findAssetByCategory(category);
-                logger.info("Successfully got " + assets.size() + " Asset!");
-            }
+        if (state == null && category == null) {
+            assets = assetRepository.findAllByOrderByAssetName();
+            return assets.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
+        } else
+        if (state == null && category != null) {
+            assets = assetRepository.findAssetByCategory(category);
+            logger.info("Successfully got " + assets.size() + " Asset!");
+            return assets.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
+        } else if (category == null && state != null) {
+            assets = assetRepository.findAssetByState(state);
+            logger.info("Successfully got " + assets.size() + " Asset!");
             return assets.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
         }
-        else if(category == null) {
-            if (state == 999) {
-                assets = assetRepository.findAllByOrderByAssetName();
-                logger.info("Successfully got " + assets.size() + " Asset!");
-            } else {
-                assets = assetRepository.findAssetByState(state);
-                logger.info("Successfully got " + assets.size() + " Asset!");
-            }
-            return assets.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
-        } else {
-            if (category.equals("Category")) {
-                assets = assetRepository.findAllByOrderByAssetName();
-            } else {
-                assets = assetRepository.findAssetByCategory(category);
-                logger.info("Successfully got " + assets.size() + " Asset!");
-            }
-            List<Asset> result = assets.stream().filter(asset -> asset.getState() == state).collect(Collectors.toList());
-            return result.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
-        }
-
+        return null;
     }
 
 
