@@ -18,7 +18,7 @@ public class UserMapper {
         tmp.setDob(user.getDob());
         tmp.setLocation(user.getLocation());
         tmp.setStaffCode(user.getStaffCode());
-
+        tmp.setAuthority(user.getAuthority().getAuthority());
         tmp.setStatus(user.getStatus());
         tmp.setPassword(user.getPassword());
         return tmp;

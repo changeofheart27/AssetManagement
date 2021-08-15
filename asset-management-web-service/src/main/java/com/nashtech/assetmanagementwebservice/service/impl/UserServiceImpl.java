@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public List<UserDTO> getAllUser() {
 
-    List<User> users = userRepository.findAllUser();
+    List<User> users = userRepository.findByStatus("enabled");
 
 //    List<User> users = userRepository.findUserEnabled();
 
@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserDTO getUserById(int id) {
-    Optional<User> user = userRepository.findUserByUserId(id);
+    Optional<User> user = userRepository.findById(id);
     if (user.isEmpty()) {
       throw new NotFoundException("No user found");
     }
