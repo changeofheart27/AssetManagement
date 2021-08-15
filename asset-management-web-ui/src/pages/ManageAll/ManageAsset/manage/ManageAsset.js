@@ -89,6 +89,14 @@ const ManageAsset = ({responseDataAsset}) => {
     useEffect(()=>{
         console.log("use Effect Run")
         console.log(request)
+        if(request.params.type === 'State'){
+            request.params.type = null;
+            console.log(request)
+        }
+        if(request.params.category === 'Category'){
+            request.params.category = null;
+            console.log(request)
+        }
           axios.get(rootAPI + `/assets/filter`,request)
                 .then(function (response) {
                     setList(response.data);
@@ -157,7 +165,7 @@ const ManageAsset = ({responseDataAsset}) => {
                         name={"type"}
                         onChange={handleFilterType}
                     >
-                        <option onChange={clearTypeState} >State</option>
+                        <option value={null} >State</option>
                         <option value="0">Available</option>
                         <option value="1">Not Available</option>
                         <option value="2">Waiting for recycling</option>
