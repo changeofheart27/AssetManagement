@@ -4,7 +4,9 @@ import React, {useEffect, useState} from 'react';
 import {useHistory, useParams} from 'react-router-dom';
 import {Formik} from 'formik';
 import axios from "axios";
-
+import * as Yup from "yup";
+import {differenceInYears} from "date-fns";
+import differenceInDays from 'date-fns/differenceInDays/index.js';
 const EditUser = ({setResponseUser}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     let {id} = useParams();
@@ -29,8 +31,7 @@ const EditUser = ({setResponseUser}) => {
             .then(function (response) {
                 setUser(response.data);
                 setGender(response.data.gender);
-            })
-            .catch(console.log(id));
+            });
     }, [id])
 
     const [gender, setGender] = useState("");
@@ -80,22 +81,42 @@ const EditUser = ({setResponseUser}) => {
                 history.push("/user");
             });
     };
-    const validate = (values, props) => {
-        const errors = {};
-
-        if (!values.username) {
-            errors.username = 'Required';
-        }
-
-        return errors;
-    }
+    const ValidateSchema = Yup.object().shape({
+        firstName: Yup.string()
+            .max(50)
+            .required('Required')
+            .typeError('First name is required'),
+        lastName: Yup.string()
+            .max(50)
+            .required('Required')
+            .typeError('Last name is required'),
+        type: Yup.string()
+            .required('Required')
+            .typeError('Please select type'),
+        dob: Yup.date()
+            .required()
+            .typeError('DOB is required')
+            .test("dob", "Should be greater than 18", function (value) {
+                return differenceInYears(new Date(), new Date(value)) >= 18;
+            }),
+        joinedDate: Yup.date()
+            .required()
+            .typeError('Joined Date is required')
+            .min(Yup.ref('dob'),"Should be greater than DOB")
+            .test("dob", "Should be greater than DOB", function (value) {
+                return differenceInDays(new Date(value), new Date(this.parent.dob)) != 0;
+        }),
+    });
     return (
         <div className={"container ps-5 d-block"}>
             <Row>
                 <h1 className={"text-danger mb-5"}>Edit User</h1>
             </Row>
             <Row className={"mt-5"}>
-                <Formik initialValues={initialValues} onSubmit={onSubmit} enableReinitialize={"true"} validate={validate}>
+                <Formik initialValues={initialValues}
+                        onSubmit={onSubmit}
+                        enableReinitialize={"true"}
+                        validationSchema={ValidateSchema}>
                     {({
                           values,
                           errors,
@@ -117,8 +138,13 @@ const EditUser = ({setResponseUser}) => {
                                     style={{backgroundColor: '#eff1f5'}}
                                     value={values.firstName}
                                     onChange={handleChange}
+                                    onError={errors}
+                                    isValid={touched.firstName && !errors.firstName}
+                                    isInvalid={touched.firstName && errors.firstName}
                                 />
-                                {errors.username}
+                                {errors.firstName && touched.firstName ? (
+                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>{errors.firstName}</div>
+                                ) : null}
                             </Row>
                             <Row className={"mb-3"}>
                                 <p className={"w-25"}>Last Name</p>
@@ -130,21 +156,32 @@ const EditUser = ({setResponseUser}) => {
                                     style={{backgroundColor: '#eff1f5'}}
                                     value={values.lastName}
                                     onChange={handleChange}
+                                    isValid={touched.lastName && !errors.lastName}
+                                    isInvalid={touched.lastName && errors.lastName}
                                 />
+                                {errors.lastName && touched.lastName ? (
+                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>{errors.lastName}</div>
+                                ) : null}
                             </Row>
                             <Row className="mb-3">
                                 <p className={"w-25"} id="basic-addon1">Date of Birth</p>
                                 <FormControl
                                     type={"date"}
                                     aria-describedby="basic-addon1"
+                                    name={"dob"}
                                     className={"w-75"}
                                     value={values.dob}
                                     onChange={handleChange}
+                                    isValid={touched.dob && !errors.dob}
+                                    isInvalid={touched.dob && errors.dob}
                                 />
+                                {errors.dob && touched.dob ? (
+                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>{errors.dob}</div>
+                                ) : null}
                             </Row>
-                            <Row>
+                            <Row className={"mb-3"}>
                                 <p id="basic-addon1" className={"w-25"}>Gender</p>
-                                <div className={"container w-75"}>
+                                <div className={"container-lg w-75"}>
                                     <FormCheck
                                         inline
                                         type={"radio"}
@@ -176,7 +213,12 @@ const EditUser = ({setResponseUser}) => {
                                     name={"joinedDate"}
                                     value={values.joinedDate}
                                     onChange={handleChange}
+                                    isValid={touched.joinedDate && !errors.joinedDate}
+                                    isInvalid={touched.joinedDate && errors.joinedDate}
                                 />
+                                {errors.joinedDate && touched.joinedDate ? (
+                                    <div className={"text-danger"} style={{paddingLeft: "25%"}}>{errors.joinedDate}</div>
+                                ) : null}
                             </Row>
                             <Row className="mb-3">
                                 <p className={"col-3"}>Type</p>
@@ -186,11 +228,16 @@ const EditUser = ({setResponseUser}) => {
                                     name={"type"}
                                     value={values.type}
                                     onChange={handleChange}
+                                    isValid={touched.type && !errors.type}
+                                    isInvalid={touched.type && errors.type}
                                 >
                                     <option selected></option>
                                     <option>Admin</option>
                                     <option>Staff</option>
                                 </Form.Select>
+                                {errors.type && touched.type ? (
+                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>{errors.type}</div>
+                                ) : null}
                             </Row>
                             <Button variant={"danger"} type={"submit"} className={"ms-5"} style={{float: 'right'}}>
                                 Cancel

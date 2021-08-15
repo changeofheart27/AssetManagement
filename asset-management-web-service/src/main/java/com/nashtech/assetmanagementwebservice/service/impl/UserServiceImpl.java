@@ -1,5 +1,6 @@
 package com.nashtech.assetmanagementwebservice.service.impl;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -83,11 +84,11 @@ public class UserServiceImpl implements UserService {
     String status = user.get().getStatus();
     User changeUserStatus = UserMapper.toUser(request, id);
     try {
-      if (status.equals("enable")) {
+      if (status.equals("enabled")) {
 
-        changeUserStatus.setStatus("disable");
+        changeUserStatus.setStatus("disabled");
       } else {
-        changeUserStatus.setStatus("enable");
+        changeUserStatus.setStatus("enabled");
       }
       userRepository.save(changeUserStatus);
     } catch (Exception ex) {
@@ -100,20 +101,35 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserDTO createUser(CreateUserRequest request) {
+
     User user = userRepository.findByUsername(request.getUsername());
 
 
     if (user != null) {
       throw new DuplicateRecordException("User name already exist !");
     }
-    long count = userRepository.count();
+
+    long count = userRepository.count() + 1;
     String staffCode = "SD" + String.format("%04d", count);
-
     user = UserMapper.toUser(request);
-
+    StringBuilder username = new StringBuilder(user.getFirstName().toLowerCase());
+    String lastName = user.getLastName().toLowerCase();
+    String[] tmp = lastName.split("\\s+");
+      for (String s : tmp) {
+          username.append(s.charAt(0));
+      }
+    Integer countUsername = userRepository.countByDuplicateFullName(username.toString());
+    if (countUsername > 0) {
+      user.setUsername(username + countUsername.toString());
+    } else {
+      user.setUsername(username.toString());
+    }
+    DateTimeFormatter formatters = DateTimeFormatter.ofPattern("ddMMuuuu");
+    String dob = user.getDob().format(formatters);
     user.setStaffCode(staffCode);
-    user.setStatus("enable");
-    user.setPassword(passwordEncoder.encode("123"));
+    user.setStatus("enabled");
+    user.setPassword(passwordEncoder.encode(username + "@" + dob));
+
     user.setLocation("HN");
 
     Authority authority = new Authority();
@@ -171,4 +187,5 @@ public class UserServiceImpl implements UserService {
     return result;
 
   }
+
 }

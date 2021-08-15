@@ -5,9 +5,9 @@ import React, {useEffect, useState} from 'react';
 import Popup from "reactjs-popup";
 import axios from "axios";
 import {useHistory} from 'react-router-dom'
-import Pagination from '../../components/Pagination/Pagination';
+import Pagination from '../../../components/Pagination/Pagination';
 
-const Home = ({responseAssigment}) => {
+const ManageAssignment = ({responseAssigment}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(10);
@@ -33,7 +33,7 @@ const Home = ({responseAssigment}) => {
         axios.get(rootAPI + '/assignments')
             .then(function (response) {
                 let result = response.data.map(assigment => assigment.id);
-                if (result.includes(responseAssigment.id)) {
+                if (result.includes(responseAssigment)) {
                     const index = response.data.indexOf(responseAssigment);
                     response.data.splice(index, 1);
                     response.data.unshift(responseAssigment);
@@ -136,7 +136,7 @@ const Home = ({responseAssigment}) => {
                     >Search
                     </Button>
                     <Button variant={"danger"} 
-                        className={"w-25"} 
+                        className={"w-auto"}
                         onClick={() => history.push('/createAssignment')}
                     >Create new Assigment
                     </Button>
@@ -196,4 +196,4 @@ const Home = ({responseAssigment}) => {
     )
 }
 
-export default Home;
+export default ManageAssignment;

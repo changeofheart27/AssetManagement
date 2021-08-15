@@ -59,7 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						"/webjars/**").anonymous()
 				.antMatchers("/authenticate").permitAll()
 
-				.antMatchers("/**/admin/**").hasAnyRole("ADMIN")
+				.antMatchers("/**/admin/**").permitAll()
 				.antMatchers("/**/staff/**").hasAnyRole("STAFF")
 				.anyRequest().authenticated().and().exceptionHandling()
 				.authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()

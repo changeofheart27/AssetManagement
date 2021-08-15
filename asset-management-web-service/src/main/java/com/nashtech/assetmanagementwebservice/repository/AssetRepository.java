@@ -14,7 +14,7 @@ import java.util.List;
 @Transactional
 public interface AssetRepository extends JpaRepository<Asset, Integer> {
 	public List<Asset> findAllByOrderByAssetName();
-	
+	public Asset findByAssetCode(String assetCode);
 	//get the latest id of the asset based on their category prefix
 	@Query(value = "SELECT MAX(CONVERT(SUBSTRING_INDEX(a.asset_code,c.prefix,-1), SIGNED)) as maxIdForEachCategory "
 			+ "FROM asset a inner join category c on a.category_id = c.id "
@@ -31,5 +31,6 @@ public interface AssetRepository extends JpaRepository<Asset, Integer> {
 	public List<Asset> findAssetByCategory(String category);
 	
 	public List<Asset> findAssetByState(int state);
+	
 
 }

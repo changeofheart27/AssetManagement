@@ -1,11 +1,9 @@
 package com.nashtech.assetmanagementwebservice.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -49,9 +47,6 @@ public class User {
     @Column(name = "location")
     private String location;
 
-//    @Column(name ="type")
-//    private String type;
-
     @Column(name ="status" )
     private String status;
 
@@ -61,8 +56,19 @@ public class User {
 //    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 //    private List<Asset> assets;
 
+
     @OneToOne(mappedBy = "user" ,cascade = CascadeType.ALL)
     private Authority authority;
+
+
+    
+    @OneToMany(mappedBy = "user")
+    private List<Assignment> assignments;
+
+//    @OneToOne(mappedBy = "user")
+//    private Request request;
+
+
 
     public User(String username2, String password, Authority authorities) {
         this.username=username2;

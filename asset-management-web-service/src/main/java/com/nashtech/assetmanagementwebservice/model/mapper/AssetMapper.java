@@ -1,12 +1,10 @@
 package com.nashtech.assetmanagementwebservice.model.mapper;
 
 import com.nashtech.assetmanagementwebservice.model.dto.AssetDTO;
-
-import java.time.LocalDate;
-
 import com.nashtech.assetmanagementwebservice.entity.Asset;
-import com.nashtech.assetmanagementwebservice.entity.Category;
+import org.springframework.stereotype.Component;
 
+@Component
 public class AssetMapper {
 	private final CategoryMapper categoryMapper = new CategoryMapper();
 	
@@ -44,5 +42,5 @@ public class AssetMapper {
 		entity.setLocation("HN");
 		return entity;
 	}
-
+	
 }

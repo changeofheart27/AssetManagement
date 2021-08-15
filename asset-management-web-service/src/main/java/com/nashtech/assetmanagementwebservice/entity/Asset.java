@@ -1,15 +1,12 @@
 package com.nashtech.assetmanagementwebservice.entity;
 
+import org.hibernate.annotations.Cascade;
+
 import java.time.LocalDate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+
+import javax.persistence.*;
+
 
 
 @Entity
@@ -46,6 +43,10 @@ public class Asset {
 	@ManyToOne()
 	@JoinColumn(name = "category_id")
 	private Category category;
+	
+	@OneToOne(mappedBy = "asset")
+	private Assignment assignment;
+
 
 	public Asset() {
 		super();
@@ -144,6 +145,29 @@ public class Asset {
 	public void setCategory(Category category) {
 		this.category = category;
 	}
-	
-	
+
+	public Assignment getAssignment() {
+		return assignment;
+	}
+
+	public void setAssignment(Assignment assignment) {
+		this.assignment = assignment;
+	}
+
+
+	@Override
+	public String toString() {
+		return "Asset{" +
+				"id=" + id +
+				", assetCode='" + assetCode + '\'' +
+				", assetName='" + assetName + '\'' +
+				", specification='" + specification + '\'' +
+				", installedDate=" + installedDate +
+				", state=" + state +
+				", location='" + location + '\'' +
+				", user=" + user +
+				", category=" + category +
+				", assignment=" + assignment +
+				'}';
+	}
 }

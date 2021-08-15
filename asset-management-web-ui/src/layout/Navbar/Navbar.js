@@ -1,21 +1,25 @@
-import React, {useState} from "react";
-import { Link } from "react-router-dom";
-import logo from "../../resources/logo.jpg";
-import Home from "../../pages/home/Home";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./Navbar.css";
-
-import ManageUser from "../../pages/ManageAll/ManageUser/manage/ManageUser";
-import CreateUser from "../../pages/ManageAll/ManageUser/create/CreateUser";
-import EditUser from "../../pages/ManageAll/ManageUser/edit/EditUser"
-
-import ManageAsset from "../../pages/ManageAll/ManageAsset/manage/ManageAsset"
-import CreateAsset from "../../pages/ManageAll/ManageAsset/create/CreateAsset"
-import EditAsset from "../../pages/ManageAll/ManageAsset/edit/EditAsset";
 import 'bootstrap/dist/css/bootstrap.min.css'
-import CreateCategory from "../../pages/ManageAll/ManageAsset/create/CreateCategory";
 
-const Navbar = () => {
+import React, {useState} from "react";
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+
+import CreateAsset from "../../pages/ManageAll/ManageAsset/create/CreateAsset"
+import CreateAssignment from "../../pages/Assignment/create/CreateAssignment"
+import CreateCategory from "../../pages/ManageAll/ManageAsset/create/CreateCategory";
+import CreateUser from "../../pages/ManageAll/ManageUser/create/CreateUser";
+import EditAsset from "../../pages/ManageAll/ManageAsset/edit/EditAsset";
+import EditUser from "../../pages/ManageAll/ManageUser/edit/EditUser"
+import Home from "../../pages/home/Home";
+import { Link } from "react-router-dom";
+import LoginFormPage from "../header/LoginFormPage"
+import ManageAsset from "../../pages/ManageAll/ManageAsset/manage/ManageAsset"
+import ManageAssignment from "../../pages/Assignment/manage/ManageAssignment";
+import ManageUser from "../../pages/ManageAll/ManageUser/manage/ManageUser";
+import Request from "../../pages/ManageAll/Request/Request";
+import logo from "../../resources/logo.jpg";
+
+const Navbar = ({setCurrentPage}) => {
   const [responseDataAsset, setResponseDataAsset] = useState({
     id: null,
     assetCode: null,
@@ -39,42 +43,60 @@ const Navbar = () => {
     joinedDate: null,
     type: null
   });
+  const [responseAssigment,setResponseAssigment] = useState({
+    id: null,
+    assetDTO: {
+      assetCode: null,
+      assetName: null,
+    },
+    userDTO: {
+      name: null,
+    },
+    assignedDate:null,
+    state:null
+  });
   return (
-    <div className="container">
+    <div className="container-fluid d-flex">
       <Router>
-        <div className="navbar-container w-25">
+        <div className="navbar-container col-2">
           <img src={logo} alt="logo_NashTech" />
-          <p>Online Asset Management</p>
+          <h5 className={"text-danger"}>Online Asset Management</h5>
           <div className="navbar">
             <ul className="navbar-list">
-              <Link to="/home">
+              <Link to="/home" onClick = {()=> setCurrentPage("Home")}>
                 <li className="navbar-list--item">Home</li>
               </Link>
-              <Link to="/user">
+              <Link to="/user" onClick = {()=> setCurrentPage("Manage User")}>
                 <li className="navbar-list--item">Manage User</li>
               </Link>
-              <Link to="/asset">
+              <Link to="/asset" onClick = {()=> setCurrentPage("Manage Asset")} >
                 <li className="navbar-list--item">Manage Asset</li>
               </Link>
-              <Link to="/asset">
+              <Link to="/assignment" onClick = {()=> setCurrentPage("Manage Assignment")}>
                 <li className="navbar-list--item">Manage Assignment</li>
               </Link>
-              <Link to="/asset">
+              <Link to="/request" onClick = {()=> setCurrentPage("Request For Returning")}>
                 <li className="navbar-list--item">Request For Returning</li>
               </Link>
               <Link to="/asset">
-                <li className="navbar-list--item">Report</li>
+                <li className="navbar-list--item" onClick = {()=> setCurrentPage("Report")}>Report</li>
               </Link>
             </ul>
           </div>
         </div>
-        <div className="pages-container w-75">
+        <div className="pages-container col-10">
           <Switch>
-            <Route path={"/home"} exact>
-              <Home />
-            </Route>
+            {/*<Route path={"/home"} exact>*/}
+            {/*  <Home responseAssigment = {responseAssigment}/>*/}
+            {/*</Route>*/}
             <Route path={"/user"}>
               <ManageUser responseUser = {responseUser}/>
+            </Route>
+            <Route path={"/login"}>
+              <LoginFormPage/>
+            </Route>
+            <Route path={"/home"}>
+              <Home/>
             </Route>
             <Route path={"/createuser"}>
               <CreateUser setResponseUser = {setResponseUser}/>
@@ -93,6 +115,15 @@ const Navbar = () => {
             </Route>
             <Route path={"/createcategory"}>
               <CreateCategory/>
+            </Route>
+            <Route path={"/assignment"}>
+              <ManageAssignment responseAssigment={responseAssigment}/>
+            </Route>
+            <Route path={"/createassignment"}>
+              <CreateAssignment setResponseAssigment={setResponseAssigment}/>
+            </Route>
+            <Route path={"/request"}>
+              <Request/>
             </Route>
           </Switch>
         </div>

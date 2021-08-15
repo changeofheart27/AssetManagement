@@ -4,6 +4,7 @@
 }
 
 .main-header {
+  margin-bottom: 1rem;
   background-color: #cf2338;
 }
 
@@ -12,4 +13,9 @@
   font-size: 18px;
   font-weight: 700;
   color: #fff;
+}
+
+header .container {
+    margin-top: inherit;
+    display: flex;
 }

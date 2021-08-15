@@ -27,5 +27,7 @@ public interface UserService {
 
   public List<UserDTO> getUserByType(String type);
 
+
   public UserDTO changePassword(UpdateUserRequest request ,int id);
+
 }
