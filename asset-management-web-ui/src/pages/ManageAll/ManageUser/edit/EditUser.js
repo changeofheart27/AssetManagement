@@ -131,6 +131,7 @@ const EditUser = ({setResponseUser}) => {
                             <Row className={"mb-3"}>
                                 <p className={"w-25"}>First Name</p>
                                 <FormControl
+                                    readOnly
                                     aria-label="Username"
                                     aria-describedby="basic-addon1"
                                     className={"w-75"}
@@ -149,6 +150,7 @@ const EditUser = ({setResponseUser}) => {
                             <Row className={"mb-3"}>
                                 <p className={"w-25"}>Last Name</p>
                                 <FormControl
+                                    readOnly
                                     aria-label="Username"
                                     aria-describedby="basic-addon1"
                                     className={"w-75"}
