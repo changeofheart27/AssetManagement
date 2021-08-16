@@ -15,7 +15,7 @@ const ViewDetailedUser = props => {
     username: "",
     first_name: "",
     last_name: "",
-    type: "",
+    authority: "",
     dob: "",
     joined_date: "",
     location: "",
@@ -26,7 +26,7 @@ const ViewDetailedUser = props => {
     loadUser();
   }, []);
   const loadUser = async () => {
-    const res = await axios.get(rootAPI+`/users/${id}`);
+    const res = await axios.get(rootAPI+`/admin/users/${id}`);
     setUser(res.data);
   };
 
@@ -64,7 +64,7 @@ const ViewDetailedUser = props => {
        </tr>
        <tr>
          <td className="fields-name">Type </td>
-         <td>: {user.type}</td>
+         <td>: {user.authority}</td>
        </tr>
        <tr>
          <td className="fields-name">Date of Birth </td>
@@ -80,7 +80,7 @@ const ViewDetailedUser = props => {
        </tr>
        <tr>
          <td className="fields-name">Status </td>
-         <td>: {checkStatus(user.status)}</td>
+         <td>: {user.status} </td>
        </tr>
        </tbody>
      </table>

@@ -32,7 +32,7 @@ const ManageUser = ({responseUser}) => {
         lastName: null,
         username: null,
         joinedDate: null,
-        type: null,
+        authority: null,
         status: null
     }]);
     useEffect(() => {
@@ -59,7 +59,7 @@ const ManageUser = ({responseUser}) => {
     }
     const handleChangeType = evt => {
         const target = evt.target.value;
-        axios.get(rootAPI + `/users/filter?type=${target}`)
+        axios.get(rootAPI + `/admin/filter?type=${target}`)
             .then(function (response) {
                 setList(response.data);
                 console.log(response.data)
@@ -73,7 +73,7 @@ const ManageUser = ({responseUser}) => {
             })
     }
     const filterSearchByType = () => {
-        axios.get(rootAPI + `/users/filter?type=${search}`)
+        axios.get(rootAPI + `/admin/filter?type=${search}`)
             .then(function (response) {
                 setList(response.data);
                 console.log(response.data)
@@ -180,7 +180,7 @@ const ManageUser = ({responseUser}) => {
                                 <td>{user.firstName} {user.lastName}</td>
                                 <td>{user.username}</td>
                                 <td>{user.joinedDate}</td>
-                                <td>{user.type}</td>
+                                <td>{user.authority}</td>
                                 <td><i className="bi bi-pen btn m-0 text-muted p-0"
                                        onClick={() => history.push(`/edituser/${user.id}`)}/></td>
                                 <Popup contentStyle={{

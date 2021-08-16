@@ -20,14 +20,14 @@ const EditUser = ({setResponseUser}) => {
         dob: null,
         gender: null,
         joinedDate: null,
-        type: null,
+        authority: null,
         password: null,
         location: null,
         status: null
     });
     useEffect(() => {
         axios
-            .get(rootAPI+`/users/${id}`)
+            .get(rootAPI+`/admin/users/${id}`)
             .then(function (response) {
                 setUser(response.data);
                 setGender(response.data.gender);
@@ -43,7 +43,7 @@ const EditUser = ({setResponseUser}) => {
         dob: user.dob,
         gender: user.gender,
         joinedDate: user.joinedDate,
-        type: user.type,
+        authority: user.authority,
         status: user.status,
         location: user.location,
         password: user.password
@@ -58,13 +58,13 @@ const EditUser = ({setResponseUser}) => {
             dob: values.dob,
             gender: gender,
             joined_date: values.joinedDate,
-            type: values.type,
+            authority: values.authority,
             status: user.status,
             location: user.location,
             password: user.password
         }
         axios
-            .put(rootAPI+`/users/${id}`, editUser)
+            .put(rootAPI+`/admin/users/${id}`, editUser)
             .then((response) => {
                 setSubmitting(false);
                 setResponseUser({
@@ -76,7 +76,7 @@ const EditUser = ({setResponseUser}) => {
                     dob: response.data.dob,
                     gender: response.data.gender,
                     joinedDate: response.data.joinedDate,
-                    type: response.data.type
+                    authority: response.data.authority
                 });
                 history.push("/user");
             });
@@ -90,7 +90,7 @@ const EditUser = ({setResponseUser}) => {
             .max(50)
             .required('Required')
             .typeError('Last name is required'),
-        type: Yup.string()
+        authority: Yup.string()
             .required('Required')
             .typeError('Please select type'),
         dob: Yup.date()
@@ -225,18 +225,18 @@ const EditUser = ({setResponseUser}) => {
                                 <Form.Select
                                     size="sm"
                                     className={"w-75"}
-                                    name={"type"}
-                                    value={values.type}
+                                    name={"authority"}
+                                    value={values.authority}
                                     onChange={handleChange}
-                                    isValid={touched.type && !errors.type}
-                                    isInvalid={touched.type && errors.type}
+                                    isValid={touched.authority && !errors.authority}
+                                    isInvalid={touched.authority && errors.authority}
                                 >
                                     <option selected></option>
                                     <option>Admin</option>
                                     <option>Staff</option>
                                 </Form.Select>
-                                {errors.type && touched.type ? (
-                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>{errors.type}</div>
+                                {errors.authority && touched.authority ? (
+                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>{errors.authority}</div>
                                 ) : null}
                             </Row>
                             <Button variant={"danger"} type={"submit"} className={"ms-5"} style={{float: 'right'}}>

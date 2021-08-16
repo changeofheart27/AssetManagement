@@ -4,13 +4,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import com.nashtech.assetmanagementwebservice.entity.Authority;
-import com.nashtech.assetmanagementwebservice.exception.DuplicateRecordException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.nashtech.assetmanagementwebservice.entity.Authority;
 import com.nashtech.assetmanagementwebservice.entity.User;
+import com.nashtech.assetmanagementwebservice.exception.DuplicateRecordException;
 import com.nashtech.assetmanagementwebservice.exception.InternalServerException;
 import com.nashtech.assetmanagementwebservice.exception.NotFoundException;
 import com.nashtech.assetmanagementwebservice.model.dto.UserDTO;
@@ -24,19 +23,22 @@ import com.nashtech.assetmanagementwebservice.service.UserService;
 public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
+
   @Autowired
-  public UserServiceImpl( UserRepository userRepository) {
+  public UserServiceImpl(UserRepository userRepository) {
 
     this.userRepository = userRepository;
   }
+
   @Autowired
   private PasswordEncoder passwordEncoder;
+
   @Override
   public List<UserDTO> getAllUser() {
 
     List<User> users = userRepository.findByStatus("enabled");
 
-//    List<User> users = userRepository.findUserEnabled();
+    // List<User> users = userRepository.findUserEnabled();
 
     List<UserDTO> result = new ArrayList<>();
     for (User user : users) {
@@ -65,13 +67,14 @@ public class UserServiceImpl implements UserService {
     if (user.isEmpty()) {
       throw new NotFoundException("No user found");
     }
-    int idAuthority = userRepository.findAuthorityByUserId(id);
-    User updateUser = UserMapper.toUser(request, id);
-    Authority updateAuthority = UserMapper.toAuthority(request, idAuthority );
+    // int idAuthority = userRepository.findAuthorityByUserId(id);
+    // User updateUser = UserMapper.toUser(request, id);
+    // Authority updateAuthority = UserMapper.toAuthority(request, idAuthority );
+    User updateUser = UserMapper.mergeUpdate(request, user.get());
     try {
 
-      updateAuthority.setUser(updateUser);
-      updateUser.setAuthority(updateAuthority);
+      // updateAuthority.setUser(updateUser);
+      // updateUser.setAuthority(updateAuthority);
 
 
       userRepository.save(updateUser);
@@ -85,15 +88,8 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserDTO ChangeUserStatus(UpdateUserRequest request, int id) {
     Optional<User> user = userRepository.findById(id);
-    String status = user.get().getStatus();
-    User changeUserStatus = UserMapper.toUser(request, id);
+    User changeUserStatus = UserMapper.mergeDisable(request, user.get());
     try {
-      if (status.equals("enabled")) {
-
-        changeUserStatus.setStatus("disabled");
-      } else {
-        changeUserStatus.setStatus("enabled");
-      }
       userRepository.save(changeUserStatus);
     } catch (Exception ex) {
       throw new InternalServerException("Can't change user status");
@@ -119,9 +115,9 @@ public class UserServiceImpl implements UserService {
     StringBuilder username = new StringBuilder(user.getFirstName().toLowerCase());
     String lastName = user.getLastName().toLowerCase();
     String[] tmp = lastName.split("\\s+");
-      for (String s : tmp) {
-          username.append(s.charAt(0));
-      }
+    for (String s : tmp) {
+      username.append(s.charAt(0));
+    }
     Integer countUsername = userRepository.countByDuplicateFullName(username.toString());
     if (countUsername > 0) {
       user.setUsername(username + countUsername.toString());
