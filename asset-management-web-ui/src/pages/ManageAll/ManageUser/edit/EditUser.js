@@ -234,8 +234,8 @@ const EditUser = ({setResponseUser}) => {
                                     isInvalid={touched.authority && errors.authority}
                                 >
                                     <option selected></option>
-                                    <option>Admin</option>
-                                    <option>Staff</option>
+                                    <option value={"ADMIN"}>Admin</option>
+                                    <option value={"STAFF"}>Staff</option>
                                 </Form.Select>
                                 {errors.authority && touched.authority ? (
                                     <div className={"text-danger"} style={{paddingLeft:"25%"}}>{errors.authority}</div>
