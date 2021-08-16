@@ -42,9 +42,7 @@ public class UserController {
   @ApiResponses({@ApiResponse(code = 404, message = "No user found"), @ApiResponse(code = 500, message = "500")})
   @GetMapping("/admin/users")
   public ResponseEntity<?> getAllAuthors() {
-
     List<UserDTO> users = userService.getAllUser();
-
     return ResponseEntity.ok(users);
   }
 
@@ -63,8 +61,6 @@ public class UserController {
   @PostMapping("/admin/users")
   public ResponseEntity<?> createUser(@Valid @RequestBody CreateUserRequest request) {
     UserDTO result = userService.createUser(request);
-
-
     return ResponseEntity.ok(result);
   }
 
@@ -92,7 +88,6 @@ public class UserController {
   @GetMapping(value = "/searchby", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<List<UserDTO>> searchAssetByNameOrStaffCode(@RequestParam(name = "keyword") String keyword) {
     List<UserDTO> users = userService.searchByNameOrStaffCode(keyword);
-
     return ResponseEntity.ok(users);
   }
 

@@ -7,7 +7,7 @@ import java.time.LocalDate;
 public class RequestDTO {
     private int id;
     private AssignmentDTO assignmentDTO;
-    private UserDTO userDTO;
+    private String accepted_by;
     private LocalDate returned_date;
     private int state;
 
@@ -27,12 +27,12 @@ public class RequestDTO {
         this.assignmentDTO = assignmentDTO;
     }
 
-    public UserDTO getUserDTO() {
-        return userDTO;
+    public String getAccepted_by() {
+        return accepted_by;
     }
 
-    public void setUserDTO(UserDTO userDTO) {
-        this.userDTO = userDTO;
+    public void setAccepted_by(String accepted_by) {
+        this.accepted_by = accepted_by;
     }
 
     public LocalDate getReturned_date() {

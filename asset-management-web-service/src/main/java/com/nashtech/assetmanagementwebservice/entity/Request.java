@@ -1,6 +1,5 @@
 package com.nashtech.assetmanagementwebservice.entity;
 
-import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -14,9 +13,8 @@ public class Request {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne
-    @JoinColumn(name = "accepted_by", referencedColumnName = "id")
-    private User user;
+    @Column(name = "accepted_by")
+    private String username;
 
     @OneToOne
     @JoinColumn(name = "assignment_id", referencedColumnName = "id")
@@ -48,12 +46,12 @@ public class Request {
         this.assignment = assignment;
     }
 
-    public User getUser() {
-        return user;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public LocalDate getReturned_date() {

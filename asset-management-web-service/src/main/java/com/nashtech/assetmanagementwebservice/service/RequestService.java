@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface RequestService {
     List<RequestDTO> getAllRequest();
+    RequestDTO create(RequestDTO requestDTO);
 }

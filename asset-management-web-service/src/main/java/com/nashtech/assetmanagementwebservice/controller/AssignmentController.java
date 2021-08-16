@@ -2,6 +2,7 @@ package com.nashtech.assetmanagementwebservice.controller;
 
 import java.util.List;
 
+import com.nashtech.assetmanagementwebservice.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +70,13 @@ public class AssignmentController {
     @PutMapping(value = "/assignments/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AssignmentDTO> edit(@PathVariable Integer id, @RequestBody AssignmentDTO payload) {
         AssignmentDTO assignmentDTO = assignmentService.edit(id,payload);
+        return ResponseEntity.ok(assignmentDTO);
+    }
+
+    @ApiOperation(value = "Edit assignment", response = AssignmentDTO.class)
+    @GetMapping(value = "/userhome", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<AssignmentDTO>> findAssignmentByUserName(@RequestBody User user){
+        List<AssignmentDTO> assignmentDTO = assignmentService.findAssignmentsByUsername(user.getUsername());
         return ResponseEntity.ok(assignmentDTO);
     }
 }

@@ -68,6 +68,7 @@ public class AssignmentServiceImpl implements AssignmentService {
         assetService.editAsset(asset.getId(),assetMapper.fromEntity(asset));
         assignment.setAsset(asset);
         assignment.setUser(user);
+        assignment.setAssignedBy(payload.getAssignedBy());
         assignmentRepository.save(assignment);
         return assignmentMapper.fromEntity(assignment);
     }
@@ -85,6 +86,12 @@ public class AssignmentServiceImpl implements AssignmentService {
     public AssignmentDTO edit(Integer id, AssignmentDTO payload) {
         assignmentRepository.saveAssign(payload.getAssetDTO().getId(),payload.getUserDTO().getId(), id);
         return payload;
+    }
+
+    @Override
+    public List<AssignmentDTO> findAssignmentsByUsername(String username) {
+        List<Assignment> assignments = assignmentRepository.findByUser_Username(username);
+        return assignments.stream().map(assignmentMapper::fromEntity).collect(Collectors.toList());
     }
 
 
