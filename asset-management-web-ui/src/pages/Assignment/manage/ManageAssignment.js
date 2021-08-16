@@ -179,7 +179,8 @@ const ManageAssignment = ({responseAssigment}) => {
                                 </Popup>
                                 <td><i className="bi bi-arrow-counterclockwise text-blue fw-bold"/></td>
                             </tr>
-                        } modal>{close => (<div>
+                        } modal>
+                            {close => (<div>
                             <Button onClick={close} variant="success" className="btn-view-detail">&times;</Button>
                         </div>)}
                         </Popup>

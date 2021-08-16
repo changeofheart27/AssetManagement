@@ -13,7 +13,7 @@ const SearchUser = ({setSingleUser,close}) => {
         status: null
     }]);
     useEffect(() => {
-        axios.get(rootAPI + '/users')
+        axios.get(rootAPI + '/admin/users')
             .then(response => {
                 setUser(response.data)
             })

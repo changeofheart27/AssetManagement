@@ -86,9 +86,9 @@ const Navbar = ({setCurrentPage,setIsLogedIn}) => {
         </div>
         <div className="pages-container col-10">
           <Switch>
-            {/*<Route path={"/home"} exact>*/}
-            {/*  <Home responseAssigment = {responseAssigment}/>*/}
-            {/*</Route>*/}
+            <Route path={"/home"} exact>
+              <Home responseAssigment = {responseAssigment}/>
+            </Route>
             <Route path={"/user"}>
               <ManageUser responseUser = {responseUser}/>
             </Route>

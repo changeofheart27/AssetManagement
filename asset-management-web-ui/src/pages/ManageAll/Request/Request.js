@@ -14,15 +14,14 @@ const Request = () => {
             assetDTO:{
                 assetCode: null,
                 assetName: null,
+                state: null
 
             },
             userDTO:{
                 username: null,
             }
         },
-        userDTO:{
-            username: null
-        }
+        accepted_by: null
     }]);
     useEffect(() => {
         axios.get(rootAPI + `/request`)
@@ -94,9 +93,9 @@ const Request = () => {
                             <td>{assign.assignmentDTO.assetDTO.assetName}</td>
                             <td>{assign.assignmentDTO.userDTO.username}</td>
                             <td>{assign.assignmentDTO.assignedDate}</td>
-                            <td>{assign.userDTO.username}</td>
+                            <td>{assign.accepted_by}</td>
                             <td>{assign.returned_date}</td>
-                            <td>{assign.state === 5 ? <p>Complete</p> : null}</td>
+                            {assign.state === 0 ? <td>Waiting for accepted</td> : null}
                             <td><i className="bi bi-check-lg text-danger"/></td>
                             <td><i className="bi bi-x-lg text-dark fw-bold"/></td>
                         </tr>
