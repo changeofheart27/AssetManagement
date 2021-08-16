@@ -88,7 +88,6 @@ public class UserController {
   @GetMapping(value = "/searchby", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<List<UserDTO>> searchAssetByNameOrStaffCode(@RequestParam(name = "keyword") String keyword) {
     List<UserDTO> users = userService.searchByNameOrStaffCode(keyword);
-
     return ResponseEntity.ok(users);
   }
 

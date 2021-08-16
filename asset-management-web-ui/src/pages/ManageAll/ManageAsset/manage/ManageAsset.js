@@ -205,8 +205,8 @@ const ManageAsset = ({responseDataAsset}) => {
                         ><i className="bi bi-search"/>
                         </Button>
                     </InputGroup>
-                        <Button variant={"danger"} className={"w-auto"} onClick={() => history.push('/createasset')}>Create
-                            new Asset</Button>
+                    <Button variant={"danger"} className={"w-auto"} onClick={() => history.push('/createasset')}>Create
+                        new Asset</Button>
 
                 </div>
             </div>
@@ -251,7 +251,9 @@ const ManageAsset = ({responseDataAsset}) => {
                                 }}
                                        trigger={<td><i className="bi bi-x-circle text-danger btn p-0"/></td>}
                                        modal>
-                                    {asset.state !== 1 ? <Delete id={asset.id}/> : <DeleteFail id={asset.id}/>}
+                                    {asset.state !== 1 ?
+                                        <Delete id={asset.id}/> :
+                                        <DeleteFail id={asset.id}/>}
                                 </Popup>
                             </tr>
                         } modal>{close => (<div>

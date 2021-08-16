@@ -143,6 +143,7 @@ const CreateUser = ({setResponseUser}) => {
                                     className={"w-75"}
                                     name={"dob"}
                                     onChange={handleChange}
+                                    onBlur={handleBlur}
                                     isValid={touched.dob && !errors.dob}
                                     isInvalid={touched.dob && errors.dob}
                                 />
@@ -203,8 +204,8 @@ const CreateUser = ({setResponseUser}) => {
                                     onBlur={handleBlur}
                                 >
                                     <option selected></option>
-                                    <option>Admin</option>
-                                    <option>Staff</option>
+                                    <option value={"ADMIN"}>Admin</option>
+                                    <option value={"STAFF"}>Staff</option>
                                 </Form.Select>
                                 {errors.authority && touched.authority ? (
                                     <div className={"text-danger"} style={{paddingLeft: "25%"}}>{errors.authority}</div>

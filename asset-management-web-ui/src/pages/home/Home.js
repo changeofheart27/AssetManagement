@@ -178,7 +178,7 @@ const Home = ({responseAssigment}) => {
                                 <td>{assigment.assetDTO.assetCode}</td>
                                 <td>{assigment.assetDTO.assetName}</td>
                                 <td>{assigment.userDTO.username}</td>
-                                <td>{assigment.userDTO.username}</td>
+                                <td>{assigment.assignedBy}</td>
                                 <td>{assigment.assignedDate}</td>
                                 <td>{check(assigment.state)}</td>
                                 <td><i className="bi bi-pen btn m-0 text-muted p-0"

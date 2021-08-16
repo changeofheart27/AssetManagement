@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import com.nashtech.assetmanagementwebservice.entity.Assignment;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository
 public interface AssignmentRepository extends JpaRepository<Assignment, Integer> {
 
@@ -18,4 +20,6 @@ public interface AssignmentRepository extends JpaRepository<Assignment, Integer>
     void saveAssign(@Param("assetID") Integer assetID
             ,@Param("userID") Integer userID
             ,@Param("assignID") Integer assignID );
+
+    List<Assignment> findByUser_Username(String name);
 }

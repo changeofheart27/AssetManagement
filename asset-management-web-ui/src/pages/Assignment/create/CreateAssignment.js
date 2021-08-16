@@ -37,7 +37,8 @@ const CreateAssignment = ({setResponseAssigment}) => {
             },
             assignedDate: moment(selectDate, "DD-MM-YYYY").format("YYYY-MM-DD"),
             state: 5,
-            note: values.note
+            note: values.note,
+            assignedBy: localStorage.getItem("username")
         };
 
         axios.post(rootAPI + `/assignments`, create)

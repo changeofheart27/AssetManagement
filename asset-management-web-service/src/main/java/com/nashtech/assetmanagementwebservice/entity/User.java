@@ -53,6 +53,7 @@ public class User {
     @Column(name = "staff_code")
     private String staffCode;
 
+
 //    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 //    private List<Asset> assets;
 
@@ -67,8 +68,6 @@ public class User {
 
 //    @OneToOne(mappedBy = "user")
 //    private Request request;
-
-
 
     public User(String username2, String password, Authority authorities) {
         this.username=username2;
