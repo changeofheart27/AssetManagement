@@ -1,29 +1,30 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import * as Yup from "yup";
+import {ButtonGroup} from "react-bootstrap";
 
-import {Button, Form, FormCheck, FormControl, Row} from "react-bootstrap";
 
 import { Formik } from 'formik';
 import React from 'react';
 import axios from 'axios';
 import { useState } from "react";
 import {useHistory} from 'react-router-dom';
-const LoginFormPage = ({props,loginSuccess}) => {
-  const [showLoginSuccess, setShowLoginSuccess] = useState(false);
+import {Button, Form, FormCheck, FormControl, Row} from "react-bootstrap";
+const UserInfo = ({props,loginSuccess}) => {
+  
   const [submitError, setSubmitError] = useState("");
   const history = useHistory();  
-    const initialValues = { username:'', password:''};
+    const initialValues = { oldPassword:'', newPassword:''};
   
     const ValidateSchema = Yup.object().shape({
-      username: Yup.string()
-          .max(50)
-          .required('Required')
-          .typeError('Username is required'),
-      password: Yup.string()
+      oldPassword: Yup.string()
           .max(500)
           .required('Required')
-          .typeError('Password is required'),    
+          .typeError('Current Password is required'),
+      newPassword: Yup.string()
+          .max(500)
+          .required('Required')
+          .typeError('New Password is required'),    
   });
     const onSubmit = (values, { setSubmitting }) => {
       axios({
@@ -31,8 +32,8 @@ const LoginFormPage = ({props,loginSuccess}) => {
         url: "http://localhost:8080/authenticate",
         headers: {},
         data: {
-          username: values.username,
-          password: values.password,
+          oldPassword: values.username,
+          newPassword: values.password,
         },
       }
       )
@@ -40,7 +41,6 @@ const LoginFormPage = ({props,loginSuccess}) => {
           setSubmitting(false);
           console.log(response);
           localStorage.clear();
-          setShowLoginSuccess(true);
           localStorage.setItem("jwttoken","Bearer "+response.data.jwttoken);
           localStorage.setItem("username",values.username);
           window.location.href = "/home";
@@ -54,12 +54,10 @@ const LoginFormPage = ({props,loginSuccess}) => {
         });
     }
     return (
-    <div className={"container ps-5 d-block"} >
-     <Row>
-        <h1 className={"text-danger mb-5"}>Login</h1>
-      </Row>
-    <Row className={"mt-5"}>
-      <Formik
+      <div>
+      <h3 className={"text-danger"}>Change Password</h3>
+       <hr/>
+       <Formik
         initialValues={initialValues}
         validationSchema={ValidateSchema}
         onSubmit={onSubmit}
@@ -76,58 +74,55 @@ const LoginFormPage = ({props,loginSuccess}) => {
         }) => (
             <Form onSubmit={handleSubmit}>
               <Row className={"mb-3"}>
-                <p className={"w-25"}>Username</p>
+                <p className={"w-25"}>Old Password</p>
                                 <FormControl
-                                    aria-label="Username"
+                                    aria-label="Old Password"
                                     aria-describedby="basic-addon1"
                                     className={"w-75"}
-                                    name={"username"}
+                                    name={"oldPassword"}
+                                    type = {"password"}
                                     onChange={handleChange}
-                                    isValid={touched.username && !errors.username}
-                                    isInvalid={touched.username && errors.username}
+                                    isValid={touched.oldPassword && !errors.oldPassword}
+                                    isInvalid={touched.oldPassword && errors.oldPassword}
                                 />
-                                {errors.username && touched.username ? (
-                                    <div className={"text-danger"} style={{paddingLeft: "25%"}}>{errors.username}</div>
+                                {errors.oldPassword && touched.oldPassword ? (
+                                    <div className={"text-danger"} style={{paddingLeft: "25%"}}>{errors.oldPassword}</div>
                                 ) : null}
                             </Row>
                             <Row className={"mb-3"}>
-                                <p className={"w-25"}>Password</p>
+                                <p className={"w-25"}>New Password</p>
                                 <FormControl
-                                    aria-label="Password"
+                                    aria-label="New Password"
                                     aria-describedby="basic-addon1"
                                     className={"w-75"}
-                                    name={"password"}
+                                    name={"newPassword"}
                                     type = {"password"}
                                     onChange={handleChange}
-                                    isValid={touched.password && !errors.password}
-                                    isInvalid={touched.password && errors.password}
+                                    isValid={touched.newPassword && !errors.newPassword}
+                                    isInvalid={touched.newPassword && errors.newPassword}
                                 />
-                                {errors.password && touched.password ? (
-                                    <div className={"text-danger"} style={{paddingLeft: "25%"}}>{errors.password}</div>
+                                {errors.newPassword && touched.newPassword ? (
+                                    <div className={"text-danger"} style={{paddingLeft: "25%"}}>{errors.newPassword}</div>
                                 ) : null}
                             </Row>
-                            
-                            <Button variant={"danger"} onClick={() => history.push('/home')}  type={"submit"} className={"ms-5"} style={{float: 'right'}}>
-                                Cancel
-                            </Button>
-                          
-                            <Button variant={"danger"} type={"submit"} style={{float: 'right'}}  disabled={isSubmitting} on>
-                                Submit
-                            </Button>
+                            <Row>
+                              <ButtonGroup>
+                              <Button variant={"danger"} type={"submit"} style={{float: 'right'}}  disabled={isSubmitting} on>
+                                  Submit
+                              </Button>
+                              <Button variant={"danger"} onClick={() => history.push('/home')} type={"submit"} className={"ms-5"} style={{float: 'right'}}>
+                                  Cancel
+                              </Button>
+                              </ButtonGroup>
+                            </Row>
                             
                       </Form>
   
         )
         } 
       </Formik>
-
-    </Row>
-    { showLoginSuccess &&
-            <div className="form--login-success">
-              Login success
-            </div> }
    </div>
     );
 }
 
-export default LoginFormPage;
+export default UserInfo;

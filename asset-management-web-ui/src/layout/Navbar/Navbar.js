@@ -18,8 +18,9 @@ import ManageAssignment from "../../pages/Assignment/manage/ManageAssignment";
 import ManageUser from "../../pages/ManageAll/ManageUser/manage/ManageUser";
 import Request from "../../pages/ManageAll/Request/Request";
 import logo from "../../resources/logo.jpg";
+import UserInfo from "../header/UserInfo";
 
-const Navbar = ({setCurrentPage}) => {
+const Navbar = ({setCurrentPage,setIsLogedIn}) => {
   const [responseDataAsset, setResponseDataAsset] = useState({
     id: null,
     assetCode: null,
@@ -91,9 +92,7 @@ const Navbar = ({setCurrentPage}) => {
             <Route path={"/user"}>
               <ManageUser responseUser = {responseUser}/>
             </Route>
-            <Route path={"/login"}>
-              <LoginFormPage/>
-            </Route>
+
             <Route path={"/home"}>
               <Home/>
             </Route>

@@ -42,7 +42,12 @@ const Home = ({responseAssigment}) => {
                     setList(response.data);
                 }
                 console.log(response.data);
-            })
+            }).catch((error) => {
+                console.log(localStorage.getItem("username"))
+                console.log(localStorage.getItem("jwttoken"))
+              });
+
+            
     }, [])
     const check = state => {
         if (state === 0) {
