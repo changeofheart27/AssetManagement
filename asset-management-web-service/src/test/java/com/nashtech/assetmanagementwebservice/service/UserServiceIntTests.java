@@ -1,4 +1,5 @@
 package com.nashtech.assetmanagementwebservice.service;
+import com.nashtech.assetmanagementwebservice.entity.Authority;
 import com.nashtech.assetmanagementwebservice.entity.User;
 import com.nashtech.assetmanagementwebservice.exception.NotFoundException;
 import com.nashtech.assetmanagementwebservice.model.dto.UserDTO;
@@ -38,6 +39,8 @@ public class UserServiceIntTests {
         when(mockUser.getId()).thenReturn(1);
         when(mockUser.getUsername()).thenReturn("daoninhthai");
         when(mockUser.getStaffCode()).thenReturn("DS1234");
+        when(mockUser.getAuthority()).thenReturn(new Authority());
+        
         Mockito.when(userRepository.findById(Mockito.anyInt())).thenReturn(java.util.Optional.of(mockUser));
         UserDTO user = underTest.getUserById(1);
         assertEquals(mockUser.getUsername(), user.getUsername());

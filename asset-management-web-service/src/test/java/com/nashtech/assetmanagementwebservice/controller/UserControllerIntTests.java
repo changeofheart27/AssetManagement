@@ -1,10 +1,12 @@
 package com.nashtech.assetmanagementwebservice.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import com.nashtech.assetmanagementwebservice.config.JwtTokenUtil;
 import com.nashtech.assetmanagementwebservice.model.request.CreateUserRequest;
 import com.nashtech.assetmanagementwebservice.model.request.UpdateUserRequest;
+
 import org.hamcrest.collection.IsCollectionWithSize;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +21,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -49,11 +54,36 @@ public class UserControllerIntTests {
             throw new RuntimeException(e);
         }
     }
+    
+    @Autowired
+	private UserDetailsService userService;
+
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
+
+	@Autowired
+	private AuthenticationManager authenticationManager;
+	
+	private String token;
+
+	@BeforeEach
+	public void setUp() {
+		UserDetails user = userService.loadUserByUsername("duongmh");
+		
+		if (user != null) {
+			this.token = jwtTokenUtil.generateToken(user);
+			authenticationManager
+					.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), "duongmh@11111111"));	
+		}
+
+	}
+    
     @Test
     public void getAllUser() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/v1/users")
-                        .accept(MediaType.APPLICATION_JSON_VALUE))
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .header("Authorization", "Bearer " + token))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
@@ -68,7 +98,8 @@ public class UserControllerIntTests {
     public void getByIdFound(int id) throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/v1/users/" + id)
-                        .accept(MediaType.APPLICATION_JSON_VALUE))
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .header("Authorization", "Bearer " + token))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(id))
@@ -84,7 +115,8 @@ public class UserControllerIntTests {
         mockMvc.perform(MockMvcRequestBuilders
                         .put("/api/v1/users/1")
                         .content(asJsonString(updateUserRequest))
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + token))
                         .andDo(print())
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.username").value("username updated"))
