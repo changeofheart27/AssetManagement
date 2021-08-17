@@ -10,6 +10,7 @@ import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const LoginFormPage = ({props, loginSuccess}) => {
+    const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [showLoginSuccess, setShowLoginSuccess] = useState(false);
     const [submitError, setSubmitError] = useState("");
     const history = useHistory();
@@ -27,7 +28,7 @@ const LoginFormPage = ({props, loginSuccess}) => {
     const onSubmit = (values, {setSubmitting}) => {
         axios({
                 method: "POST",
-                url: "http://localhost:8080/authenticate",
+                url: "http://18.142.87.28:8080/authenticate",
                 data: {
                     username: values.username,
                     password: values.password,

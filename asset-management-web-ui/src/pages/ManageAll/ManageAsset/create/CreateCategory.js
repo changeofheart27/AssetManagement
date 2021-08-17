@@ -6,6 +6,7 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 
 const CreateCategory = () => {
+  const rootAPI = process.env.REACT_APP_SERVER_URL;
   const history = useHistory();
   const initialValues = {
     name: null,
@@ -17,7 +18,7 @@ const CreateCategory = () => {
       prefix: values.prefix
     };
     axios
-      .post(`http://localhost:8080/api/v1/categories`, create)
+      .post(rootAPI + `/categories`, create)
       .then((response) => {
         setSubmitting(false);
         history.push("/asset");

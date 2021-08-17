@@ -11,7 +11,7 @@ import { useState } from "react";
 import {useHistory} from 'react-router-dom';
 import {Button, Form, FormCheck, FormControl, Row} from "react-bootstrap";
 const UserInfo = ({props,loginSuccess}) => {
-  
+  const rootAPI = process.env.REACT_APP_SERVER_URL;
   const [submitError, setSubmitError] = useState("");
   const history = useHistory();  
     const initialValues = { oldPassword:'', newPassword:''};
@@ -29,7 +29,7 @@ const UserInfo = ({props,loginSuccess}) => {
     const onSubmit = (values, { setSubmitting }) => {
       axios({
         method: "POST",
-        url: "http://localhost:8080/authenticate",
+        url: rootAPI + "/authenticate",
         headers: {},
         data: {
           oldPassword: values.username,
