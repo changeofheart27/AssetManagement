@@ -112,7 +112,7 @@ const Navbar = ({setCurrentPage, setIsLogedIn}) => {
                 {authority === "STAFF" ?
                     <Switch>
                         <Route path={"/home"} exact>
-                            <Home responseAssigment={responseAssigment}/>
+                            <Home/>
                         </Route>
                     </Switch>
                     :
@@ -148,7 +148,7 @@ const Navbar = ({setCurrentPage, setIsLogedIn}) => {
                             <ManageAssignment responseAssigment={responseAssigment}/>
                         </Route>
                         <Route path={"/createassignment"}>
-                            <CreateAssignment setResponseAssigment={setResponseAssigment}/>
+                            <CreateAssignment/>
                         </Route>
                         <Route path={"/editassignment/:id"}>
                             <EditAssignment setResponseAssigment={setResponseAssigment}/>
