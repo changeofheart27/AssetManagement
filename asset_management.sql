@@ -1,8 +1,8 @@
 USE asset_management;
 CREATE TABLE user (
   id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  first_name VARCHAR(50) NOT NULL,
-  last_name VARCHAR(50) NOT NULL,
+  first_name VARCHAR(255) NOT NULL,
+  last_name VARCHAR(255) NOT NULL,
   dob DATE,
   joined_date DATE,
   gender VARCHAR(10),-- 0 (female) or 1 (male)
@@ -11,9 +11,7 @@ CREATE TABLE user (
   location VARCHAR(50),
   status VARCHAR(10),
   type VARCHAR(10),
-  password VARCHAR(1000),
-  authority VARCHAR(5)
-  
+  password VARCHAR(1000), 
 )
 ;
 CREATE TABLE authorities (

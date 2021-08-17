@@ -78,7 +78,7 @@ const EditAsset = ({setResponseDataAsset}) => {
             .typeError('Name can not empty'),
         installedDate: Yup.string()
             .required('Required')
-            .typeError('Install date can not empty'),
+            .typeError('Installed date can not empty'),
     });
     return (
         <div className={"container ps-5 d-block"}>

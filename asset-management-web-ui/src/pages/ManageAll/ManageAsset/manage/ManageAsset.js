@@ -63,7 +63,9 @@ const ManageAsset = ({responseDataAsset}) => {
         } else if (state === 2) {
             return <td>Waiting for recycling</td>
         } else if (state === 3) {
-            return <td>Recycle</td>
+            return <td>Recycled</td>
+        } else if (state === 4) {
+            return <td>Assigned</td>
         }
     }
     const [search, setSearch] = useState("");
@@ -168,7 +170,8 @@ const ManageAsset = ({responseDataAsset}) => {
                             <option value="0">Available</option>
                             <option value="1">Not Available</option>
                             <option value="2">Waiting for recycling</option>
-                            <option value="3">Recycle</option>
+                            <option value="3">Recycled</option>
+                            <option value="4">Assigned</option>
                         </Form.Control>
                         <Button
                             variant={"outline-secondary"}
@@ -251,7 +254,7 @@ const ManageAsset = ({responseDataAsset}) => {
                                 }}
                                        trigger={<td><i className="bi bi-x-circle text-danger btn p-0"/></td>}
                                        modal>
-                                    {asset.state !== 1 ?
+                                    {asset.state !== 4 ?
                                         <Delete id={asset.id}/> :
                                         <DeleteFail id={asset.id}/>}
                                 </Popup>
