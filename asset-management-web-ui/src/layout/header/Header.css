@@ -27,3 +27,6 @@ header #dropdown-basic-button{
 header #user-infor-optional{
   color: black;
 }
+.custom-dropdown:active{
+  background-color: #CF2338 !important;
+}

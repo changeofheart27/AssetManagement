@@ -11,7 +11,7 @@ import SearchAsset from "./SearchAsset";
 import moment from 'moment'
 import SelectDate from "./SelectDate";
 
-const CreateAssignment = ({setResponseAssigment}) => {
+const CreateAssignment = () => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const history = useHistory();
     const initialValues = {
@@ -40,17 +40,9 @@ const CreateAssignment = ({setResponseAssigment}) => {
             note: values.note,
             assignedBy: localStorage.getItem("username")
         };
-
         axios.post(rootAPI + `/assignments`, create)
             .then((response) => {
                 setSubmitting(false);
-                setResponseAssigment({
-                    id: response.data.id,
-                    assetCode: response.data.assetCode,
-                    assetName: response.data.assetName,
-                    assignedDate: response.data.assignedDate,
-                    state: 5,
-                });
                 history.push("/assignment");
             });
     };
@@ -169,7 +161,7 @@ const CreateAssignment = ({setResponseAssigment}) => {
                                             </InputGroup.Text>
                                         }
                                         position={"left top"}
-                                        contentStyle={{width: "auto"}}
+                                        contentStyle={{width: "auto", padding:"0"}}
                                     >
                                         {close => <SelectDate setSelectDate={setSelectDate}/>}
                                     </Popup>

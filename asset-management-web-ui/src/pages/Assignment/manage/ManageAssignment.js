@@ -46,9 +46,9 @@ const ManageAssignment = ({responseAssigment}) => {
             })
     }, [])
     const check = state => {
-        if (state === 5) {
+        if (state === 6) {
             return <td>Accepted</td>
-        } else if (state === 6) {
+        } else if (state === 5) {
             return <td>Waiting for acceptance</td>
         }
     }
@@ -119,8 +119,8 @@ const ManageAssignment = ({responseAssigment}) => {
                             onChange={handleFilterType}
                         >
                             <option>State</option>
-                            <option value="5">Accepted</option>
-                            <option value="6">Waiting for acceptance</option>
+                            <option value="6">Accepted</option>
+                            <option value="5">Waiting for acceptance</option>
                         </Form.Control>
                         <Button variant={"outline-secondary"}><i
                             className="bi bi-funnel-fill"/></Button>
