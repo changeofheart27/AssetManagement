@@ -107,13 +107,15 @@ public class AssignmentServiceImpl implements AssignmentService {
     List<Assignment> assignments = null;
     if (assignedDate == null && state == null) {
       assignments = assignmentRepository.findAll();
+      return assignments.stream().map(assignmentMapper::fromEntity).collect(Collectors.toList());
     } else if (assignedDate == null && state != null) {
       assignments = assignmentRepository.findAssignmentsByState(state);
-    } else if (assignedDate == null && state != null) {
+      return assignments.stream().map(assignmentMapper::fromEntity).collect(Collectors.toList());
+    } else if (assignedDate != null && state == null) {
       assignments = assignmentRepository.findAssignmentsByAssignedDate(assignedDate);
+      return assignments.stream().map(assignmentMapper::fromEntity).collect(Collectors.toList());
     }
-    return assignments.stream().map(assignmentMapper::fromEntity).collect(Collectors.toList());
-
+    return null;
   }
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -105,7 +106,7 @@ public class AssignmentController {
 
   @ApiOperation(value = "Filter Assignments", response = AssetDTO.class, responseContainer = "List")
   @GetMapping(value = "/assignments/filter", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<List<AssignmentDTO>> filterAssignment(@RequestParam(value = "type", required = false) Integer state, @RequestParam(value = "date", required = false) LocalDate assignedDate) {
+  public ResponseEntity<List<AssignmentDTO>> filterAssignment(@RequestParam(value = "type", required = false) Integer state, @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate assignedDate) {
     List<AssignmentDTO> assignments = assignmentService.filterBy(state, assignedDate);
     return ResponseEntity.ok(assignments);
 

@@ -55,23 +55,42 @@ const ManageAssignment = ({responseAssigment}) => {
         setSearch(evt.target.value)
     }
     const [search, setSearch] = useState("");
+    const [type, setType] = useState();
+    const [date, setDate] = useState();
+    const request = {
+        params: {
+            type,
+            date
+        }
+    }
+    const handleFilterType = evt => {
+        const name = evt.target.name;
+        setType(evt.target.value)
+    }
+    const handleFilterAssignedDate = evt => {
+        const name = evt.target.name;
+        setDate(evt.target.value)
+    }
+    useEffect(() => {
+        console.log("use Effect Run")
+        console.log(request)
+        if (request.params.type === 'State') {
+            request.params.type = null;
+            console.log(request)
+        }
+        if (request.params.date === 'Assigned Date') {
+            request.params.date= null;
+            console.log(request)
+        }
+        axios.get(rootAPI + `/assignments/filter`, request)
+            .then(function (response) {
+                setList(response.data);
+                console.log(response.data)
+            })
+    }, [type, date])
 
-    const filterSearchByState = () => {
-        axios.get(rootAPI + `/assets/state/${search}`)
-            .then(function (response) {
-                setList(response.data);
-                console.log(response.data)
-            })
-    }
-    const filterSearchByCategory = () => {
-        axios.get(rootAPI + `/assets/category/${search}`)
-            .then(function (response) {
-                setList(response.data);
-                console.log(response.data)
-            })
-    }
     const filterSearchBySearchTerm = () => {
-        axios.get(rootAPI + `/assets/search?keyword=${search}`)
+        axios.get(rootAPI + `/assignments/search?keyword=${search}`)
             .then(function (response) {
                 setList(response.data);
                 console.log(response.data)
@@ -96,26 +115,22 @@ const ManageAssignment = ({responseAssigment}) => {
                             className={"w-25"}
                             placeholder={"State"}
                             name={"state"}
-                            onChange={handleChange}
+                            onChange={handleFilterType}
                         >
                             <option>State</option>
                             <option value="5">Accepted</option>
                             <option value="6">Waiting for acceptance</option>
                         </Form.Control>
-                        <Button variant={"outline-secondary"} onClick={filterSearchByState}><i
+                        <Button variant={"outline-secondary"}><i
                             className="bi bi-funnel-fill"/></Button>
                         <Form.Control
-                            type="input"
+                            type={"date"}
                             className={"w-25 ms-5"}
                             placeholder={"Assigned Date"}
                             name={"assignedDate"}
-                            onChange={handleChange}
+                            onChange={handleFilterAssignedDate}
                         >
                         </Form.Control>
-                        <Button variant={"outline-secondary"}
-                                onClick={filterSearchByCategory}>
-                            <i class="bi bi-calendar2-week-fill"/>
-                        </Button>
                     </InputGroup>
                 </div>
                 <div className={"col-5 d-flex"}>
