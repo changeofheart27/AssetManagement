@@ -10,6 +10,7 @@ import CreateCategory from "../../pages/ManageAll/ManageAsset/create/CreateCateg
 import CreateUser from "../../pages/ManageAll/ManageUser/create/CreateUser";
 import EditAsset from "../../pages/ManageAll/ManageAsset/edit/EditAsset";
 import EditUser from "../../pages/ManageAll/ManageUser/edit/EditUser"
+import EditAssignment from "../../pages/Assignment/edit/EditAssignment";
 import Home from "../../pages/home/Home";
 import {Link} from "react-router-dom";
 import LoginFormPage from "../header/LoginFormPage"
@@ -148,6 +149,9 @@ const Navbar = ({setCurrentPage, setIsLogedIn}) => {
                         </Route>
                         <Route path={"/createassignment"}>
                             <CreateAssignment setResponseAssigment={setResponseAssigment}/>
+                        </Route>
+                        <Route path={"/editassignment/:id"}>
+                            <EditAssignment setResponseAssigment={setResponseAssigment}/>
                         </Route>
                         <Route path={"/request"}>
                             <Request/>

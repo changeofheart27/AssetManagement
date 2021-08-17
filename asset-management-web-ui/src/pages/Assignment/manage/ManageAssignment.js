@@ -6,6 +6,7 @@ import Popup from "reactjs-popup";
 import axios from "axios";
 import {useHistory} from 'react-router-dom'
 import Pagination from '../../../components/Pagination/Pagination';
+import DeleteAssignment from '../delete/DeleteAssignment';
 
 const ManageAssignment = ({responseAssigment}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
@@ -166,9 +167,9 @@ const ManageAssignment = ({responseAssigment}) => {
                                 <td>{assigment.userDTO.username}</td>
                                 <td>{assigment.assignedBy}</td>
                                 <td>{assigment.assignedDate}</td>
-                                {check(assigment.state)}
+                                <td>{check(assigment.state)}</td>
                                 <td><i className="bi bi-pen btn m-0 text-muted p-0"
-                                       onClick={() => history.push(`/edit/${assigment.id}`)}/></td>
+                                       onClick={() => history.push(`/editassignment/${assigment.id}`)}/></td>
                                 <Popup contentStyle={{
                                     width: "25%", border: "1px solid black", borderRadius: 10,
                                     overflow: 'hidden', padding: "20px"
@@ -176,6 +177,7 @@ const ManageAssignment = ({responseAssigment}) => {
                                        trigger={<td><i className="bi bi-x-circle text-danger btn p-0"/></td>}
                                        offsetX={200}
                                        modal>
+                                    {assigment.state !== 5 ? <DeleteAssignment id={assigment.id} /> : null}
                                 </Popup>
                                 <td><i className="bi bi-arrow-counterclockwise text-blue fw-bold"/></td>
                             </tr>
