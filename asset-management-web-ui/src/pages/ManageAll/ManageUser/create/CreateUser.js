@@ -56,17 +56,17 @@ const CreateUser = ({setResponseUser}) => {
     };
     const ValidateSchema = Yup.object().shape({
         firstName: Yup.string()
-            .max(50)
+            .max(255)
             .required('Required')
             .typeError('First name is required'),
         lastName: Yup.string()
-            .max(50)
+            .max(255)
             .required('Required')
             .typeError('Last name is required'),
         dob: Yup.date()
             .required()
             .typeError('DOB is required')
-            .test("dob", "Should be greater than 18", function (value) {
+            .test("dob", "User is under 18. Please select a different date", function (value) {
                 return differenceInYears(new Date(), new Date(value)) >= 18;
             }),
         authority: Yup.string()
@@ -75,9 +75,16 @@ const CreateUser = ({setResponseUser}) => {
         joinedDate: Yup.date()
             .required()
             .typeError('Joined Date is required')
-            .min(Yup.ref('dob'),"Should be greater than DOB")
-            .test("dob", "Should be greater than DOB", function (value) {
+            .min(Yup.ref('dob'),"Joined date is not later than Date of Birth. Please select a different date")
+            .test("dob", "Joined date is not later than Date of Birth. Please select a different date", function (value) {
                 return differenceInDays(new Date(value), new Date(this.parent.dob)) != 0;
+            })
+            .test("dob", "Joined date is Saturday or Sunday. Please select a different date", function(value) {
+                const currentDate = new Date(value);
+                return (
+                  currentDate.getDay() !== 6 &&
+                  currentDate.getDay() !== 0
+                );
             })
         ,
     });
