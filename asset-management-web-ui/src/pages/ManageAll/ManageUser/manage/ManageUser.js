@@ -164,7 +164,6 @@ const ManageUser = ({responseUser}) => {
                   onClick={() => requestSort("staffCode")}
                 >
                   Staff Code
-                  <i className="bi bi-caret-down-fill" />
                 </th>
                 <th
                   className={"border-bottom"}
@@ -172,7 +171,6 @@ const ManageUser = ({responseUser}) => {
                   onClick={() => requestSort("lastName")}
                 >
                   Full Name
-                  <i className="bi bi-caret-down-fill" />
                 </th>
                 <th
                   className={"border-bottom"}
@@ -180,7 +178,6 @@ const ManageUser = ({responseUser}) => {
                   onClick={() => requestSort("username")}
                 >
                   User Name
-                  <i className="bi bi-caret-down-fill" />
                 </th>
                 <th
                   className={"border-bottom"}
@@ -188,7 +185,6 @@ const ManageUser = ({responseUser}) => {
                   onClick={() => requestSort("joinedDate")}
                 >
                   Joined Date
-                  <i className="bi bi-caret-down-fill" />
                 </th>
                 <th
                   className={"border-bottom"}
@@ -196,7 +192,6 @@ const ManageUser = ({responseUser}) => {
                   onClick={() => requestSort("type")}
                 >
                   Type
-                  <i className="bi bi-caret-down-fill" />
                 </th>
               </tr>
             </thead>
