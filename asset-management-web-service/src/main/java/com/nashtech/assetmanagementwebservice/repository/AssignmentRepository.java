@@ -13,10 +13,13 @@ import com.nashtech.assetmanagementwebservice.entity.Assignment;
 @Repository
 public interface AssignmentRepository extends JpaRepository<Assignment, Integer> {
 
-  @Transactional
-  @Modifying
-  @Query(value = "UPDATE Assignment a set a.asset.id = :assetID , a.user.id =:userID where a.id=:assignID")
-  void saveAssign(@Param("assetID") Integer assetID, @Param("userID") Integer userID, @Param("assignID") Integer assignID);
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE Assignment a set a.asset.id = :assetID , a.user.id =:userID, a.state=:state where a.id=:assignID")
+    void saveAssign(@Param("assetID") Integer assetID
+            ,@Param("userID") Integer userID
+            ,@Param("assignID") Integer assignID
+            ,@Param("state") Integer state);
 
   List<Assignment> findByUser_Username(String name);
 

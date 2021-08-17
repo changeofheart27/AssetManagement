@@ -169,7 +169,7 @@ const CreateAssignment = ({setResponseAssigment}) => {
                                             </InputGroup.Text>
                                         }
                                         position={"left top"}
-                                        contentStyle={{width: "auto"}}
+                                        contentStyle={{width: "auto", padding:"0"}}
                                     >
                                         {close => <SelectDate setSelectDate={setSelectDate}/>}
                                     </Popup>

@@ -82,12 +82,6 @@ public class AssignmentController {
     return ResponseEntity.ok(assignmentDTO);
   }
 
-  @ApiOperation(value = "Edit assignment", response = AssignmentDTO.class)
-  @GetMapping(value = "/userhome", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<List<AssignmentDTO>> findAssignmentByUserName(@RequestBody User user) {
-    List<AssignmentDTO> assignmentDTO = assignmentService.findAssignmentsByUsername(user.getUsername());
-    return ResponseEntity.ok(assignmentDTO);
-  }
 
   @ApiOperation(value = "Search All Assignments By assetName Or assetCode", response = AssetDTO.class, responseContainer = "List")
   @GetMapping(value = "/assignments/search", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -101,6 +95,11 @@ public class AssignmentController {
       List<AssignmentDTO> assignments = assignmentService.searchAssetByAssetNameOrAssetCode(keyword);
       logger.info("Executed successful!");
       return ResponseEntity.ok(assignments);
+    @ApiOperation(value = "Edit assignment", response = AssignmentDTO.class)
+    @GetMapping(value = "/users/home", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<AssignmentDTO>> findAssignmentByUserName(@RequestParam String  username){
+        List<AssignmentDTO> assignmentDTO = assignmentService.findAssignmentsByUsername(username);
+        return ResponseEntity.ok(assignmentDTO);
     }
   }
 
@@ -111,6 +110,7 @@ public class AssignmentController {
     return ResponseEntity.ok(assignments);
 
   }
+
 
 
 

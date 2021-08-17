@@ -81,11 +81,12 @@ public class AssignmentServiceImpl implements AssignmentService {
     assignmentRepository.delete(assignment);
   }
 
-  @Override
-  public AssignmentDTO edit(Integer id, AssignmentDTO payload) {
-    assignmentRepository.saveAssign(payload.getAssetDTO().getId(), payload.getUserDTO().getId(), id);
-    return payload;
-  }
+    @Override
+    public AssignmentDTO edit(Integer id, AssignmentDTO payload) {
+        log.info(payload.getAssetDTO().getId()+" "+payload.getUserDTO().getId()+" "+id);
+        assignmentRepository.saveAssign(payload.getAssetDTO().getId(),payload.getUserDTO().getId(), id, payload.getState());
+        return payload;
+    }
 
   @Override
   public List<AssignmentDTO> findAssignmentsByUsername(String username) {

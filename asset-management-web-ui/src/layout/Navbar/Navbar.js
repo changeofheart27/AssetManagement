@@ -33,6 +33,7 @@ const Navbar = ({setCurrentPage, setIsLogedIn}) => {
            .then(response => {
                console.log(response.data)
                setAuthority(response.data[0].authority);
+               localStorage.setItem("authority",response.data[0].authority);
            })
    },[])
     const [responseDataAsset, setResponseDataAsset] = useState({
@@ -122,7 +123,6 @@ const Navbar = ({setCurrentPage, setIsLogedIn}) => {
                         <Route path={"/user"}>
                             <ManageUser responseUser={responseUser}/>
                         </Route>
-
                         <Route path={"/home"}>
                             <Home/>
                         </Route>

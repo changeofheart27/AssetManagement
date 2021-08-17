@@ -7,6 +7,9 @@ import axios from "axios";
 import {useHistory} from 'react-router-dom'
 import Pagination from '../../components/Pagination/Pagination';
 import ReturnPopup from "./popup/ReturnPopup";
+import '../../style/style.css'
+import AcceptPopup from "./popup/AcceptPopup";
+import DeclinePopup from "./popup/DeclinePopup";
 
 const Home = ({responseAssigment}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
@@ -18,8 +21,14 @@ const Home = ({responseAssigment}) => {
     const [list, setList] = useState([{
         id: null,
         assetDTO: {
+            id: null,
             assetCode: null,
             assetName: null,
+            state: null,
+            categoryDTO:{
+                name: null
+            },
+
         },
         userDTO: {
             username: null,
@@ -28,37 +37,37 @@ const Home = ({responseAssigment}) => {
         state: null
 
     }]);
+    const authority = localStorage.getItem("authority");
     const history = useHistory();
-    const [categories, setCategories] = useState([]);
+    const Authentoken = localStorage.getItem("jwttoken");
     useEffect(() => {
-        axios.get(rootAPI + '/assignments')
-            .then(function (response) {
-                let result = response.data.map(assigment => assigment.id);
-                if (result.includes(responseAssigment.id)) {
-                    const index = response.data.indexOf(responseAssigment);
-                    response.data.splice(index, 1);
-                    response.data.unshift(responseAssigment);
-                    setList(response.data);
-                } else {
-                    setList(response.data);
+            axios.get(rootAPI + '/users/home?username=' + localStorage.getItem("username"), {
+                    headers: {
+                        Authorization: Authentoken
+                    }
                 }
-                console.log(response.data);
-            }).catch((error) => {
+            )
+                .then(function (response) {
+                    let result = response.data.map(assigment => assigment.id);
+                    if (result.includes(responseAssigment.id)) {
+                        const index = response.data.indexOf(responseAssigment);
+                        response.data.splice(index, 1);
+                        response.data.unshift(responseAssigment);
+                        setList(response.data);
+                    } else {
+                        setList(response.data);
+                    }
+                    console.log(response.data);
+                }).catch((error) => {
                 console.log(localStorage.getItem("username"))
                 console.log(localStorage.getItem("jwttoken"))
-              });
-
-            
+            });
     }, [])
     const check = state => {
-        if (state === 0) {
-            return <p>Available</p>
-        } else if (state === 1) {
-            return <p>Not Available</p>
-        } else if (state === 2) {
-            return <p>Waiting for recycling</p>
-        } else if (state === 3) {
-            return <p>Recycle</p>
+        if (state === 6) {
+            return <td>Accepted</td>
+        } else if (state === 5) {
+            return <td>Waiting for acceptance</td>
         }
     }
     const handleChange = evt => {
@@ -102,58 +111,7 @@ const Home = ({responseAssigment}) => {
     }
     return (
         <Container fluid className={"d-block ps-5"}>
-            <h1 className={"text-danger mb-3"}>My Assigment</h1>
-            <InputGroup className={"justify-content-between"}>
-                <div className={"col-5 d-flex"}>
-                    <Form.Control
-                        as="select"
-                        custom
-                        className={"w-25"}
-                        placeholder={"State"}
-                        name={"state"}
-                        onChange={handleChange}
-                    >
-                        <option>State</option>
-                        <option value="0">Available</option>
-                        <option value="1">Not Available</option>
-                        <option value="2">Waiting for recycling</option>
-                        <option value="3">Recycle</option>
-                    </Form.Control>
-                    <Button variant={"outline-secondary"} onClick={filterSearchByState}><i
-                        className="bi bi-funnel-fill"/></Button>
-                    <Form.Control
-                        type="input"
-                        className={"w-26 ms-5"}
-                        placeholder={"Assigned Date"}
-                        name={"assignedDate"}
-                        onChange={handleChange}
-                    >
-                    </Form.Control>
-                    <Button variant={"outline-secondary"}
-                            onClick={filterSearchByCategory}>
-                        <i class="bi bi-calendar2-week-fill"/>
-                    </Button>
-                </div>
-                <div className={"col-5 d-flex"}>
-                    <FormControl
-                        type={"input"}
-                        className={"w-25"}
-                        name={"searchTerm"}
-                        onChange={handleChange}
-                    >
-                    </FormControl>
-                    <Button variant={"outline-secondary"}
-                            onClick={filterSearchBySearchTerm}
-                            className={"me-5"}
-                    >Search
-                    </Button>
-                    <Button variant={"danger"}
-                            className={"w-auto"}
-                            onClick={() => history.push('/createAssignment')}
-                    >Create new Assigment
-                    </Button>
-                </div>
-            </InputGroup>
+            <h1 className={"text-danger mb-5"}>My Assigment</h1>
             <Row className={"mt-5"}>
                 <Table>
                     <thead>
@@ -161,8 +119,7 @@ const Home = ({responseAssigment}) => {
                         <th className={"border-bottom"}>No.<i className="bi bi-caret-down-fill"/></th>
                         <th className={"border-bottom"}>Asset Code <i className="bi bi-caret-down-fill"/></th>
                         <th className={"border-bottom"}>Asset Name <i className="bi bi-caret-down-fill"/></th>
-                        <th className={"border-bottom"}>Assigned To<i className="bi bi-caret-down-fill"/></th>
-                        <th className={"border-bottom"}>Assigned By<i className="bi bi-caret-down-fill"/></th>
+                        <th className={"border-bottom"}>Category<i className="bi bi-caret-down-fill"/></th>
                         <th className={"border-bottom"}>Assigned Date<i className="bi bi-caret-down-fill"/></th>
                         <th className={"border-bottom"}>State<i className="bi bi-caret-down-fill"/></th>
                     </tr>
@@ -177,22 +134,32 @@ const Home = ({responseAssigment}) => {
                                 <td>{assigment.id}</td>
                                 <td>{assigment.assetDTO.assetCode}</td>
                                 <td>{assigment.assetDTO.assetName}</td>
-                                <td>{assigment.userDTO.username}</td>
-                                <td>{assigment.assignedBy}</td>
+                                <td>{assigment.assetDTO.categoryDTO.name}</td>
                                 <td>{assigment.assignedDate}</td>
                                 <td>{check(assigment.state)}</td>
-                                <td><i className="bi bi-pen btn m-0 text-muted p-0"
-                                       onClick={() => history.push(`/edit/${assigment.id}`)}/></td>
-                                <Popup contentStyle={{width: "500px"}}
-                                       trigger={<td><i className="bi bi-x-circle text-danger btn p-0"/></td>}
-                                       modal>
-                                </Popup>
                                 <Popup
-                                    trigger={<td><i className="bi bi-arrow-counterclockwise text-blue fw-bold"/></td>}
+                                    trigger={<td><i className="bi bi-check-lg btn m-0 text-danger p-0"/></td>}
                                     modal
                                     contentStyle={PopupStyle}
                                 >
-                                    {close => <ReturnPopup close={close}/>}
+                                    {close =><AcceptPopup close={close} assigment={assigment} setList={setList}/>}
+                                </Popup>
+
+                                <Popup contentStyle={PopupStyle}
+                                       trigger={<td><i className="bi bi-x-lg btn p-0"/></td>}
+                                       modal>
+                                    {close => <DeclinePopup close={close} id={assigment.assetDTO.id}/>}
+                                </Popup>
+                                <Popup
+                                    trigger={assigment.assetDTO.state ===5 ?
+                                        <td><i className="bi bi-arrow-counterclockwise text-blue"/></td>
+                                        :
+                                        <td><i className="bi bi-arrow-counterclockwise text-blue"/></td>
+                                    }
+                                    modal
+                                    contentStyle={PopupStyle}
+                                >
+                                    {close => <ReturnPopup close={close} id={assigment.assetDTO.id}/>}
 
                                 </Popup>
                             </tr>
