@@ -28,7 +28,7 @@ const LoginFormPage = ({props, loginSuccess}) => {
     const onSubmit = (values, {setSubmitting}) => {
         axios({
                 method: "POST",
-                url: "http://18.142.87.28:8080/authenticate",
+                url: rootAPI+"/authenticate",
                 data: {
                     username: values.username,
                     password: values.password,

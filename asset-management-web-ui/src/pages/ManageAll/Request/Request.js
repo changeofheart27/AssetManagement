@@ -30,7 +30,11 @@ const Request = () => {
             })
 
     }, [])
-    console.log(list, " list");
+    const check = state => {
+        if (state === 8) {
+            return <td>Waiting for returning</td>
+        }
+    }
     return (
         <Container fluid className={"d-block ps-5"}>
             <h1 className={"text-danger mb-3"}>Request List</h1>
@@ -95,7 +99,7 @@ const Request = () => {
                             <td>{assign.assignmentDTO.assignedDate}</td>
                             <td>{assign.accepted_by}</td>
                             <td>{assign.returned_date}</td>
-                            {assign.state === 0 ? <td>Waiting for accepted</td> : null}
+                            {check(assign.assignmentDTO.state)}
                             <td><i className="bi bi-check-lg text-danger"/></td>
                             <td><i className="bi bi-x-lg text-dark fw-bold"/></td>
                         </tr>

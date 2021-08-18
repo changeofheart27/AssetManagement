@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'reactjs-popup/dist/index.css';
-import {Button, Container, Row, Table} from 'react-bootstrap';
+import {Container, Row, Table} from 'react-bootstrap';
 import React, {useEffect, useState} from 'react';
 import Popup from "reactjs-popup";
 import axios from "axios";
@@ -9,8 +9,9 @@ import ReturnPopup from "./popup/ReturnPopup";
 import '../../style/style.css'
 import AcceptPopup from "./popup/AcceptPopup";
 import DeclinePopup from "./popup/DeclinePopup";
+import DetailsPopup from "./popup/DetailsPopup";
 
-const Home = ({responseAssigment}) => {
+const Home = () => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(10);
@@ -47,16 +48,11 @@ const Home = ({responseAssigment}) => {
         )
             .then(response => {
                     setList(response.data)
-                    setState(response.data.state)
-                    console.log(response.data)
                 }
             ).catch((error) => {
-            console.log(localStorage.getItem("username"))
-            console.log(localStorage.getItem("jwttoken"))
+            console.log(error)
         });
     }, [state])
-    console.log(state + " state")
-    console.log(list + " list")
     const check = state => {
         if (state === 6) {
             return <td>Accepted</td>
@@ -64,6 +60,8 @@ const Home = ({responseAssigment}) => {
             return <td>Waiting for acceptance</td>
         } else if (state === 7) {
             return <td>Decline</td>
+        } else if (state === 8) {
+            return <td>Returning Request</td>
         }
     }
     const PopupStyle = {
@@ -125,29 +123,43 @@ const Home = ({responseAssigment}) => {
                                     <Popup contentStyle={PopupStyle}
                                            trigger={<td><i className="bi bi-x-lg btn m-0 p-0"/></td>}
                                            modal>
-                                        {close => <DeclinePopup close={close} setState= {setState} assigment={assigment}/>}
+                                        {close => <DeclinePopup close={close} setState={setState}
+                                                                assigment={assigment}/>}
                                     </Popup>
                                     :
                                     <Popup contentStyle={PopupStyle}
                                            trigger={<td><i className="bi bi-x-lg btn m-0 p-0 disabled"/></td>}
                                            disabled
                                            modal>
-                                        {close => <DeclinePopup close={close} id={assigment.assetDTO.id}/>}
+                                        {close => <DeclinePopup/>}
                                     </Popup>
                                 }
-                                <Popup
-                                    trigger={<td><i
-                                        className="bi bi-arrow-counterclockwise btn m-0 p-0 text-blue "/></td>}
-                                    modal
-                                    contentStyle={PopupStyle}
-                                >
-                                    {close => <ReturnPopup close={close} id={assigment.assetDTO.id}/>}
-                                </Popup>
-
+                                {assigment.state === 7 || assigment.state === 8 || assigment.state === 5 ?
+                                    <Popup
+                                        trigger={<td><i
+                                            className="bi bi-arrow-counterclockwise btn m-0 p-0 text-blue disabled "/>
+                                        </td>}
+                                        modal
+                                        disabled
+                                        contentStyle={PopupStyle}
+                                    >
+                                        {close => <ReturnPopup/>}
+                                    </Popup>
+                                    :
+                                    <Popup
+                                        trigger={<td><i
+                                            className="bi bi-arrow-counterclockwise btn m-0 p-0 text-blue"/>
+                                        </td>}
+                                        modal
+                                        contentStyle={PopupStyle}
+                                    >
+                                        {close => <ReturnPopup close={close} setState={setState}
+                                                     assigment={assigment}/>}
+                                    </Popup>
+                                }
                             </tr>
-                        } modal>{close => (<div>
-                            <Button onClick={close} variant="success" className="btn-view-detail">&times;</Button>
-                        </div>)}
+                        } modal>
+                            {close => <DetailsPopup close={close}/>}
                         </Popup>
                     )}
                     </tbody>

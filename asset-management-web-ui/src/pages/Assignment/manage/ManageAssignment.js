@@ -50,7 +50,12 @@ const ManageAssignment = ({responseAssigment}) => {
             return <td>Accepted</td>
         } else if (state === 5) {
             return <td>Waiting for acceptance</td>
+        }else if (state === 7) {
+            return <td>Decline</td>
+        }else if (state === 8) {
+            return <td>Waiting for returning</td>
         }
+
     }
     const handleChange = evt => {
         setSearch(evt.target.value)
