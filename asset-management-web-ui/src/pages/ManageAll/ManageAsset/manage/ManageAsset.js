@@ -124,10 +124,10 @@ const ManageAsset = ({responseDataAsset}) => {
     const sortingData = useMemo(() => {
         if (sortConfig !== null) {
             list.sort((a, b) => {
-                if (a[sortConfig.key] < (b[sortConfig.key])) {
+                if (a[sortConfig.key] < (b[sortConfig.key]) || a.categoryDTO.name > b.categoryDTO.name) {
                     return sortConfig.direction === "asc" ? -1 : 1;
                 }
-                if (a[sortConfig.key] > (b[sortConfig.key])) {
+                if (a[sortConfig.key] > (b[sortConfig.key]) || a.categoryDTO.name < b.categoryDTO.name) {
                     return sortConfig.direction === "asc" ? 1 : -1;
                 }
                 return 0;
@@ -217,19 +217,19 @@ const ManageAsset = ({responseDataAsset}) => {
                     <tr>
                         <th className={"border-bottom"}
                             className={getClassNamesFor('assetCode')}
-                            onClick={() => requestSort('assetCode')}>Asset Code
+                            onClick={() => requestSort('assetCode')}>Asset Code<i className="bi bi-caret-down-fill"/>
                         </th>
                         <th className={"border-bottom"}
                             className={getClassNamesFor('assetName')}
-                            onClick={() => requestSort('assetName')}>Asset Name
+                            onClick={() => requestSort('assetName')}>Asset Name<i className="bi bi-caret-down-fill"/>
                         </th>
                         <th className={"border-bottom"}
                             className={getClassNamesFor('categoryDTO.name')}
-                            onClick={() => requestSort('category')}>Category
+                            onClick={() => requestSort('category')}>Category<i className="bi bi-caret-down-fill"/>
                         </th>
                         <th className={"border-bottom"}
                             className={getClassNamesFor('state')}
-                            onClick={() => requestSort('state')}>State
+                            onClick={() => requestSort('state')}>State<i className="bi bi-caret-down-fill"/>
                         </th>
                     </tr>
                     </thead>

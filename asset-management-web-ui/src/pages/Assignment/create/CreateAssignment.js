@@ -61,7 +61,8 @@ const CreateAssignment = ({setResponseAssigment}) => {
     })
     const [assetSelect, setAssetSelect] = useState({
         id: null,
-        assetCode: null
+        assetCode: null,
+        assetName: null,
     })
     const myDate = moment().format('DD/MM/YYYY');
     const [selectDate, setSelectDate] = useState(myDate);
