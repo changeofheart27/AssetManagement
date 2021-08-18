@@ -30,7 +30,7 @@ const UserInfo = ({props, loginSuccess}) => {
     const onSubmit = (values, {setSubmitting}) => {
         axios({
                 method: "POST",
-                url: rootAPI + "/authenticate",
+                url: "http://localhost:8080/authenticate",
                 headers: {},
                 data: {
                     oldPassword: values.username,
