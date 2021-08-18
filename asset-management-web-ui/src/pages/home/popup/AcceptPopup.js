@@ -4,7 +4,8 @@ import axios from "axios";
 
 const AcceptPopup = props => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
-    let {close, assigment,setList} = props;
+    let {close, assigment,setState} = props;
+    setState(assigment.state)
     const onSubmit = (close) => {
         const data = {
             assetDTO : assigment.assetDTO,
@@ -23,6 +24,7 @@ const AcceptPopup = props => {
             .then(response => {
                 console.log(`Accept Assignment`);
                 close();
+                setState(data.state);
             })
     }
     return (

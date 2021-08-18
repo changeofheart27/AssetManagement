@@ -192,7 +192,7 @@ const ManageAssignment = ({responseAssigment}) => {
                                        trigger={<td><i className="bi bi-x-circle text-danger btn p-0"/></td>}
                                        offsetX={200}
                                        modal>
-                                    {assigment.state !== 5 ? <DeleteAssignment id={assigment.id} /> : null}
+                                    {assigment.state !== 6 ? <DeleteAssignment id={assigment.id} /> : null}
                                 </Popup>
                                 <td><i className="bi bi-arrow-counterclockwise text-blue fw-bold"/></td>
                             </tr>
