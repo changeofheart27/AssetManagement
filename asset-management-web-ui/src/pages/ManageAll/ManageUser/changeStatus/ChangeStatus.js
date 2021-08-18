@@ -22,11 +22,11 @@ const ChangeStatus = props => {
         dob: null,
         gender: null,
         joinedDate: null,
-        type: null
+        authority: null
     });
     useEffect(() => {
         axios
-          .get(rootAPI+`/users/${id}`)
+          .get(rootAPI+`/admin/users/${id}`)
           .then(function (response) {
             setUser(response.data);
           })
@@ -44,11 +44,11 @@ const ChangeStatus = props => {
              dob: user.dob,
              gender: user.gender,
              joined_date: user.joinedDate,
-             type: user.type
+             authority: user.authority
          }
 
         axios
-          .put(rootAPI+`/users/status/${id}`, data)
+          .put(rootAPI+`/admin/users/status/${id}`, data)
           .then(function (response) {
             refreshPage();
           });

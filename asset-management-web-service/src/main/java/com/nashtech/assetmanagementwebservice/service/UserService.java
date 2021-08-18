@@ -3,6 +3,8 @@ package com.nashtech.assetmanagementwebservice.service;
 import java.util.List;
 
 import com.nashtech.assetmanagementwebservice.entity.User;
+import com.nashtech.assetmanagementwebservice.model.request.ChangePasswordReminderRequest;
+import com.nashtech.assetmanagementwebservice.model.request.ChangePasswordRequest;
 import org.springframework.stereotype.Service;
 import com.nashtech.assetmanagementwebservice.model.dto.UserDTO;
 import com.nashtech.assetmanagementwebservice.model.request.CreateUserRequest;
@@ -28,6 +30,9 @@ public interface UserService {
   public List<UserDTO> getUserByType(String type);
 
 
-  public UserDTO changePassword(UpdateUserRequest request ,int id);
+  public UserDTO changePassword(ChangePasswordRequest request , int id);
 
+  public UserDTO changePasswordReminder(ChangePasswordReminderRequest request , int id);
+
+//  public UserDTO checkDefaultPassword(UpdateUserRequest request,int id );
 }

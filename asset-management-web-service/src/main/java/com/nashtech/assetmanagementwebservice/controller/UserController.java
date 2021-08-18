@@ -3,6 +3,8 @@ package com.nashtech.assetmanagementwebservice.controller;
 import java.util.List;
 import javax.validation.Valid;
 
+import com.nashtech.assetmanagementwebservice.model.request.ChangePasswordReminderRequest;
+import com.nashtech.assetmanagementwebservice.model.request.ChangePasswordRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -42,9 +44,7 @@ public class UserController {
   @ApiResponses({@ApiResponse(code = 404, message = "No user found"), @ApiResponse(code = 500, message = "500")})
   @GetMapping("/admin/users")
   public ResponseEntity<?> getAllAuthors() {
-
     List<UserDTO> users = userService.getAllUser();
-
     return ResponseEntity.ok(users);
   }
 
@@ -63,8 +63,6 @@ public class UserController {
   @PostMapping("/admin/users")
   public ResponseEntity<?> createUser(@Valid @RequestBody CreateUserRequest request) {
     UserDTO result = userService.createUser(request);
-
-
     return ResponseEntity.ok(result);
   }
 
@@ -92,15 +90,22 @@ public class UserController {
   @GetMapping(value = "/searchby", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<List<UserDTO>> searchAssetByNameOrStaffCode(@RequestParam(name = "keyword") String keyword) {
     List<UserDTO> users = userService.searchByNameOrStaffCode(keyword);
-
     return ResponseEntity.ok(users);
   }
 
   @ApiOperation(value = "Change user password", response = UserDTO.class)
   @ApiResponses({@ApiResponse(code = 404, message = "No user found"), @ApiResponse(code = 500, message = "")})
-  @PutMapping("/staff/change-password/{id}")
-  public ResponseEntity<?> changeUserPassword(@Valid @RequestBody UpdateUserRequest request, @PathVariable int id) {
+  @PutMapping("/change-password/{id}")
+  public ResponseEntity<?> changeUserPassword(@Valid @RequestBody ChangePasswordRequest request, @PathVariable int id) {
     UserDTO result = userService.changePassword(request, id);
+    return ResponseEntity.ok(result);
+  }
+
+  @ApiOperation(value = "Change user password", response = UserDTO.class)
+  @ApiResponses({@ApiResponse(code = 404, message = "No user found"), @ApiResponse(code = 500, message = "")})
+  @GetMapping("/check-change-password/{id}")
+  public ResponseEntity<?> checkDefaultPassword(@Valid @RequestBody ChangePasswordReminderRequest request, @PathVariable int id) {
+    UserDTO result = userService.changePasswordReminder(request, id);
     return ResponseEntity.ok(result);
   }
 

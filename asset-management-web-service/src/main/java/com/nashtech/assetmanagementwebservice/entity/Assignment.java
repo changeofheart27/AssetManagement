@@ -35,9 +35,6 @@ public class Assignment {
 	
 	@Column(name = "note")
 	private String note;
-
-//	@OneToOne(mappedBy = "assignment")
-//	private Request request;
 	
 	public Assignment() {
 		super();

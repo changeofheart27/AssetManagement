@@ -5,7 +5,7 @@ CREATE TABLE user (
   last_name VARCHAR(50) NOT NULL,
   dob DATE,
   joined_date DATE,
-  gender VARCHAR(10), -- 0 (female) or 1 (male)
+  gender VARCHAR(10),-- 0 (female) or 1 (male)
   staff_code CHAR(6), -- SD0001
   username VARCHAR(50), -- Binh Nguyen Van -> binhnv
   location VARCHAR(50),

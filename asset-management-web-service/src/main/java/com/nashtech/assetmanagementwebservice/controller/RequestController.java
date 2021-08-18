@@ -5,10 +5,7 @@ import com.nashtech.assetmanagementwebservice.model.dto.RequestDTO;
 import com.nashtech.assetmanagementwebservice.service.RequestService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,5 +25,12 @@ public class RequestController {
     public ResponseEntity<List<RequestDTO>> getAll() {
         List<RequestDTO> requests = requestService.getAllRequest();
         return ResponseEntity.ok(requests);
+    }
+
+    @ApiOperation(value = "Create Returning request")
+    @PostMapping(value = "/request/create")
+    public ResponseEntity<RequestDTO> create(@RequestBody RequestDTO requestDTO){
+        requestService.create(requestDTO);
+        return ResponseEntity.ok(requestDTO);
     }
 }

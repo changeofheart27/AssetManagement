@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -132,4 +133,21 @@ public class CreateUserRequest {
     )
     @JsonProperty("user_id")
     private User user;
+
+
+    @ApiModelProperty(
+            example="0",
+            notes=" password Change Reminder cannot be empty , 0-TRUE , 1-FALSE",
+            required=true
+    )
+    @JsonProperty("password_change_reminder")
+    private String passwordChangeReminder;
+
+    @ApiModelProperty(
+            example="123",
+            notes="password cannot be empty ",
+            required=true
+    )
+    @JsonProperty( "default_password")
+    private String defaultPassword;
 }

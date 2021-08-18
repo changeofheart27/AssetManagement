@@ -37,7 +37,7 @@ const CreateUser = ({setResponseUser}) => {
         }
 
         axios
-            .post(rootAPI + `/users`, create)
+            .post(rootAPI + `/admin/users`, create)
             .then((response) => {
                 setSubmitting(false);
                 setResponseUser({
@@ -49,7 +49,7 @@ const CreateUser = ({setResponseUser}) => {
                     dob: response.data.dob,
                     gender: response.data.gender,
                     joinedDate: response.data.joinedDate,
-                    type: response.data.type
+                    authority: response.data.authority
                 });
                 history.push("/user");
             });
@@ -69,7 +69,7 @@ const CreateUser = ({setResponseUser}) => {
             .test("dob", "Should be greater than 18", function (value) {
                 return differenceInYears(new Date(), new Date(value)) >= 18;
             }),
-        type: Yup.string()
+        authority: Yup.string()
             .required('Required')
             .typeError('Please select type'),
         joinedDate: Yup.date()
@@ -110,6 +110,7 @@ const CreateUser = ({setResponseUser}) => {
                                     aria-describedby="basic-addon1"
                                     className={"w-75"}
                                     name={"firstName"}
+                                    onBlur={handleBlur}
                                     onChange={handleChange}
                                     isValid={touched.firstName && !errors.firstName}
                                     isInvalid={touched.firstName && errors.firstName}
@@ -125,6 +126,7 @@ const CreateUser = ({setResponseUser}) => {
                                     aria-describedby="basic-addon1"
                                     className={"w-75"}
                                     name={"lastName"}
+                                    onBlur={handleBlur}
                                     onChange={handleChange}
                                     isValid={touched.lastName && !errors.lastName}
                                     isInvalid={touched.lastName && errors.lastName}
@@ -141,6 +143,7 @@ const CreateUser = ({setResponseUser}) => {
                                     className={"w-75"}
                                     name={"dob"}
                                     onChange={handleChange}
+                                    onBlur={handleBlur}
                                     isValid={touched.dob && !errors.dob}
                                     isInvalid={touched.dob && errors.dob}
                                 />
@@ -150,9 +153,10 @@ const CreateUser = ({setResponseUser}) => {
                             </Row>
                             <Row>
                                 <p id="basic-addon1" className={"w-25"}>Gender</p>
-                                <div className={"container w-75"}>
+                                <div className={"container-lg w-75"}>
                                     <FormCheck
                                         inline
+                                        color={"red"}
                                         type={"radio"}
                                         label={"Female"}
                                         className={"w-75"}
@@ -179,6 +183,7 @@ const CreateUser = ({setResponseUser}) => {
                                     className={"w-75"}
                                     name={"joinedDate"}
                                     onChange={handleChange}
+                                    onBlur={handleBlur}
                                     isValid={touched.joinedDate && !errors.joinedDate}
                                     isInvalid={touched.joinedDate && errors.joinedDate}
                                 />
@@ -191,18 +196,19 @@ const CreateUser = ({setResponseUser}) => {
                                 <Form.Select
                                     size="sm"
                                     className={"w-75"}
-                                    name={"type"}
-                                    value={values.type}
+                                    name={"authority"}
+                                    value={values.authority}
                                     onChange={handleChange}
-                                    isValid={touched.type && !errors.type}
-                                    isInvalid={touched.type && errors.type}
+                                    isValid={touched.authority && !errors.authority}
+                                    isInvalid={touched.authority && errors.authority}
+                                    onBlur={handleBlur}
                                 >
                                     <option selected></option>
-                                    <option>Admin</option>
-                                    <option>Staff</option>
+                                    <option value={"ADMIN"}>Admin</option>
+                                    <option value={"STAFF"}>Staff</option>
                                 </Form.Select>
-                                {errors.type && touched.type ? (
-                                    <div className={"text-danger"} style={{paddingLeft: "25%"}}>{errors.type}</div>
+                                {errors.authority && touched.authority ? (
+                                    <div className={"text-danger"} style={{paddingLeft: "25%"}}>{errors.authority}</div>
                                 ) : null}
                             </Row>
                             <Button variant={"danger"} onClick={() => history.push('/user')} type={"submit"} className={"ms-5"} style={{float: 'right'}}>

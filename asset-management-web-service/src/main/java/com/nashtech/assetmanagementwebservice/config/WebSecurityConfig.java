@@ -56,10 +56,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						"/swagger-resources/**",
 						"/configuration/security",
 						"/swagger-ui.html",
-						"/webjars/**").anonymous()
+						"/v2/api-docs",
+						"/webjars/**").permitAll()
 				.antMatchers("/authenticate").permitAll()
-
+				.antMatchers("/**/check-change-password/**").permitAll()
+				.antMatchers("/**/request/**").permitAll()
+				.antMatchers("/**/change-password/**").permitAll()
+				.antMatchers("/**/assignments/**").permitAll()
+				.antMatchers("/**/categories/**").permitAll()
+				.antMatchers("/**/assets/**").permitAll()
+				.antMatchers("/**/searchby").permitAll()
 				.antMatchers("/**/admin/**").hasAnyRole("ADMIN")
+
 				.antMatchers("/**/staff/**").hasAnyRole("STAFF")
 				.anyRequest().authenticated().and().exceptionHandling()
 				.authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()

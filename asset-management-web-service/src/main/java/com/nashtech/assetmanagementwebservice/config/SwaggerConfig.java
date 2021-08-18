@@ -3,6 +3,7 @@ package com.nashtech.assetmanagementwebservice.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -40,7 +41,7 @@ public class SwaggerConfig {
 				.build();
 	}
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "/api", method = RequestMethod.GET)
 	public ModelAndView redirect() {
 		return new ModelAndView("redirect:/swagger-ui.html");
 	}

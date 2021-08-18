@@ -32,7 +32,7 @@ const ManageUser = ({responseUser}) => {
         lastName: null,
         username: null,
         joinedDate: null,
-        type: null,
+        authority: null,
         status: null
     }]);
     useEffect(() => {
@@ -59,7 +59,7 @@ const ManageUser = ({responseUser}) => {
     }
     const handleChangeType = evt => {
         const target = evt.target.value;
-        axios.get(rootAPI + `/users/filter?type=${target}`)
+        axios.get(rootAPI + `/admin/filter?type=${target}`)
             .then(function (response) {
                 setList(response.data);
                 console.log(response.data)
@@ -73,7 +73,7 @@ const ManageUser = ({responseUser}) => {
             })
     }
     const filterSearchByType = () => {
-        axios.get(rootAPI + `/users/filter?type=${search}`)
+        axios.get(rootAPI + `/admin/filter?type=${search}`)
             .then(function (response) {
                 setList(response.data);
                 console.log(response.data)
@@ -83,27 +83,27 @@ const ManageUser = ({responseUser}) => {
     const sortingData = useMemo(() => {
         let listData = list;
         if (sortConfig !== null) {
-        listData.sort((a, b) => {
-            if(a[sortConfig.key] < (b[sortConfig.key])) { 
-                return sortConfig.direction === "asc" ? -1 : 1;
-            }
-            if(a[sortConfig.key] > (b[sortConfig.key])) {
-                return sortConfig.direction === "asc" ? 1 : -1;
-            }
-            return 0;
+            listData.sort((a, b) => {
+                if (a[sortConfig.key] < (b[sortConfig.key])) {
+                    return sortConfig.direction === "asc" ? -1 : 1;
+                }
+                if (a[sortConfig.key] > (b[sortConfig.key])) {
+                    return sortConfig.direction === "asc" ? 1 : -1;
+                }
+                return 0;
             })
         }
-    },[list, sortConfig]);
+    }, [list, sortConfig]);
     const requestSort = key => {
         let direction = "asc";
-        if(sortConfig && sortConfig.key === key && sortConfig.direction === "asc") {
+        if (sortConfig && sortConfig.key === key && sortConfig.direction === "asc") {
             direction = "desc";
         }
         setSortConfig({key, direction});
     }
     const getClassNamesFor = (name) => {
         if (!sortConfig) {
-          return;
+            return;
         }
         return sortConfig.key === name ? sortConfig.direction : undefined;
     };
@@ -111,60 +111,63 @@ const ManageUser = ({responseUser}) => {
     return (
         <Container fluid className={"d-block ps-5"}>
             <h1 className={"text-danger mb-3"}>User List</h1>
-            <InputGroup className={"justify-content-between"}>
-                <div className={"col-5 d-flex"}>
-                    <Form.Control
-                        as="select"
-                        custom
-                        className={"w-25"}
-                        placeholder={"Type"}
-                        name={"type"}
-                        onChange={handleChangeType}
-                    >
-                        <option value={""}>Type</option>
-                        <option value="Admin">Admin</option>
-                        <option value="Staff">Staff</option>
-                    </Form.Control>
-                    <Button variant={"outline-secondary"}><i
-                        className="bi bi-funnel-fill"/></Button>
+            <div className={"justify-content-between d-flex"}>
+                <div className={"col-3 d-flex"}>
+                    <InputGroup className={"w-50"}>
+                        <Form.Control
+                            as="select"
+                            custom
+                            placeholder={"Type"}
+                            name={"type"}
+                            onChange={handleChangeType}
+                        >
+                            <option value={""}>Type</option>
+                            <option value="Admin">Admin</option>
+                            <option value="Staff">Staff</option>
+                        </Form.Control>
+                        <Button variant={"outline-secondary"}><i
+                            className="bi bi-funnel-fill"/></Button>
+                    </InputGroup>
                 </div>
                 <div className={"col-5 d-flex"}>
-                    <FormControl
-                        type={"input"}
-                        className={"w-25"}
-                        name={"searchTerm"}
-                        onChange={handleChange}
-                    >
-                    </FormControl>
-                    <Button variant={"outline-secondary"} onClick={filterSearchBySearchTerm}>Search</Button>
+                    <InputGroup className={"w-50"}>
+                        <FormControl
+                            type={"input"}
+                            name={"searchTerm"}
+                            onChange={handleChange}
+                        >
+                        </FormControl>
+                        <Button variant={"outline-secondary"} onClick={filterSearchBySearchTerm}>Search</Button>
+                    </InputGroup>
+                        <Button variant={"danger"} className={"w-auto ms-5"}
+                                onClick={() => history.push('/createuser')}>Create
+                            new User</Button>
 
-                    <Button variant={"danger"} className={"w-auto ms-5"} onClick={() => history.push('/createuser')}>Create
-                        new User</Button>
                 </div>
-            </InputGroup>
+            </div>
             <Row className={"mt-5"}>
                 <Table>
-                <thead>
+                    <thead>
                     <tr>
                         <th className={"border-bottom"}
-                            className={getClassNamesFor('staffCode')} 
-                            onClick={() => requestSort('staffCode') }>Staff Code<i className="bi bi-caret-down-fill"/>
+                            className={getClassNamesFor('staffCode')}
+                            onClick={() => requestSort('staffCode')}>Staff Code<i className="bi bi-caret-down-fill"/>
                         </th>
                         <th className={"border-bottom"}
-                            className={getClassNamesFor('lastName')} 
-                            onClick={() => requestSort('lastName') }>Full Name<i className="bi bi-caret-down-fill"/>
+                            className={getClassNamesFor('lastName')}
+                            onClick={() => requestSort('lastName')}>Full Name<i className="bi bi-caret-down-fill"/>
                         </th>
                         <th className={"border-bottom"}
-                            className={getClassNamesFor('username')} 
-                            onClick={() => requestSort('username') }>User Name<i className="bi bi-caret-down-fill"/>
+                            className={getClassNamesFor('username')}
+                            onClick={() => requestSort('username')}>User Name<i className="bi bi-caret-down-fill"/>
                         </th>
                         <th className={"border-bottom"}
-                            className={getClassNamesFor('joinedDate')} 
-                            onClick={() => requestSort('joinedDate') }>Joined Date<i className="bi bi-caret-down-fill"/>
+                            className={getClassNamesFor('joinedDate')}
+                            onClick={() => requestSort('joinedDate')}>Joined Date<i className="bi bi-caret-down-fill"/>
                         </th>
                         <th className={"border-bottom"}
-                            className={getClassNamesFor('type')} 
-                            onClick={() => requestSort('type') }>Type<i className="bi bi-caret-down-fill"/>
+                            className={getClassNamesFor('type')}
+                            onClick={() => requestSort('type')}>Type<i className="bi bi-caret-down-fill"/>
                         </th>
                     </tr>
                     </thead>
@@ -174,13 +177,13 @@ const ManageUser = ({responseUser}) => {
                             width: "25%", border: "1px solid black", borderRadius: 10,
                             overflow: 'hidden', padding: "20px"
                         }} trigger={
-                            
+
                             <tr key={user.id}>
                                 <td>{user.staffCode}</td>
                                 <td>{user.firstName} {user.lastName}</td>
                                 <td>{user.username}</td>
                                 <td>{user.joinedDate}</td>
-                                <td>{user.type}</td>
+                                <td>{user.authority}</td>
                                 <td><i className="bi bi-pen btn m-0 text-muted p-0"
                                        onClick={() => history.push(`/edituser/${user.id}`)}/></td>
                                 <Popup contentStyle={{
@@ -188,11 +191,11 @@ const ManageUser = ({responseUser}) => {
                                     overflow: 'hidden', padding: "20px"
                                 }} trigger={
                                     <td><i className="bi bi-x-circle text-danger btn p-0"/></td>}
-                                modal>
+                                       modal>
                                     <ChangeStatus id={user.id}/>
                                 </Popup>
                             </tr>
-                                
+
                         } modal>{close => (<div>
                             <ViewDetailedUser id={user.id}/>
                             <Button onClick={close} variant="success" className="btn-view-detail">&times;</Button>

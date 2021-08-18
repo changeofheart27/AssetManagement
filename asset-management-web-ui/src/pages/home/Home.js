@@ -6,6 +6,7 @@ import Popup from "reactjs-popup";
 import axios from "axios";
 import {useHistory} from 'react-router-dom'
 import Pagination from '../../components/Pagination/Pagination';
+import ReturnPopup from "./popup/ReturnPopup";
 
 const Home = ({responseAssigment}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
@@ -23,8 +24,8 @@ const Home = ({responseAssigment}) => {
         userDTO: {
             username: null,
         },
-        assignedDate:null,
-        state:null
+        assignedDate: null,
+        state: null
 
     }]);
     const history = useHistory();
@@ -42,7 +43,12 @@ const Home = ({responseAssigment}) => {
                     setList(response.data);
                 }
                 console.log(response.data);
-            })
+            }).catch((error) => {
+                console.log(localStorage.getItem("username"))
+                console.log(localStorage.getItem("jwttoken"))
+              });
+
+            
     }, [])
     const check = state => {
         if (state === 0) {
@@ -88,6 +94,12 @@ const Home = ({responseAssigment}) => {
                 console.log(response.data)
             })
     }
+    const PopupStyle = {
+        width: "500px",
+        border: "none",
+        padding: "0",
+        borderRadius: "5px"
+    }
     return (
         <Container fluid className={"d-block ps-5"}>
             <h1 className={"text-danger mb-3"}>My Assigment</h1>
@@ -117,8 +129,8 @@ const Home = ({responseAssigment}) => {
                         onChange={handleChange}
                     >
                     </Form.Control>
-                    <Button variant={"outline-secondary"} 
-                        onClick={filterSearchByCategory}>
+                    <Button variant={"outline-secondary"}
+                            onClick={filterSearchByCategory}>
                         <i class="bi bi-calendar2-week-fill"/>
                     </Button>
                 </div>
@@ -130,18 +142,18 @@ const Home = ({responseAssigment}) => {
                         onChange={handleChange}
                     >
                     </FormControl>
-                    <Button variant={"outline-secondary"} 
-                        onClick={filterSearchBySearchTerm} 
-                        className={"me-5"}
+                    <Button variant={"outline-secondary"}
+                            onClick={filterSearchBySearchTerm}
+                            className={"me-5"}
                     >Search
                     </Button>
-                    <Button variant={"danger"} 
-                        className={"w-25"} 
-                        onClick={() => history.push('/createAssignment')}
+                    <Button variant={"danger"}
+                            className={"w-auto"}
+                            onClick={() => history.push('/createAssignment')}
                     >Create new Assigment
                     </Button>
                 </div>
-                </InputGroup>
+            </InputGroup>
             <Row className={"mt-5"}>
                 <Table>
                     <thead>
@@ -149,39 +161,45 @@ const Home = ({responseAssigment}) => {
                         <th className={"border-bottom"}>No.<i className="bi bi-caret-down-fill"/></th>
                         <th className={"border-bottom"}>Asset Code <i className="bi bi-caret-down-fill"/></th>
                         <th className={"border-bottom"}>Asset Name <i className="bi bi-caret-down-fill"/></th>
-                        <th className={"border-bottom"}>Asigned To<i className="bi bi-caret-down-fill"/></th>
-                        <th className={"border-bottom"}>Asigned By<i className="bi bi-caret-down-fill"/></th>
-                        <th className={"border-bottom"}>Asigned Date<i className="bi bi-caret-down-fill"/></th>
+                        <th className={"border-bottom"}>Assigned To<i className="bi bi-caret-down-fill"/></th>
+                        <th className={"border-bottom"}>Assigned By<i className="bi bi-caret-down-fill"/></th>
+                        <th className={"border-bottom"}>Assigned Date<i className="bi bi-caret-down-fill"/></th>
                         <th className={"border-bottom"}>State<i className="bi bi-caret-down-fill"/></th>
                     </tr>
                     </thead>
                     <tbody>
                     {list.slice(indexOfFirstUser, indexOfLastUser).map(assigment =>
-                       <Popup contentStyle={{width: "25%" ,border: "1px solid black" , borderRadius: 10,
-                       overflow: 'hidden', padding: "20px"}} trigger={  
-                       <tr key={assigment.id}>
-                            <td>{assigment.id}</td>
-                            <td>{assigment.assetDTO.assetCode}</td>
-                            <td>{assigment.assetDTO.assetName}</td>
-                            <td>{assigment.userDTO.username}</td>
-                            <td>{assigment.userDTO.username}</td>
-                            <td>{assigment.assignedDate}</td>
-                            <td>{check(assigment.state)}</td>
-                            <td><i className="bi bi-pen btn m-0 text-muted p-0"
-                                   onClick={() => history.push(`/edit/${assigment.id}`)}/></td>
-                            <Popup contentStyle={{
-                                width: "25%", border: "1px solid black", borderRadius: 10,
-                                overflow: 'hidden', padding: "20px"
-                            }}
-                                   trigger={<td><i className="bi bi-x-circle text-danger btn p-0"/></td>} offsetX={200}
-                                   modal>
-                            </Popup>
-                            <td><i className="bi bi-arrow-counterclockwise text-blue fw-bold"/></td>
-                        </tr>
-                        } modal>{close=>(  <div>
-                           <Button onClick={close} variant="success" className="btn-view-detail">&times;</Button>
-                     </div>)} 
-                   </Popup>
+                        <Popup contentStyle={{
+                            width: "25%", border: "1px solid black", borderRadius: 10,
+                            overflow: 'hidden', padding: "20px"
+                        }} trigger={
+                            <tr key={assigment.id}>
+                                <td>{assigment.id}</td>
+                                <td>{assigment.assetDTO.assetCode}</td>
+                                <td>{assigment.assetDTO.assetName}</td>
+                                <td>{assigment.userDTO.username}</td>
+                                <td>{assigment.assignedBy}</td>
+                                <td>{assigment.assignedDate}</td>
+                                <td>{check(assigment.state)}</td>
+                                <td><i className="bi bi-pen btn m-0 text-muted p-0"
+                                       onClick={() => history.push(`/edit/${assigment.id}`)}/></td>
+                                <Popup contentStyle={{width: "500px"}}
+                                       trigger={<td><i className="bi bi-x-circle text-danger btn p-0"/></td>}
+                                       modal>
+                                </Popup>
+                                <Popup
+                                    trigger={<td><i className="bi bi-arrow-counterclockwise text-blue fw-bold"/></td>}
+                                    modal
+                                    contentStyle={PopupStyle}
+                                >
+                                    {close => <ReturnPopup close={close}/>}
+
+                                </Popup>
+                            </tr>
+                        } modal>{close => (<div>
+                            <Button onClick={close} variant="success" className="btn-view-detail">&times;</Button>
+                        </div>)}
+                        </Popup>
                     )}
                     </tbody>
                 </Table>
