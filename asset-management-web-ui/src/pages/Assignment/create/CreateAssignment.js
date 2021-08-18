@@ -11,7 +11,7 @@ import SearchAsset from "./SearchAsset";
 import moment from 'moment'
 import SelectDate from "./SelectDate";
 
-const CreateAssignment = () => {
+const CreateAssignment = ({setResponseAssigment}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const history = useHistory();
     const initialValues = {
@@ -43,6 +43,15 @@ const CreateAssignment = () => {
         axios.post(rootAPI + `/assignments`, create)
             .then((response) => {
                 setSubmitting(false);
+                setResponseAssigment({
+                    id: response.data.id,
+                    assetCode: response.data.assetCode,
+                    assetName: response.data.assetName,
+                    username: response.data.username,
+                    assignedDate: response.data.assignedDate,
+                    state: 5,
+                    note: response.data.note,
+                });
                 history.push("/assignment");
             });
     };

@@ -1,17 +1,17 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'reactjs-popup/dist/index.css';
-import {Button, Container, Form, FormControl, InputGroup, Row, Table} from 'react-bootstrap';
+import {Container, Row, Table} from 'react-bootstrap';
 import React, {useEffect, useState} from 'react';
 import Popup from "reactjs-popup";
 import axios from "axios";
-import {useHistory} from 'react-router-dom'
 import Pagination from '../../components/Pagination/Pagination';
 import ReturnPopup from "./popup/ReturnPopup";
 import '../../style/style.css'
 import AcceptPopup from "./popup/AcceptPopup";
 import DeclinePopup from "./popup/DeclinePopup";
+import DetailsPopup from "./popup/DetailsPopup";
 
-const Home = ({responseAssigment}) => {
+const Home = () => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(10);
@@ -25,83 +25,44 @@ const Home = ({responseAssigment}) => {
             assetCode: null,
             assetName: null,
             state: null,
-            categoryDTO:{
+            categoryDTO: {
                 name: null
             },
-
         },
         userDTO: {
             username: null,
         },
         assignedDate: null,
         state: null
-
     }]);
-    const authority = localStorage.getItem("authority");
-    const history = useHistory();
+    const [state, setState] = useState({
+        state: null
+    });
     const Authentoken = localStorage.getItem("jwttoken");
     useEffect(() => {
-            axios.get(rootAPI + '/users/home?username=' + localStorage.getItem("username"), {
-                    headers: {
-                        Authorization: Authentoken
-                    }
+        axios.get(rootAPI + '/users/home?username=' + localStorage.getItem("username"), {
+                headers: {
+                    Authorization: Authentoken
                 }
-            )
-                .then(function (response) {
-                    let result = response.data.map(assigment => assigment.id);
-                    if (result.includes(responseAssigment.id)) {
-                        const index = response.data.indexOf(responseAssigment);
-                        response.data.splice(index, 1);
-                        response.data.unshift(responseAssigment);
-                        setList(response.data);
-                    } else {
-                        setList(response.data);
-                    }
-                    console.log(response.data);
-                }).catch((error) => {
-                console.log(localStorage.getItem("username"))
-                console.log(localStorage.getItem("jwttoken"))
-            });
-    }, [])
+            }
+        )
+            .then(response => {
+                    setList(response.data)
+                }
+            ).catch((error) => {
+            console.log(error)
+        });
+    }, [state])
     const check = state => {
         if (state === 6) {
             return <td>Accepted</td>
         } else if (state === 5) {
             return <td>Waiting for acceptance</td>
+        } else if (state === 7) {
+            return <td>Decline</td>
+        } else if (state === 8) {
+            return <td>Returning Request</td>
         }
-    }
-    const handleChange = evt => {
-        setSearch(evt.target.value)
-    }
-    const [search, setSearch] = useState("");
-
-    const filterSearchByState = () => {
-        axios.get(rootAPI + `/assets/state/${search}`)
-            .then(function (response) {
-                setList(response.data);
-                console.log(response.data)
-            })
-    }
-    const filterSearchByCategory = () => {
-        axios.get(rootAPI + `/assets/category/${search}`)
-            .then(function (response) {
-                setList(response.data);
-                console.log(response.data)
-            })
-    }
-    const filterSearchBySearchTerm = () => {
-        axios.get(rootAPI + `/assets/search?keyword=${search}`)
-            .then(function (response) {
-                setList(response.data);
-                console.log(response.data)
-            })
-    }
-    if (search === null) {
-        axios.get(rootAPI + '/assets')
-            .then(function (response) {
-                setList(response.data);
-                console.log(response.data)
-            })
     }
     const PopupStyle = {
         width: "500px",
@@ -125,7 +86,7 @@ const Home = ({responseAssigment}) => {
                     </tr>
                     </thead>
                     <tbody>
-                    {list.slice(indexOfFirstUser, indexOfLastUser).map(assigment =>
+                    {list.map(assigment =>
                         <Popup contentStyle={{
                             width: "25%", border: "1px solid black", borderRadius: 10,
                             overflow: 'hidden', padding: "20px"
@@ -137,35 +98,68 @@ const Home = ({responseAssigment}) => {
                                 <td>{assigment.assetDTO.categoryDTO.name}</td>
                                 <td>{assigment.assignedDate}</td>
                                 <td>{check(assigment.state)}</td>
-                                <Popup
-                                    trigger={<td><i className="bi bi-check-lg btn m-0 text-danger p-0"/></td>}
-                                    modal
-                                    contentStyle={PopupStyle}
-                                >
-                                    {close =><AcceptPopup close={close} assigment={assigment} setList={setList}/>}
-                                </Popup>
-
-                                <Popup contentStyle={PopupStyle}
-                                       trigger={<td><i className="bi bi-x-lg btn p-0"/></td>}
-                                       modal>
-                                    {close => <DeclinePopup close={close} id={assigment.assetDTO.id}/>}
-                                </Popup>
-                                <Popup
-                                    trigger={assigment.assetDTO.state ===5 ?
-                                        <td><i className="bi bi-arrow-counterclockwise text-blue"/></td>
-                                        :
-                                        <td><i className="bi bi-arrow-counterclockwise text-blue"/></td>
-                                    }
-                                    modal
-                                    contentStyle={PopupStyle}
-                                >
-                                    {close => <ReturnPopup close={close} id={assigment.assetDTO.id}/>}
-
-                                </Popup>
+                                {assigment.state === 5 ?
+                                    <Popup
+                                        trigger={<td><i className="bi bi-check-lg btn m-0 p-0 text-danger "/></td>}
+                                        modal
+                                        contentStyle={PopupStyle}
+                                    >
+                                        {close => <AcceptPopup close={close} assigment={assigment}
+                                                               setState={setState}/>}
+                                    </Popup>
+                                    :
+                                    <Popup
+                                        trigger={<td><i className="bi bi-check-lg btn m-0 p-0 text-danger disabled "/>
+                                        </td>}
+                                        modal
+                                        disabled
+                                        contentStyle={PopupStyle}
+                                    >
+                                        {close => <AcceptPopup close={close} assigment={assigment}
+                                                               setState={setState}/>}
+                                    </Popup>
+                                }
+                                {assigment.state === 5 ?
+                                    <Popup contentStyle={PopupStyle}
+                                           trigger={<td><i className="bi bi-x-lg btn m-0 p-0"/></td>}
+                                           modal>
+                                        {close => <DeclinePopup close={close} setState={setState}
+                                                                assigment={assigment}/>}
+                                    </Popup>
+                                    :
+                                    <Popup contentStyle={PopupStyle}
+                                           trigger={<td><i className="bi bi-x-lg btn m-0 p-0 disabled"/></td>}
+                                           disabled
+                                           modal>
+                                        {close => <DeclinePopup/>}
+                                    </Popup>
+                                }
+                                {assigment.state === 7 || assigment.state === 8 || assigment.state === 5 ?
+                                    <Popup
+                                        trigger={<td><i
+                                            className="bi bi-arrow-counterclockwise btn m-0 p-0 text-blue disabled "/>
+                                        </td>}
+                                        modal
+                                        disabled
+                                        contentStyle={PopupStyle}
+                                    >
+                                        {close => <ReturnPopup/>}
+                                    </Popup>
+                                    :
+                                    <Popup
+                                        trigger={<td><i
+                                            className="bi bi-arrow-counterclockwise btn m-0 p-0 text-blue"/>
+                                        </td>}
+                                        modal
+                                        contentStyle={PopupStyle}
+                                    >
+                                        {close => <ReturnPopup close={close} setState={setState}
+                                                     assigment={assigment}/>}
+                                    </Popup>
+                                }
                             </tr>
-                        } modal>{close => (<div>
-                            <Button onClick={close} variant="success" className="btn-view-detail">&times;</Button>
-                        </div>)}
+                        } modal>
+                            {close => <DetailsPopup close={close}/>}
                         </Popup>
                     )}
                     </tbody>
