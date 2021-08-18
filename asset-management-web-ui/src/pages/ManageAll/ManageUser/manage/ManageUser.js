@@ -140,17 +140,13 @@ const ManageUser = ({responseUser}) => {
               ></FormControl>
               <Button
                 variant={"outline-secondary"}
-                onClick={filterSearchBySearchTerm}
-              >
-                Search
+                onClick={filterSearchBySearchTerm}>Search
               </Button>
             </InputGroup>
             <Button
               variant={"danger"}
               className={"w-auto ms-5"}
-              onClick={() => history.push("/createuser")}
-            >
-              Create new User
+              onClick={() => history.push("/createuser")}>Create new User
             </Button>
           </div>
         </div>
@@ -161,37 +157,27 @@ const ManageUser = ({responseUser}) => {
                 <th
                   className={"border-bottom"}
                   className={getClassNamesFor("staffCode")}
-                  onClick={() => requestSort("staffCode")}
-                >
-                  Staff Code
+                  onClick={() => requestSort("staffCode")}>Staff Code<i className="bi bi-caret-down-fill"/>
                 </th>
                 <th
                   className={"border-bottom"}
                   className={getClassNamesFor("lastName")}
-                  onClick={() => requestSort("lastName")}
-                >
-                  Full Name
+                  onClick={() => requestSort("lastName")}>Full Name<i className="bi bi-caret-down-fill"/>
                 </th>
                 <th
                   className={"border-bottom"}
                   className={getClassNamesFor("username")}
-                  onClick={() => requestSort("username")}
-                >
-                  User Name
+                  onClick={() => requestSort("username")}>User Name<i className="bi bi-caret-down-fill"/>
                 </th>
                 <th
                   className={"border-bottom"}
                   className={getClassNamesFor("joinedDate")}
-                  onClick={() => requestSort("joinedDate")}
-                >
-                  Joined Date
+                  onClick={() => requestSort("joinedDate")}>Joined Date<i className="bi bi-caret-down-fill"/>
                 </th>
                 <th
                   className={"border-bottom"}
-                  className={getClassNamesFor("type")}
-                  onClick={() => requestSort("type")}
-                >
-                  Type
+                  className={getClassNamesFor("authority")}
+                  onClick={() => requestSort("authority")}>Type<i className="bi bi-caret-down-fill"/>
                 </th>
               </tr>
             </thead>
