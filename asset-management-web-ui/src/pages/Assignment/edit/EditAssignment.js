@@ -47,25 +47,20 @@ const EditAssignment = ({ setResponseAssigment }) => {
             assetName: assetSelect.assetName,
         },
         userDTO: {
-            id: asset.userDTO.id,
-            username: asset.userDTO.username,
+            id: singleUser.id,
+            username: singleUser.username,
         },
         assignedDate: asset.assignedDate,
-        state: 5,
-        note: asset.note
+        state: asset.state,
+        note: asset.note,
     }
     const onSubmit = (values, {setSubmitting}) => {
         let edit = {
             id: id,
-            assetDTO: {
-                id: values.assetDTO.id,
-                assetName: values.assetDTO.assetName,
-            },
-            userDTO: {
-                id: values.userDTO.id,
-            },
+            assetDTO: values.assetDTO,
+            userDTO: values.userDTO,
             assignedDate: values.assignedDate,
-            state: 5,
+            state: values.state,
             note: values.note
         };
         axios.put(rootAPI + `/assignments/${id}`, edit)
@@ -73,14 +68,12 @@ const EditAssignment = ({ setResponseAssigment }) => {
                 setSubmitting(false);
                 setResponseAssigment({
                     id: response.data.id,
-                    assetCode: response.data.assetCode,
-                    assetName: response.data.assetName,
-                    username: response.data.username,
+                    assetDTO: response.data.assetDTO,
+                    userDTO: response.data.userDTO,
                     assignedDate: response.data.assignedDate,
-                    state: 5,
-                    note: response.data.note,
-                });
-                history.push("/assignments");
+                    note: response.data.note
+                })
+                history.push("/assignment");
             });
     };
     
@@ -90,7 +83,9 @@ const EditAssignment = ({ setResponseAssigment }) => {
                 <h1 className={"text-danger mb-5"}>Edit Assignment</h1>
             </Row>
             <Row className={"mt-5"}>
-                <Formik initialValues={initialValues} onSubmit={onSubmit} enableReinitialize={"true"}>
+                <Formik initialValues={initialValues} 
+                        onSubmit={onSubmit} 
+                        enableReinitialize={"true"}>
                     {({
                         values,
                         errors,
@@ -111,8 +106,6 @@ const EditAssignment = ({ setResponseAssigment }) => {
                                         name={"userID"}
                                         value={values.userDTO.username}
                                         onBlur={handleBlur}
-                                        isValid={touched.userID && !errors.userID}
-                                        isInvalid={touched.userID && errors.userID}
                                     />
                                     <Popup
                                         trigger={
@@ -132,12 +125,10 @@ const EditAssignment = ({ setResponseAssigment }) => {
                                     <Form.Control
                                         disabled
                                         className={"bg-white"}
-                                        aria-label="Username"
+                                        aria-label="Assetname"
                                         name={"assetID"}
                                         value={values.assetDTO.assetName}
                                         onBlur={handleBlur}
-                                        isValid={touched.assetID && !errors.assetID}
-                                        isInvalid={touched.assetID && errors.assetID}
                                     />
                                     <Popup
                                         trigger={
@@ -161,21 +152,15 @@ const EditAssignment = ({ setResponseAssigment }) => {
                                     onChange={handleChange}
                                     value={values.assignedDate}
                                     onBlur={handleBlur}
-                                    isValid={touched.assignedDate && !errors.assignedDate}
-                                    isInvalid={touched.assignedDate && errors.assignedDate}
                                 />
-                                {errors.assignedDate && touched.assignedDate ? (
-                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>{errors.assignedDate}</div>
-                                ) : null}
+
                             </Row>
                             <Row className="mb-3">
                                 <p className={"w-25"}>Note</p>
                                 <FormControl
                                     name={"note"}
-                                    aria-label="Username"
                                     aria-describedby="basic-addon1"
                                     className={"w-75"}
-                                    onChange={handleChange}
                                     value={values.note}
                                     onBlur={handleBlur}
                                     style={{ height: '5em' }}
@@ -186,7 +171,7 @@ const EditAssignment = ({ setResponseAssigment }) => {
                                 style={{ float: 'right' }}>
                                 Cancel
                             </Button>
-                            <Button variant={"danger"} type={"submit"} style={{ float: 'right' }} on>
+                            <Button variant={"danger"} type={"submit"} style={{ float: 'right' }}>
                                 Save
                             </Button>
                         </Form>

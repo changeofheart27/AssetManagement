@@ -46,6 +46,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
   public List<User> findByNameOrStaffCode(String keyword);
 
 
+  public List<User> findByUsernameContainsOrStaffCodeContains(String userName,String staffCode);
+
+
 
 
 

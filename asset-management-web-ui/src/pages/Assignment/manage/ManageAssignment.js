@@ -1,33 +1,23 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'reactjs-popup/dist/index.css';
 import {Button, Container, Form, FormControl, InputGroup, Row, Table} from 'react-bootstrap';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo,useState} from 'react';
 import Popup from "reactjs-popup";
 import axios from "axios";
 import {useHistory} from 'react-router-dom'
 import Pagination from '../../../components/Pagination/Pagination';
 import DeleteAssignment from '../delete/DeleteAssignment';
+import ViewDetailAssignment from '../viewDetails/ViewDetailAssignment';
 
 const ManageAssignment = ({responseAssigment}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(10);
+    const [sortConfig, setSortConfig] = useState(null);
     const indexOfLastUser = currentPage * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
     const paginate = pageNumber => setCurrentPage(pageNumber);
-    const [list, setList] = useState([{
-        id: null,
-        assetDTO: {
-            assetCode: null,
-            assetName: null,
-        },
-        userDTO: {
-            username: null,
-        },
-        assignedBy: null,
-        assignedDate: null,
-        state: null
-    }]);
+    const [list, setList] = useState([]);
     const history = useHistory();
     const [categories, setCategories] = useState([]);
     useEffect(() => {
@@ -50,6 +40,10 @@ const ManageAssignment = ({responseAssigment}) => {
             return <td>Accepted</td>
         } else if (state === 5) {
             return <td>Waiting for acceptance</td>
+        }else if (state === 7) {
+            return <td>Decline</td>
+        }else if (state === 8) {
+            return <td>Waiting for returning</td>
         }
     }
     const handleChange = evt => {
@@ -104,6 +98,38 @@ const ManageAssignment = ({responseAssigment}) => {
                 console.log(response.data)
             })
     }
+    const sortingData = useMemo(() => {
+        if (sortConfig !== null) {
+            list.sort((a, b) => {
+                if (a[sortConfig.key] < (b[sortConfig.key]) 
+                    || a.userDTO.username < b.userDTO.username
+                    || a.assetDTO.assetName < b.assetDTO.assetName
+                    || a.assetDTO.assetCode < b.assetDTO.assetCode) {
+                    return sortConfig.direction === "asc" ? -1 : 1;
+                }
+                if (a[sortConfig.key] > (b[sortConfig.key]) 
+                    || a.userDTO.username > b.userDTO.username
+                    || a.assetDTO.assetName  > b.assetDTO.assetName
+                    || a.assetDTO.assetCode > b.assetDTO.assetCode) {
+                    return sortConfig.direction === "asc" ? 1 : -1;
+                }
+                return 0;
+            })
+        }
+    }, [sortConfig]);
+    const requestSort = key => {
+        let direction = "asc";
+        if (sortConfig && sortConfig.key === key && sortConfig.direction === "asc") {
+            direction = "desc";
+        }
+        setSortConfig({key, direction});
+    }
+    const getClassNamesFor = (name) => {
+        if (!sortConfig) {
+            return;
+        }
+        return sortConfig.key === name ? sortConfig.direction : undefined;
+    };
     return (
         <Container fluid className={"d-block ps-5"}>
             <h1 className={"text-danger mb-3"}>My Assigment</h1>
@@ -160,13 +186,27 @@ const ManageAssignment = ({responseAssigment}) => {
                 <Table>
                     <thead>
                     <tr>
-                        <th className={"border-bottom"}>No.<i className="bi bi-caret-down-fill"/></th>
-                        <th className={"border-bottom"}>Asset Code <i className="bi bi-caret-down-fill"/></th>
-                        <th className={"border-bottom"}>Asset Name <i className="bi bi-caret-down-fill"/></th>
-                        <th className={"border-bottom"}>Assigned To<i className="bi bi-caret-down-fill"/></th>
-                        <th className={"border-bottom"}>Assigned By<i className="bi bi-caret-down-fill"/></th>
-                        <th className={"border-bottom"}>Assigned Date<i className="bi bi-caret-down-fill"/></th>
-                        <th className={"border-bottom"}>State<i className="bi bi-caret-down-fill"/></th>
+                        <th className={"border-bottom"}
+                            className={getClassNamesFor('id')}
+                            onClick={() => requestSort('id')}>No.<i className="bi bi-caret-down-fill"/></th>
+                        <th className={"border-bottom"}
+                            className={getClassNamesFor('assetCode')}
+                            onClick={() => requestSort('assetCode')}>Asset Code <i className="bi bi-caret-down-fill"/></th>
+                        <th className={"border-bottom"}
+                            className={getClassNamesFor('assetDTO.assetName')}
+                            onClick={() => requestSort('assetDTO.assetName')}>Asset Name <i className="bi bi-caret-down-fill"/></th>
+                        <th className={"border-bottom"}
+                            className={getClassNamesFor('userDTO.username')}
+                            onClick={() => requestSort('userDTO.username')}>Assigned To<i className="bi bi-caret-down-fill"/></th>
+                        <th className={"border-bottom"}
+                            className={getClassNamesFor('assignedBy')}
+                            onClick={() => requestSort('assignedBy')}>Assigned By<i className="bi bi-caret-down-fill"/></th>
+                        <th className={"border-bottom"}
+                            className={getClassNamesFor('assignedDate')}
+                            onClick={() => requestSort('assignedDate')}>Assigned Date<i className="bi bi-caret-down-fill"/></th>
+                        <th className={"border-bottom"}
+                            className={getClassNamesFor('state')}
+                            onClick={() => requestSort('state')}>State<i className="bi bi-caret-down-fill"/></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -183,21 +223,30 @@ const ManageAssignment = ({responseAssigment}) => {
                                 <td>{assigment.assignedBy}</td>
                                 <td>{assigment.assignedDate}</td>
                                 <td>{check(assigment.state)}</td>
-                                <td><i className="bi bi-pen btn m-0 text-muted p-0"
-                                       onClick={() => history.push(`/editassignment/${assigment.id}`)}/></td>
-                                <Popup contentStyle={{
-                                    width: "25%", border: "1px solid black", borderRadius: 10,
-                                    overflow: 'hidden', padding: "20px"
-                                }}
-                                       trigger={<td><i className="bi bi-x-circle text-danger btn p-0"/></td>}
-                                       offsetX={200}
-                                       modal>
-                                    {assigment.state !== 5 ? <DeleteAssignment id={assigment.id} /> : null}
-                                </Popup>
-                                <td><i className="bi bi-arrow-counterclockwise text-blue fw-bold"/></td>
+                                {assigment.state !== 6 ?
+                                <>
+                                    <td><i className="bi bi-pen btn m-0 text-muted p-0"
+                                        onClick={() => history.push(`/editassignment/${assigment.id}`)}/></td>
+                                    <Popup contentStyle={{
+                                        width: "25%", border: "1px solid black", borderRadius: 10,
+                                        overflow: 'hidden', padding: "20px"
+                                    }}
+                                        trigger={<td><i className="bi bi-x-circle text-danger btn p-0"/></td>}
+                                        offsetX={200}
+                                        modal>
+                                        <DeleteAssignment id={assigment.id} />
+                                    </Popup>
+                                    <td><i className="bi bi-arrow-counterclockwise text-blue fw-bold"/></td>
+                                </> : 
+                                <>
+                                    <td><i className="bi bi-pen btn m-0 p-0" style={{color:'#E0E0E0'}}/></td>
+                                    <td><i className="bi bi-x-circle btn p-0" style={{color:'#DAB5B6'}}/></td>
+                                    <td><i className="bi bi-arrow-counterclockwise fw-bold" style={{color:'#92A7EA'}}/></td>
+                                </>}
                             </tr>
                         } modal>
                             {close => (<div>
+                            <ViewDetailAssignment id={assigment.id}/>
                             <Button onClick={close} variant="success" className="btn-view-detail">&times;</Button>
                         </div>)}
                         </Popup>

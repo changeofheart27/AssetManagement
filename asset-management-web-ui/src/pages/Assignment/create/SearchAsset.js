@@ -60,7 +60,9 @@ const SearchAsset = ({setAssetSelect,close}) => {
                             <td><Form.Check name={"singleUser"}
                                             color={"red"}
                                             type={"radio"}
-                                            onChange={()=> setAssetSelect({id: asset.id, assetCode: asset.assetCode})}
+                                            onChange={()=> setAssetSelect({id: asset.id,
+                                                                            assetCode: asset.assetCode,
+                                                                            assetName: asset.assetName})}
                             /></td>
                             <td>{asset.assetCode}</td>
                             <td>{asset.assetName}</td>
@@ -73,7 +75,7 @@ const SearchAsset = ({setAssetSelect,close}) => {
                 <Row className={"justify-content-end"}>
                     <Button variant={"danger"} className={"w-25 mx-5"} onClick={()=> close()}>Save</Button>
                     <Button variant={"danger"} className={"w-25"} onClick={()=>{
-                        setAssetSelect({id:null, assetCode:""})
+                        setAssetSelect({id:null, assetCode:"", assetName:""})
                         close()
                     }} >Cancel</Button>
                 </Row>

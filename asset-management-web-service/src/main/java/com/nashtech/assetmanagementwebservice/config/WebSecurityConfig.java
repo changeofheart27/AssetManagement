@@ -67,12 +67,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/**/assets/**").permitAll()
 				.antMatchers("/**/searchby").permitAll()
 
+
 				.antMatchers("/**/admin/**").hasAnyRole("ADMIN")
 
 				.antMatchers("/**/staff/**").hasAnyRole("STAFF")
 				.antMatchers("/**/users/**").permitAll()
 
 				.antMatchers("/**/user/home").permitAll()
+
 
 
 				.anyRequest().authenticated().and().exceptionHandling()

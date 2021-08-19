@@ -15,11 +15,14 @@ public interface AssignmentRepository extends JpaRepository<Assignment, Integer>
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE Assignment a set a.asset.id = :assetID , a.user.id =:userID, a.state=:state where a.id=:assignID")
+    @Query(value = "UPDATE Assignment a set a.asset.id = :assetID , a.user.id =:userID, a.state=:state, a.assignedDate=:assignedDate, a.note=:note " +
+            "where a.id=:assignID")
     void saveAssign(@Param("assetID") Integer assetID
             ,@Param("userID") Integer userID
             ,@Param("assignID") Integer assignID
-            ,@Param("state") Integer state);
+            ,@Param("state") Integer state
+            ,@Param("assignedDate") LocalDate assignedDate
+            ,@Param("note") String note);
 
   List<Assignment> findByUser_Username(String name);
 
@@ -29,5 +32,5 @@ public interface AssignmentRepository extends JpaRepository<Assignment, Integer>
 
   List<Assignment> findAssignmentsByState(Integer state);
 
-  List<Assignment> findAssignmentsByAssignedDate(LocalDate assigneDate);
+  List<Assignment> findAssignmentsByAssignedDate(LocalDate assignedDate);
 }

@@ -50,7 +50,9 @@ const LoginFormPage = ({props, loginSuccess}) => {
         }).then((response) => {
             axios({
                 method: "POST",
+
                 url: rootAPI+"/authenticate",
+
                 data: {
                     username: values.username,
                     password: values.password,
