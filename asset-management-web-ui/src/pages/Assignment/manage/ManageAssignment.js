@@ -6,6 +6,7 @@ import Popup from "reactjs-popup";
 import axios from "axios";
 import {useHistory} from 'react-router-dom'
 import Pagination from '../../../components/Pagination/Pagination';
+import DeleteAssignment from '../delete/DeleteAssignment';
 
 const ManageAssignment = ({responseAssigment}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
@@ -45,9 +46,9 @@ const ManageAssignment = ({responseAssigment}) => {
             })
     }, [])
     const check = state => {
-        if (state === 5) {
+        if (state === 6) {
             return <td>Accepted</td>
-        } else if (state === 6) {
+        } else if (state === 5) {
             return <td>Waiting for acceptance</td>
         }
     }
@@ -55,23 +56,42 @@ const ManageAssignment = ({responseAssigment}) => {
         setSearch(evt.target.value)
     }
     const [search, setSearch] = useState("");
+    const [type, setType] = useState();
+    const [date, setDate] = useState();
+    const request = {
+        params: {
+            type,
+            date
+        }
+    }
+    const handleFilterType = evt => {
+        const name = evt.target.name;
+        setType(evt.target.value)
+    }
+    const handleFilterAssignedDate = evt => {
+        const name = evt.target.name;
+        setDate(evt.target.value)
+    }
+    useEffect(() => {
+        console.log("use Effect Run")
+        console.log(request)
+        if (request.params.type === 'State') {
+            request.params.type = null;
+            console.log(request)
+        }
+        if (request.params.date === 'Assigned Date') {
+            request.params.date= null;
+            console.log(request)
+        }
+        axios.get(rootAPI + `/assignments/filter`, request)
+            .then(function (response) {
+                setList(response.data);
+                console.log(response.data)
+            })
+    }, [type, date])
 
-    const filterSearchByState = () => {
-        axios.get(rootAPI + `/assets/state/${search}`)
-            .then(function (response) {
-                setList(response.data);
-                console.log(response.data)
-            })
-    }
-    const filterSearchByCategory = () => {
-        axios.get(rootAPI + `/assets/category/${search}`)
-            .then(function (response) {
-                setList(response.data);
-                console.log(response.data)
-            })
-    }
     const filterSearchBySearchTerm = () => {
-        axios.get(rootAPI + `/assets/search?keyword=${search}`)
+        axios.get(rootAPI + `/assignments/search?keyword=${search}`)
             .then(function (response) {
                 setList(response.data);
                 console.log(response.data)
@@ -96,26 +116,22 @@ const ManageAssignment = ({responseAssigment}) => {
                             className={"w-25"}
                             placeholder={"State"}
                             name={"state"}
-                            onChange={handleChange}
+                            onChange={handleFilterType}
                         >
                             <option>State</option>
-                            <option value="5">Accepted</option>
-                            <option value="6">Waiting for acceptance</option>
+                            <option value="6">Accepted</option>
+                            <option value="5">Waiting for acceptance</option>
                         </Form.Control>
-                        <Button variant={"outline-secondary"} onClick={filterSearchByState}><i
+                        <Button variant={"outline-secondary"}><i
                             className="bi bi-funnel-fill"/></Button>
                         <Form.Control
-                            type="input"
+                            type={"date"}
                             className={"w-25 ms-5"}
                             placeholder={"Assigned Date"}
                             name={"assignedDate"}
-                            onChange={handleChange}
+                            onChange={handleFilterAssignedDate}
                         >
                         </Form.Control>
-                        <Button variant={"outline-secondary"}
-                                onClick={filterSearchByCategory}>
-                            <i class="bi bi-calendar2-week-fill"/>
-                        </Button>
                     </InputGroup>
                 </div>
                 <div className={"col-5 d-flex"}>
@@ -166,9 +182,9 @@ const ManageAssignment = ({responseAssigment}) => {
                                 <td>{assigment.userDTO.username}</td>
                                 <td>{assigment.assignedBy}</td>
                                 <td>{assigment.assignedDate}</td>
-                                {check(assigment.state)}
+                                <td>{check(assigment.state)}</td>
                                 <td><i className="bi bi-pen btn m-0 text-muted p-0"
-                                       onClick={() => history.push(`/edit/${assigment.id}`)}/></td>
+                                       onClick={() => history.push(`/editassignment/${assigment.id}`)}/></td>
                                 <Popup contentStyle={{
                                     width: "25%", border: "1px solid black", borderRadius: 10,
                                     overflow: 'hidden', padding: "20px"
@@ -176,6 +192,7 @@ const ManageAssignment = ({responseAssigment}) => {
                                        trigger={<td><i className="bi bi-x-circle text-danger btn p-0"/></td>}
                                        offsetX={200}
                                        modal>
+                                    {assigment.state !== 5 ? <DeleteAssignment id={assigment.id} /> : null}
                                 </Popup>
                                 <td><i className="bi bi-arrow-counterclockwise text-blue fw-bold"/></td>
                             </tr>

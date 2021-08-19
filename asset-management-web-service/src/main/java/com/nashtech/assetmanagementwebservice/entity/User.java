@@ -69,8 +69,7 @@ public class User {
 //    @OneToOne(mappedBy = "user")
 //    private Request request;
 
-    @Column(name = "password_change_reminder")
-    private String passwordChangeReminder;
+
 
 
     @Column(name = "default_password")

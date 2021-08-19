@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './Manage.css'
 import 'reactjs-popup/dist/index.css';
 import {Button, Container, Form, FormControl, InputGroup, Row, Table} from 'react-bootstrap';
-import React, {useMemo, useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import Delete from "../delete/Delete";
 import DeleteFail from "../delete/DeleteFail";
 import Pagination from '../../../../components/Pagination/Pagination'
@@ -36,7 +36,7 @@ const ManageAsset = ({responseDataAsset}) => {
     useEffect(() => {
         axios.get(rootAPI + "/categories").then((response) => {
             setCategories(response.data);
-        }, []);
+        });
     }, []);
 
     useEffect(() => {
@@ -63,7 +63,9 @@ const ManageAsset = ({responseDataAsset}) => {
         } else if (state === 2) {
             return <td>Waiting for recycling</td>
         } else if (state === 3) {
-            return <td>Recycle</td>
+            return <td>Recycled</td>
+        } else if (state === 4) {
+            return <td>Assigned</td>
         }
     }
     const [search, setSearch] = useState("");
@@ -120,9 +122,8 @@ const ManageAsset = ({responseDataAsset}) => {
     }
 
     const sortingData = useMemo(() => {
-        let listData = list;
         if (sortConfig !== null) {
-            listData.sort((a, b) => {
+            list.sort((a, b) => {
                 if (a[sortConfig.key] < (b[sortConfig.key])) {
                     return sortConfig.direction === "asc" ? -1 : 1;
                 }
@@ -132,7 +133,7 @@ const ManageAsset = ({responseDataAsset}) => {
                 return 0;
             })
         }
-    }, [list, sortConfig]);
+    }, [sortConfig]);
     const requestSort = key => {
         let direction = "asc";
         if (sortConfig && sortConfig.key === key && sortConfig.direction === "asc") {
@@ -160,7 +161,6 @@ const ManageAsset = ({responseDataAsset}) => {
                         <Form.Control
                             as="select"
                             custom
-                            className={"w-25"}
                             name={"type"}
                             onChange={handleFilterType}
                         >
@@ -168,7 +168,8 @@ const ManageAsset = ({responseDataAsset}) => {
                             <option value="0">Available</option>
                             <option value="1">Not Available</option>
                             <option value="2">Waiting for recycling</option>
-                            <option value="3">Recycle</option>
+                            <option value="3">Recycled</option>
+                            <option value="4">Assigned</option>
                         </Form.Control>
                         <Button
                             variant={"outline-secondary"}
@@ -177,7 +178,7 @@ const ManageAsset = ({responseDataAsset}) => {
                         <Form.Control
                             as="select"
                             custom
-                            className={"w-25 ms-5"}
+                            className={"ms-5"}
                             placeholder={"Category"}
                             name={"category"}
                             onChange={handleFilterCategory}
@@ -191,8 +192,8 @@ const ManageAsset = ({responseDataAsset}) => {
                             className="bi bi-funnel-fill"/></Button>
                     </InputGroup>
                 </div>
-                <div className={"col-9 d-flex justify-content-end"}>
-                    <InputGroup className={"w-25"}>
+                <div className={"col-8 d-flex justify-content-end"}>
+                    <InputGroup className={"w-50"}>
                         <FormControl
                             type={"input"}
                             name={"searchTerm"}
@@ -216,19 +217,19 @@ const ManageAsset = ({responseDataAsset}) => {
                     <tr>
                         <th className={"border-bottom"}
                             className={getClassNamesFor('assetCode')}
-                            onClick={() => requestSort('assetCode')}>Asset Code<i className="bi bi-caret-down-fill"/>
+                            onClick={() => requestSort('assetCode')}>Asset Code
                         </th>
                         <th className={"border-bottom"}
                             className={getClassNamesFor('assetName')}
-                            onClick={() => requestSort('assetName')}>Asset Name<i className="bi bi-caret-down-fill"/>
+                            onClick={() => requestSort('assetName')}>Asset Name
                         </th>
                         <th className={"border-bottom"}
                             className={getClassNamesFor('categoryDTO.name')}
-                            onClick={() => requestSort('category')}>Category<i className="bi bi-caret-down-fill"/>
+                            onClick={() => requestSort('category')}>Category
                         </th>
                         <th className={"border-bottom"}
                             className={getClassNamesFor('state')}
-                            onClick={() => requestSort('state')}>State<i className="bi bi-caret-down-fill"/>
+                            onClick={() => requestSort('state')}>State
                         </th>
                     </tr>
                     </thead>
@@ -251,9 +252,9 @@ const ManageAsset = ({responseDataAsset}) => {
                                 }}
                                        trigger={<td><i className="bi bi-x-circle text-danger btn p-0"/></td>}
                                        modal>
-                                    {asset.state !== 1 ?
-                                        <Delete id={asset.id}/> :
-                                        <DeleteFail id={asset.id}/>}
+                                    {asset.state !== 4 ?
+                                        close => <Delete id={asset.id} close={close} setList={setList}/> :
+                                        close => <DeleteFail id={asset.id} close={close}/>}
                                 </Popup>
                             </tr>
                         } modal>{close => (<div>

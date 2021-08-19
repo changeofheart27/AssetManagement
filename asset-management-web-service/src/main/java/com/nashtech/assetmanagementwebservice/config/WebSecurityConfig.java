@@ -58,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						"/swagger-ui.html",
 						"/v2/api-docs",
 						"/webjars/**").permitAll()
-				.antMatchers("/authenticate").permitAll()
+				.antMatchers("/api/v1/authenticate").permitAll()
 				.antMatchers("/**/check-change-password/**").permitAll()
 				.antMatchers("/**/request/**").permitAll()
 				.antMatchers("/**/change-password/**").permitAll()
@@ -66,9 +66,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/**/categories/**").permitAll()
 				.antMatchers("/**/assets/**").permitAll()
 				.antMatchers("/**/searchby").permitAll()
+
 				.antMatchers("/**/admin/**").hasAnyRole("ADMIN")
 
 				.antMatchers("/**/staff/**").hasAnyRole("STAFF")
+				.antMatchers("/**/users/**").permitAll()
+
+				.antMatchers("/**/user/home").permitAll()
+
+
 				.anyRequest().authenticated().and().exceptionHandling()
 				.authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);

@@ -7,9 +7,11 @@ public class PasswordBcryptUtil {
 
 
     public static void main(String[] args) {
-        String plantTextPassword ="admin@123";
-        System.out.println(passwordEncoder(plantTextPassword));
-        System.out.println("Matching or not :"+checkPasswordMatching(plantTextPassword,"$2a$10$RXZ26G5kPqrI6Otof1Nxq.NKUzHwj/TH84A2u0rq69fFQY1mOsrnO"));
+    	System.out.println(passwordEncoder("devacc@11111111"));
+    	
+//        String plantTextPassword ="admin@123";
+//        System.out.println(passwordEncoder(plantTextPassword));
+//        System.out.println("Matching or not :"+checkPasswordMatching(plantTextPassword,"$2a$10$RXZ26G5kPqrI6Otof1Nxq.NKUzHwj/TH84A2u0rq69fFQY1mOsrnO"));
     }
     public static String passwordEncoder(String plantTextPassword){
         if(StringUtils.isBlank(plantTextPassword)){

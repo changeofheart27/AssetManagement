@@ -1,13 +1,17 @@
 package com.nashtech.assetmanagementwebservice.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+
 import com.nashtech.assetmanagementwebservice.config.JwtTokenUtil;
 import com.nashtech.assetmanagementwebservice.model.jwt.JwtRequest;
+import com.nashtech.assetmanagementwebservice.model.request.ChangePasswordRequest;
 import com.nashtech.assetmanagementwebservice.model.request.CreateUserRequest;
 import com.nashtech.assetmanagementwebservice.model.request.UpdateUserRequest;
 import com.nashtech.assetmanagementwebservice.service.JwtUserDetailsService;
+
 import org.hamcrest.collection.IsCollectionWithSize;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,7 +26,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -57,6 +64,29 @@ public class UserControllerIntTests {
             throw new RuntimeException(e);
         }
     }
+    
+    @Autowired
+	private UserDetailsService userService;
+
+
+
+	@Autowired
+	private AuthenticationManager authenticationManager;
+	
+	private String token;
+
+	@BeforeEach
+	public void setUp() {
+		UserDetails user = userService.loadUserByUsername("duongmh");
+		
+		if (user != null) {
+			this.token = jwtTokenUtil.generateToken(user);
+			authenticationManager
+					.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), "duongmh@11111111"));	
+		}
+
+	}
+    
     @Test
     public void getAllUser() throws Exception {
         JwtRequest request = new JwtRequest();
@@ -66,12 +96,15 @@ public class UserControllerIntTests {
         final String token = jwtTokenUtil.generateToken(userDetails);
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/v1/admin/users")
+
                         .header("Authorization", "Bearer " + token)
                         .accept(MediaType.APPLICATION_JSON_VALUE))
+
+
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$", IsCollectionWithSize.hasSize(0)));
+                .andExpect(jsonPath("$", IsCollectionWithSize.hasSize(7)));
 //                .andExpect(jsonPath("$[*].id").isNotEmpty());
     }
 
@@ -87,13 +120,17 @@ public class UserControllerIntTests {
         final String token = jwtTokenUtil.generateToken(userDetails);
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/v1/admin/users/" + id)
+
                         .header("Authorization", "Bearer " + token)
                         .accept(MediaType.APPLICATION_JSON_VALUE))
+
+
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(id))
                 .andExpect(jsonPath("$.username").value("admin"));
     }
+
 
     @Test
     public void updateUserWithAdminAccount() throws Exception {
@@ -118,6 +155,7 @@ public class UserControllerIntTests {
                         .andExpect(jsonPath("$.firstName").value("first name updated"))
                         .andExpect(jsonPath("$.lastName").value("last name updated"));
     }
+
 
     @Test
     public void updateUserWithStaffAccount() throws Exception {
@@ -195,7 +233,7 @@ public class UserControllerIntTests {
 
     @Test
     public void changePassWordWithAdminAccount() throws Exception {
-        UpdateUserRequest updateUserRequest = new UpdateUserRequest();
+        ChangePasswordRequest updateUserRequest = new ChangePasswordRequest();
         updateUserRequest.setPassword("123");
 
         JwtRequest request = new JwtRequest();
@@ -204,7 +242,7 @@ public class UserControllerIntTests {
         UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(request.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails);
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/api/v1/staff/change-password/1")
+                        .put("/api/v1/change-password/1")
                         .header("Authorization", "Bearer " + token)
                         .content(asJsonString(updateUserRequest))
                         .contentType(MediaType.APPLICATION_JSON))

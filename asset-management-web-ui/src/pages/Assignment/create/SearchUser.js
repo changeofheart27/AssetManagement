@@ -9,7 +9,7 @@ const SearchUser = ({setSingleUser,close}) => {
         id: null,
         firstName: null,
         lastName: null,
-        type: null,
+        authority: null,
         status: null
     }]);
     useEffect(() => {
@@ -65,7 +65,7 @@ const SearchUser = ({setSingleUser,close}) => {
                             <td><Form.Check name={"singleUser"} color={"red"} type={"radio"} onChange={()=> setSingleUser({id: user.id, username: user.username})} /></td>
                             <td>{user.username}</td>
                             <td>{user.firstName} {user.lastName}</td>
-                            <td>{user.type}</td>
+                            <td>{user.authority}</td>
                         </tr>
                         : null
                     ))}

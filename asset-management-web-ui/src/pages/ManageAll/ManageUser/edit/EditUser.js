@@ -1,13 +1,25 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+import * as Yup from "yup";
+
 import {Button, Form, FormCheck, FormControl, Row} from "react-bootstrap";
 import React, {useEffect, useState} from 'react';
 import {useHistory, useParams} from 'react-router-dom';
+
 import {Formik} from 'formik';
 import axios from "axios";
-import * as Yup from "yup";
-import {differenceInYears} from "date-fns";
 import differenceInDays from 'date-fns/differenceInDays/index.js';
+import {differenceInYears} from "date-fns";
 const EditUser = ({setResponseUser}) => {
+
+
+
+  const token = localStorage.getItem('jwttoken')
+    
+  const headers = { 
+    'Authorization': token
+    
+};
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     let {id} = useParams();
     const history = useHistory();
@@ -27,7 +39,7 @@ const EditUser = ({setResponseUser}) => {
     });
     useEffect(() => {
         axios
-            .get(rootAPI+`/admin/users/${id}`)
+            .get(rootAPI+`/admin/users/${id}`,{headers})
             .then(function (response) {
                 setUser(response.data);
                 setGender(response.data.gender);
@@ -64,7 +76,7 @@ const EditUser = ({setResponseUser}) => {
             password: user.password
         }
         axios
-            .put(rootAPI+`/admin/users/${id}`, editUser)
+            .put(rootAPI+`/admin/users/${id}`, editUser,{headers})
             .then((response) => {
                 setSubmitting(false);
                 setResponseUser({
@@ -82,30 +94,51 @@ const EditUser = ({setResponseUser}) => {
             });
     };
     const ValidateSchema = Yup.object().shape({
-        firstName: Yup.string()
-            .max(50)
-            .required('Required')
-            .typeError('First name is required'),
-        lastName: Yup.string()
-            .max(50)
-            .required('Required')
-            .typeError('Last name is required'),
-        authority: Yup.string()
-            .required('Required')
-            .typeError('Please select type'),
-        dob: Yup.date()
-            .required()
-            .typeError('DOB is required')
-            .test("dob", "Should be greater than 18", function (value) {
-                return differenceInYears(new Date(), new Date(value)) >= 18;
-            }),
-        joinedDate: Yup.date()
-            .required()
-            .typeError('Joined Date is required')
-            .min(Yup.ref('dob'),"Should be greater than DOB")
-            .test("dob", "Should be greater than DOB", function (value) {
-                return differenceInDays(new Date(value), new Date(this.parent.dob)) != 0;
-        }),
+      firstName: Yup.string()
+        .max(255)
+        .required("Required")
+        .typeError("First name is required"),
+      lastName: Yup.string()
+        .max(255)
+        .required("Required")
+        .typeError("Last name is required"),
+      authority: Yup.string()
+        .required("Required")
+        .typeError("Please select type"),
+      dob: Yup.date()
+        .required()
+        .typeError("DOB is required")
+        .test(
+          "dob",
+          "User is under 18. Please select a different date",
+          function (value) {
+            return differenceInYears(new Date(), new Date(value)) >= 18;
+          }
+        ),
+      joinedDate: Yup.date()
+        .required()
+        .typeError("Joined Date is required")
+        .min(
+          Yup.ref("dob"),
+          "Joined date is not later than Date of Birth. Please select a different date"
+        )
+        .test(
+          "dob",
+          "Joined date is not later than Date of Birth. Please select a different date",
+          function (value) {
+            return (
+              differenceInDays(new Date(value), new Date(this.parent.dob)) != 0
+            );
+          }
+        )
+        .test(
+          "dob",
+          "Joined date is Saturday or Sunday. Please select a different date",
+          function (value) {
+            const currentDate = new Date(value);
+            return currentDate.getDay() !== 6 && currentDate.getDay() !== 0;
+          }
+        ),
     });
     return (
         <div className={"container ps-5 d-block"}>

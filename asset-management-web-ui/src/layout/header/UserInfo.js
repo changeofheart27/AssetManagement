@@ -1,19 +1,32 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './UserInfo.css'
 
 import * as Yup from "yup";
+
+import {Button, Form, FormCheck, FormControl, Row} from "react-bootstrap";
+import { useEffect, useState } from "react";
+import {useHistory, useParams} from 'react-router-dom';
+
 import {ButtonGroup} from "react-bootstrap";
-
-
 import { Formik } from 'formik';
 import React from 'react';
 import axios from 'axios';
-import { useState } from "react";
-import {useHistory} from 'react-router-dom';
-import {Button, Form, FormCheck, FormControl, Row} from "react-bootstrap";
-const UserInfo = ({props,loginSuccess}) => {
-  
+import {toast} from 'react-toastify';
+
+const UserInfo = ({props,loginSuccess,setResponseUser}) => {
+  const username = localStorage.getItem('username')
+  const token = localStorage.getItem('jwttoken')
+    
+  const headers = { 
+    'Authorization': token
+    
+};
+  const [showLoginSuccess, setShowLoginSuccess] = useState(false);
+  const rootAPI = process.env.REACT_APP_SERVER_URL;
   const [submitError, setSubmitError] = useState("");
   const history = useHistory();  
+
+
     const initialValues = { oldPassword:'', newPassword:''};
   
     const ValidateSchema = Yup.object().shape({
@@ -26,35 +39,55 @@ const UserInfo = ({props,loginSuccess}) => {
           .required('Required')
           .typeError('New Password is required'),    
   });
-    const onSubmit = (values, { setSubmitting }) => {
-      axios({
-        method: "POST",
-        url: "http://localhost:8080/authenticate",
-        headers: {},
-        data: {
-          oldPassword: values.username,
-          newPassword: values.password,
-        },
-      }
-      )
+  const onSubmit = (values, {setSubmitting}) => {
+    axios({
+            method: "POST",
+            url: rootAPI+"/authenticate",
+            data: {
+                username: username,
+                password: values.oldPassword,
+            },
+        }
+    )
         .then((response) => {
-          setSubmitting(false);
-          console.log(response);
-          localStorage.clear();
-          localStorage.setItem("jwttoken","Bearer "+response.data.jwttoken);
-          localStorage.setItem("username",values.username);
-          window.location.href = "/home";
+            setSubmitting(false);
+            console.log(response);
+            
+            localStorage.setItem("jwttoken", "Bearer " + response.data.jwttoken);
+            setShowLoginSuccess(true);
+      
+            toast.success("Change password successfully");
+
+            
           
-      }).catch((error) => {
-          setSubmitting(false);
-          console.log(error);
-          setSubmitError(
+        }).then((response) => {
+          let editUserPassword = {
+            password: values.newPassword
+        }
+          axios
+            .put(rootAPI+`/change-password/${username}`, editUserPassword,{headers})
+            .then((response) => {
+                setSubmitting(false);
+             
+            }).catch((error) => {
+              localStorage.clear()
+              window.location.href = "/login";});
+        })
+        
+        .catch((error) => {
+        setSubmitting(false);
+        console.log(error);
+        setSubmitError(
             "Login fails status code: " + error
-          );
-        });
-    }
+        );
+        toast.error("Wrong password");
+        
+    });
+}  
+
+  
     return (
-      <div>
+      <div className="body-changepassword">
       <h3 className={"text-danger"}>Change Password</h3>
        <hr/>
        <Formik
@@ -79,6 +112,7 @@ const UserInfo = ({props,loginSuccess}) => {
                                     aria-label="Old Password"
                                     aria-describedby="basic-addon1"
                                     className={"w-75"}
+                                    value={values.oldPassword}
                                     name={"oldPassword"}
                                     type = {"password"}
                                     onChange={handleChange}
@@ -95,6 +129,7 @@ const UserInfo = ({props,loginSuccess}) => {
                                     aria-label="New Password"
                                     aria-describedby="basic-addon1"
                                     className={"w-75"}
+                                    value={values.newPassword}
                                     name={"newPassword"}
                                     type = {"password"}
                                     onChange={handleChange}
@@ -105,6 +140,7 @@ const UserInfo = ({props,loginSuccess}) => {
                                     <div className={"text-danger"} style={{paddingLeft: "25%"}}>{errors.newPassword}</div>
                                 ) : null}
                             </Row>
+                            
                             <Row>
                               <ButtonGroup>
                               <Button variant={"danger"} type={"submit"} style={{float: 'right'}}  disabled={isSubmitting} on>

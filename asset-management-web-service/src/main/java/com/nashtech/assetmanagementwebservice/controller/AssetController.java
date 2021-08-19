@@ -59,7 +59,7 @@ public class AssetController {
 
     @ApiOperation(value = "Update An Asset Using id", response = AssetDTO.class)
     @PutMapping(value = "/assets/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AssetDTO> updateAsset(@PathVariable Integer id, @RequestBody AssetDTO payload) {
+    public ResponseEntity<AssetDTO> updateAsset(@PathVariable Integer id , @RequestBody AssetDTO payload) {
         logger.info("Execute updateAsset() inside AssetController");
         AssetDTO asset = assetService.editAsset(id, payload);
         logger.info("Executed successful!");

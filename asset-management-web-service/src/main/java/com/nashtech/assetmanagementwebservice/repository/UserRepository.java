@@ -3,6 +3,7 @@ package com.nashtech.assetmanagementwebservice.repository;
 import java.util.List;
 import java.util.Optional;
 
+import com.nashtech.assetmanagementwebservice.model.dto.UserDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -28,16 +29,18 @@ public interface UserRepository extends JpaRepository<User, Integer> {
   public User findByUsername(String username);
 
 
-  @Transactional
-  @Modifying
-  @Query(value = "UPDATE user SET password = ?1 WHERE id = ?2", nativeQuery = true)
-  public void updatePassword(String password, int id);
 
 
   @Transactional
   @Modifying
-  @Query(value = "UPDATE user SET password_change_reminder = ?1 WHERE id = ?2", nativeQuery = true)
-  public void updatePasswordChangeReminder(String passwordChangeReminder, int id);
+  @Query(value = "UPDATE user SET password = ?1 WHERE username = ?2", nativeQuery = true)
+  public void updatePassword(String password, String username);
+
+
+  @Transactional
+  @Modifying
+  @Query(value = "UPDATE user SET password_change_reminder = ?1 WHERE username = ?2", nativeQuery = true)
+  public void updatePasswordChangeReminder(String passwordChangeReminder, String username);
 
   @Query(value = "SELECT * from user u where u.username LIKE %:keyword% or u.staff_code LIKE %:keyword%", nativeQuery = true)
   public List<User> findByNameOrStaffCode(String keyword);

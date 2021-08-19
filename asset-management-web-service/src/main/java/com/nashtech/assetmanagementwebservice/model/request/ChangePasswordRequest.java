@@ -14,6 +14,13 @@ import lombok.Setter;
 public class ChangePasswordRequest {
     @ApiModelProperty(
             example="thaimeo",
+            notes="username cannot be empty",
+            required=true
+    )
+    @JsonProperty("username")
+    private String username;
+    @ApiModelProperty(
+            example="thaimeo",
             notes="Password cannot be empty",
             required=true
     )
