@@ -1,23 +1,26 @@
-import React, {useState} from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import {makeStyles} from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import axios from "axios";
-import {useHistory} from "react-router-dom";
-import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import React, {useState} from 'react';
+
+import Avatar from '@material-ui/core/Avatar';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
+import Container from '@material-ui/core/Container';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Grid from '@material-ui/core/Grid';
+import Link from '@material-ui/core/Link';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import axios from "axios";
+import {makeStyles} from '@material-ui/core/styles';
+import {toast} from 'react-toastify';
+import {useHistory} from "react-router-dom";
+
 function Copyright() {
+    
     return (
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
@@ -64,12 +67,15 @@ export default function SignIn() {
             [name]: evt.target.value
         })
     }
+    
+    
+    const rootAPI = process.env.REACT_APP_SERVER_URL;
     const handleSubmit = evt => {
         evt.preventDefault();
         console.log('Values: ', values)
         axios({
                 method: "POST",
-                url: "http://localhost:8080/authenticate",
+                url:  rootAPI+"/authenticate",
                 data: {
                     username: values.username,
                     password: values.password,

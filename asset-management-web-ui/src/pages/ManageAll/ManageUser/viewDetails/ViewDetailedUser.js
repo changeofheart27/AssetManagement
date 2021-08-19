@@ -7,6 +7,15 @@ import axios from "axios";
 import dateFormat from 'dateformat';
 
 const ViewDetailedUser = props => {
+
+
+
+  const token = localStorage.getItem('jwttoken')
+    
+  const headers = { 
+    'Authorization': token
+    
+};
   const rootAPI = process.env.REACT_APP_SERVER_URL;
   let {id} = props;
   const [user, setUser] = useState({
@@ -26,7 +35,7 @@ const ViewDetailedUser = props => {
     loadUser();
   }, []);
   const loadUser = async () => {
-    const res = await axios.get(rootAPI+`/admin/users/${id}`);
+    const res = await axios.get(rootAPI+`/admin/users/${id}` ,{headers});
     setUser(res.data);
   };
 

@@ -1,5 +1,6 @@
 import {Button, ButtonGroup, Row} from "react-bootstrap";
 import  {useEffect, useState}  from 'react';
+
 import React from 'react';
 import axios from "axios";
 
@@ -10,6 +11,12 @@ const ChangeStatus = props => {
     const refreshPage = ()=>{
         window.location.reload();
     }
+    const token = localStorage.getItem('jwttoken')
+    
+    const headers = { 
+      'Authorization': token
+      
+  };
 
     const [user, setUser] = useState({
 
@@ -26,7 +33,7 @@ const ChangeStatus = props => {
     });
     useEffect(() => {
         axios
-          .get(rootAPI+`/admin/users/${id}`)
+          .get(rootAPI+`/admin/users/${id}`,{headers})
           .then(function (response) {
             setUser(response.data);
           })
@@ -48,7 +55,7 @@ const ChangeStatus = props => {
          }
 
         axios
-          .put(rootAPI+`/admin/users/status/${id}`, data)
+          .put(rootAPI+`/admin/users/status/${id}`, data,{headers})
           .then(function (response) {
             refreshPage();
           });

@@ -14,6 +14,14 @@ import axios from "axios";
 import {useHistory} from 'react-router-dom'
 
 const ManageUser = ({responseUser}) => {
+
+
+  const token = localStorage.getItem('jwttoken')
+    
+  const headers = { 
+    'Authorization': token
+    
+};
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
@@ -37,7 +45,7 @@ const ManageUser = ({responseUser}) => {
     }]);
     useEffect(() => {
 
-        axios.get(rootAPI + '/admin/users')
+        axios.get(rootAPI + '/admin/users',{headers})
 
             .then(function (response) {
                 let result = response.data.map(user => user.id);
@@ -59,7 +67,7 @@ const ManageUser = ({responseUser}) => {
     }
     const handleChangeType = evt => {
         const target = evt.target.value;
-        axios.get(rootAPI + `/admin/filter?type=${target}`)
+        axios.get(rootAPI + `/admin/filter?type=${target}`,{headers})
             .then(function (response) {
                 setList(response.data);
                 console.log(response.data)
@@ -73,7 +81,7 @@ const ManageUser = ({responseUser}) => {
             })
     }
     const filterSearchByType = () => {
-        axios.get(rootAPI + `/admin/filter?type=${search}`)
+        axios.get(rootAPI + `/admin/filter?type=${search}`,{headers})
             .then(function (response) {
                 setList(response.data);
                 console.log(response.data)

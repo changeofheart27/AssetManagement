@@ -9,8 +9,8 @@ import CreateAssignment from "../../pages/Assignment/create/CreateAssignment"
 import CreateCategory from "../../pages/ManageAll/ManageAsset/create/CreateCategory";
 import CreateUser from "../../pages/ManageAll/ManageUser/create/CreateUser";
 import EditAsset from "../../pages/ManageAll/ManageAsset/edit/EditAsset";
-import EditUser from "../../pages/ManageAll/ManageUser/edit/EditUser"
 import EditAssignment from "../../pages/Assignment/edit/EditAssignment";
+import EditUser from "../../pages/ManageAll/ManageUser/edit/EditUser"
 import Home from "../../pages/home/Home";
 import {Link} from "react-router-dom";
 import LoginFormPage from "../header/LoginFormPage"
@@ -18,9 +18,9 @@ import ManageAsset from "../../pages/ManageAll/ManageAsset/manage/ManageAsset"
 import ManageAssignment from "../../pages/Assignment/manage/ManageAssignment";
 import ManageUser from "../../pages/ManageAll/ManageUser/manage/ManageUser";
 import Request from "../../pages/ManageAll/Request/Request";
-import logo from "../../resources/logo.jpg";
 import UserInfo from "../header/UserInfo";
 import axios from "axios";
+import logo from "../../resources/logo.jpg";
 
 const Navbar = ({setCurrentPage, setIsLogedIn}) => {
    const rootAPI = process.env.REACT_APP_SERVER_URL;
@@ -114,6 +114,9 @@ const Navbar = ({setCurrentPage, setIsLogedIn}) => {
                         <Route path={"/home"} exact>
                             <Home/>
                         </Route>
+                        <Route path={"/changepassword"}>
+                            <UserInfo/>
+                        </Route>
                     </Switch>
                     :
                     <Switch>
@@ -125,6 +128,9 @@ const Navbar = ({setCurrentPage, setIsLogedIn}) => {
                         </Route>
                         <Route path={"/home"}>
                             <Home/>
+                        </Route>
+                        <Route path={"/changepassword"}>
+                            <UserInfo/>
                         </Route>
                         <Route path={"/createuser"}>
                             <CreateUser setResponseUser={setResponseUser}/>

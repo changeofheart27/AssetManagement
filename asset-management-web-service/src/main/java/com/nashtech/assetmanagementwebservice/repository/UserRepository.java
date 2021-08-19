@@ -3,10 +3,14 @@ package com.nashtech.assetmanagementwebservice.repository;
 import java.util.List;
 import java.util.Optional;
 
+import com.nashtech.assetmanagementwebservice.model.dto.UserDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.nashtech.assetmanagementwebservice.entity.User;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
@@ -25,13 +29,26 @@ public interface UserRepository extends JpaRepository<User, Integer> {
   public User findByUsername(String username);
 
 
+
+
+  @Transactional
+  @Modifying
+  @Query(value = "UPDATE user SET password = ?1 WHERE username = ?2", nativeQuery = true)
+  public void updatePassword(String password, String username);
+
+
+  @Transactional
+  @Modifying
+  @Query(value = "UPDATE user SET password_change_reminder = ?1 WHERE username = ?2", nativeQuery = true)
+  public void updatePasswordChangeReminder(String passwordChangeReminder, String username);
+
   @Query(value = "SELECT * from user u where u.username LIKE %:keyword% or u.staff_code LIKE %:keyword%", nativeQuery = true)
   public List<User> findByNameOrStaffCode(String keyword);
 
+
   public List<User> findByUsernameContainsOrStaffCodeContains(String userName,String staffCode);
 
-  @Query(value = "SELECT id from authorities a where a.user_id = ?1", nativeQuery = true)
-  public Integer findAuthorityByUserId (int id);
+
 
 
 

@@ -12,6 +12,13 @@ import {differenceInYears} from "date-fns";
 import {useHistory} from 'react-router-dom';
 
 const CreateUser = ({setResponseUser}) => {
+
+    const token = localStorage.getItem('jwttoken')
+    
+    const headers = { 
+      'Authorization': token
+      
+  };
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const history = useHistory();
     const initialValues = {
@@ -23,7 +30,10 @@ const CreateUser = ({setResponseUser}) => {
         dob: null,
         gender: null,
         joinedDate: null,
+       
+      
         authority: null
+
     }
     const onSubmit = (values, {setSubmitting}) => {
         let create = {
@@ -33,11 +43,12 @@ const CreateUser = ({setResponseUser}) => {
             dob: values.dob,
             gender: values.gender,
             joined_date: values.joinedDate,
+         
             authority: values.authority
         }
 
         axios
-            .post(rootAPI + `/admin/users`, create)
+            .post(rootAPI + `/admin/users`, create,{headers})
             .then((response) => {
                 setSubmitting(false);
                 setResponseUser({
@@ -49,6 +60,7 @@ const CreateUser = ({setResponseUser}) => {
                     dob: response.data.dob,
                     gender: response.data.gender,
                     joinedDate: response.data.joinedDate,
+                  
                     authority: response.data.authority
                 });
                 history.push("/user");

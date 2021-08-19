@@ -1,13 +1,25 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+import * as Yup from "yup";
+
 import {Button, Form, FormCheck, FormControl, Row} from "react-bootstrap";
 import React, {useEffect, useState} from 'react';
 import {useHistory, useParams} from 'react-router-dom';
+
 import {Formik} from 'formik';
 import axios from "axios";
-import * as Yup from "yup";
-import {differenceInYears} from "date-fns";
 import differenceInDays from 'date-fns/differenceInDays/index.js';
+import {differenceInYears} from "date-fns";
 const EditUser = ({setResponseUser}) => {
+
+
+
+  const token = localStorage.getItem('jwttoken')
+    
+  const headers = { 
+    'Authorization': token
+    
+};
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     let {id} = useParams();
     const history = useHistory();
@@ -27,7 +39,7 @@ const EditUser = ({setResponseUser}) => {
     });
     useEffect(() => {
         axios
-            .get(rootAPI+`/admin/users/${id}`)
+            .get(rootAPI+`/admin/users/${id}`,{headers})
             .then(function (response) {
                 setUser(response.data);
                 setGender(response.data.gender);
@@ -64,7 +76,7 @@ const EditUser = ({setResponseUser}) => {
             password: user.password
         }
         axios
-            .put(rootAPI+`/admin/users/${id}`, editUser)
+            .put(rootAPI+`/admin/users/${id}`, editUser,{headers})
             .then((response) => {
                 setSubmitting(false);
                 setResponseUser({

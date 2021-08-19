@@ -57,4 +57,6 @@ public class UserDTO {
     private String authority;
 
 
+    private String defaultPassword;
+
 }

@@ -69,6 +69,13 @@ public class User {
 //    @OneToOne(mappedBy = "user")
 //    private Request request;
 
+
+
+
+    @Column(name = "default_password")
+    private String defaultPassword;
+
+
     public User(String username2, String password, Authority authorities) {
         this.username=username2;
         this.password=password;

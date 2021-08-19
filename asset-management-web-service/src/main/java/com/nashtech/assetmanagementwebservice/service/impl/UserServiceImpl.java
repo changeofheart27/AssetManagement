@@ -4,6 +4,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import com.nashtech.assetmanagementwebservice.model.request.ChangePasswordRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -48,10 +50,18 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  public UserDTO findUserByUsernameCustom(String username) {
+    User user = userRepository.findByUsername(username);
+
+    return UserMapper.toUserDTO(user);
+
+  }
+
+
+  @Override
   public User findUserByUsername(String username) {
     return userRepository.findByUsername(username);
   }
-
   @Override
   public UserDTO getUserById(int id) {
     Optional<User> user = userRepository.findById(id);
@@ -60,6 +70,8 @@ public class UserServiceImpl implements UserService {
     }
     return UserMapper.toUserDTO(user.get());
   }
+
+
 
   @Override
   public UserDTO updateUser(UpdateUserRequest request, int id) {
@@ -129,6 +141,7 @@ public class UserServiceImpl implements UserService {
     user.setStaffCode(staffCode);
     user.setStatus("enabled");
     user.setPassword(passwordEncoder.encode(username + "@" + dob));
+    user.setDefaultPassword(username + "@" + dob);
 
     user.setLocation("HN");
 
@@ -159,16 +172,14 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UserDTO changePassword(UpdateUserRequest request, int id) {
-    Optional<User> user = userRepository.findById(id);
-    if (user.isEmpty()) {
-      throw new NotFoundException("No user found");
-    }
-    User updateUser = UserMapper.toUser(request, id);
+  public UserDTO changePassword(ChangePasswordRequest request, String username) {
+
+    User updateUser = UserMapper.toUser(request, username);
 
     try {
-      updateUser.setPassword(passwordEncoder.encode(request.getPassword()));
-      userRepository.save(updateUser);
+        updateUser.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        userRepository.updatePassword(updateUser.getPassword(), username);
     } catch (Exception ex) {
       throw new InternalServerException("Can't update password");
     }
@@ -176,6 +187,10 @@ public class UserServiceImpl implements UserService {
     return UserMapper.toUserDTO(updateUser);
 
   }
+
+
+
+
 
   @Override
   public List<UserDTO> getUserByType(String type) {

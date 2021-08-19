@@ -56,17 +56,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						"/swagger-resources/**",
 						"/configuration/security",
 						"/swagger-ui.html",
-						"/webjars/**").anonymous()
-				.antMatchers("/authenticate").permitAll()
+						"/v2/api-docs",
+						"/webjars/**").permitAll()
+				.antMatchers("/api/v1/authenticate").permitAll()
+				.antMatchers("/**/check-change-password/**").permitAll()
 				.antMatchers("/**/request/**").permitAll()
-				.antMatchers("/**/admin/**").permitAll()
+				.antMatchers("/**/change-password/**").permitAll()
 				.antMatchers("/**/assignments/**").permitAll()
 				.antMatchers("/**/categories/**").permitAll()
 				.antMatchers("/**/assets/**").permitAll()
 				.antMatchers("/**/searchby").permitAll()
-//				.antMatchers("/**/admin/**").hasAnyRole("ADMIN")
-				.antMatchers("/**/staff/**").permitAll()
-//				.antMatchers("/**/staff/**").hasAnyRole("STAFF")
+
+
+				.antMatchers("/**/admin/**").hasAnyRole("ADMIN")
+
+				.antMatchers("/**/staff/**").hasAnyRole("STAFF")
+				.antMatchers("/**/users/**").permitAll()
+
+				.antMatchers("/**/user/home").permitAll()
+
+
+
 				.anyRequest().authenticated().and().exceptionHandling()
 				.authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -74,5 +84,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// Add a filter to validate the tokens with every request
 		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 	}
-
 }

@@ -1,12 +1,15 @@
-import React, { useState } from "react";
-import { Link} from "react-router-dom";
 import "./Header.css";
-import {useHistory} from 'react-router-dom'
-import Popup from "reactjs-popup";
-import { Dropdown, DropdownButton } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css'
-import UserInfo from "./UserInfo";
+
+import { Dropdown, DropdownButton } from "react-bootstrap";
+import React, { useState } from "react";
+
+import { Link } from "react-router-dom";
 import Logout from "./Logout";
+import Popup from "reactjs-popup";
+import UserInfo from "./UserInfo";
+import {useHistory} from 'react-router-dom'
+
 const Header = ({currentPage}) => {
     const history = useHistory();
     const [isLogedIn, setIsLogedIn] = useState("Login");
@@ -23,26 +26,14 @@ const Header = ({currentPage}) => {
                             {localStorage.getItem("username")}
                         </Dropdown.Toggle>
                         <Dropdown.Menu className={"p-0"}>
+                          <Dropdown.Item className={'custom-dropdown'} href="/changepassword">Change Password</Dropdown.Item>
                             <Popup contentStyle={{
-                                width: "40%",
-                                height: "40%",
+                                width: "25%",
+                                height: "20%",
                                 border: "1px solid black",
                                 borderRadius: 10,
                                 overflow: 'hidden',
-                                padding: "20px"
-                            }}
-                                   modal trigger={<Dropdown.Item className={'custom-dropdown'} >Change Password</Dropdown.Item>}>
-                                {close => (
-                                    <UserInfo close={close}/>
-                                )}
-                            </Popup>
-                            <Popup contentStyle={{
-                                width: "40%",
-                                height: "30%",
-                                border: "1px solid black",
-                                borderRadius: 10,
-                                overflow: 'hidden',
-                                padding: "20px"
+                                padding: "15px"
                             }}
                                    modal trigger={<Dropdown.Item className={'custom-dropdown'}>Logout</Dropdown.Item>}>
                                 {close => (
