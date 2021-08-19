@@ -28,6 +28,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
   @Query(value = "SELECT * from user u where u.username LIKE %:keyword% or u.staff_code LIKE %:keyword%", nativeQuery = true)
   public List<User> findByNameOrStaffCode(String keyword);
 
+  public List<User> findByUsernameContainsOrStaffCodeContains(String userName,String staffCode);
+
   @Query(value = "SELECT id from authorities a where a.user_id = ?1", nativeQuery = true)
   public Integer findAuthorityByUserId (int id);
 

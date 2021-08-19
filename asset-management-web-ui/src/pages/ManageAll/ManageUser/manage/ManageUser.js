@@ -66,7 +66,7 @@ const ManageUser = ({responseUser}) => {
             })
     }
     const filterSearchBySearchTerm = () => {
-        axios.get(rootAPI + `/users/searchby?keyword=${search}`)
+        axios.get(rootAPI + `/searchby?keyword=${search}`)
             .then(function (response) {
                 setList(response.data);
                 console.log(response.data)

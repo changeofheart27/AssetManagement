@@ -62,7 +62,7 @@ public class AssignmentServiceImpl implements AssignmentService {
   public AssignmentDTO createAssignment(AssignmentDTO payload) {
     User user = userRepository.getById(payload.getUserDTO().getId());
     Asset asset = assetRepository.getById(payload.getAssetDTO().getId());
-    asset.setState(1);
+    asset.setState(4);
     Assignment assignment = assignmentMapper.fromDTO(payload);
     assetService.editAsset(asset.getId(), assetMapper.fromEntity(asset));
     assignment.setAsset(asset);
@@ -96,7 +96,6 @@ public class AssignmentServiceImpl implements AssignmentService {
 
   @Override
   public List<AssignmentDTO> searchAssetByAssetNameOrAssetCode(String keyword) {
-
     String assetName = "%" + keyword + "%";
     String assetCode = keyword;
     List<Assignment> assets = assignmentRepository.findAssignmentsByAssetNameContainsOrAssetCode(assetName, assetCode);

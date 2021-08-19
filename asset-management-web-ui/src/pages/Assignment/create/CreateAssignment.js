@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {Form, FormControl, Button, FormCheck, Row, InputGroup} from "react-bootstrap";
+import React, {useState} from 'react';
+import {Form, Button, Row, InputGroup} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Formik} from "formik";
 import axios from "axios";
@@ -21,11 +21,16 @@ const CreateAssignment = ({setResponseAssigment}) => {
         userDTO: {
             userID: null,
         },
-        assignedDate: null,
+        assignedDate: moment().format('DD/MM/YYYY'),
         state: null,
         note: null
     }
 
+    const ValidateSchema = Yup.object().shape({
+        note: Yup.string()
+            .nullable()
+            .max(255,"System only allows 255 characters")
+    });
 
     const onSubmit = (values, {setSubmitting}) => {
         let create = {
@@ -35,7 +40,7 @@ const CreateAssignment = ({setResponseAssigment}) => {
             userDTO: {
                 id: singleUser.id,
             },
-            assignedDate: moment(selectDate, "DD-MM-YYYY").format("YYYY-MM-DD"),
+            assignedDate: moment(values.assignedDate, "DD-MM-YYYY").format("YYYY-MM-DD"),
             state: 5,
             note: values.note,
             assignedBy: localStorage.getItem("username")
@@ -79,14 +84,7 @@ const CreateAssignment = ({setResponseAssigment}) => {
         return errors;
     };
     const formValid = () => {
-        if (singleUser.id === null) {
-            return false;
-        }
-        if (assetSelect.id === null) {
-            return false
-        }
-        return true;
-
+        return !(singleUser.id === null || assetSelect.id === null);
     }
     return (
         <div className={"container ps-5 d-block"}>
@@ -97,11 +95,13 @@ const CreateAssignment = ({setResponseAssigment}) => {
                 <Formik
                     initialValues={initialValues}
                     onSubmit={onSubmit}
+                    validationSchema={ValidateSchema}
                 >
 
                     {({
                           values,
                           errors,
+                          touched,
                           handleChange,
                           handleBlur,
                           handleSubmit,
@@ -158,11 +158,12 @@ const CreateAssignment = ({setResponseAssigment}) => {
                                 <InputGroup>
                                     <p className={"w-25"} id="basic-addon1">Assigned Date</p>
                                     <Form.Control
-                                        readOnly
+                                        // readOnly
                                         aria-describedby="basic-addon1"
                                         className={"bg-white"}
                                         name={"assignedDate"}
-                                        value={selectDate}
+                                        value={values.assignedDate}
+                                        onChange={handleChange}
                                     />
                                     <Popup
                                         trigger={
@@ -171,9 +172,9 @@ const CreateAssignment = ({setResponseAssigment}) => {
                                             </InputGroup.Text>
                                         }
                                         position={"left top"}
-                                        contentStyle={{width: "auto", padding:"0"}}
+                                        contentStyle={{width: "auto", padding: "0"}}
                                     >
-                                        {close => <SelectDate setSelectDate={setSelectDate}/>}
+                                        {close => <SelectDate setSelectDate={setSelectDate} values={values}/>}
                                     </Popup>
 
                                 </InputGroup>
@@ -181,14 +182,21 @@ const CreateAssignment = ({setResponseAssigment}) => {
                             <Row className="mb-3">
                                 <InputGroup>
                                     <p className={"w-25"}>Note</p>
-                                    <FormControl
+                                    <Form.Control
                                         name={"note"}
                                         aria-describedby="basic-addon1"
                                         className={"w-75"}
                                         style={{height: '5em'}}
                                         onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        isValid={touched.note && !errors.note}
+                                        isInvalid={touched.note && errors.note}
                                     />
                                 </InputGroup>
+                                {errors.note && touched.note ? (
+                                    <div className={"text-danger"}
+                                         style={{paddingLeft: "25%"}}>{errors.note}</div>
+                                ) : null}
                             </Row>
                             <Button variant={"danger"} onClick={() => history.push('/assignment')} className={"ms-5"}
                                     style={{float: 'right'}}>
