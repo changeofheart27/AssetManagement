@@ -24,7 +24,7 @@ public interface AssetRepository extends JpaRepository<Asset, Integer> {
 	
 	//used for searching
 	@Query(value = "SELECT a FROM Asset a WHERE a.assetName LIKE :assetName OR a.assetCode = :assetCode")
-	public List<Asset> findAssetsByAssetNameContainsOrAssetCode(String assetName, String assetCode);
+	public List<Asset> findAssetsByAssetNameContainsOrAssetCodeContains(String assetName, String assetCode);
 	
 	//used for filtering
 	@Query("SELECT a FROM Asset a WHERE a.category.name = :category")

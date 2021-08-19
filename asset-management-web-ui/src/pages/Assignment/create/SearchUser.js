@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import {Button, Container, Form, FormControl, InputGroup, Row, Table} from "react-bootstrap";
 
-const SearchUser = ({setSingleUser,close}) => {
+const SearchUser = ({setSingleUser, close}) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [user, setUser] = useState([{
         username: null,
@@ -10,7 +10,8 @@ const SearchUser = ({setSingleUser,close}) => {
         firstName: null,
         lastName: null,
         authority: null,
-        status: null
+        status: null,
+        staffCode: null
     }]);
     useEffect(() => {
         axios.get(rootAPI + '/admin/users')
@@ -18,33 +19,33 @@ const SearchUser = ({setSingleUser,close}) => {
                 setUser(response.data)
             })
     }, [])
-    useEffect(()=>{
-        axios.get(rootAPI+'/users/search?keyword='+searchTerm)
+    useEffect(() => {
+        axios.get(rootAPI + '/searchby?keyword=' + searchTerm)
             .then(response => {
                 setUser(response.data);
             })
-    },[searchTerm])
+    }, [searchTerm])
     const rootAPI = process.env.REACT_APP_SERVER_URL;
 
-    const [value, setValue]= useState({
+    const [value, setValue] = useState({
         username: null
     })
-    useEffect(()=>{
+    useEffect(() => {
         console.log(value);
     })
+
     return (
         <>
             <Container fluid>
                 <Row>
                     <h3 className={"text-danger w-50"}>Select User</h3>
                     <InputGroup className={"w-50"}>
-                        <FormControl
+                        <Form.Control
                             type={"input"}
                             className={"w-25"}
                             name={"searchTerm"}
-                            onChange={evt=>{setSearchTerm(evt.target.value)}}
-                        >
-                        </FormControl>
+                            onChange={evt => {setSearchTerm(evt.target.value)}}
+                        />
                         <Button variant={"outline-secondary"}
                                 className={"me-5"}
                         ><i className="bi bi-search"/>
@@ -61,22 +62,24 @@ const SearchUser = ({setSingleUser,close}) => {
                     <tbody>
                     {user.map(user => (
                         user.status === "enabled" ?
-                        <tr key={user.id}>
-                            <td><Form.Check name={"singleUser"} color={"red"} type={"radio"} onChange={()=> setSingleUser({id: user.id, username: user.username})} /></td>
-                            <td>{user.username}</td>
-                            <td>{user.firstName} {user.lastName}</td>
-                            <td>{user.authority}</td>
-                        </tr>
-                        : null
+                            <tr key={user.id}>
+                                <td><Form.Check name={"singleUser"} color={"red"} type={"radio"}
+                                                onChange={() => setSingleUser({id: user.id, username: user.username})}/>
+                                </td>
+                                <td>{user.staffCode}</td>
+                                <td>{user.firstName} {user.lastName}</td>
+                                <td>{user.authority}</td>
+                            </tr>
+                            : null
                     ))}
                     </tbody>
                 </Table>
                 <Row className={"justify-content-end"}>
-                    <Button variant={"danger"} className={"w-25 mx-5"} onClick={()=> close()}>Save</Button>
-                    <Button variant={"danger"} className={"w-25"} onClick={()=>{
-                        setSingleUser({id:null, username:""})
+                    <Button variant={"danger"} className={"w-25 mx-5"} onClick={() => close()}>Save</Button>
+                    <Button variant={"danger"} className={"w-25"} onClick={() => {
+                        setSingleUser({id: null, username: ""})
                         close()
-                    }} >Cancel</Button>
+                    }}>Cancel</Button>
                 </Row>
 
             </Container>

@@ -121,7 +121,7 @@ public class AssetServiceImpl implements AssetService {
         logger.info("Attempting to search Asset with keyword " + keyword + "...");
         String assetName = "%" + keyword + "%";
         String assetCode = keyword;
-        List<Asset> assets = assetRepository.findAssetsByAssetNameContainsOrAssetCode(assetName, assetCode);
+        List<Asset> assets = assetRepository.findAssetsByAssetNameContainsOrAssetCodeContains(assetName, assetCode);
         logger.info("Successfully got " + assets.size() + " Asset!");
         return assets.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
     }
@@ -141,8 +141,11 @@ public class AssetServiceImpl implements AssetService {
             assets = assetRepository.findAssetByState(state);
             logger.info("Successfully got " + assets.size() + " Asset!");
             return assets.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
+        }else{
+            assets = assetRepository.findAssetByState(state);
+            List<Asset> result = assets.stream().filter(asset -> asset.getCategory().getName().equals(category)).collect(Collectors.toList());
+            return result.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
         }
-        return null;
     }
 
 

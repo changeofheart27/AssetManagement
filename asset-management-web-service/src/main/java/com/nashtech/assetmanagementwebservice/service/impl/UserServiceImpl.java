@@ -149,7 +149,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public List<UserDTO> searchByNameOrStaffCode(String keyword) {
-    List<User> users = userRepository.findByNameOrStaffCode(keyword);
+    List<User> users = userRepository.findByUsernameContainsOrStaffCodeContains(keyword,keyword);
     List<UserDTO> result = new ArrayList<>();
     for (User user : users) {
       result.add(UserMapper.toUserDTO(user));
