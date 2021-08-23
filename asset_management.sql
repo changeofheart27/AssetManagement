@@ -12,6 +12,8 @@ CREATE TABLE user (
   status VARCHAR(10),
   type VARCHAR(10),
   password VARCHAR(1000), 
+  default_password VARCHAR(1000)
+ 
 )
 ;
 CREATE TABLE authorities (

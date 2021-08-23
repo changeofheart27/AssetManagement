@@ -68,10 +68,12 @@ const UserInfo = ({props,loginSuccess,setResponseUser}) => {
             .put(rootAPI+`/change-password/${username}`, editUserPassword,{headers})
             .then((response) => {
                 setSubmitting(false);
-             
+                console.log("response :"+response)
+               
             }).catch((error) => {
               localStorage.clear()
-              window.location.href = "/login";});
+              window.location.href = "/login";
+            });
         })
         
         .catch((error) => {

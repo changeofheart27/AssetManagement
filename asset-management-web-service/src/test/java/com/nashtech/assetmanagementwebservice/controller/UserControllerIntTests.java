@@ -64,7 +64,7 @@ public class UserControllerIntTests {
             throw new RuntimeException(e);
         }
     }
-    
+
     @Autowired
 	private UserDetailsService userService;
 
@@ -72,21 +72,21 @@ public class UserControllerIntTests {
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
-	
+
 	private String token;
 
 	@BeforeEach
 	public void setUp() {
 		UserDetails user = userService.loadUserByUsername("duongmh");
-		
+
 		if (user != null) {
 			this.token = jwtTokenUtil.generateToken(user);
 			authenticationManager
-					.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), "duongmh@11111111"));	
+					.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), "duongmh@11111111"));
 		}
 
 	}
-    
+
     @Test
     public void getAllUser() throws Exception {
         JwtRequest request = new JwtRequest();

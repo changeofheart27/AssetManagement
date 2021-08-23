@@ -26,4 +26,5 @@ public class ChangePasswordRequest {
     )
     @JsonProperty("password")
     private String password;
+
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.nashtech.assetmanagementwebservice.exception.CustomExceptionHandler;
 import com.nashtech.assetmanagementwebservice.model.request.ChangePasswordRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,7 +35,8 @@ public class UserServiceImpl implements UserService {
 
   @Autowired
   private PasswordEncoder passwordEncoder;
-
+@Autowired
+  CustomExceptionHandler customExceptionHandler;
   @Override
   public List<UserDTO> getAllUser() {
 
@@ -139,6 +141,7 @@ public class UserServiceImpl implements UserService {
     DateTimeFormatter formatters = DateTimeFormatter.ofPattern("ddMMuuuu");
     String dob = user.getDob().format(formatters);
     user.setStaffCode(staffCode);
+
     user.setStatus("enabled");
     user.setPassword(passwordEncoder.encode(username + "@" + dob));
     user.setDefaultPassword(username + "@" + dob);
@@ -177,9 +180,8 @@ public class UserServiceImpl implements UserService {
     User updateUser = UserMapper.toUser(request, username);
 
     try {
-        updateUser.setPassword(passwordEncoder.encode(request.getPassword()));
-
-        userRepository.updatePassword(updateUser.getPassword(), username);
+      updateUser.setPassword(passwordEncoder.encode(request.getPassword()));
+      userRepository.updatePassword(updateUser.getPassword(), username);
     } catch (Exception ex) {
       throw new InternalServerException("Can't update password");
     }
@@ -187,9 +189,6 @@ public class UserServiceImpl implements UserService {
     return UserMapper.toUserDTO(updateUser);
 
   }
-
-
-
 
 
   @Override
