@@ -33,14 +33,11 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
   @Transactional
   @Modifying
-  @Query(value = "UPDATE user SET password = ?1 WHERE username = ?2", nativeQuery = true)
+  @Query(value = "UPDATE user SET password = ?1  WHERE username = ?2", nativeQuery = true)
   public void updatePassword(String password, String username);
 
 
-  @Transactional
-  @Modifying
-  @Query(value = "UPDATE user SET password_change_reminder = ?1 WHERE username = ?2", nativeQuery = true)
-  public void updatePasswordChangeReminder(String passwordChangeReminder, String username);
+
 
   @Query(value = "SELECT * from user u where u.username LIKE %:keyword% or u.staff_code LIKE %:keyword%", nativeQuery = true)
   public List<User> findByNameOrStaffCode(String keyword);
@@ -54,7 +51,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
   @Query(value = "SELECT user.id ,user.staff_code ,user.first_name,user.last_Name," +
           " user.joined_date,user.dob,user.location,user.gender,user.password," +
-          " user.username ,user.status ,authorities.authority" +
+          " user.username ,user.status ,user.default_password,authorities.authority" +
           " from user  INNER JOIN  authorities " +
           " on user.id = authorities.user_id " +
           " where authorities.authority= ?1 ", nativeQuery = true)

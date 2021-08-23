@@ -7,9 +7,7 @@ import * as Yup from "yup";
 import {Button, Form, FormControl, Row} from "react-bootstrap";
 
 import {Formik} from 'formik';
-import Popup from "reactjs-popup";
 import React from 'react';
-import UserInfo from "./UserInfo";
 import axios from 'axios';
 import {toast} from 'react-toastify';
 import {useHistory} from 'react-router-dom';
@@ -21,13 +19,6 @@ const LoginFormPage = ({props, loginSuccess}) => {
     const [submitError, setSubmitError] = useState("");
     const history = useHistory();
     const initialValues = {username: '', password: ''};
-    const [user, setUser] = useState({
-        defaultPassword:null,
-        id:null, 
-      
-        
-      });
-      
     const ValidateSchema = Yup.object().shape({
         username: Yup.string()
             .max(50)
@@ -39,20 +30,9 @@ const LoginFormPage = ({props, loginSuccess}) => {
             .typeError('Password is required'),
     });
     const onSubmit = (values, {setSubmitting}) => {
-        axios
-        .get(rootAPI+`/users/${values.username}`)
-        .then((response1) => {
-            setSubmitting(false);
-            console.log(response1);
-         
-            setUser(response1.data)
-         
-        }).then((response) => {
-            axios({
+        axios({
                 method: "POST",
-
                 url: rootAPI+"/authenticate",
-
                 data: {
                     username: values.username,
                     password: values.password,
@@ -66,39 +46,26 @@ const LoginFormPage = ({props, loginSuccess}) => {
                 setShowLoginSuccess(true);
                 localStorage.setItem("jwttoken", "Bearer " + response.data.jwttoken);
                 localStorage.setItem("username", values.username);
-                if(user.defaultPassword!=null){
-                     if(user.defaultPassword===values.password){
-                    window.alert("You are using the default password.Please click change password button to change password now")
-                    window.location.href="/changepassword"
-
-                }  else{
-                          window.location.href="/home"
-                }
-                }
-                              
-          
-            })
-            .catch((error) => {
+                localStorage.setItem("password", values.password);
+                
+                 window.location.href = "/home";
+                toast.success("Logging success");
+            }).catch((error) => {
+                
             setSubmitting(false);
             console.log(error);
             setSubmitError(
                 "Login fails status code: " + error
             );
-            toast.error("Wrong password or username");
+             toast.error("Wrong password or username");
         });
-        })     
-      
     }
 
     return (
-        <div className={"container login-form-body ps-5 d-block"}>
+        <div className={"container login-form-body  ps-5 d-block"}>
             <Row>
                 <h1 className={"text-danger mb-5"}>Login</h1>
             </Row>
-               
-
-
-
             <Row className={"mt-5"}>
                 <Formik
                     initialValues={initialValues}
@@ -147,7 +114,7 @@ const LoginFormPage = ({props, loginSuccess}) => {
                                 ) : null}
                             </Row>
 
-                            <Button variant={"danger"} 
+                            <Button variant={"danger"} onClick={() => history.push('/')} type={"submit"}
                                     className={"ms-5"} style={{float: 'right'}}>
                                 Cancel
                             </Button>

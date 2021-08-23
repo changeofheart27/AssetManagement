@@ -71,7 +71,6 @@ public class User {
 
 
 
-
     @Column(name = "default_password")
     private String defaultPassword;
 

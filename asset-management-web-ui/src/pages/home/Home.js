@@ -1,23 +1,30 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'reactjs-popup/dist/index.css';
+import '../../style/style.css'
+
 import {Container, Row, Table} from 'react-bootstrap';
 import React, {useEffect, useState} from 'react';
-import Popup from "reactjs-popup";
-import axios from "axios";
-import Pagination from '../../components/Pagination/Pagination';
-import ReturnPopup from "./popup/ReturnPopup";
-import '../../style/style.css'
+
 import AcceptPopup from "./popup/AcceptPopup";
 import DeclinePopup from "./popup/DeclinePopup";
 import DetailsPopup from "./popup/DetailsPopup";
+import Pagination from '../../components/Pagination/Pagination';
+import Popup from "reactjs-popup";
+import ReturnPopup from "./popup/ReturnPopup";
+import { Window } from 'react-bootstrap-icons';
+import axios from "axios";
 
 const Home = () => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
+
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(10);
     const indexOfLastUser = currentPage * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
     const paginate = pageNumber => setCurrentPage(pageNumber);
+    const [user, setUser] = useState({
+        defaultPassword:null
+      });
     const [list, setList] = useState([{
         id: null,
         assetDTO: {
@@ -39,20 +46,32 @@ const Home = () => {
         state: null
     });
     const Authentoken = localStorage.getItem("jwttoken");
+
     useEffect(() => {
         axios.get(rootAPI + '/users/home?username=' + localStorage.getItem("username"), {
                 headers: {
                     Authorization: Authentoken
                 }
-            }
-        )
-            .then(response => {
-                    setList(response.data)
-                }
-            ).catch((error) => {
+            }).then((response) => {       
+                axios
+                .get(rootAPI+`/users/${localStorage.getItem("username")}`)
+                .then((response1) => {
+                    setUser(response1.data)
+                    console.log(response1)
+                  
+                   
+                })})
+            
+                
+                .catch((error) => {
             console.log(error)
         });
     }, [state])
+   
+        if(user.defaultPassword===localStorage.getItem("password")){
+            window.alert("You are using the default password, please change it now !")
+            window.location.href="/changepassword";
+        }
     const check = state => {
         if (state === 6) {
             return <td>Accepted</td>
