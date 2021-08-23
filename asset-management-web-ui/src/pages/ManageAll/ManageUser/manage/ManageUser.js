@@ -17,7 +17,7 @@ const ManageUser = ({responseUser}) => {
 
 
   const token = localStorage.getItem('jwttoken')
-    
+  
   const headers = { 
     'Authorization': token
     
@@ -31,7 +31,7 @@ const ManageUser = ({responseUser}) => {
     const indexOfLastUser = currentPage * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
     const paginate = pageNumber => setCurrentPage(pageNumber);
-
+    
     const history = useHistory();
     const [search, setSearch] = useState("");
     const [list, setList] = useState([{
@@ -228,13 +228,13 @@ const ManageUser = ({responseUser}) => {
                             <i className="bi bi-x-circle text-danger btn p-0" />
                           </td>
                         }
-                        modal
+                        modal 
                       >
                         <ChangeStatus id={user.id} />
                       </Popup>
                     </tr>
                   }
-                  modal
+                 modal
                 >
                   {(close) => (
                     <div>
