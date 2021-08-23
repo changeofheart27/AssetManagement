@@ -29,17 +29,20 @@ const ViewDetailedAsset = props => {
     setAsset(res.data);
   };
   const check = state => {
-    if(state == 0){
+    if(state === 0){
       return <span>Available</span>
     }
-    if(state == 1){
+    if(state === 1){
       return <span>Not available</span>
     }
-    if(state == 2){
+    if(state === 2){
       return <span>Waiting for recycling</span>
     }
-    if(state == 3){
+    if(state === 3){
       return <span>Recycled</span>
+    }
+    if (state === 4) {
+      return <span>Assigned</span>;
     }
   }
 

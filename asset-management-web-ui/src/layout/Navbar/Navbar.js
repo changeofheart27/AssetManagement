@@ -21,6 +21,7 @@ import Request from "../../pages/ManageAll/Request/Request";
 import UserInfo from "../header/UserInfo";
 import axios from "axios";
 import logo from "../../resources/logo.jpg";
+import Report from "../../pages/Report/Report";
 
 const Navbar = ({setCurrentPage, setIsLogedIn}) => {
    const rootAPI = process.env.REACT_APP_SERVER_URL;
@@ -69,104 +70,120 @@ const Navbar = ({setCurrentPage, setIsLogedIn}) => {
             name: null,
         },
         assignedDate: null,
-        state: null
+        state: null,
+        note: null
     });
     return (
-        <div className="container-fluid d-flex">
-            <div className="navbar-container col-2">
-                <img src={logo} alt="logo_NashTech"/>
-                <h5 className={"text-danger"}>Online Asset Management</h5>
-                <div className="navbar">
-                    {authority === "STAFF" ?
-                        <ul className="navbar-list">
-                            <Link to="/home" onClick={() => setCurrentPage("Home")}>
-                                <li className="navbar-list--item">Home</li>
-                            </Link>
-                        </ul>
-                        :
-                        <ul className="navbar-list">
-                            <Link to="/home" onClick={() => setCurrentPage("Home")}>
-                                <li className="navbar-list--item">Home</li>
-                            </Link>
-                            <Link to="/user" onClick={() => setCurrentPage("Manage User")}>
-                                <li className="navbar-list--item">Manage User</li>
-                            </Link>
-                            <Link to="/asset" onClick={() => setCurrentPage("Manage Asset")}>
-                                <li className="navbar-list--item">Manage Asset</li>
-                            </Link>
-                            <Link to="/assignment" onClick={() => setCurrentPage("Manage Assignment")}>
-                                <li className="navbar-list--item">Manage Assignment</li>
-                            </Link>
-                            <Link to="/request" onClick={() => setCurrentPage("Request For Returning")}>
-                                <li className="navbar-list--item">Request For Returning</li>
-                            </Link>
-                            <Link to="/asset">
-                                <li className="navbar-list--item" onClick={() => setCurrentPage("Report")}>Report
-                                </li>
-                            </Link>
-                        </ul>
-                    }
-                </div>
-            </div>
-            <div className="pages-container col-10">
-                {authority === "STAFF" ?
-                    <Switch>
-                        <Route path={"/home"} exact>
-                            <Home/>
-                        </Route>
-                        <Route path={"/changepassword"}>
-                            <UserInfo/>
-                        </Route>
-                    </Switch>
-                    :
-                    <Switch>
-                        <Route path={"/home"} exact>
-                            <Home/>
-                        </Route>
-                        <Route path={"/user"}>
-                            <ManageUser responseUser={responseUser}/>
-                        </Route>
-                        <Route path={"/home"}>
-                            <Home/>
-                        </Route>
-                        <Route path={"/changepassword"}>
-                            <UserInfo/>
-                        </Route>
-                        <Route path={"/createuser"}>
-                            <CreateUser setResponseUser={setResponseUser}/>
-                        </Route>
-                        <Route path={"/edituser/:id"}>
-                            <EditUser setResponseUser={setResponseUser}/>
-                        </Route>
-                        <Route path={"/asset"}>
-                            <ManageAsset responseDataAsset={responseDataAsset}/>
-                        </Route>
-                        <Route path={"/createasset"}>
-                            <CreateAsset setResponseDataAsset={setResponseDataAsset}/>
-                        </Route>
-                        <Route path={"/editasset/:id"}>
-                            <EditAsset setResponseDataAsset={setResponseDataAsset}/>
-                        </Route>
-                        <Route path={"/createcategory"}>
-                            <CreateCategory/>
-                        </Route>
-                        <Route path={"/assignment"}>
-                            <ManageAssignment responseAssigment={responseAssigment}/>
-                        </Route>
-                        <Route path={"/createassignment" }>
-                            <CreateAssignment setResponseAssigment={setResponseAssigment}/>
-                        </Route>
-                        <Route path={"/editassignment/:id"}>
-                            <EditAssignment setResponseAssigment={setResponseAssigment}/>
-                        </Route>
-                        <Route path={"/request"}>
-                            <Request/>
-                        </Route>
-
-                    </Switch>
-                }
-            </div>
+      <div className="container-fluid d-flex">
+        <div className="navbar-container col-2">
+          <img src={logo} alt="logo_NashTech" />
+          <h5 className={"text-danger"}>Online Asset Management</h5>
+          <div className="navbar">
+            {authority === "STAFF" ? (
+              <ul className="navbar-list">
+                <Link to="/home" onClick={() => setCurrentPage("Home")}>
+                  <li className="navbar-list--item">Home</li>
+                </Link>
+              </ul>
+            ) : (
+              <ul className="navbar-list">
+                <Link to="/home" onClick={() => setCurrentPage("Home")}>
+                  <li className="navbar-list--item">Home</li>
+                </Link>
+                <Link to="/user" onClick={() => setCurrentPage("Manage User")}>
+                  <li className="navbar-list--item">Manage User</li>
+                </Link>
+                <Link
+                  to="/asset"
+                  onClick={() => setCurrentPage("Manage Asset")}
+                >
+                  <li className="navbar-list--item">Manage Asset</li>
+                </Link>
+                <Link
+                  to="/assignment"
+                  onClick={() => setCurrentPage("Manage Assignment")}
+                >
+                  <li className="navbar-list--item">Manage Assignment</li>
+                </Link>
+                <Link
+                  to="/request"
+                  onClick={() => setCurrentPage("Request For Returning")}
+                >
+                  <li className="navbar-list--item">Request For Returning</li>
+                </Link>
+                <Link to="/report">
+                  <li
+                    className="navbar-list--item"
+                    onClick={() => setCurrentPage("Report")}
+                  >
+                    Report
+                  </li>
+                </Link>
+              </ul>
+            )}
+          </div>
         </div>
+        <div className="pages-container col-10">
+          {authority === "STAFF" ? (
+            <Switch>
+              <Route path={"/home"} exact>
+                <Home />
+              </Route>
+              <Route path={"/changepassword"}>
+                <UserInfo />
+              </Route>
+            </Switch>
+          ) : (
+            <Switch>
+              <Route path={"/home"} exact>
+                <Home />
+              </Route>
+              <Route path={"/user"}>
+                <ManageUser responseUser={responseUser} />
+              </Route>
+              <Route path={"/home"}>
+                <Home />
+              </Route>
+              <Route path={"/changepassword"}>
+                <UserInfo />
+              </Route>
+              <Route path={"/createuser"}>
+                <CreateUser setResponseUser={setResponseUser} />
+              </Route>
+              <Route path={"/edituser/:id"}>
+                <EditUser setResponseUser={setResponseUser} />
+              </Route>
+              <Route path={"/asset"}>
+                <ManageAsset responseDataAsset={responseDataAsset} />
+              </Route>
+              <Route path={"/createasset"}>
+                <CreateAsset setResponseDataAsset={setResponseDataAsset} />
+              </Route>
+              <Route path={"/editasset/:id"}>
+                <EditAsset setResponseDataAsset={setResponseDataAsset} />
+              </Route>
+              <Route path={"/createcategory"}>
+                <CreateCategory />
+              </Route>
+              <Route path={"/assignment"}>
+                <ManageAssignment responseAssigment={responseAssigment} />
+              </Route>
+              <Route path={"/createassignment"}>
+                <CreateAssignment setResponseAssigment={setResponseAssigment} />
+              </Route>
+              <Route path={"/editassignment/:id"}>
+                <EditAssignment setResponseAssigment={setResponseAssigment} />
+              </Route>
+              <Route path={"/request"}>
+                <Request />
+              </Route>
+              <Route path={"/report"}>
+                <Report />
+              </Route>
+            </Switch>
+          )}
+        </div>
+      </div>
     );
 };
 

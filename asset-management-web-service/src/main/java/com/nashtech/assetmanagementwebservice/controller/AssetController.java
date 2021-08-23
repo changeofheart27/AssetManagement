@@ -100,5 +100,13 @@ public class AssetController {
         return ResponseEntity.ok(assets);
 
     }
+    
+    
+    @ApiOperation(value = "Report", response = Object.class, responseContainer = "List")
+    @GetMapping(value = "/assets/report", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Object[]>> getDataForReport() {
+        List<Object[]> result = assetService.getDataForReport();
+        return ResponseEntity.ok(result);
 
+    }
 }

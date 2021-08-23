@@ -33,4 +33,6 @@ public interface AssignmentRepository extends JpaRepository<Assignment, Integer>
   List<Assignment> findAssignmentsByState(Integer state);
 
   List<Assignment> findAssignmentsByAssignedDate(LocalDate assignedDate);
+  
+  Assignment findByAsset_Id(Integer id);
 }

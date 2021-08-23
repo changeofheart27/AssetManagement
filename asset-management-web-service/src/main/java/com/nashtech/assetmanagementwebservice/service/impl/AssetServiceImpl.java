@@ -168,6 +168,28 @@ public class AssetServiceImpl implements AssetService {
         }
         return assetCode;
     }
+    
+    @Override
+	public List<Object[]> getDataForReport() {
+		List<Object[]> result = assetRepository.getDataForReport();
+		for (Object[] record : result) {
+			String category = String.valueOf(record[0]);
+			Number total = (Number) record[1];
+			Number assigned = (Number) record[2];
+			Number available = (Number) record[3];
+			Number notAvailable = (Number) record[4];
+			Number waitingForRecycling = (Number) record[5];
+			Number recycled = (Number) record[6];
+			record[0] = category;
+			record[1] = total;
+			record[2] = assigned;
+			record[3] = available;
+			record[4] = notAvailable;
+			record[5] = waitingForRecycling;
+			record[6] = recycled;
+		}
+		return result;
+	}
 
 
     //  private String generateAssetCode(Category category) {

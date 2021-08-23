@@ -19,4 +19,6 @@ public interface AssetService {
 	List<AssetDTO> searchAssetByAssetNameOrAssetCode(String keyword);
 
 	List<AssetDTO> filterAssets(String category, Integer state);
+	
+	List<Object[]> getDataForReport();
 }

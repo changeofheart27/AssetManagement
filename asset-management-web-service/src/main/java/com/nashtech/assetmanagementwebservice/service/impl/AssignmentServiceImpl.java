@@ -60,6 +60,10 @@ public class AssignmentServiceImpl implements AssignmentService {
 
   @Override
   public AssignmentDTO createAssignment(AssignmentDTO payload) {
+	  Assignment a = assignmentRepository.findByAsset_Id(payload.getAssetDTO().getId());
+	  if (a != null){
+		  throw new RuntimeException("Asset id exist");
+	  }
     User user = userRepository.getById(payload.getUserDTO().getId());
     Asset asset = assetRepository.getById(payload.getAssetDTO().getId());
     asset.setState(4);
@@ -78,12 +82,24 @@ public class AssignmentServiceImpl implements AssignmentService {
     if (assignment.getState() == 4) {
       throw new InternalServerException("Asset is current assigned to someone");
     }
+    Asset asset = assetRepository.getById(assignment.getAsset().getId());
+    asset.setState(0);
+    assetRepository.save(asset);
     assignmentRepository.delete(assignment);
   }
 
     @Override
     public AssignmentDTO edit(Integer id, AssignmentDTO payload) {
+    	Assignment oldAssignment = assignmentRepository.getById(id);
+    	Asset oldAsset = oldAssignment.getAsset();
+    	if (oldAsset.getId() != payload.getAssetDTO().getId()) {
+    		oldAsset.setState(0);
+    		assetRepository.save(oldAsset);
+    	}
         log.info(payload.getAssetDTO().getId()+" "+payload.getUserDTO().getId()+" "+id);
+        Asset newAsset = assetRepository.getById(payload.getAssetDTO().getId());
+        newAsset.setState(4);
+        assetRepository.save(newAsset);
         assignmentRepository.saveAssign(payload.getAssetDTO().getId(),payload.getUserDTO().getId(), id, payload.getState(), payload.getAssignedDate(), payload.getNote());
         return payload;
     }
@@ -102,6 +118,22 @@ public class AssignmentServiceImpl implements AssignmentService {
     return assets.stream().map(assignmentMapper::fromEntity).collect(Collectors.toList());
   }
 
+//  @Override
+//  public List<AssignmentDTO> filterBy(Integer state, LocalDate assignedDate) {
+//    List<Assignment> assignments = null;
+//    if (assignedDate == null && state == null) {
+//      assignments = assignmentRepository.findAll();
+//      return assignments.stream().map(assignmentMapper::fromEntity).collect(Collectors.toList());
+//    } else if (assignedDate == null && state != null) {
+//      assignments = assignmentRepository.findAssignmentsByState(state);
+//      return assignments.stream().map(assignmentMapper::fromEntity).collect(Collectors.toList());
+//    } else if (assignedDate != null && state == null) {
+//      assignments = assignmentRepository.findAssignmentsByAssignedDate(assignedDate);
+//      return assignments.stream().map(assignmentMapper::fromEntity).collect(Collectors.toList());
+//    }
+//    return null;
+//  }
+  
   @Override
   public List<AssignmentDTO> filterBy(Integer state, LocalDate assignedDate) {
     List<Assignment> assignments = null;
@@ -114,6 +146,10 @@ public class AssignmentServiceImpl implements AssignmentService {
     } else if (assignedDate != null && state == null) {
       assignments = assignmentRepository.findAssignmentsByAssignedDate(assignedDate);
       return assignments.stream().map(assignmentMapper::fromEntity).collect(Collectors.toList());
+    } else if(assignedDate != null && state != null){
+      assignments = assignmentRepository.findAssignmentsByAssignedDate(assignedDate);
+      List<Assignment> result = assignments.stream().filter(assignment -> assignment.getState() == state).collect(Collectors.toList());
+      return result.stream().map(assignmentMapper::fromEntity).collect(Collectors.toList());
     }
     return null;
   }
