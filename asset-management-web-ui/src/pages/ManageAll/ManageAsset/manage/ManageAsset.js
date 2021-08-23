@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './Manage.css'
 import 'reactjs-popup/dist/index.css';
 import {Button, Container, Form, FormControl, InputGroup, Row, Table} from 'react-bootstrap';
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import Delete from "../delete/Delete";
 import DeleteFail from "../delete/DeleteFail";
 import Pagination from '../../../../components/Pagination/Pagination'
@@ -88,7 +88,12 @@ const ManageAsset = ({responseDataAsset}) => {
         const name = evt.target.name;
         setCategory(evt.target.value)
     }
+    const isFirstRun = useRef(true);
     useEffect(() => {
+        if(isFirstRun.current) {
+            isFirstRun.current = false;
+            return;
+        }
         console.log("use Effect Run")
         console.log(request)
         if (request.params.type === 'State') {

@@ -32,5 +32,19 @@ public interface AssetRepository extends JpaRepository<Asset, Integer> {
 	
 	public List<Asset> findAssetByState(int state);
 	
-
+	@Query(value = "select \r\n"
+			+ "  category.name as \"Category\", \r\n"
+			+ "  count(*) as \"Total\", \r\n"
+			+ "  sum(case when asset.state = 4 then 1 else 0 end) as \"Assigned\", \r\n"
+			+ "  sum(case when asset.state = 0 then 1 else 0 end) as \"Available\", \r\n"
+			+ "  sum(case when asset.state = 1 then 1 else 0 end) as \"Not Available\", \r\n"
+			+ "  sum(case when asset.state = 2 then 1 else 0 end) as \"Waiting for recycling\", \r\n"
+			+ "  sum(case when asset.state = 3 then 1 else 0 end) as \"Recycled\"\r\n"
+			+ "from category \r\n"
+			+ "inner join \r\n"
+			+ "  asset \r\n"
+			+ "on category.id = asset.category_id\r\n"
+			+ "group by category.name", nativeQuery = true)
+	public List<Object[]> getDataForReport();
+	
 }

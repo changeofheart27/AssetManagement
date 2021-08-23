@@ -52,7 +52,8 @@ const Home = () => {
                 headers: {
                     Authorization: Authentoken
                 }
-            }).then((response) => {       
+            }).then((response) => {      
+                setList(response.data); 
                 axios
                 .get(rootAPI+`/users/${localStorage.getItem("username")}`)
                 .then((response1) => {
@@ -91,7 +92,7 @@ const Home = () => {
     }
     return (
         <Container fluid className={"d-block ps-5"}>
-            <h1 className={"text-danger mb-5"}>My Assigment</h1>
+            <h1 className={"text-danger mb-5"}>My Assignment</h1>
             <Row className={"mt-5"}>
                 <Table>
                     <thead>
