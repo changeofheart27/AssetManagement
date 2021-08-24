@@ -87,6 +87,8 @@ export default function SignIn() {
                 localStorage.clear();
                 localStorage.setItem("jwttoken", "Bearer " + response.data.jwttoken);
                 localStorage.setItem("username", values.username);
+                
+                localStorage.setItem("password", values.password);
                 window.location.href = "/";
                 toast.success("Logging success");
             }).catch((error) => {

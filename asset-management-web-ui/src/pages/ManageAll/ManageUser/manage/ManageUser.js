@@ -3,7 +3,7 @@ import './Manage.css'
 import 'reactjs-popup/dist/index.css';
 
 import {Button, Container, Dropdown, Form, FormControl, InputGroup, Row, SplitButton, Table} from 'react-bootstrap';
-import {useEffect, useRef, useMemo , useState} from 'react';
+import {useEffect, useMemo, useRef, useState} from 'react';
 
 import ChangeStatus from '../changeStatus/ChangeStatus';
 import Pagination from '../../../../components/Pagination/Pagination'
@@ -14,10 +14,10 @@ import axios from "axios";
 import {useHistory} from 'react-router-dom'
 
 const ManageUser = ({responseUser}) => {
-
-
-  const token = localStorage.getItem('jwttoken')
+ 
     
+  const token = localStorage.getItem('jwttoken')
+  
   const headers = { 
     'Authorization': token
     
@@ -31,7 +31,7 @@ const ManageUser = ({responseUser}) => {
     const indexOfLastUser = currentPage * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
     const paginate = pageNumber => setCurrentPage(pageNumber);
-
+    
     const history = useHistory();
     const [list, setList] = useState([{
         staffCode: null,
@@ -238,13 +238,13 @@ const ManageUser = ({responseUser}) => {
                             <i className="bi bi-x-circle text-danger btn p-0" />
                           </td>
                         }
-                        modal
+                        modal 
                       >
                         <ChangeStatus id={user.id} />
                       </Popup>
                     </tr>
                   }
-                  modal
+                 modal
                 >
                   {(close) => (
                     <div>
