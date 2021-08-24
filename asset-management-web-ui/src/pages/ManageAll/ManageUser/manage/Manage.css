@@ -1,9 +1,9 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css");
-.pagnition{
-    margin-left: 100px;
+.pagnition {
+  margin-left: 100px;
 }
-.btn-view-detail{
-    cursor: pointer;
+.btn-view-detail {
+  cursor: pointer;
   position: absolute;
   display: block;
   padding: 2px 5px;
@@ -12,8 +12,6 @@
   top: 16px;
   font-size: 24px;
   border-radius: 18px;
-
-  
 }
 
 @keyframes anvil {
@@ -36,9 +34,3 @@
 .popup-content {
   -webkit-animation: anvil 0.3s cubic-bezier(0.38, 0.1, 0.36, 0.9) forwards;
 }
-
-
-
-
-
-

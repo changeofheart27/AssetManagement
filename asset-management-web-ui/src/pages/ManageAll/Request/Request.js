@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useMemo} from 'react';
 import {Button, Container, Form, FormControl, InputGroup, Row, Table} from "react-bootstrap";
 import 'react-calendar/dist/Calendar.css';
 import axios from "axios";
 
 const Request = () => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
+    const [sortConfig, setSortConfig] = useState(null);
     const [list, setList] = useState([{
         id:null,
         returned_date:null,
@@ -15,7 +16,6 @@ const Request = () => {
                 assetCode: null,
                 assetName: null,
                 state: null
-
             },
             userDTO:{
                 username: null,
@@ -35,6 +35,48 @@ const Request = () => {
             return <td>Waiting for returning</td>
         }
     }
+
+    const sortingData = useMemo(() => {
+        if (sortConfig !== null) {
+          list.sort((a, b) => {
+            if (a[sortConfig.key] < b[sortConfig.key] ||
+                a.assignmentDTO.userDTO.username < b.assignmentDTO.userDTO.username ||
+                a.assignmentDTO.assetDTO.assetName < b.assignmentDTO.assetDTO.assetName ||
+                a.assignmentDTO.assetDTO.assetCode < b.assignmentDTO.assetDTO.assetCode ||
+                a.assignmentDTO.assetDTO.state < b.assignmentDTO.assetDTO.state ||
+                a.assignmentDTO.assignedDate < b.assignmentDTO.assignedDate) {
+              return sortConfig.direction === "asc" ? -1 : 1;
+            }
+            if (a[sortConfig.key] > b[sortConfig.key] ||
+                a.assignmentDTO.userDTO.username > b.assignmentDTO.userDTO.username ||
+                a.assignmentDTO.assetDTO.assetName < b.assignmentDTO.assetDTO.assetName ||
+                a.assignmentDTO.assetDTO.assetCode < b.assignmentDTO.assetDTO.assetCode ||
+                a.assignmentDTO.assetDTO.state > b.assignmentDTO.assetDTO.state ||
+                a.assignmentDTO.assignedDate > b.assignmentDTO.assignedDate) {
+              return sortConfig.direction === "asc" ? 1 : -1;
+            }
+            return 0;
+          });
+        }
+      }, [sortConfig]);
+      const requestSort = (key) => {
+        let direction = "asc";
+        if (
+          sortConfig &&
+          sortConfig.key === key &&
+          sortConfig.direction === "asc"
+        ) {
+          direction = "desc";
+        }
+        setSortConfig({ key, direction });
+      };
+      const getClassNamesFor = (name) => {
+        if (!sortConfig) {
+          return;
+        }
+        return sortConfig.key === name ? sortConfig.direction : undefined;
+      };
+    
     return (
         <Container fluid className={"d-block ps-5"}>
             <h1 className={"text-danger mb-3"}>Request List</h1>
@@ -79,14 +121,38 @@ const Request = () => {
                 <Table>
                     <thead>
                     <tr>
-                        <th>No.<i className="bi bi-caret-down-fill"/></th>
-                        <th>Asset Code<i className="bi bi-caret-down-fill"/></th>
-                        <th>Asset Name<i className="bi bi-caret-down-fill"/></th>
-                        <th>Request by<i className="bi bi-caret-down-fill"/></th>
-                        <th>Assign Date<i className="bi bi-caret-down-fill"/></th>
-                        <th>Accepted by<i className="bi bi-caret-down-fill"/></th>
-                        <th>Return Date<i className="bi bi-caret-down-fill"/></th>
-                        <th>State<i className="bi bi-caret-down-fill"/></th>
+                        <th className={"border-bottom"}
+                            className={getClassNamesFor("id")}
+                            onClick={() => requestSort("id")}
+                        >No.</th>
+                        <th className={"border-bottom"}
+                            className={getClassNamesFor("assignmentDTO.assetDTO.assetCode")}
+                            onClick={() => requestSort("assignmentDTO.assetDTO.assetCode")}
+                        >Asset Code</th>
+                        <th className={"border-bottom"}
+                            className={getClassNamesFor("assignmentDTO.assetDTO.assetName")}
+                            onClick={() => requestSort("assignmentDTO.assetDTO.assetName")}
+                        >Asset Name</th>
+                        <th className={"border-bottom"}
+                            className={getClassNamesFor("assignmentDTO.userDTO.username")}
+                            onClick={() => requestSort("assignmentDTO.userDTO.username")}
+                        >Request by</th>
+                        <th className={"border-bottom"}
+                            className={getClassNamesFor("assignmentDTO.assignedDate")}
+                            onClick={() => requestSort("assignmentDTO.assignedDate")}
+                        >Assign Date</th>
+                        <th className={"border-bottom"}
+                            className={getClassNamesFor("accepted_by")}
+                            onClick={() => requestSort("accepted_by")}
+                        >Accepted by</th>
+                        <th className={"border-bottom"}
+                            className={getClassNamesFor("returned_date")}
+                            onClick={() => requestSort("returned_date")}
+                        >Return Date</th>
+                        <th className={"border-bottom"}
+                            className={getClassNamesFor("assignmentDTO.assetDTO.state")}
+                            onClick={() => requestSort("assignmentDTO.assetDTO.state")}
+                        >State</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -99,7 +165,7 @@ const Request = () => {
                             <td>{assign.assignmentDTO.assignedDate}</td>
                             <td>{assign.accepted_by}</td>
                             <td>{assign.returned_date}</td>
-                            {check(assign.assignmentDTO.state)}
+                            <td>{check(assign.assignmentDTO.state)}</td>
                             <td><i className="bi bi-check-lg text-danger"/></td>
                             <td><i className="bi bi-x-lg text-dark fw-bold"/></td>
                         </tr>

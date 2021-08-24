@@ -1,10 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './Manage.css'
 import 'reactjs-popup/dist/index.css';
-
 import {Button, Container, Form, FormControl, InputGroup, Row, Table} from 'react-bootstrap';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
-
 import Delete from "../delete/Delete";
 import DeleteFail from "../delete/DeleteFail";
 import Pagination from '../../../../components/Pagination/Pagination'
@@ -213,19 +211,19 @@ const ManageAsset = ({responseDataAsset}) => {
                     <tr>
                         <th className={"border-bottom"}
                             className={getClassNamesFor('assetCode')}
-                            onClick={() => requestSort('assetCode')}>Asset Code<i className="bi bi-caret-down-fill"/>
+                            onClick={() => requestSort('assetCode')}>Asset Code
                         </th>
                         <th className={"border-bottom"}
                             className={getClassNamesFor('assetName')}
-                            onClick={() => requestSort('assetName')}>Asset Name<i className="bi bi-caret-down-fill"/>
+                            onClick={() => requestSort('assetName')}>Asset Name
                         </th>
                         <th className={"border-bottom"}
                             className={getClassNamesFor('categoryDTO.name')}
-                            onClick={() => requestSort('category')}>Category<i className="bi bi-caret-down-fill"/>
+                            onClick={() => requestSort('categoryDTO.name')}>Category
                         </th>
                         <th className={"border-bottom"}
                             className={getClassNamesFor('state')}
-                            onClick={() => requestSort('state')}>State<i className="bi bi-caret-down-fill"/>
+                            onClick={() => requestSort('state')}>State
                         </th>
                     </tr>
                     </thead>

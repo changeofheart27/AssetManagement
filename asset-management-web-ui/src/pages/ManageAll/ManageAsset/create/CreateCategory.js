@@ -21,7 +21,7 @@ const CreateCategory = () => {
             .post(rootAPI + `/api/v1/categories`, create)
             .then((response) => {
                 setSubmitting(false);
-                history.push("/asset");
+                history.push("/createasset");
             })
             .catch(error => {
                 if (error.response.status === 400) {
@@ -73,7 +73,7 @@ const CreateCategory = () => {
 
                             <Button
                                 variant={"danger"}
-                                onClick={() => history.push("/asset")}
+                                onClick={() => history.push("/createasset")}
                                 className={"ms-5"}
                                 style={{float: "right"}}
                             >
