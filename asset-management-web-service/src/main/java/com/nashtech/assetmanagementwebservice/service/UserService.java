@@ -1,12 +1,10 @@
 package com.nashtech.assetmanagementwebservice.service;
 
 import java.util.List;
-import java.util.Optional;
-
-import com.nashtech.assetmanagementwebservice.entity.User;
-import com.nashtech.assetmanagementwebservice.model.request.ChangePasswordRequest;
 import org.springframework.stereotype.Service;
+import com.nashtech.assetmanagementwebservice.entity.User;
 import com.nashtech.assetmanagementwebservice.model.dto.UserDTO;
+import com.nashtech.assetmanagementwebservice.model.request.ChangePasswordRequest;
 import com.nashtech.assetmanagementwebservice.model.request.CreateUserRequest;
 import com.nashtech.assetmanagementwebservice.model.request.UpdateUserRequest;
 
@@ -28,10 +26,9 @@ public interface UserService {
 
   public List<UserDTO> searchByNameOrStaffCode(String keyword);
 
-  public List<UserDTO> getUserByType(String type);
+  public List<UserDTO> getUserByType(String type, String keyword);
 
-  public UserDTO changePassword(ChangePasswordRequest request , String username);
-
+  public UserDTO changePassword(ChangePasswordRequest request, String username);
 
 
 

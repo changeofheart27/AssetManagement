@@ -4,19 +4,19 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import com.nashtech.assetmanagementwebservice.exception.CustomExceptionHandler;
-import com.nashtech.assetmanagementwebservice.model.request.ChangePasswordRequest;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.nashtech.assetmanagementwebservice.entity.Authority;
 import com.nashtech.assetmanagementwebservice.entity.User;
+import com.nashtech.assetmanagementwebservice.exception.CustomExceptionHandler;
 import com.nashtech.assetmanagementwebservice.exception.DuplicateRecordException;
 import com.nashtech.assetmanagementwebservice.exception.InternalServerException;
 import com.nashtech.assetmanagementwebservice.exception.NotFoundException;
 import com.nashtech.assetmanagementwebservice.model.dto.UserDTO;
 import com.nashtech.assetmanagementwebservice.model.mapper.UserMapper;
+import com.nashtech.assetmanagementwebservice.model.request.ChangePasswordRequest;
 import com.nashtech.assetmanagementwebservice.model.request.CreateUserRequest;
 import com.nashtech.assetmanagementwebservice.model.request.UpdateUserRequest;
 import com.nashtech.assetmanagementwebservice.repository.UserRepository;
@@ -35,8 +35,9 @@ public class UserServiceImpl implements UserService {
 
   @Autowired
   private PasswordEncoder passwordEncoder;
-@Autowired
+  @Autowired
   CustomExceptionHandler customExceptionHandler;
+
   @Override
   public List<UserDTO> getAllUser() {
 
@@ -64,6 +65,7 @@ public class UserServiceImpl implements UserService {
   public User findUserByUsername(String username) {
     return userRepository.findByUsername(username);
   }
+
   @Override
   public UserDTO getUserById(int id) {
     Optional<User> user = userRepository.findById(id);
@@ -132,19 +134,21 @@ public class UserServiceImpl implements UserService {
     for (String s : tmp) {
       username.append(s.charAt(0));
     }
+    String finalUsername = username.toString();
     Integer countUsername = userRepository.countByDuplicateFullName(username.toString());
     if (countUsername > 0) {
-      user.setUsername(username + countUsername.toString());
+      finalUsername = username.toString() + countUsername.toString();
+      user.setUsername(finalUsername);
     } else {
-      user.setUsername(username.toString());
+      user.setUsername(finalUsername);
     }
     DateTimeFormatter formatters = DateTimeFormatter.ofPattern("ddMMuuuu");
     String dob = user.getDob().format(formatters);
     user.setStaffCode(staffCode);
 
     user.setStatus("enabled");
-    user.setPassword(passwordEncoder.encode(username + "@" + dob));
-    user.setDefaultPassword(username + "@" + dob);
+    user.setPassword(passwordEncoder.encode(finalUsername + "@" + dob));
+    user.setDefaultPassword(finalUsername + "@" + dob);
 
     user.setLocation("HN");
 
@@ -165,7 +169,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public List<UserDTO> searchByNameOrStaffCode(String keyword) {
-    List<User> users = userRepository.findByUsernameContainsOrStaffCodeContains(keyword,keyword);
+    List<User> users = userRepository.findByUsernameContainsOrStaffCodeContains(keyword, keyword);
     List<UserDTO> result = new ArrayList<>();
     for (User user : users) {
       result.add(UserMapper.toUserDTO(user));
@@ -192,13 +196,24 @@ public class UserServiceImpl implements UserService {
 
 
   @Override
-  public List<UserDTO> getUserByType(String type) {
-    List<User> users = userRepository.getUserByType(type);
-    List<UserDTO> result = new ArrayList<>();
-    for (User user : users) {
-      result.add(UserMapper.toUserDTO(user));
+  public List<UserDTO> getUserByType(String type, String keyword) {
+    List<User> users;
+    if (type == null && keyword == null) {
+      users = userRepository.findByStatus("enabled");
+      return users.stream().map(UserMapper::toUserDTO).collect(Collectors.toList());
+    } else if (type != null && keyword == null) {
+      users = userRepository.getUserByType(type);
+      return users.stream().map(UserMapper::toUserDTO).collect(Collectors.toList());
+    } else if (type == null && keyword != null) {
+      users = userRepository.findByNameOrStaffCode(keyword);
+      return users.stream().map(UserMapper::toUserDTO).collect(Collectors.toList());
+    } else if (type != null && keyword != null) {
+      users = userRepository.findByNameOrStaffCode(keyword);
+      List<User> results = users.stream().filter(user -> user.getAuthority().getAuthority().equals(type.toUpperCase())).collect(Collectors.toList());
+      return results.stream().map(UserMapper::toUserDTO).collect(Collectors.toList());
     }
-    return result;
+
+    return null;
 
   }
 

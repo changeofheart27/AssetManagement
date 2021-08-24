@@ -10,6 +10,7 @@ import Popup from "reactjs-popup";
 import ViewDetailedAsset from "../viewDetails/ViewDetailedAsset"
 import axios from "axios";
 import {useHistory} from 'react-router-dom'
+import { set } from 'date-fns';
 
 const ManageAsset = ({responseDataAsset}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
@@ -68,16 +69,14 @@ const ManageAsset = ({responseDataAsset}) => {
             return <td>Assigned</td>
         }
     }
-    const [search, setSearch] = useState("");
-    const handleChange = evt => {
-        setSearch(evt.target.value);
-    }
     const [type, setType] = useState();
     const [category, setCategory] = useState();
+    const [searchTerm, setSearchTerm] = useState();
     const request = {
         params: {
             type,
-            category
+            category,
+            searchTerm
         }
     }
     const handleFilterType = evt => {
@@ -87,6 +86,10 @@ const ManageAsset = ({responseDataAsset}) => {
     const handleFilterCategory = evt => {
         const name = evt.target.name;
         setCategory(evt.target.value)
+    }
+    const handleSearch = evt => {
+        const name = evt.target.name;
+        setSearchTerm(evt.target.value)
     }
     const isFirstRun = useRef(true);
     useEffect(() => {
@@ -109,22 +112,7 @@ const ManageAsset = ({responseDataAsset}) => {
                 setList(response.data);
                 console.log(response.data)
             })
-    }, [type, category])
-
-    const filterSearchBySearchTerm = () => {
-        axios.get(rootAPI + `/assets/search?keyword=${search}`)
-            .then(function (response) {
-                setList(response.data);
-                console.log(response.data)
-            })
-    }
-    if (search === null) {
-        axios.get(rootAPI + '/assets')
-            .then(function (response) {
-                setList(response.data);
-                console.log(response.data)
-            })
-    }
+    }, [type, category,searchTerm])
 
     const sortingData = useMemo(() => {
         if (sortConfig !== null) {
@@ -202,11 +190,11 @@ const ManageAsset = ({responseDataAsset}) => {
                         <FormControl
                             type={"input"}
                             name={"searchTerm"}
-                            onChange={handleChange}
+                            onChange={handleSearch}
                         >
                         </FormControl>
                         <Button variant={"outline-secondary"}
-                                onClick={filterSearchBySearchTerm}
+                                onClick={handleSearch}
                                 className={"me-5"}
                         ><i className="bi bi-search"/>
                         </Button>
