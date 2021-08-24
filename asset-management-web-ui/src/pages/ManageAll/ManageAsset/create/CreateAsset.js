@@ -114,7 +114,7 @@ const CreateAsset = ({setResponseDataAsset}) => {
                                 <Form.Select
                                     name={"category"}
                                     size="sm"
-                                    className={"w-75"}
+                                    style={{width:'70%'}}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     isValid={touched.category && !errors.category}
@@ -125,6 +125,12 @@ const CreateAsset = ({setResponseDataAsset}) => {
                                         <option value={category.id}>{category.name}</option>
                                     ))}
                                 </Form.Select>
+                                <Button style={{width:'5%'}} 
+                                        variant="outline-secondary"
+                                        onClick={() => history.push('/createcategory')}
+                                >
+                                    <i class="bi bi-plus-lg"/>
+                                </Button>
                                 {errors.category && touched.category ? (
                                     <div
                                         className={"text-danger"}

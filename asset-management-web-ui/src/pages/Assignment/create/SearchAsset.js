@@ -1,9 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useMemo} from 'react';
 import axios from "axios";
 import {Button, Container, Form, FormControl, InputGroup, Row, Table} from "react-bootstrap";
+import '../../ManageAll/ManageAsset/manage/Manage.css'
 
 const SearchAsset = ({setAssetSelect,close}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
+    const [sortConfig, setSortConfig] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [asset, setAsset] = useState([{
         id:null,
@@ -27,6 +29,42 @@ const SearchAsset = ({setAssetSelect,close}) => {
                 setAsset(response.data);
             })
     },[searchTerm])
+
+    const sortingData = useMemo(() => {
+        if (sortConfig !== null) {
+            asset.sort((a, b) => {
+            if (a[sortConfig.key] < b[sortConfig.key] ||
+                a.categoryDTO.name < b.categoryDTO.name
+                ) {
+              return sortConfig.direction === "asc" ? -1 : 1;
+            }
+            if (a[sortConfig.key] > b[sortConfig.key] ||
+                a.categoryDTO.name > b.categoryDTO.name
+                ) {
+              return sortConfig.direction === "asc" ? 1 : -1;
+            }
+            return 0;
+          });
+        }
+      }, [sortConfig]);
+      const requestSort = (key) => {
+        let direction = "asc";
+        if (
+          sortConfig &&
+          sortConfig.key === key &&
+          sortConfig.direction === "asc"
+        ) {
+          direction = "desc";
+        }
+        setSortConfig({ key, direction });
+      };
+      const getClassNamesFor = (name) => {
+        if (!sortConfig) {
+          return;
+        }
+        return sortConfig.key === name ? sortConfig.direction : undefined;
+      };
+
     return (
         <>
             <Container fluid>
@@ -49,9 +87,18 @@ const SearchAsset = ({setAssetSelect,close}) => {
                 <Table>
                     <thead>
                     <th/>
-                    <th className={"border-bottom"}>Asset Code</th>
-                    <th className={"border-bottom"}>Asset Name</th>
-                    <th className={"border-bottom"}>Category</th>
+                    <th className={"border-bottom"}
+                        className={getClassNamesFor("assetCode")}
+                        onClick={() => requestSort("assetCode")}
+                    >Asset Code</th>
+                    <th className={"border-bottom"}
+                        className={getClassNamesFor("assetName")}
+                        onClick={() => requestSort("assetName")}
+                    >Asset Name</th>
+                    <th className={"border-bottom"}
+                        className={getClassNamesFor("categoryDTO.name")}
+                        onClick={() => requestSort("categoryDTO.name")}
+                    >Category</th>
                     </thead>
                     <tbody>
                     {asset.map(asset => (

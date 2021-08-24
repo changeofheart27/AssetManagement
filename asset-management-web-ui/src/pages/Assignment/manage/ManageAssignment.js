@@ -1,6 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "reactjs-popup/dist/index.css";
-
 import {
   Button,
   Container,
@@ -224,21 +223,20 @@ const ManageAssignment = ({ responseAssigment }) => {
                 onClick={() => requestSort("id")}
               >
                 No.
-                <i className="bi bi-caret-down-fill" />
               </th>
               <th
                 className={"border-bottom"}
                 className={getClassNamesFor("assetCode")}
                 onClick={() => requestSort("assetCode")}
               >
-                Asset Code <i className="bi bi-caret-down-fill" />
+                Asset Code
               </th>
               <th
                 className={"border-bottom"}
                 className={getClassNamesFor("assetDTO.assetName")}
                 onClick={() => requestSort("assetDTO.assetName")}
               >
-                Asset Name <i className="bi bi-caret-down-fill" />
+                Asset Name
               </th>
               <th
                 className={"border-bottom"}
@@ -246,7 +244,6 @@ const ManageAssignment = ({ responseAssigment }) => {
                 onClick={() => requestSort("userDTO.username")}
               >
                 Assigned To
-                <i className="bi bi-caret-down-fill" />
               </th>
               <th
                 className={"border-bottom"}
@@ -254,7 +251,6 @@ const ManageAssignment = ({ responseAssigment }) => {
                 onClick={() => requestSort("assignedBy")}
               >
                 Assigned By
-                <i className="bi bi-caret-down-fill" />
               </th>
               <th
                 className={"border-bottom"}
@@ -262,7 +258,6 @@ const ManageAssignment = ({ responseAssigment }) => {
                 onClick={() => requestSort("assignedDate")}
               >
                 Assigned Date
-                <i className="bi bi-caret-down-fill" />
               </th>
               <th
                 className={"border-bottom"}
@@ -270,7 +265,6 @@ const ManageAssignment = ({ responseAssigment }) => {
                 onClick={() => requestSort("state")}
               >
                 State
-                <i className="bi bi-caret-down-fill" />
               </th>
             </tr>
           </thead>

@@ -3,7 +3,7 @@ import 'reactjs-popup/dist/index.css';
 import '../../style/style.css'
 
 import {Container, Row, Table} from 'react-bootstrap';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useMemo} from 'react';
 
 import AcceptPopup from "./popup/AcceptPopup";
 import DeclinePopup from "./popup/DeclinePopup";
@@ -16,7 +16,7 @@ import axios from "axios";
 
 const Home = () => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
-
+    const [sortConfig, setSortConfig] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(10);
     const indexOfLastUser = currentPage * usersPerPage;
@@ -90,6 +90,44 @@ const Home = () => {
         padding: "0",
         borderRadius: "5px"
     }
+
+    const sortingData = useMemo(() => {
+        if (sortConfig !== null) {
+          list.sort((a, b) => {
+            if (a[sortConfig.key] < b[sortConfig.key] ||
+                a.assetDTO.categoryDTO.name < b.assetDTO.categoryDTO.name ||
+                a.assetDTO.assetName < b.assetDTO.assetName ||
+                a.assetDTO.assetCode < b.assetDTO.assetCode) {
+              return sortConfig.direction === "asc" ? -1 : 1;
+            }
+            if (a[sortConfig.key] > b[sortConfig.key] ||
+                a.assetDTO.categoryDTO.name > b.assetDTO.categoryDTO.name ||
+                a.assetDTO.assetName > b.assetDTO.assetName ||
+                a.assetDTO.assetCode > b.assetDTO.assetCode) {
+              return sortConfig.direction === "asc" ? 1 : -1;
+            }
+            return 0;
+          });
+        }
+      }, [sortConfig]);
+      const requestSort = (key) => {
+        let direction = "asc";
+        if (
+          sortConfig &&
+          sortConfig.key === key &&
+          sortConfig.direction === "asc"
+        ) {
+          direction = "desc";
+        }
+        setSortConfig({ key, direction });
+      };
+      const getClassNamesFor = (name) => {
+        if (!sortConfig) {
+          return;
+        }
+        return sortConfig.key === name ? sortConfig.direction : undefined;
+      };
+
     return (
         <Container fluid className={"d-block ps-5"}>
             <h1 className={"text-danger mb-5"}>My Assignment</h1>
@@ -97,12 +135,30 @@ const Home = () => {
                 <Table>
                     <thead>
                     <tr>
-                        <th className={"border-bottom"}>No.<i className="bi bi-caret-down-fill"/></th>
-                        <th className={"border-bottom"}>Asset Code <i className="bi bi-caret-down-fill"/></th>
-                        <th className={"border-bottom"}>Asset Name <i className="bi bi-caret-down-fill"/></th>
-                        <th className={"border-bottom"}>Category<i className="bi bi-caret-down-fill"/></th>
-                        <th className={"border-bottom"}>Assigned Date<i className="bi bi-caret-down-fill"/></th>
-                        <th className={"border-bottom"}>State<i className="bi bi-caret-down-fill"/></th>
+                        <th className={"border-bottom"}
+                            className={getClassNamesFor("id")}
+                            onClick={() => requestSort("id")}
+                        >No.</th>
+                        <th className={"border-bottom"}
+                            className={getClassNamesFor("assetDTO.assetCode")}
+                            onClick={() => requestSort("assetDTO.assetCode")}
+                        >Asset Code</th>
+                        <th className={"border-bottom"}
+                            className={getClassNamesFor("assetDTO.assetName")}
+                            onClick={() => requestSort("assetDTO.assetName")}
+                        >Asset Name</th>
+                        <th className={"border-bottom"}
+                            className={getClassNamesFor("assetDTO.categoryDTO.name")}
+                            onClick={() => requestSort("assetDTO.categoryDTO.name")}
+                        >Category</th>
+                        <th className={"border-bottom"}
+                            className={getClassNamesFor("assignedDate")}
+                            onClick={() => requestSort("assignedDate")}
+                        >Assigned Date</th>
+                        <th className={"border-bottom"}
+                            className={getClassNamesFor("state")}
+                            onClick={() => requestSort("state")}
+                        >State</th>
                     </tr>
                     </thead>
                     <tbody>
