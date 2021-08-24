@@ -1,16 +1,18 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './Manage.css'
 import 'reactjs-popup/dist/index.css';
+
 import {Button, Container, Form, FormControl, InputGroup, Row, Table} from 'react-bootstrap';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
+
 import Delete from "../delete/Delete";
 import DeleteFail from "../delete/DeleteFail";
 import Pagination from '../../../../components/Pagination/Pagination'
 import Popup from "reactjs-popup";
 import ViewDetailedAsset from "../viewDetails/ViewDetailedAsset"
 import axios from "axios";
-import {useHistory} from 'react-router-dom'
 import { set } from 'date-fns';
+import {useHistory} from 'react-router-dom'
 
 const ManageAsset = ({responseDataAsset}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
@@ -191,6 +193,7 @@ const ManageAsset = ({responseDataAsset}) => {
                             type={"input"}
                             name={"searchTerm"}
                             onChange={handleSearch}
+                            maxLength={255}
                         >
                         </FormControl>
                         <Button variant={"outline-secondary"}

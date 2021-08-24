@@ -1,5 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "reactjs-popup/dist/index.css";
+
 import {
   Button,
   Container,
@@ -10,12 +11,13 @@ import {
   Table,
 } from "react-bootstrap";
 import React, { useEffect, useMemo, useRef, useState } from "react";
+
+import DeleteAssignment from "../delete/DeleteAssignment";
+import Pagination from "../../../components/Pagination/Pagination";
 import Popup from "reactjs-popup";
+import ViewDetailAssignment from "../viewDetails/ViewDetailAssignment";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import Pagination from "../../../components/Pagination/Pagination";
-import DeleteAssignment from "../delete/DeleteAssignment";
-import ViewDetailAssignment from "../viewDetails/ViewDetailAssignment";
 
 const ManageAssignment = ({ responseAssigment }) => {
   const rootAPI = process.env.REACT_APP_SERVER_URL;
@@ -193,6 +195,7 @@ const ManageAssignment = ({ responseAssigment }) => {
               className={"w-25"}
               name={"searchTerm"}
               onChange={handleChange}
+              maxLength={255}
             ></FormControl>
             <Button
               variant={"outline-secondary"}
