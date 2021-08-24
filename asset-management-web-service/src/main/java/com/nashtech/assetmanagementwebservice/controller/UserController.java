@@ -1,11 +1,7 @@
 package com.nashtech.assetmanagementwebservice.controller;
 
 import java.util.List;
-import java.util.Optional;
 import javax.validation.Valid;
-
-import com.nashtech.assetmanagementwebservice.entity.User;
-import com.nashtech.assetmanagementwebservice.model.request.ChangePasswordRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.nashtech.assetmanagementwebservice.model.dto.UserDTO;
+import com.nashtech.assetmanagementwebservice.model.request.ChangePasswordRequest;
 import com.nashtech.assetmanagementwebservice.model.request.CreateUserRequest;
 import com.nashtech.assetmanagementwebservice.model.request.UpdateUserRequest;
 import com.nashtech.assetmanagementwebservice.service.UserService;
@@ -113,11 +110,10 @@ public class UserController {
 
 
 
-  @ApiOperation(value = "Filter By Type of User", response = UserDTO.class, responseContainer = "List")
+  @ApiOperation(value = "Filter By Type of User and Search By name Or staffCode", response = UserDTO.class, responseContainer = "List")
   @GetMapping(value = "/admin/filter", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<List<UserDTO>> getBy(@RequestParam(name = "type") String type) {
-    List<UserDTO> users = userService.getUserByType(type);
-
+  public ResponseEntity<List<UserDTO>> getBy(@RequestParam(name = "type", required = false) String type, @RequestParam(name = "searchTerm", required = false) String keyword) {
+    List<UserDTO> users = userService.getUserByType(type, keyword);
     return ResponseEntity.ok(users);
   }
 

@@ -3,7 +3,7 @@ import './Manage.css'
 import 'reactjs-popup/dist/index.css';
 
 import {Button, Container, Dropdown, Form, FormControl, InputGroup, Row, SplitButton, Table} from 'react-bootstrap';
-import {useEffect, useMemo, useState} from 'react';
+import {useEffect, useRef, useMemo , useState} from 'react';
 
 import ChangeStatus from '../changeStatus/ChangeStatus';
 import Pagination from '../../../../components/Pagination/Pagination'
@@ -33,7 +33,6 @@ const ManageUser = ({responseUser}) => {
     const paginate = pageNumber => setCurrentPage(pageNumber);
     
     const history = useHistory();
-    const [search, setSearch] = useState("");
     const [list, setList] = useState([{
         staffCode: null,
         firstName: null,
@@ -61,32 +60,43 @@ const ManageUser = ({responseUser}) => {
                 console.log(response.data);
             })
     }, [])
-    const handleChange = evt => {
-        setSearch(evt.target.value)
-        console.log(search)
+    const [type, setType] = useState();
+    const [searchTerm, setSearchTerm] = useState();
+    const request = {
+        headers : headers,
+        params: {
+            type,
+            searchTerm
+        }
     }
-    const handleChangeType = evt => {
-        const target = evt.target.value;
-        axios.get(rootAPI + `/admin/filter?type=${target}`,{headers})
+    const handleFilterType = evt => {
+        const name = evt.target.name;
+        setType(evt.target.value)
+    }
+    const handleSearch = evt => {
+        const name = evt.target.name;
+        setSearchTerm(evt.target.value)
+    }
+    
+    const isFirstRun = useRef(true);
+    useEffect(() => {
+        if(isFirstRun.current) {
+            isFirstRun.current = false;
+            return;
+        }
+        console.log("use Effect Run")
+        console.log(request)
+        if (request.params.type === 'Type') {
+            request.params.type = null;
+            console.log(request)
+        }
+        
+        axios.get(rootAPI + '/admin/filter',request)
             .then(function (response) {
                 setList(response.data);
                 console.log(response.data)
             })
-    }
-    const filterSearchBySearchTerm = () => {
-        axios.get(rootAPI + `/searchby?keyword=${search}`)
-            .then(function (response) {
-                setList(response.data);
-                console.log(response.data)
-            })
-    }
-    const filterSearchByType = () => {
-        axios.get(rootAPI + `/admin/filter?type=${search}`,{headers})
-            .then(function (response) {
-                setList(response.data);
-                console.log(response.data)
-            })
-    }
+    }, [type,searchTerm])
 
     const sortingData = useMemo(() => {
         let listData = list;
@@ -127,9 +137,9 @@ const ManageUser = ({responseUser}) => {
                 custom
                 placeholder={"Type"}
                 name={"type"}
-                onChange={handleChangeType}
+                onChange={handleFilterType}
               >
-                <option value={""}>Type</option>
+                <option value={"Type"}>Type</option>
                 <option value="Admin">Admin</option>
                 <option value="Staff">Staff</option>
               </Form.Control>
@@ -143,12 +153,12 @@ const ManageUser = ({responseUser}) => {
               <FormControl
                 type={"text"}
                 name={"searchTerm"}
-                onChange={handleChange}
+                onChange={handleSearch}
                 maxLength={255}
               ></FormControl>
               <Button
                 variant={"outline-secondary"}
-                onClick={filterSearchBySearchTerm}>Search
+                onClick={handleSearch}>Search
               </Button>
             </InputGroup>
             <Button
