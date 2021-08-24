@@ -4,20 +4,37 @@ import { Button, Container, InputGroup, Row, Table } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import ExportFile from "./ExportFile";
 
-const Report = ({ responseAssigment }) => {
+const Report = () => {
   const rootAPI = process.env.REACT_APP_SERVER_URL;
   const [list, setList] = useState([]);
-  const history = useHistory();
+  const fileName = "AssetManagement";
 
   useEffect(() => {
     axios.get(rootAPI + "/assets/report").then(function (response) {
-      setList(response.data);
-      console.log("-------------------------------------");
-      console.log(response.data);
-      console.log("-------------------------------------");
-      console.log(response.data[0]);
-      console.log(response.data[0][0]);
+      let newList = [];
+
+      response.data.map(row => {
+        let obj = {
+          category: row[0],
+          total: row[1],
+          assigned: row[2],
+          available: row[3],
+          notAvailable: row[4],
+          waitingForRecycling: row[5],
+          recycled: row[6],
+        };
+        newList.push(obj);
+      })
+      console.log(newList);
+      setList(newList);
+      // setList(response.data);
+      // console.log("-------------------------------------");
+      // console.log(response.data);
+      // console.log("-------------------------------------");
+      // console.log(response.data[0]);
+      // console.log(response.data[0][0]);
     });
   }, []);
 
@@ -26,9 +43,10 @@ const Report = ({ responseAssigment }) => {
       <h1 className={"text-danger mb-3"}>Report</h1>
       <InputGroup>
         <div className={"col-12 d-flex justify-content-end"}>
-          <Button variant={"danger"} className={"mx-5"}>
+          {/* <Button variant={"danger"} className={"mx-5"}>
             Export
-          </Button>
+          </Button> */}
+          <ExportFile apiData={list} fileName={fileName} />
         </div>
       </InputGroup>
       <Row className={"mt-5"}>
@@ -64,7 +82,7 @@ const Report = ({ responseAssigment }) => {
             </tr>
           </thead>
           <tbody>
-            {list.map((row) => (
+            {/* {list.map((row) => (
               <tr key={row[0]}>
                 <td>{row[0]}</td>
                 <td>{row[1]}</td>
@@ -73,6 +91,16 @@ const Report = ({ responseAssigment }) => {
                 <td>{row[4]}</td>
                 <td>{row[5]}</td>
                 <td>{row[6]}</td>
+              </tr> */}
+              {list.map((row) => (
+              <tr key={row.category}>
+                <td>{row.category}</td>
+                <td>{row.total}</td>
+                <td>{row.assigned}</td>
+                <td>{row.available}</td>
+                <td>{row.notAvailable}</td>
+                <td>{row.waitingForRecycling}</td>
+                <td>{row.recycled}</td>
               </tr>
             ))}
           </tbody>
