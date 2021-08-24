@@ -3,7 +3,7 @@ import './Manage.css'
 import 'reactjs-popup/dist/index.css';
 
 import {Button, Container, Dropdown, Form, FormControl, InputGroup, Row, SplitButton, Table} from 'react-bootstrap';
-import {useEffect, useRef, useMemo , useState} from 'react';
+import {useEffect, useMemo, useRef, useState} from 'react';
 
 import ChangeStatus from '../changeStatus/ChangeStatus';
 import Pagination from '../../../../components/Pagination/Pagination'
@@ -14,8 +14,8 @@ import axios from "axios";
 import {useHistory} from 'react-router-dom'
 
 const ManageUser = ({responseUser}) => {
-
-
+ 
+    
   const token = localStorage.getItem('jwttoken')
   
   const headers = { 
