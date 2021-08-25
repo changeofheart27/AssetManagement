@@ -24,7 +24,7 @@ const SearchAsset = ({setAssetSelect,close}) => {
             })
     }, [])
     useEffect(()=>{
-        axios.get(rootAPI+'/assets/search?keyword='+searchTerm)
+        axios.get(rootAPI+'/assets/filter?searchTerm='+searchTerm)
             .then(response => {
                 setAsset(response.data);
             })

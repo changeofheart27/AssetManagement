@@ -70,7 +70,6 @@ public class User {
 //    private Request request;
 
 
-
     @Column(name = "default_password")
     private String defaultPassword;
 
