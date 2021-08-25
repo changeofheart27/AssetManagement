@@ -1,43 +1,41 @@
 import React from 'react'
 import {Button, ButtonGroup, Row} from "react-bootstrap";
 import axios from "axios";
+import moment from "moment";
 
 const CompleteRequest = props => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
-    let {id, assign} = props;
+    let {id, assign, close, setState} = props;
     console.log(id);
-    const refreshPage = ()=>{
+    // setState(assign.state);
+    const refreshPage = () => {
         window.location.reload();
     }
     const assigmentId = assign.assignmentDTO.id
     const data = {
-        id:assign.id,
-        returnedDate:assign.returnedDate,
-        state: 1,
-        assignmentDTO:assign.assignmentDTO,
-        accepted_by: assign.accepted_by
+        id: assign.id,
+        returnedDate: moment().format("YYYY-MM-DD"),
+        assignmentDTO: assign.assignmentDTO,
+        accepted_by: localStorage.getItem("username"),
+        state: 1
     }
     const onSubmit = () => {
         axios
-          .put(rootAPI+`/request/${id}`,data)
-          .then(function (response) {
-            
-          });
-        axios
-          .delete(rootAPI+`/assignments/${assigmentId}`)
-          .then(function (response) {
-            
-          });
+            .put(rootAPI + `/request/${id}`, data)
+            .then(function (response) {
+                setState(1);
+                close();
+            });
     }
     return (
         <div>
-           <h3 className={"text-danger"}>Are you sure?</h3>
+            <h3 className={"text-danger"}>Are you sure?</h3>
             <hr/>
-            <p>Do you want to mark this returnning request as 'Completed'?</p>
+            <p>Do you want to mark this returning request as 'Completed'?</p>
             <Row>
                 <ButtonGroup>
-                    <Button variant={"danger"} className={"mx-5"} onClick={onSubmit} >Yes</Button>
-                    <Button variant={"secondary"} className={"mx-5"} onClick={()=> refreshPage()}>No</Button>
+                    <Button variant={"danger"} className={"mx-5"} onClick={onSubmit}>Yes</Button>
+                    <Button variant={"secondary"} className={"mx-5"} onClick={() => refreshPage()}>No</Button>
                 </ButtonGroup>
             </Row>
         </div>

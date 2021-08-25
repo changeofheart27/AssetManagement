@@ -20,7 +20,7 @@ public class Assignment {
 	@JoinColumn(name = "user_id")
 	private User user;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "asset_id")
 	private Asset asset;
 	

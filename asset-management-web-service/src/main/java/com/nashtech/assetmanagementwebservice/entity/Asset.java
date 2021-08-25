@@ -3,6 +3,7 @@ package com.nashtech.assetmanagementwebservice.entity;
 import org.hibernate.annotations.Cascade;
 
 import java.time.LocalDate;
+import java.util.List;
 
 
 import javax.persistence.*;
@@ -44,8 +45,8 @@ public class Asset {
 	@JoinColumn(name = "category_id")
 	private Category category;
 	
-	@OneToOne(mappedBy = "asset")
-	private Assignment assignment;
+	@OneToMany(mappedBy = "asset")
+	private List<Assignment> assignments;
 
 
 	public Asset() {
@@ -146,14 +147,13 @@ public class Asset {
 		this.category = category;
 	}
 
-	public Assignment getAssignment() {
-		return assignment;
+	public List<Assignment> getAssignments() {
+		return assignments;
 	}
 
-	public void setAssignment(Assignment assignment) {
-		this.assignment = assignment;
+	public void setAssignments(List<Assignment> assignments) {
+		this.assignments = assignments;
 	}
-
 
 	@Override
 	public String toString() {
@@ -167,7 +167,7 @@ public class Asset {
 				", location='" + location + '\'' +
 				", user=" + user +
 				", category=" + category +
-				", assignment=" + assignment +
+				", assignment=" + assignments +
 				'}';
 	}
 }

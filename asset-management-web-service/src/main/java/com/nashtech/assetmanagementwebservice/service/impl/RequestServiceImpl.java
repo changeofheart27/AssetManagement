@@ -3,6 +3,9 @@ package com.nashtech.assetmanagementwebservice.service.impl;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.nashtech.assetmanagementwebservice.entity.Asset;
+import com.nashtech.assetmanagementwebservice.repository.AssetRepository;
 import org.springframework.stereotype.Service;
 import com.nashtech.assetmanagementwebservice.entity.Assignment;
 import com.nashtech.assetmanagementwebservice.entity.Request;
@@ -19,11 +22,13 @@ public class RequestServiceImpl implements RequestService {
   private final RequestRepository requestRepository;
   private final RequestMapper requestMapper;
   private final AssignmentRepository assignmentRepository;
+  private final AssetRepository assetRepository;
 
-  public RequestServiceImpl(RequestRepository requestRepository, RequestMapper requestMapper, AssignmentRepository assignmentRepository) {
+  public RequestServiceImpl(RequestRepository requestRepository, RequestMapper requestMapper, AssignmentRepository assignmentRepository, AssetRepository assetRepository) {
     this.requestRepository = requestRepository;
     this.requestMapper = requestMapper;
     this.assignmentRepository = assignmentRepository;
+    this.assetRepository = assetRepository;
   }
 
   @Override
@@ -84,24 +89,22 @@ public class RequestServiceImpl implements RequestService {
   @Override
   public void deleteById(Integer id) {
     Request request = requestRepository.getById(id);
-
-    if (request == null) {
-      throw new NotFoundException("No record found with id " + id);
-    }
     requestRepository.delete(request);
   }
 
   @Override
   public RequestDTO edit(Integer id, RequestDTO payload) {
-    Request oldRequest = requestRepository.getById(id);
-    Assignment oldAssignment = oldRequest.getAssignment();
-    if (oldAssignment.getId() != payload.getAssignmentDTO().getId()) {
-      assignmentRepository.save(oldAssignment);
-    }
-    Request newRequest = requestRepository.getById(payload.getId());
-    newRequest.setState(1);
-    newRequest.setReturnedDate(LocalDate.now());
-    requestRepository.save(newRequest);
+    Assignment assignment = assignmentRepository.getById(payload.getAssignmentDTO().getId());
+    assignment.setState(-1);
+    assignmentRepository.save(assignment);
+    Asset asset = assetRepository.getById(assignment.getAsset().getId());
+    asset.setState(0);
+    assetRepository.save(asset);
+    Request request = requestRepository.getById(id);
+    request.setReturnedDate(payload.getReturnedDate());
+    request.setUsername(payload.getAccepted_by());
+    request.setState(payload.getState());
+    requestRepository.save(request);
     return payload;
   }
 }

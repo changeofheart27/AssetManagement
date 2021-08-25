@@ -10,30 +10,31 @@ const Request = () => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [sortConfig, setSortConfig] = useState(null);
     const [list, setList] = useState([{
-        id:null,
-
-        returnedDate:null,
-        state: null,
-        assignmentDTO:{
+        id: null,
+        returnedDate: null,
+        assignmentDTO: {
             assignedDate: null,
-            assetDTO:{
+            assetDTO: {
                 assetCode: null,
                 assetName: null,
                 state: null
             },
-            userDTO:{
+            userDTO: {
                 username: null,
-            }
+            },
+            state: null,
         },
+        state: null,
         accepted_by: null
     }]);
+    const [state, setState] = useState(null);
     useEffect(() => {
         axios.get(rootAPI + `/request`)
             .then(response => {
                 setList(response.data)
             })
 
-    }, [])
+    }, [state, list.length])
 
 
     const [type, setType] = useState();
@@ -48,45 +49,45 @@ const Request = () => {
     }
     const sortingData = useMemo(() => {
         if (sortConfig !== null) {
-          list.sort((a, b) => {
-            if (a[sortConfig.key] < b[sortConfig.key] ||
-                a.assignmentDTO.userDTO.username < b.assignmentDTO.userDTO.username ||
-                a.assignmentDTO.assetDTO.assetName < b.assignmentDTO.assetDTO.assetName ||
-                a.assignmentDTO.assetDTO.assetCode < b.assignmentDTO.assetDTO.assetCode ||
-                a.assignmentDTO.assetDTO.state < b.assignmentDTO.assetDTO.state ||
-                a.assignmentDTO.assignedDate < b.assignmentDTO.assignedDate) {
-              return sortConfig.direction === "asc" ? -1 : 1;
-            }
-            if (a[sortConfig.key] > b[sortConfig.key] ||
-                a.assignmentDTO.userDTO.username > b.assignmentDTO.userDTO.username ||
-                a.assignmentDTO.assetDTO.assetName < b.assignmentDTO.assetDTO.assetName ||
-                a.assignmentDTO.assetDTO.assetCode < b.assignmentDTO.assetDTO.assetCode ||
-                a.assignmentDTO.assetDTO.state > b.assignmentDTO.assetDTO.state ||
-                a.assignmentDTO.assignedDate > b.assignmentDTO.assignedDate) {
-              return sortConfig.direction === "asc" ? 1 : -1;
-            }
-            return 0;
-          });
+            list.sort((a, b) => {
+                if (a[sortConfig.key] < b[sortConfig.key] ||
+                    a.assignmentDTO.userDTO.username < b.assignmentDTO.userDTO.username ||
+                    a.assignmentDTO.assetDTO.assetName < b.assignmentDTO.assetDTO.assetName ||
+                    a.assignmentDTO.assetDTO.assetCode < b.assignmentDTO.assetDTO.assetCode ||
+                    a.assignmentDTO.assetDTO.state < b.assignmentDTO.assetDTO.state ||
+                    a.assignmentDTO.assignedDate < b.assignmentDTO.assignedDate) {
+                    return sortConfig.direction === "asc" ? -1 : 1;
+                }
+                if (a[sortConfig.key] > b[sortConfig.key] ||
+                    a.assignmentDTO.userDTO.username > b.assignmentDTO.userDTO.username ||
+                    a.assignmentDTO.assetDTO.assetName < b.assignmentDTO.assetDTO.assetName ||
+                    a.assignmentDTO.assetDTO.assetCode < b.assignmentDTO.assetDTO.assetCode ||
+                    a.assignmentDTO.assetDTO.state > b.assignmentDTO.assetDTO.state ||
+                    a.assignmentDTO.assignedDate > b.assignmentDTO.assignedDate) {
+                    return sortConfig.direction === "asc" ? 1 : -1;
+                }
+                return 0;
+            });
         }
-      }, [sortConfig]);
-      const requestSort = (key) => {
+    }, [sortConfig]);
+    const requestSort = (key) => {
         let direction = "asc";
         if (
-          sortConfig &&
-          sortConfig.key === key &&
-          sortConfig.direction === "asc"
+            sortConfig &&
+            sortConfig.key === key &&
+            sortConfig.direction === "asc"
         ) {
-          direction = "desc";
+            direction = "desc";
         }
-        setSortConfig({ key, direction });
-      };
-      const getClassNamesFor = (name) => {
+        setSortConfig({key, direction});
+    };
+    const getClassNamesFor = (name) => {
         if (!sortConfig) {
-          return;
+            return;
         }
         return sortConfig.key === name ? sortConfig.direction : undefined;
-      };
-        const handleFilterType = evt => {
+    };
+    const handleFilterType = evt => {
         const name = evt.target.name;
         setType(evt.target.value)
     }
@@ -100,7 +101,7 @@ const Request = () => {
     }
     const isFirstRun = useRef(true);
     useEffect(() => {
-        if(isFirstRun.current) {
+        if (isFirstRun.current) {
             isFirstRun.current = false;
             return;
         }
@@ -109,7 +110,7 @@ const Request = () => {
         if (request.params.type === "State") {
             request.params.type = null;
             console.log(request);
-          }
+        }
         if (request.params.date === "Assigned Date") {
             request.params.date = null;
             console.log(request);
@@ -119,14 +120,15 @@ const Request = () => {
                 setList(response.data);
                 console.log(response.data)
             })
-    }, [type, date,searchTerm])
+    }, [type, date, searchTerm])
     const check = (state) => {
-        if (state === 0) {
-          return <td>Waiting for returning</td>;
-        } else if (state === 1) {
-          return <td>Completed</td>;
+        if (state === 8) {
+            return <td>Waiting for returning</td>;
+        } else if (state === -1) {
+            return <td>Completed</td>;
         }
-      };
+    };
+
     return (
         <Container fluid className={"d-block ps-5"}>
             <h1 className={"text-danger mb-3"}>Request List</h1>
@@ -137,7 +139,7 @@ const Request = () => {
                         custom
                         className={"w-25"}
                         name={"type"}
-                        onChange = {handleFilterType}
+                        onChange={handleFilterType}
                     >
                         <option>State</option>
 
@@ -152,7 +154,7 @@ const Request = () => {
                     <Form.Control
                         type={"date"}
                         className={"w-25 ms-5"}
-                        onChange = {handleFilterDate}
+                        onChange={handleFilterDate}
                     />
                 </div>
                 <div className={"col-6 d-flex justify-content-end"}>
@@ -160,7 +162,7 @@ const Request = () => {
                         type={"input"}
                         className={"w-25"}
                         name={"searchTerm"}
-                        onChange = {handleSearch}
+                        onChange={handleSearch}
                     >
                     </FormControl>
                     <Button variant={"outline-secondary"}
@@ -176,35 +178,43 @@ const Request = () => {
                         <th className={"border-bottom"}
                             className={getClassNamesFor("id")}
                             onClick={() => requestSort("id")}
-                        >No.</th>
+                        >No.
+                        </th>
                         <th className={"border-bottom"}
                             className={getClassNamesFor("assignmentDTO.assetDTO.assetCode")}
                             onClick={() => requestSort("assignmentDTO.assetDTO.assetCode")}
-                        >Asset Code</th>
+                        >Asset Code
+                        </th>
                         <th className={"border-bottom"}
                             className={getClassNamesFor("assignmentDTO.assetDTO.assetName")}
                             onClick={() => requestSort("assignmentDTO.assetDTO.assetName")}
-                        >Asset Name</th>
+                        >Asset Name
+                        </th>
                         <th className={"border-bottom"}
                             className={getClassNamesFor("assignmentDTO.userDTO.username")}
                             onClick={() => requestSort("assignmentDTO.userDTO.username")}
-                        >Request by</th>
+                        >Request by
+                        </th>
                         <th className={"border-bottom"}
                             className={getClassNamesFor("assignmentDTO.assignedDate")}
                             onClick={() => requestSort("assignmentDTO.assignedDate")}
-                        >Assign Date</th>
+                        >Assign Date
+                        </th>
                         <th className={"border-bottom"}
                             className={getClassNamesFor("accepted_by")}
                             onClick={() => requestSort("accepted_by")}
-                        >Accepted by</th>
+                        >Accepted by
+                        </th>
                         <th className={"border-bottom"}
                             className={getClassNamesFor("returned_date")}
                             onClick={() => requestSort("returned_date")}
-                        >Return Date</th>
+                        >Return Date
+                        </th>
                         <th className={"border-bottom"}
                             className={getClassNamesFor("assignmentDTO.assetDTO.state")}
                             onClick={() => requestSort("assignmentDTO.assetDTO.state")}
-                        >State</th>
+                        >State
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
@@ -216,9 +226,8 @@ const Request = () => {
                             <td>{assign.assignmentDTO.userDTO.username}</td>
                             <td>{assign.assignmentDTO.assignedDate}</td>
                             <td>{assign.accepted_by}</td>
-
                             <td>{assign.returnedDate}</td>
-                            {check(assign.state)}
+                            {check(assign.assignmentDTO.state)}
                             <Popup
                                 contentStyle={{
                                     width: "25%",
@@ -233,7 +242,8 @@ const Request = () => {
                                 offsetX={200}
                                 modal
                             >
-                            <CompleteRequest id={assign.id} assign = {assign}></CompleteRequest>
+                                {close => <CompleteRequest id={assign.id} assign={assign} close={close}
+                                                           setState={setState}/>}
                             </Popup>
                             <Popup
                                 contentStyle={{
@@ -249,9 +259,9 @@ const Request = () => {
                                 offsetX={200}
                                 modal
                             >
-                            <DeleteRequest id={assign.id}></DeleteRequest>
+                                {close => <DeleteRequest id={assign.id} close={close}/>}
                             </Popup>
-                            
+
                         </tr>
                     )}
                     </tbody>

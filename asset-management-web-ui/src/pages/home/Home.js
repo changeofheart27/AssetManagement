@@ -59,16 +59,11 @@ const Home = () => {
                 .then((response1) => {
                     setUser(response1.data)
                     console.log(response1)
-                  
-                   
                 })})
-            
-                
                 .catch((error) => {
             console.log(error)
         });
     }, [state])
-   
         if(user.defaultPassword===localStorage.getItem("password")){
             window.alert("You are using the default password, please change it now !")
             window.location.href="/changepassword";
