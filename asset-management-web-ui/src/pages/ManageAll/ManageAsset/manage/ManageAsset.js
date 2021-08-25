@@ -9,8 +9,8 @@ import Pagination from '../../../../components/Pagination/Pagination'
 import Popup from "reactjs-popup";
 import ViewDetailedAsset from "../viewDetails/ViewDetailedAsset"
 import axios from "axios";
-import {useHistory} from 'react-router-dom'
 import { set } from 'date-fns';
+import {useHistory} from 'react-router-dom'
 
 const ManageAsset = ({responseDataAsset}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
@@ -191,6 +191,7 @@ const ManageAsset = ({responseDataAsset}) => {
                             type={"input"}
                             name={"searchTerm"}
                             onChange={handleSearch}
+                            maxLength={255}
                         >
                         </FormControl>
                         <Button variant={"outline-secondary"}
@@ -210,19 +211,19 @@ const ManageAsset = ({responseDataAsset}) => {
                     <tr>
                         <th className={"border-bottom"}
                             className={getClassNamesFor('assetCode')}
-                            onClick={() => requestSort('assetCode')}>Asset Code<i className="bi bi-caret-down-fill"/>
+                            onClick={() => requestSort('assetCode')}>Asset Code
                         </th>
                         <th className={"border-bottom"}
                             className={getClassNamesFor('assetName')}
-                            onClick={() => requestSort('assetName')}>Asset Name<i className="bi bi-caret-down-fill"/>
+                            onClick={() => requestSort('assetName')}>Asset Name
                         </th>
                         <th className={"border-bottom"}
                             className={getClassNamesFor('categoryDTO.name')}
-                            onClick={() => requestSort('category')}>Category<i className="bi bi-caret-down-fill"/>
+                            onClick={() => requestSort('categoryDTO.name')}>Category
                         </th>
                         <th className={"border-bottom"}
                             className={getClassNamesFor('state')}
-                            onClick={() => requestSort('state')}>State<i className="bi bi-caret-down-fill"/>
+                            onClick={() => requestSort('state')}>State
                         </th>
                     </tr>
                     </thead>

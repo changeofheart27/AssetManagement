@@ -5,8 +5,8 @@ import './LoginFormPage.css'
 import * as Yup from "yup";
 
 import {Button, Form, FormControl, Row} from "react-bootstrap";
+import {Formik, useFormik} from 'formik';
 
-import {Formik} from 'formik';
 import React from 'react';
 import axios from 'axios';
 import {toast} from 'react-toastify';
@@ -18,7 +18,7 @@ const LoginFormPage = ({props, loginSuccess}) => {
     const [showLoginSuccess, setShowLoginSuccess] = useState(false);
     const [submitError, setSubmitError] = useState("");
     const history = useHistory();
-    const initialValues = {username: '', password: ''};
+    const  initialValues = {username: '', password: ''};
     const ValidateSchema = Yup.object().shape({
         username: Yup.string()
             .max(50)
@@ -57,7 +57,7 @@ const LoginFormPage = ({props, loginSuccess}) => {
             setSubmitError(
                 "Login fails status code: " + error
             );
-             toast.error("Wrong password or username");
+             toast.error("Username or password is incorrect. Please try again");
         });
     }
 
@@ -87,6 +87,7 @@ const LoginFormPage = ({props, loginSuccess}) => {
                                 <FormControl
                                     aria-label="Username"
                                     aria-describedby="basic-addon1"
+                                    value={values.username}
                                     className={"w-75"}
                                     name={"username"}
                                     onBlur={handleBlur}
@@ -102,6 +103,7 @@ const LoginFormPage = ({props, loginSuccess}) => {
                                 <FormControl
                                     aria-label="Password"
                                     aria-describedby="basic-addon1"
+                                    value={values.password}
                                     className={"w-75"}
                                     name={"password"}
                                     type={"password"}
@@ -114,14 +116,14 @@ const LoginFormPage = ({props, loginSuccess}) => {
                                 ) : null}
                             </Row>
 
-                            <Button variant={"danger"} onClick={() => history.push('/')} type={"submit"}
+                            {/* <Button variant={"danger"} onClick={() => history.push('/')} type={"submit"}
                                     className={"ms-5"} style={{float: 'right'}}>
                                 Cancel
-                            </Button>
+                            </Button> */}
 
-                            <Button variant={"danger"} type={"submit"} style={{float: 'right'}} disabled={isSubmitting}
+                            <Button variant={"danger"} type={"submit"} style={{float: 'right'}} disabled={!values.username || !values.password}
                                     on>
-                                Submit
+                                Sign In
                             </Button>
 
                         </Form>

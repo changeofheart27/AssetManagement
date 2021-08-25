@@ -15,7 +15,6 @@ import {useHistory} from 'react-router-dom'
 
 const ManageUser = ({responseUser}) => {
 
-
   const token = localStorage.getItem('jwttoken')
     
   const headers = { 
@@ -175,27 +174,27 @@ const ManageUser = ({responseUser}) => {
                 <th
                   className={"border-bottom"}
                   className={getClassNamesFor("staffCode")}
-                  onClick={() => requestSort("staffCode")}>Staff Code<i className="bi bi-caret-down-fill"/>
+                  onClick={() => requestSort("staffCode")}>Staff Code
                 </th>
                 <th
                   className={"border-bottom"}
                   className={getClassNamesFor("lastName")}
-                  onClick={() => requestSort("lastName")}>Full Name<i className="bi bi-caret-down-fill"/>
+                  onClick={() => requestSort("lastName")}>Full Name
                 </th>
                 <th
                   className={"border-bottom"}
                   className={getClassNamesFor("username")}
-                  onClick={() => requestSort("username")}>User Name<i className="bi bi-caret-down-fill"/>
+                  onClick={() => requestSort("username")}>User Name
                 </th>
                 <th
                   className={"border-bottom"}
                   className={getClassNamesFor("joinedDate")}
-                  onClick={() => requestSort("joinedDate")}>Joined Date<i className="bi bi-caret-down-fill"/>
+                  onClick={() => requestSort("joinedDate")}>Joined Date
                 </th>
                 <th
                   className={"border-bottom"}
                   className={getClassNamesFor("authority")}
-                  onClick={() => requestSort("authority")}>Type<i className="bi bi-caret-down-fill"/>
+                  onClick={() => requestSort("authority")}>Type
                 </th>
               </tr>
             </thead>

@@ -14,7 +14,7 @@
   border-radius: 18px;
 }
 
-/* tr th.asc::after {
+th.asc::after {
   font-family: "Font Awesome 5 Free";
   font-weight: 900;
   content: "\f0d7";
@@ -22,10 +22,10 @@
   font-size: large;
 }
 
-tr th.desc::after {
+th.desc::after {
   font-family: "Font Awesome 5 Free";
   font-weight: 900;
   content: "\f0d8";
   padding: 2px;
   font-size: large;
-} */
+}

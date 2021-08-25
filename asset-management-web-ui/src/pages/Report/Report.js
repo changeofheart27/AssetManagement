@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "reactjs-popup/dist/index.css";
 import { Button, Container, InputGroup, Row, Table } from "react-bootstrap";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import ExportFile from "./ExportFile";
@@ -9,6 +9,7 @@ import ExportFile from "./ExportFile";
 const Report = () => {
   const rootAPI = process.env.REACT_APP_SERVER_URL;
   const [list, setList] = useState([]);
+  const [sortConfig, setSortConfig] = useState(null);
   const fileName = "AssetManagement";
 
   useEffect(() => {
@@ -38,6 +39,37 @@ const Report = () => {
     });
   }, []);
 
+  const sortingData = useMemo(() => {
+    if (sortConfig !== null) {
+      list.sort((a, b) => {
+        if (a[sortConfig.key] < b[sortConfig.key]) {
+          return sortConfig.direction === "asc" ? -1 : 1;
+        }
+        if (a[sortConfig.key] > b[sortConfig.key]) {
+          return sortConfig.direction === "asc" ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+  }, [sortConfig]);
+  const requestSort = (key) => {
+    let direction = "asc";
+    if (
+      sortConfig &&
+      sortConfig.key === key &&
+      sortConfig.direction === "asc"
+    ) {
+      direction = "desc";
+    }
+    setSortConfig({ key, direction });
+  };
+  const getClassNamesFor = (name) => {
+    if (!sortConfig) {
+      return;
+    }
+    return sortConfig.key === name ? sortConfig.direction : undefined;
+  };
+
   return (
     <Container fluid className={"d-block ps-5"}>
       <h1 className={"text-danger mb-3"}>Report</h1>
@@ -53,31 +85,47 @@ const Report = () => {
         <Table>
           <thead>
             <tr>
-              <th className={"border-bottom"}>
+              <th className={"border-bottom"}
+                  className={getClassNamesFor("category")}
+                  onClick={() => requestSort("category")}
+              >
                 Category
-                <i className="bi bi-caret-down-fill" />
               </th>
-              <th className={"border-bottom"}>
-                Total <i className="bi bi-caret-down-fill" />
+              <th className={"border-bottom"}
+                  className={getClassNamesFor("total")}
+                  onClick={() => requestSort("total")}
+              >
+                Total
               </th>
-              <th className={"border-bottom"}>
-                Assigned <i className="bi bi-caret-down-fill" />
+              <th className={"border-bottom"}
+                  className={getClassNamesFor("assigned")}
+                  onClick={() => requestSort("assigned")}
+              >
+                Assigned
               </th>
-              <th className={"border-bottom"}>
+              <th className={"border-bottom"}
+                  className={getClassNamesFor("available")}
+                  onClick={() => requestSort("available")}
+              >
                 Available
-                <i className="bi bi-caret-down-fill" />
               </th>
-              <th className={"border-bottom"}>
+              <th className={"border-bottom"}
+                  className={getClassNamesFor("notAvailable")}
+                  onClick={() => requestSort("notAvailable")}
+              >
                 Not Available
-                <i className="bi bi-caret-down-fill" />
               </th>
-              <th className={"border-bottom"}>
+              <th className={"border-bottom"}
+                  className={getClassNamesFor("waitingForRecycling")}
+                  onClick={() => requestSort("waitingForRecycling")}
+              >
                 Waiting for recycling
-                <i className="bi bi-caret-down-fill" />
               </th>
-              <th className={"border-bottom"}>
+              <th className={"border-bottom"}
+                  className={getClassNamesFor("recycled")}
+                  onClick={() => requestSort("recycled")}
+              >
                 Recycled
-                <i className="bi bi-caret-down-fill" />
               </th>
             </tr>
           </thead>
