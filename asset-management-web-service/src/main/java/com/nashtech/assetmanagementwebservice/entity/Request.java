@@ -1,68 +1,75 @@
 package com.nashtech.assetmanagementwebservice.entity;
 
 
-import javax.persistence.*;
 import java.time.LocalDate;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "request")
 public class Request {
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+  @Id
+  @Column(name = "id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private int id;
 
-    @Column(name = "accepted_by")
-    private String username;
+  @Column(name = "accepted_by")
+  private String username;
 
-    @OneToOne
-    @JoinColumn(name = "assignment_id", referencedColumnName = "id")
-    private Assignment assignment;
+  @OneToOne
+  @JoinColumn(name = "assignment_id", referencedColumnName = "id")
+  private Assignment assignment;
 
-    @Column(name = "returned_date")
-    private LocalDate returned_date;
+  @Column(name = "returned_date")
+  private LocalDate returnedDate;
 
-    @Column(name = "state")
-    private int state;
+  @Column(name = "state")
+  private int state;
 
-    public void setReturned_date(LocalDate returned_date) {
-        this.returned_date = returned_date;
-    }
+  public void setReturnedDate(LocalDate returnedDate) {
+    this.returnedDate = returnedDate;
+  }
 
-    public int getId() {
-        return id;
-    }
+  public int getId() {
+    return id;
+  }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  public void setId(int id) {
+    this.id = id;
+  }
 
-    public Assignment getAssignment() {
-        return assignment;
-    }
+  public Assignment getAssignment() {
+    return assignment;
+  }
 
-    public void setAssignment(Assignment assignment) {
-        this.assignment = assignment;
-    }
+  public void setAssignment(Assignment assignment) {
+    this.assignment = assignment;
+  }
 
-    public String getUsername() {
-        return username;
-    }
+  public String getUsername() {
+    return username;
+  }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+  public void setUsername(String username) {
+    this.username = username;
+  }
 
-    public LocalDate getReturned_date() {
-        return returned_date;
-    }
+  public LocalDate getReturnedDate() {
+    return returnedDate;
+  }
 
-    public int getState() {
-        return state;
-    }
+  public int getState() {
+    return state;
+  }
 
-    public void setState(int state) {
-        this.state = state;
-    }
+  public void setState(int state) {
+    this.state = state;
+  }
 }

@@ -1,13 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {Button, Container, Form, FormControl, InputGroup, Row, Table} from "react-bootstrap";
 import 'react-calendar/dist/Calendar.css';
 import axios from "axios";
+import Popup from 'reactjs-popup';
+import DeleteRequest from './DeleteRequest';
+import CompleteRequest from './CompleteRequest';
 
 const Request = () => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [list, setList] = useState([{
         id:null,
-        returned_date:null,
+        returnedDate:null,
         state: null,
         assignmentDTO:{
             assignedDate: null,
@@ -30,11 +33,58 @@ const Request = () => {
             })
 
     }, [])
-    const check = state => {
-        if (state === 8) {
-            return <td>Waiting for returning</td>
+
+    const [type, setType] = useState();
+    const [date, setDate] = useState();
+    const [searchTerm, setSearchTerm] = useState();
+    const request = {
+        params: {
+            type,
+            date,
+            searchTerm
         }
     }
+    const handleFilterType = evt => {
+        const name = evt.target.name;
+        setType(evt.target.value)
+    }
+    const handleFilterDate = evt => {
+        const name = evt.target.name;
+        setDate(evt.target.value)
+    }
+    const handleSearch = evt => {
+        const name = evt.target.name;
+        setSearchTerm(evt.target.value)
+    }
+    const isFirstRun = useRef(true);
+    useEffect(() => {
+        if(isFirstRun.current) {
+            isFirstRun.current = false;
+            return;
+        }
+        console.log("use Effect Run")
+        console.log(request)
+        if (request.params.type === "State") {
+            request.params.type = null;
+            console.log(request);
+          }
+        if (request.params.date === "Assigned Date") {
+            request.params.date = null;
+            console.log(request);
+        }
+        axios.get(rootAPI + `/request/filter`, request)
+            .then(function (response) {
+                setList(response.data);
+                console.log(response.data)
+            })
+    }, [type, date,searchTerm])
+    const check = (state) => {
+        if (state === 0) {
+          return <td>Waiting for returning</td>;
+        } else if (state === 1) {
+          return <td>Completed</td>;
+        }
+      };
     return (
         <Container fluid className={"d-block ps-5"}>
             <h1 className={"text-danger mb-3"}>Request List</h1>
@@ -45,12 +95,11 @@ const Request = () => {
                         custom
                         className={"w-25"}
                         name={"type"}
+                        onChange = {handleFilterType}
                     >
                         <option>State</option>
-                        <option value="0">Available</option>
-                        <option value="1">Not Available</option>
-                        <option value="2">Waiting for recycling</option>
-                        <option value="3">Recycle</option>
+                        <option value="0">Waiting for returning</option>
+                        <option value="1">Completed</option>
                     </Form.Control>
                     <Button
                         variant={"outline-secondary"}
@@ -60,6 +109,7 @@ const Request = () => {
                     <Form.Control
                         type={"date"}
                         className={"w-25 ms-5"}
+                        onChange = {handleFilterDate}
                     />
                 </div>
                 <div className={"col-6 d-flex justify-content-end"}>
@@ -67,6 +117,7 @@ const Request = () => {
                         type={"input"}
                         className={"w-25"}
                         name={"searchTerm"}
+                        onChange = {handleSearch}
                     >
                     </FormControl>
                     <Button variant={"outline-secondary"}
@@ -98,10 +149,41 @@ const Request = () => {
                             <td>{assign.assignmentDTO.userDTO.username}</td>
                             <td>{assign.assignmentDTO.assignedDate}</td>
                             <td>{assign.accepted_by}</td>
-                            <td>{assign.returned_date}</td>
-                            {check(assign.assignmentDTO.state)}
-                            <td><i className="bi bi-check-lg text-danger"/></td>
-                            <td><i className="bi bi-x-lg text-dark fw-bold"/></td>
+                            <td>{assign.returnedDate}</td>
+                            {check(assign.state)}
+                            <Popup
+                                contentStyle={{
+                                    width: "25%",
+                                    border: "1px solid black",
+                                    borderRadius: 10,
+                                    overflow: "hidden",
+                                    padding: "20px",
+                                }}
+                                trigger={
+                                    <td><i className="bi bi-check-lg text-danger"/></td>
+                                }
+                                offsetX={200}
+                                modal
+                            >
+                            <CompleteRequest id={assign.id} assign = {assign}></CompleteRequest>
+                            </Popup>
+                            <Popup
+                                contentStyle={{
+                                    width: "25%",
+                                    border: "1px solid black",
+                                    borderRadius: 10,
+                                    overflow: "hidden",
+                                    padding: "20px",
+                                }}
+                                trigger={
+                                    <td><i className="bi bi-x-lg text-dark fw-bold"/></td>
+                                }
+                                offsetX={200}
+                                modal
+                            >
+                            <DeleteRequest id={assign.id}></DeleteRequest>
+                            </Popup>
+                            
                         </tr>
                     )}
                     </tbody>
