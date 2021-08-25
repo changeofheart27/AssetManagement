@@ -1,6 +1,7 @@
 package com.nashtech.assetmanagementwebservice.service.impl;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,8 +69,8 @@ public class AssignmentServiceImpl implements AssignmentService {
         User user = userRepository.getById(payload.getUserDTO().getId());
         Asset asset = assetRepository.getById(payload.getAssetDTO().getId());
         asset.setState(4);
+        assetRepository.save(asset);
         Assignment assignment = assignmentMapper.fromDTO(payload);
-        assetService.editAsset(asset.getId(), assetMapper.fromEntity(asset));
         assignment.setAsset(asset);
         assignment.setUser(user);
         assignment.setAssignedBy(payload.getAssignedBy());
@@ -137,22 +138,18 @@ public class AssignmentServiceImpl implements AssignmentService {
 
     @Override
     public List<AssignmentDTO> filterBy(Integer state, LocalDate assignedDate) {
-        List<Assignment> assignments = null;
+        List<Assignment> assignments = new ArrayList<>();
         if (assignedDate == null && state == null) {
             assignments = assignmentRepository.findAll();
-            return assignments.stream().map(assignmentMapper::fromEntity).collect(Collectors.toList());
         } else if (assignedDate == null && state != null) {
             assignments = assignmentRepository.findAssignmentsByState(state);
-            return assignments.stream().map(assignmentMapper::fromEntity).collect(Collectors.toList());
         } else if (assignedDate != null && state == null) {
             assignments = assignmentRepository.findAssignmentsByAssignedDate(assignedDate);
-            return assignments.stream().map(assignmentMapper::fromEntity).collect(Collectors.toList());
         } else if (assignedDate != null && state != null) {
             assignments = assignmentRepository.findAssignmentsByAssignedDate(assignedDate);
-            List<Assignment> result = assignments.stream().filter(assignment -> assignment.getState() == state).collect(Collectors.toList());
-            return result.stream().map(assignmentMapper::fromEntity).collect(Collectors.toList());
+            assignments = assignments.stream().filter(assignment -> assignment.getState() == state).collect(Collectors.toList());
         }
-        return null;
+        return assignments.stream().map(assignmentMapper::fromEntity).collect(Collectors.toList());
     }
 
 }

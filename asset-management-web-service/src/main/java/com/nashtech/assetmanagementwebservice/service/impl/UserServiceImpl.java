@@ -197,23 +197,19 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public List<UserDTO> getUserByType(String type, String keyword) {
-    List<User> users;
+    List<User> users = new ArrayList<>();
     if (type == null && keyword == null) {
       users = userRepository.findByStatus("enabled");
-      return users.stream().map(UserMapper::toUserDTO).collect(Collectors.toList());
     } else if (type != null && keyword == null) {
       users = userRepository.getUserByType(type);
-      return users.stream().map(UserMapper::toUserDTO).collect(Collectors.toList());
     } else if (type == null && keyword != null) {
       users = userRepository.findByNameOrStaffCode(keyword);
-      return users.stream().map(UserMapper::toUserDTO).collect(Collectors.toList());
     } else if (type != null && keyword != null) {
       users = userRepository.findByNameOrStaffCode(keyword);
-      List<User> results = users.stream().filter(user -> user.getAuthority().getAuthority().equals(type.toUpperCase())).collect(Collectors.toList());
-      return results.stream().map(UserMapper::toUserDTO).collect(Collectors.toList());
+      users = users.stream().filter(user -> user.getAuthority().getAuthority().equals(type.toUpperCase())).collect(Collectors.toList());
     }
 
-    return null;
+    return users.stream().map(UserMapper::toUserDTO).collect(Collectors.toList());
 
   }
 

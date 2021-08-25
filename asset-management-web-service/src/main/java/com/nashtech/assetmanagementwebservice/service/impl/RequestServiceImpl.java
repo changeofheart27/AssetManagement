@@ -1,6 +1,7 @@
 package com.nashtech.assetmanagementwebservice.service.impl;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,37 +54,29 @@ public class RequestServiceImpl implements RequestService {
 
   @Override
   public List<RequestDTO> filterRequests(Integer state, LocalDate returnedDate, String keyword) {
-    List<Request> requests;
+    List<Request> requests = new ArrayList<>();
     if (state == null && returnedDate == null && keyword == null) {
       requests = requestRepository.findAll();
-      return requests.stream().map(requestMapper::fromEntity).collect(Collectors.toList());
     } else if (state != null && returnedDate == null && keyword == null) {
       requests = requestRepository.findRequestsByState(state);
-      return requests.stream().map(requestMapper::fromEntity).collect(Collectors.toList());
     } else if (state == null && returnedDate != null && keyword == null) {
       requests = requestRepository.findRequestsByReturnedDate(returnedDate);
-      return requests.stream().map(requestMapper::fromEntity).collect(Collectors.toList());
     } else if (state != null && returnedDate != null && keyword == null) {
       requests = requestRepository.findRequestsByReturnedDate(returnedDate);
-      List<Request> results = requests.stream().filter(request -> request.getState() == state).collect(Collectors.toList());
-      return results.stream().map(requestMapper::fromEntity).collect(Collectors.toList());
+      requests = requests.stream().filter(request -> request.getState() == state).collect(Collectors.toList());
     } else if (state != null && returnedDate != null && keyword != null) {
       requests = requestRepository.findRequestsByAssetNameContainsOrAssetCode(keyword, keyword);
-      List<Request> results = requests.stream().filter(request -> request.getState() == state && request.getReturnedDate() == returnedDate).collect(Collectors.toList());
-      return results.stream().map(requestMapper::fromEntity).collect(Collectors.toList());
+      requests = requests.stream().filter(request -> request.getState() == state && request.getReturnedDate() == returnedDate).collect(Collectors.toList());
     } else if (state == null && returnedDate != null && keyword != null) {
       requests = requestRepository.findRequestsByAssetNameContainsOrAssetCode(keyword, keyword);
-      List<Request> results = requests.stream().filter(request -> request.getReturnedDate() == returnedDate).collect(Collectors.toList());
-      return results.stream().map(requestMapper::fromEntity).collect(Collectors.toList());
+      requests = requests.stream().filter(request -> request.getReturnedDate() == returnedDate).collect(Collectors.toList());
     } else if (state == null && returnedDate == null && keyword != null) {
       requests = requestRepository.findRequestsByAssetNameContainsOrAssetCode(keyword, keyword);
-      return requests.stream().map(requestMapper::fromEntity).collect(Collectors.toList());
     } else if (state != null && returnedDate == null && keyword != null) {
       requests = requestRepository.findRequestsByAssetNameContainsOrAssetCode(keyword, keyword);
-      List<Request> results = requests.stream().filter(request -> request.getState() == state).collect(Collectors.toList());
-      return results.stream().map(requestMapper::fromEntity).collect(Collectors.toList());
+      requests = requests.stream().filter(request -> request.getState() == state).collect(Collectors.toList());
     }
-    return null;
+    return requests.stream().map(requestMapper::fromEntity).collect(Collectors.toList());
   }
 
   @Override
