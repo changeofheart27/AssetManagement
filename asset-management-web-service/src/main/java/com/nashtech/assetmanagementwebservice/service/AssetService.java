@@ -4,7 +4,6 @@ import java.util.List;
 import com.nashtech.assetmanagementwebservice.model.dto.AssetDTO;
 
 public interface AssetService {
-  List<AssetDTO> getAssetList();
 
   AssetDTO findAssetById(Integer id);
 
@@ -13,8 +12,6 @@ public interface AssetService {
   AssetDTO editAsset(Integer assetId, AssetDTO payload);
 
   void deleteAssetById(Integer id);
-
-  List<AssetDTO> searchAssetByAssetNameOrAssetCode(String keyword);
 
   List<AssetDTO> filterAssets(String category, Integer state, String keyword);
 

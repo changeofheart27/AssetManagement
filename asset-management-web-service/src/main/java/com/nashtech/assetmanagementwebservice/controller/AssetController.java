@@ -37,7 +37,7 @@ public class AssetController {
   @GetMapping(value = "/assets", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<List<AssetDTO>> getAllAssets() {
     logger.info("Execute getAllAssets() inside AssetController");
-    List<AssetDTO> assets = assetService.getAssetList();
+    List<AssetDTO> assets = assetService.filterAssets(null,null,null);
     logger.info("Executed successful!");
     return ResponseEntity.ok(assets);
   }
@@ -81,31 +81,15 @@ public class AssetController {
     return ResponseEntity.ok().build();
   }
 
-  @ApiOperation(value = "Search All Assets By assetName Or assetCode", response = AssetDTO.class, responseContainer = "List")
-  @GetMapping(value = "/assets/search", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<List<AssetDTO>> searchAssetByAssetNameOrAssetCode(@RequestParam String keyword) {
-    logger.info("Execute searchAssetByAssetNameOrAssetCode() inside AssetController");
-    logger.info("REQUEST PARAM IS: " + keyword);
-    assert keyword != null;
-    if (keyword.equals("")) {
-      List<AssetDTO> assetDTOS = assetService.getAssetList();
-      return ResponseEntity.ok(assetDTOS);
-    } else {
-      List<AssetDTO> assets = assetService.searchAssetByAssetNameOrAssetCode(keyword);
-      logger.info("Executed successful!");
-      return ResponseEntity.ok(assets);
-    }
-  }
-
   @ApiOperation(value = "Filter Asset", response = AssetDTO.class, responseContainer = "List")
   @GetMapping(value = "/assets/filter", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<List<AssetDTO>> filterAsset(@RequestParam(value = "category", required = false) String category, @RequestParam(value = "type", required = false) Integer state, @RequestParam(value = "searchTerm", required = false) String keyword) {
+  public ResponseEntity<List<AssetDTO>> filterAsset(@RequestParam(value = "category", required = false) String category
+          , @RequestParam(value = "type", required = false) Integer state
+          , @RequestParam(value = "searchTerm", required = false) String keyword) {
     List<AssetDTO> assets = assetService.filterAssets(category, state, keyword);
     return ResponseEntity.ok(assets);
 
   }
-
-
   @ApiOperation(value = "Report", response = Object.class, responseContainer = "List")
   @GetMapping(value = "/assets/report", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<List<Object[]>> getDataForReport() {
