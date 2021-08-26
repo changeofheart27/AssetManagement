@@ -55,7 +55,7 @@ const ManageAsset = ({responseDataAsset}) => {
                 }
                 console.log(response.data);
             })
-    }, [])
+    }, []);
     const check = state => {
         if (state === 0) {
             return <td>Available</td>
@@ -117,10 +117,10 @@ const ManageAsset = ({responseDataAsset}) => {
     const sortingData = useMemo(() => {
         if (sortConfig !== null) {
             list.sort((a, b) => {
-                if (a[sortConfig.key] < (b[sortConfig.key]) || a.categoryDTO.name > b.categoryDTO.name) {
+                if (a[sortConfig.key] < (b[sortConfig.key]) || a.categoryDTO.name < b.categoryDTO.name) {
                     return sortConfig.direction === "asc" ? -1 : 1;
                 }
-                if (a[sortConfig.key] > (b[sortConfig.key]) || a.categoryDTO.name < b.categoryDTO.name) {
+                if (a[sortConfig.key] > (b[sortConfig.key]) || a.categoryDTO.name > b.categoryDTO.name) {
                     return sortConfig.direction === "asc" ? 1 : -1;
                 }
                 return 0;

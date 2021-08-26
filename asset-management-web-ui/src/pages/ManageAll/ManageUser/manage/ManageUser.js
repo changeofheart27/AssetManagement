@@ -12,6 +12,7 @@ import React from 'react';
 import ViewDetailedUser from "../viewDetails/ViewDetailedUser"
 import axios from "axios";
 import {useHistory} from 'react-router-dom'
+import dateFormat from 'dateformat';
 
 const ManageUser = ({responseUser}) => {
 
@@ -177,8 +178,8 @@ const ManageUser = ({responseUser}) => {
                 </th>
                 <th
                   className={"border-bottom"}
-                  className={getClassNamesFor("lastName")}
-                  onClick={() => requestSort("lastName")}>Full Name
+                  className={getClassNamesFor("firstName")}
+                  onClick={() => requestSort("firstName")}>Full Name
                 </th>
                 <th
                   className={"border-bottom"}
@@ -215,7 +216,7 @@ const ManageUser = ({responseUser}) => {
                         {user.firstName} {user.lastName}
                       </td>
                       <td>{user.username}</td>
-                      <td>{user.joinedDate}</td>
+                      <td>{dateFormat(user.joinedDate, "dd/mm/yyyy")}</td>
                       <td>{user.authority}</td>
                       <td>
                         <i
