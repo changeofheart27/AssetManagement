@@ -140,6 +140,11 @@ const EditUser = ({setResponseUser}) => {
           }
         ),
     });
+    function onKeyDown(keyEvent) {
+        if ((keyEvent.charCode || keyEvent.keyCode) === 13) {
+            keyEvent.preventDefault();
+        }
+    }
     return (
         <div className={"container ps-5 d-block"}>
             <Row>
@@ -160,7 +165,8 @@ const EditUser = ({setResponseUser}) => {
                           isSubmitting,
                           /* and other goodies */
                       }) => (
-                        <Form onSubmit={handleSubmit}>
+                        <Form onSubmit={handleSubmit}
+                              onKeyDown={onKeyDown}>
                             <Row className={"mb-3"}>
                                 <p className={"w-25"}>First Name</p>
                                 <FormControl

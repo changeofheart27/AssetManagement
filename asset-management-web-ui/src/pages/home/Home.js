@@ -124,11 +124,11 @@ const Home = () => {
         }
         return sortConfig.key === name ? sortConfig.direction : undefined;
     };
-
+    let i = 1;
     return (
 
         <Container fluid className={"d-block ps-5"}>
-            <h1 className={"text-danger mb-5"}>My Assignment</h1>
+            <h3 className={"text-danger my-5"}>My Assignment</h3>
             <Row className={"mt-5"}>
                 {list.length === 0
                     ?
@@ -176,7 +176,7 @@ const Home = () => {
                                 overflow: 'hidden', padding: "20px"
                             }} trigger={
                                 <tr key={assigment.id}>
-                                    <td>{assigment.id}</td>
+                                    <td>{i++}</td>
                                     <td>{assigment.assetDTO.assetCode}</td>
                                     <td>{assigment.assetDTO.assetName}</td>
                                     <td>{assigment.assetDTO.categoryDTO.name}</td>

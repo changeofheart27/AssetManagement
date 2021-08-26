@@ -42,7 +42,7 @@ const ReturnPopup = (props) => {
     return (
         <Container fluid>
             <Row>
-                <h3 className={"text-danger bg-gray mb-0 rounded-top"}>Are you sure</h3>
+                <h3 className={"text-danger bg-gray mb-0 rounded-top"}>Are you sure?</h3>
                 <hr/>
             </Row>
             <Row>
@@ -52,7 +52,7 @@ const ReturnPopup = (props) => {
                 <Button variant={"danger"} className={"w-25 me-5 my-5"} onClick={() => onSubmit(close)}>
                     Yes
                 </Button>
-                <Button variant={"danger"} className={"w-25 my-5"} onClick={() => close()}>
+                <Button variant={"secondary"} className={"w-25 my-5"} onClick={() => close()}>
                     No
                 </Button>
             </Row>
