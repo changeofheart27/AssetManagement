@@ -14,7 +14,7 @@ const Delete = props => {
             .delete(rootAPI+`/assets/${id}`)
             .then(function (response) {
                 console.log("Delete success");
-                axios.get(rootAPI + "/assets")
+                axios.get(rootAPI + "/assets/filter")
                     .then((response) => {
                         setList(response.data);
                         console.log("delete axios get list run")

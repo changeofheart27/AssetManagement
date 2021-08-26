@@ -110,7 +110,7 @@ const ManageAssignment = ({responseAssigment}) => {
             });
     };
     if (search === null) {
-        axios.get(rootAPI + "/assets").then(function (response) {
+        axios.get(rootAPI + "/assets/filter").then(function (response) {
             setList(response.data);
             console.log(response.data);
         });

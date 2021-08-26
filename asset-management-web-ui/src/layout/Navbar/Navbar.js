@@ -22,19 +22,18 @@ import axios from "axios";
 import logo from "../../resources/logo.jpg";
 import Report from "../../pages/Report/Report";
 
-const Navbar = ({setCurrentPage, setDone}) => {
+const Navbar = ({setCurrentPage}) => {
    const rootAPI = process.env.REACT_APP_SERVER_URL;
    const [authority,setAuthority] = useState([{
        authority: null
    }]);
 
    useEffect(()=>{
-       axios.get(rootAPI+"/searchby?keyword="+localStorage.getItem("username"))
+       axios.get(rootAPI+"/users/"+localStorage.getItem("username"))
            .then(response => {
-               setDone(true);
                console.log(response.data)
-               setAuthority(response.data[0].authority);
-               localStorage.setItem("authority",response.data[0].authority);
+               setAuthority(response.data.authority);
+               localStorage.setItem("authority",response.data.authority);
            })
    },[])
     const [responseDataAsset, setResponseDataAsset] = useState({
@@ -87,7 +86,7 @@ const Navbar = ({setCurrentPage, setDone}) => {
               </ul>
             ) : (
               <ul className="navbar-list">
-                <Link to="/home" onClick={() => setCurrentPage("Home")}>
+                <Link to="/home"  onClick={() => setCurrentPage("Home")}>
                   <li className="navbar-list--item">Home</li>
                 </Link>
                 <Link to="/user" onClick={() => setCurrentPage("Manage User")}>

@@ -37,16 +37,6 @@ public class UserController {
   }
 
 
-
-  @ApiOperation(value = "Get All user", response = UserDTO.class)
-  @ApiResponses({@ApiResponse(code = 404, message = "No user found"), @ApiResponse(code = 500, message = "500")})
-  @GetMapping("/admin/users")
-  public ResponseEntity<?> getAllAuthors() {
-    List<UserDTO> users = userService.getAllUser();
-    return ResponseEntity.ok(users);
-  }
-
-
   @ApiOperation(value = "Get user By ID", response = UserDTO.class)
   @ApiResponses({@ApiResponse(code = 404, message = "No user found"), @ApiResponse(code = 500, message = "500")})
   @GetMapping("/admin/users/{id}")
@@ -111,7 +101,7 @@ public class UserController {
 
 
   @ApiOperation(value = "Filter By Type of User and Search By name Or staffCode", response = UserDTO.class, responseContainer = "List")
-  @GetMapping(value = "/admin/filter", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(value = "/admin/users", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<List<UserDTO>> getBy(@RequestParam(name = "type", required = false) String type, @RequestParam(name = "searchTerm", required = false) String keyword) {
     List<UserDTO> users = userService.getUserByType(type, keyword);
     return ResponseEntity.ok(users);

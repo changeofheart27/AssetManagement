@@ -41,7 +41,7 @@ const ManageAsset = ({responseDataAsset}) => {
     }, []);
 
     useEffect(() => {
-        axios.get(rootAPI + '/assets')
+        axios.get(rootAPI + '/assets/filter')
             .then(function (response) {
                 let result = response.data.map(asset => asset.id);
                 if (result.includes(responseDataAsset.id)) {
