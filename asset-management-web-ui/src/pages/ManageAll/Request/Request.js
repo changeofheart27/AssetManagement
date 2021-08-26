@@ -50,20 +50,40 @@ const Request = () => {
     const sortingData = useMemo(() => {
         if (sortConfig !== null) {
             list.sort((a, b) => {
-                if (a[sortConfig.key] < b[sortConfig.key] ||
-                    a.assignmentDTO.userDTO.username < b.assignmentDTO.userDTO.username ||
-                    a.assignmentDTO.assetDTO.assetName < b.assignmentDTO.assetDTO.assetName ||
-                    a.assignmentDTO.assetDTO.assetCode < b.assignmentDTO.assetDTO.assetCode ||
-                    a.assignmentDTO.assetDTO.state < b.assignmentDTO.assetDTO.state ||
-                    a.assignmentDTO.assignedDate < b.assignmentDTO.assignedDate) {
+                if(sortConfig.key == 'username') {
+                    if(a.assignmentDTO.userDTO.username < b.assignmentDTO.userDTO.username)
+                    return sortConfig.direction === "asc" ? -1 : 1;
+                    if(a.assignmentDTO.userDTO.username > b.assignmentDTO.userDTO.username)
+                    return sortConfig.direction === "asc" ? 1 : -1;
+                }
+                if(sortConfig.key == 'assetName') {
+                    if(a.assignmentDTO.assetDTO.assetName < b.assignmentDTO.assetDTO.assetName)
+                    return sortConfig.direction === "asc" ? -1 : 1;
+                    if(a.assignmentDTO.assetDTO.assetName > b.assignmentDTO.assetDTO.assetName)
+                    return sortConfig.direction === "asc" ? 1 : -1;
+                }
+                if(sortConfig.key == 'assetCode') {
+                    if(a.assignmentDTO.assetDTO.assetCode < b.assignmentDTO.assetDTO.assetCode)
+                    return sortConfig.direction === "asc" ? -1 : 1;
+                    if(a.assignmentDTO.assetDTO.assetCode > b.assignmentDTO.assetDTO.assetCode)
+                    return sortConfig.direction === "asc" ? 1 : -1;
+                }
+                if(sortConfig.key == 'state') {
+                    if(a.assignmentDTO.assetDTO.state < b.assignmentDTO.assetDTO.state)
+                    return sortConfig.direction === "asc" ? -1 : 1;
+                    if(a.assignmentDTO.assetDTO.state > b.assignmentDTO.assetDTO.state)
+                    return sortConfig.direction === "asc" ? 1 : -1;
+                }
+                if(sortConfig.key == 'assignedDate') {
+                    if(a.assignmentDTO.assignedDate < b.assignmentDTO.assignedDate)
+                    return sortConfig.direction === "asc" ? -1 : 1;
+                    if(a.assignmentDTO.assignedDate > b.assignmentDTO.assignedDate)
+                    return sortConfig.direction === "asc" ? 1 : -1;
+                }
+                if (a[sortConfig.key] < b[sortConfig.key]) {
                     return sortConfig.direction === "asc" ? -1 : 1;
                 }
-                if (a[sortConfig.key] > b[sortConfig.key] ||
-                    a.assignmentDTO.userDTO.username > b.assignmentDTO.userDTO.username ||
-                    a.assignmentDTO.assetDTO.assetName < b.assignmentDTO.assetDTO.assetName ||
-                    a.assignmentDTO.assetDTO.assetCode < b.assignmentDTO.assetDTO.assetCode ||
-                    a.assignmentDTO.assetDTO.state > b.assignmentDTO.assetDTO.state ||
-                    a.assignmentDTO.assignedDate > b.assignmentDTO.assignedDate) {
+                if (a[sortConfig.key] > b[sortConfig.key]) {
                     return sortConfig.direction === "asc" ? 1 : -1;
                 }
                 return 0;
@@ -135,7 +155,7 @@ const Request = () => {
                     <Form.Control
                         as="select"
                         custom
-                        className={"w-25"}
+                        className={"w-26"}
                         name={"type"}
                         onChange={handleFilterType}
                     >
@@ -150,7 +170,7 @@ const Request = () => {
                         <i className="bi bi-funnel-fill"/></Button>
                     <Form.Control
                         type={"date"}
-                        className={"w-25 ms-5"}
+                        className={"w-26 ms-3"}
                         onChange={handleFilterDate}
                     />
                 </div>
@@ -178,23 +198,23 @@ const Request = () => {
                         >No.
                         </th>
                         <th className={"border-bottom"}
-                            className={getClassNamesFor("assignmentDTO.assetDTO.assetCode")}
-                            onClick={() => requestSort("assignmentDTO.assetDTO.assetCode")}
+                            className={getClassNamesFor("assetCode")}
+                            onClick={() => requestSort("assetCode")}
                         >Asset Code
                         </th>
                         <th className={"border-bottom"}
-                            className={getClassNamesFor("assignmentDTO.assetDTO.assetName")}
-                            onClick={() => requestSort("assignmentDTO.assetDTO.assetName")}
+                            className={getClassNamesFor("assetName")}
+                            onClick={() => requestSort("assetName")}
                         >Asset Name
                         </th>
                         <th className={"border-bottom"}
-                            className={getClassNamesFor("assignmentDTO.userDTO.username")}
-                            onClick={() => requestSort("assignmentDTO.userDTO.username")}
+                            className={getClassNamesFor("username")}
+                            onClick={() => requestSort("username")}
                         >Request by
                         </th>
                         <th className={"border-bottom"}
-                            className={getClassNamesFor("assignmentDTO.assignedDate")}
-                            onClick={() => requestSort("assignmentDTO.assignedDate")}
+                            className={getClassNamesFor("assignedDate")}
+                            onClick={() => requestSort("assignedDate")}
                         >Assign Date
                         </th>
                         <th className={"border-bottom"}
@@ -203,13 +223,13 @@ const Request = () => {
                         >Accepted by
                         </th>
                         <th className={"border-bottom"}
-                            className={getClassNamesFor("returned_date")}
-                            onClick={() => requestSort("returned_date")}
+                            className={getClassNamesFor("returnedDate")}
+                            onClick={() => requestSort("returnedDate")}
                         >Return Date
                         </th>
                         <th className={"border-bottom"}
-                            className={getClassNamesFor("assignmentDTO.assetDTO.state")}
-                            onClick={() => requestSort("assignmentDTO.assetDTO.state")}
+                            className={getClassNamesFor("state")}
+                            onClick={() => requestSort("state")}
                         >State
                         </th>
                     </tr>

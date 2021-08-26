@@ -15,7 +15,6 @@ const SearchAsset = ({setAssetSelect,close}) => {
             name: null
         },
         state:null
-
     }]);
     useEffect(() => {
         axios.get(rootAPI + '/assets')
