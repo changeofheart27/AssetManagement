@@ -49,7 +49,7 @@ const Home = () => {
     const Authentoken = localStorage.getItem("jwttoken");
 
     useEffect(() => {
-        axios.get(rootAPI + '/users/home?username=' + localStorage.getItem("username"), {
+        axios.get(rootAPI + '/home?username=' + localStorage.getItem("username"), {
             headers: {
                 Authorization: Authentoken
             }

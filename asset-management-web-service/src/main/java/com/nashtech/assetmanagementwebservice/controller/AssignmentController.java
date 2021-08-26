@@ -101,7 +101,7 @@ public class AssignmentController {
     }
 
     @ApiOperation(value = "Edit assignment", response = AssignmentDTO.class)
-    @GetMapping(value = "/users/home", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/home", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<AssignmentDTO>> findAssignmentByUserName(@RequestParam String username) {
         List<AssignmentDTO> assignmentDTO = assignmentService.findAssignmentsByUsername(username);
         return ResponseEntity.ok(assignmentDTO);
