@@ -93,7 +93,7 @@ public class AssignmentController {
             List<AssignmentDTO> assignments = assignmentService.getAssignmentList();
             return ResponseEntity.ok(assignments);
         } else {
-            List<AssignmentDTO> assignments = assignmentService.searchAssetByAssetNameOrAssetCode(keyword);
+            List<AssignmentDTO> assignments = assignmentService.findAssignmentsByUsername(keyword);
             logger.info("Executed successful!");
             return ResponseEntity.ok(assignments);
 

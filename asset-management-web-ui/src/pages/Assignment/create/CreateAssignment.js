@@ -127,6 +127,7 @@ const CreateAssignment = ({ setResponseAssigment }) => {
                     }
                     position={"left top"}
                     contentStyle={{ width: "750px" }}
+                    modal
                   >
                     {(close) => (
                       <SearchUser close={close} setSingleUser={setSingleUser} />
@@ -153,6 +154,7 @@ const CreateAssignment = ({ setResponseAssigment }) => {
                     }
                     position={"left top"}
                     contentStyle={{ width: "750px" }}
+                    modal
                   >
                     {(close) => (
                       <SearchAsset
@@ -189,6 +191,7 @@ const CreateAssignment = ({ setResponseAssigment }) => {
                       <SelectDate
                         setSelectDate={setSelectDate}
                         values={values}
+                        close={close}
                       />
                     )}
                   </Popup>

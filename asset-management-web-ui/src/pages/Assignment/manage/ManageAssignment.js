@@ -154,6 +154,7 @@ const ManageAssignment = ({responseAssigment}) => {
         }
         return sortConfig.key === name ? sortConfig.direction : undefined;
     };
+    let i = 1;
     return (
         <Container fluid className={"d-block ps-5"}>
             <h1 className={"text-danger mb-3"}>My Assignment</h1>
@@ -199,7 +200,7 @@ const ManageAssignment = ({responseAssigment}) => {
                             onClick={filterSearchBySearchTerm}
                             className={"me-5"}
                         >
-                            Search
+                            <i className={"bi bi-search"}/>
                         </Button>
                     </InputGroup>
                     <Button
@@ -279,7 +280,7 @@ const ManageAssignment = ({responseAssigment}) => {
                             }}
                             trigger={
                                 <tr key={assigment.id}>
-                                    <td>{assigment.id}</td>
+                                    <td>{i++}</td>
                                     <td>{assigment.assetDTO.assetCode}</td>
                                     <td>{assigment.assetDTO.assetName}</td>
                                     <td>{assigment.userDTO.username}</td>
@@ -309,7 +310,6 @@ const ManageAssignment = ({responseAssigment}) => {
                                                         <i className="bi bi-x-circle text-danger btn p-0"/>
                                                     </td>
                                                 }
-                                                offsetX={200}
                                                 modal
                                             >
                                                 <DeleteAssignment id={assigment.id}/>
@@ -366,7 +366,7 @@ const ManageAssignment = ({responseAssigment}) => {
                 usersPerPage={usersPerPage}
                 totalUsers={list.length}
                 paginate={paginate}
-            ></Pagination>
+            />
         </Container>
     );
 };
