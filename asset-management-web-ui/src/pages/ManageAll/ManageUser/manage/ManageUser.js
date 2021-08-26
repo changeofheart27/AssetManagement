@@ -85,7 +85,10 @@ const ManageUser = ({responseUser}) => {
             request.params.type = null;
             console.log(request)
         }
-        
+        if (request.params.searchTerm == ''){
+          request.params.searchTerm = null;
+          console.log(request)
+        }
         axios.get(rootAPI + '/admin/filter',request)
             .then(function (response) {
                 setList(response.data);

@@ -70,7 +70,11 @@ const CreateUser = ({setResponseUser}) => {
         firstName: Yup.string()
             .max(255)
             .required('Required')
-            .typeError('First name is required'),
+            .typeError('First name is required')
+            .test("firstName", "First Name is only 1 word", function (value) {
+                console.log(value)
+                return !/\s/g.test(value) ;
+            }),
         lastName: Yup.string()
             .max(255)
             .required('Required')
@@ -100,7 +104,14 @@ const CreateUser = ({setResponseUser}) => {
             })
         ,
     });
-
+    const formValid = values => {
+        return (values.firstName === null
+            || values.lastName === null
+            || values.dob === null
+            || values.authority === null
+            || values.installedDate === null
+        )
+    }
     return (
         <div className={"container ps-5 d-block"}>
             <Row>
@@ -230,10 +241,18 @@ const CreateUser = ({setResponseUser}) => {
                                     <div className={"text-danger"} style={{paddingLeft: "25%"}}>{errors.authority}</div>
                                 ) : null}
                             </Row>
-                            <Button variant={"danger"} onClick={() => history.push('/user')} type={"submit"} className={"ms-5"} style={{float: 'right'}}>
+                            <Button 
+                                variant={"light"} onClick={() => history.push('/user')} 
+                                type={"submit"} className={"ms-5"} 
+                                style={{float: 'right'}}
+                            >
                                 Cancel
                             </Button>
-                            <Button variant={"danger"} type={"submit"} style={{float: 'right'}} on>
+                            <Button variant={"danger"} 
+                                    type={"submit"} 
+                                    style={{float: 'right'}} 
+                                    disabled={formValid(values)}
+                                    >
                                 Save
                             </Button>
                         </Form>

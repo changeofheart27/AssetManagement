@@ -280,7 +280,7 @@ const EditUser = ({setResponseUser}) => {
                                     <div className={"text-danger"} style={{paddingLeft:"25%"}}>{errors.authority}</div>
                                 ) : null}
                             </Row>
-                            <Button variant={"danger"} type={"submit"} className={"ms-5"} style={{float: 'right'}}>
+                            <Button variant={"light"} type={"submit"} className={"ms-5"} style={{float: 'right'}}>
                                 Cancel
                             </Button>
                             <Button variant={"danger"} type="submit" style={{float: 'right'}}>
