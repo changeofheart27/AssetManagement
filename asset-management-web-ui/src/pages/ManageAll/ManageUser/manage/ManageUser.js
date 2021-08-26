@@ -1,10 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './Manage.css'
 import 'reactjs-popup/dist/index.css';
-
-import {Button, Container, Dropdown, Form, FormControl, InputGroup, Row, SplitButton, Table} from 'react-bootstrap';
+import {Button, Container, Form, FormControl, InputGroup, Row, Table} from 'react-bootstrap';
 import {useEffect, useRef, useMemo, useState} from 'react';
-
 import ChangeStatus from '../changeStatus/ChangeStatus';
 import Pagination from '../../../../components/Pagination/Pagination'
 import Popup from "reactjs-popup";
@@ -14,6 +12,7 @@ import axios from "axios";
 import {useHistory} from 'react-router-dom'
 import dateFormat from 'dateformat';
 
+import '../../../../style/style.css'
 const ManageUser = ({responseUser}) => {
 
     const token = localStorage.getItem('jwttoken')

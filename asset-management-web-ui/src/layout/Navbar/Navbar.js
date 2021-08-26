@@ -1,9 +1,7 @@
 import "./Navbar.css";
 import 'bootstrap/dist/css/bootstrap.min.css'
-
 import React, {useEffect, useState} from "react";
-import {Route, Switch} from "react-router-dom";
-
+import {NavLink, Route, Switch} from "react-router-dom";
 import CreateAsset from "../../pages/ManageAll/ManageAsset/create/CreateAsset"
 import CreateAssignment from "../../pages/Assignment/create/CreateAssignment"
 import CreateCategory from "../../pages/ManageAll/ManageAsset/create/CreateCategory";
@@ -21,21 +19,22 @@ import UserInfo from "../header/UserInfo";
 import axios from "axios";
 import logo from "../../resources/logo.jpg";
 import Report from "../../pages/Report/Report";
+import {ListGroup} from "react-bootstrap";
 
 const Navbar = ({setCurrentPage}) => {
-   const rootAPI = process.env.REACT_APP_SERVER_URL;
-   const [authority,setAuthority] = useState([{
-       authority: null
-   }]);
+    const rootAPI = process.env.REACT_APP_SERVER_URL;
+    const [authority, setAuthority] = useState([{
+        authority: null
+    }]);
 
-   useEffect(()=>{
-       axios.get(rootAPI+"/users/"+localStorage.getItem("username"))
-           .then(response => {
-               console.log(response.data)
-               setAuthority(response.data.authority);
-               localStorage.setItem("authority",response.data.authority);
-           })
-   },[])
+    useEffect(() => {
+        axios.get(rootAPI + "/users/" + localStorage.getItem("username"))
+            .then(response => {
+                console.log(response.data)
+                setAuthority(response.data.authority);
+                localStorage.setItem("authority", response.data.authority);
+            })
+    }, [])
     const [responseDataAsset, setResponseDataAsset] = useState({
         id: null,
         assetCode: null,
@@ -73,116 +72,133 @@ const Navbar = ({setCurrentPage}) => {
         note: null
     });
     return (
-      <div className="container-fluid d-flex">
-        <div className="navbar-container col-2">
-          <img src={logo} alt="logo_NashTech" />
-          <h5 className={"text-danger"}>Online Asset Management</h5>
-          <div className="navbar">
-            {authority === "STAFF" ? (
-              <ul className="navbar-list">
-                <Link to="/home" onClick={() => setCurrentPage("Home")}>
-                  <li className="navbar-list--item">Home</li>
-                </Link>
-              </ul>
-            ) : (
-              <ul className="navbar-list">
-                <Link to="/home"  onClick={() => setCurrentPage("Home")}>
-                  <li className="navbar-list--item">Home</li>
-                </Link>
-                <Link to="/user" onClick={() => setCurrentPage("Manage User")}>
-                  <li className="navbar-list--item">Manage User</li>
-                </Link>
-                <Link
-                  to="/asset"
-                  onClick={() => setCurrentPage("Manage Asset")}
-                >
-                  <li className="navbar-list--item">Manage Asset</li>
-                </Link>
-                <Link
-                  to="/assignment"
-                  onClick={() => setCurrentPage("Manage Assignment")}
-                >
-                  <li className="navbar-list--item">Manage Assignment</li>
-                </Link>
-                <Link
-                  to="/request"
-                  onClick={() => setCurrentPage("Request For Returning")}
-                >
-                  <li className="navbar-list--item">Request For Returning</li>
-                </Link>
-                <Link to="/report">
-                  <li
-                    className="navbar-list--item"
-                    onClick={() => setCurrentPage("Report")}
-                  >
-                    Report
-                  </li>
-                </Link>
-              </ul>
-            )}
-          </div>
+        <div className="container-fluid d-flex">
+            <div className="navbar-container col-2">
+                <img src={logo} alt="logo_NashTech"/>
+                <h5 className={"text-danger"}>Online Asset Management</h5>
+                <div className="navbar">
+                    {authority === "STAFF" ? (
+                        <ul className="navbar-list">
+                            <Link to="/home" onClick={() => setCurrentPage("Home")}>
+                                <li className="navbar-list--item">Home</li>
+                            </Link>
+                        </ul>
+                    ) : (
+                        <ListGroup className="navbar-list">
+                            <NavLink to="/home"
+                                     onClick={() => setCurrentPage("Home")
+                                     }
+                                     activeClassName={"custom-class"}
+                            >
+                                <li className="navbar-list--item">Home</li>
+                            </NavLink>
+                            <NavLink to="/user"
+                                     onClick={() => setCurrentPage("Manage User")}
+                                     activeStyle={{
+                                         backgroundColor:"#cf2338",
+                                         color:"#fff"
+                                     }}
+                            >
+                                <li className="navbar-list--item">Manage User</li>
+                            </NavLink>
+                            <NavLink
+                                to="/asset"
+                                onClick={() => setCurrentPage("Manage Asset")
+                                }
+                                activeClassName={"custom-class"}
+                            >
+                                <li className="navbar-list--item">Manage Asset</li>
+                            </NavLink>
+                            <NavLink
+                                to="/assignment"
+                                onClick={() => setCurrentPage("Manage Assignment")}
+                                activeClassName={"custom-class"}
+                            >
+                                <li className="navbar-list--item">Manage Assignment</li>
+                            </NavLink>
+                            <NavLink
+                                to="/request"
+                                onClick={() => setCurrentPage("Request For Returning")}
+                                activeClassName={"custom-class"}
+                            >
+                                <li className="navbar-list--item">Request For Returning</li>
+                            </NavLink>
+                            <NavLink to="/report"
+                                     activeClassName={"custom-class"}
+                            >
+                                <li
+                                    className="navbar-list--item"
+                                    onClick={() => setCurrentPage("Report")}
+
+                                >
+                                    Report
+                                </li>
+                            </NavLink>
+                        </ListGroup>
+                    )}
+                </div>
+            </div>
+            <div className="pages-container col-10">
+                {authority === "STAFF" ? (
+                    <Switch>
+                        <Route path={"/home"} exact>
+                            <Home/>
+                        </Route>
+                        <Route path={"/changepassword"}>
+                            <UserInfo/>
+                        </Route>
+                    </Switch>
+                ) : (
+                    <Switch>
+                        <Route path={"/home"} exact>
+                            <Home/>
+                        </Route>
+                        <Route path={"/user"}>
+                            <ManageUser responseUser={responseUser}/>
+                        </Route>
+                        <Route path={"/home"}>
+                            <Home/>
+                        </Route>
+                        <Route path={"/changepassword"}>
+                            <UserInfo/>
+                        </Route>
+                        <Route path={"/createuser"}>
+                            <CreateUser setResponseUser={setResponseUser}/>
+                        </Route>
+                        <Route path={"/edituser/:id"}>
+                            <EditUser setResponseUser={setResponseUser}/>
+                        </Route>
+                        <Route path={"/asset"}>
+                            <ManageAsset responseDataAsset={responseDataAsset}/>
+                        </Route>
+                        <Route path={"/createasset"}>
+                            <CreateAsset setResponseDataAsset={setResponseDataAsset}/>
+                        </Route>
+                        <Route path={"/editasset/:id"}>
+                            <EditAsset setResponseDataAsset={setResponseDataAsset}/>
+                        </Route>
+                        <Route path={"/createcategory"}>
+                            <CreateCategory/>
+                        </Route>
+                        <Route path={"/assignment"}>
+                            <ManageAssignment responseAssigment={responseAssigment}/>
+                        </Route>
+                        <Route path={"/createassignment"}>
+                            <CreateAssignment setResponseAssigment={setResponseAssigment}/>
+                        </Route>
+                        <Route path={"/editassignment/:id"}>
+                            <EditAssignment setResponseAssigment={setResponseAssigment}/>
+                        </Route>
+                        <Route path={"/request"}>
+                            <Request/>
+                        </Route>
+                        <Route path={"/report"}>
+                            <Report/>
+                        </Route>
+                    </Switch>
+                )}
+            </div>
         </div>
-        <div className="pages-container col-10">
-          {authority === "STAFF" ? (
-            <Switch>
-              <Route path={"/home"} exact>
-                <Home />
-              </Route>
-              <Route path={"/changepassword"}>
-                <UserInfo />
-              </Route>
-            </Switch>
-          ) : (
-            <Switch>
-              <Route path={"/home"} exact>
-                <Home />
-              </Route>
-              <Route path={"/user"}>
-                <ManageUser responseUser={responseUser} />
-              </Route>
-              <Route path={"/home"}>
-                <Home />
-              </Route>
-              <Route path={"/changepassword"}>
-                <UserInfo />
-              </Route>
-              <Route path={"/createuser"}>
-                <CreateUser setResponseUser={setResponseUser} />
-              </Route>
-              <Route path={"/edituser/:id"}>
-                <EditUser setResponseUser={setResponseUser} />
-              </Route>
-              <Route path={"/asset"}>
-                <ManageAsset responseDataAsset={responseDataAsset} />
-              </Route>
-              <Route path={"/createasset"}>
-                <CreateAsset setResponseDataAsset={setResponseDataAsset} />
-              </Route>
-              <Route path={"/editasset/:id"}>
-                <EditAsset setResponseDataAsset={setResponseDataAsset} />
-              </Route>
-              <Route path={"/createcategory"}>
-                <CreateCategory />
-              </Route>
-              <Route path={"/assignment"}>
-                <ManageAssignment responseAssigment={responseAssigment} />
-              </Route>
-              <Route path={"/createassignment"}>
-                <CreateAssignment setResponseAssigment={setResponseAssigment} />
-              </Route>
-              <Route path={"/editassignment/:id"}>
-                <EditAssignment setResponseAssigment={setResponseAssigment} />
-              </Route>
-              <Route path={"/request"}>
-                <Request />
-              </Route>
-              <Route path={"/report"}>
-                <Report />
-              </Route>
-            </Switch>
-          )}
-        </div>
-      </div>
     );
 };
 

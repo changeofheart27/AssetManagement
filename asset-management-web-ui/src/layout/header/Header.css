@@ -29,4 +29,5 @@ header #user-infor-optional{
 }
 .custom-dropdown:active{
   background-color: #CF2338 !important;
+  color: #0dcaf0;
 }
