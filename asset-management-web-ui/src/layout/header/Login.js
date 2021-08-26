@@ -105,8 +105,8 @@ export default function SignIn() {
                 <Avatar className={classes.avatar}>
                     <LockOutlinedIcon/>
                 </Avatar>
-                <Typography component="h1" variant="h5">
-                    Login
+                <Typography component="h1" variant="h5" className={"text-center text-danger"}>
+                    Welcome to Online Asset Management System
                 </Typography>
                 <form className={classes.form} onSubmit={handleSubmit}>
                     <TextField
@@ -141,7 +141,7 @@ export default function SignIn() {
                             color="secondary"
                             className={classes.submit}
                         >
-                            Sign In
+                            Login
                         </Button>
                     </>
                 </form>

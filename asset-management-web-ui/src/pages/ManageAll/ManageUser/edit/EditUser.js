@@ -179,6 +179,7 @@ const EditUser = ({setResponseUser}) => {
                                     value={values.firstName}
                                     onChange={handleChange}
                                     onError={errors}
+                                    onBlur={handleBlur}
                                     isValid={touched.firstName && !errors.firstName}
                                     isInvalid={touched.firstName && errors.firstName}
                                 />
@@ -196,6 +197,7 @@ const EditUser = ({setResponseUser}) => {
                                     name="lastName"
                                     style={{backgroundColor: '#eff1f5'}}
                                     value={values.lastName}
+                                    onBlur={handleBlur}
                                     onChange={handleChange}
                                     isValid={touched.lastName && !errors.lastName}
                                     isInvalid={touched.lastName && errors.lastName}
@@ -211,6 +213,7 @@ const EditUser = ({setResponseUser}) => {
                                     aria-describedby="basic-addon1"
                                     name={"dob"}
                                     className={"w-75"}
+                                    onBlur={handleBlur}
                                     value={values.dob}
                                     onChange={handleChange}
                                     isValid={touched.dob && !errors.dob}
@@ -254,6 +257,7 @@ const EditUser = ({setResponseUser}) => {
                                     name={"joinedDate"}
                                     value={values.joinedDate}
                                     onChange={handleChange}
+                                    onBlur={handleBlur}
                                     isValid={touched.joinedDate && !errors.joinedDate}
                                     isInvalid={touched.joinedDate && errors.joinedDate}
                                 />

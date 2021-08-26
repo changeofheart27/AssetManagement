@@ -3,7 +3,7 @@ import './Manage.css'
 import 'reactjs-popup/dist/index.css';
 
 import {Button, Container, Dropdown, Form, FormControl, InputGroup, Row, SplitButton, Table} from 'react-bootstrap';
-import {useEffect, useRef, useMemo , useState} from 'react';
+import {useEffect, useRef, useMemo, useState} from 'react';
 
 import ChangeStatus from '../changeStatus/ChangeStatus';
 import Pagination from '../../../../components/Pagination/Pagination'
@@ -16,20 +16,20 @@ import dateFormat from 'dateformat';
 
 const ManageUser = ({responseUser}) => {
 
-  const token = localStorage.getItem('jwttoken')
-    
-  const headers = { 
-    'Authorization': token
-    
-};
+    const token = localStorage.getItem('jwttoken')
+
+    const headers = {
+        'Authorization': token
+
+    };
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(10);
     const [sortConfig, setSortConfig] = useState(null);
     const indexOfLastUser = currentPage * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
+    const [refresh, setRefresh] = useState(true);
     const paginate = pageNumber => setCurrentPage(pageNumber);
-
     const history = useHistory();
     const [list, setList] = useState([{
         staffCode: null,
@@ -41,10 +41,9 @@ const ManageUser = ({responseUser}) => {
         status: null
     }]);
     useEffect(() => {
-
-        axios.get(rootAPI + '/admin/users',{headers})
-
+        axios.get(rootAPI + '/admin/users', {headers})
             .then(function (response) {
+                setRefresh(true);
                 let result = response.data.map(user => user.id);
                 if (result.includes(responseUser.id)) {
                     const index = result.indexOf(responseUser.id);
@@ -57,11 +56,11 @@ const ManageUser = ({responseUser}) => {
                 }
                 console.log(response.data);
             })
-    }, [])
+    }, [refresh])
     const [type, setType] = useState();
     const [searchTerm, setSearchTerm] = useState();
     const request = {
-        headers : headers,
+        headers: headers,
         params: {
             type,
             searchTerm
@@ -76,7 +75,7 @@ const ManageUser = ({responseUser}) => {
     
     const isFirstRun = useRef(true);
     useEffect(() => {
-        if(isFirstRun.current) {
+        if (isFirstRun.current) {
             isFirstRun.current = false;
             return;
         }
@@ -95,7 +94,7 @@ const ManageUser = ({responseUser}) => {
                 setList(response.data);
                 console.log(response.data)
             })
-    }, [type,searchTerm])
+    }, [type, searchTerm])
 
     const sortingData = useMemo(() => {
         let listData = list;
