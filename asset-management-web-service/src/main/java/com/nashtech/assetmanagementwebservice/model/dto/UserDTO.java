@@ -59,7 +59,7 @@ public class UserDTO {
 
     private String defaultPassword;
 
-
+    private String firstLogin;
 
 
 

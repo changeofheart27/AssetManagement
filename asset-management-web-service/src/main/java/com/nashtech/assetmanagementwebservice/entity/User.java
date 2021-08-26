@@ -69,7 +69,8 @@ public class User {
 //    @OneToOne(mappedBy = "user")
 //    private Request request;
 
-
+    @Column(name = "first_login")
+    private String firstLogin;
 
     @Column(name = "default_password")
     private String defaultPassword;

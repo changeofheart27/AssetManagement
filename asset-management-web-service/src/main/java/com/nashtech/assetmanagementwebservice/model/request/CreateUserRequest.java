@@ -150,4 +150,13 @@ public class CreateUserRequest {
     )
     @JsonProperty( "default_password")
     private String defaultPassword;
+
+
+    @ApiModelProperty(
+            example="true",
+            notes="first login cannot be empty ",
+            required=true
+    )
+    @JsonProperty( "first_login")
+    private String firstLogin;
 }

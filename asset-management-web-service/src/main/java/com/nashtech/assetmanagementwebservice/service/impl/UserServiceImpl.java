@@ -149,7 +149,7 @@ public class UserServiceImpl implements UserService {
     user.setStatus("enabled");
     user.setPassword(passwordEncoder.encode(finalUsername + "@" + dob));
     user.setDefaultPassword(finalUsername + "@" + dob);
-
+    user.setFirstLogin("true");
     user.setLocation("HN");
 
     Authority authority = new Authority();
@@ -184,6 +184,7 @@ public class UserServiceImpl implements UserService {
     User updateUser = UserMapper.toUser(request, username);
 
     try {
+      updateUser.setFirstLogin("false");
       updateUser.setPassword(passwordEncoder.encode(request.getPassword()));
       userRepository.updatePassword(updateUser.getPassword(), username);
     } catch (Exception ex) {
