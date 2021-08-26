@@ -37,6 +37,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -183,7 +185,7 @@ public class UserControllerIntTests {
     @Test
     public void createPostWithAdminAccount() throws Exception {
         CreateUserRequest createUserRequest = new CreateUserRequest();
-
+        LocalDate dob = LocalDate.of(2000,05,05);
         createUserRequest.setFirstName("Dao");
         createUserRequest.setLastName("Thai");
         createUserRequest.setAuthority("STAFF");
@@ -235,7 +237,6 @@ public class UserControllerIntTests {
     public void changePassWordWithAdminAccount() throws Exception {
         ChangePasswordRequest updateUserRequest = new ChangePasswordRequest();
         updateUserRequest.setPassword("123");
-
         JwtRequest request = new JwtRequest();
         request.setUsername("nguyennguyen");
         request.setPassword("123");
@@ -247,7 +248,6 @@ public class UserControllerIntTests {
                         .content(asJsonString(updateUserRequest))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
-
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.password").value("123"));
 

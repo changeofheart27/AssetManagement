@@ -2,7 +2,7 @@ import "./Navbar.css";
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import React, {useEffect, useState} from "react";
-import {Route, BrowserRouter as Router, Switch, useHistory} from "react-router-dom";
+import {Route, Switch} from "react-router-dom";
 
 import CreateAsset from "../../pages/ManageAll/ManageAsset/create/CreateAsset"
 import CreateAssignment from "../../pages/Assignment/create/CreateAssignment"
@@ -13,7 +13,6 @@ import EditAssignment from "../../pages/Assignment/edit/EditAssignment";
 import EditUser from "../../pages/ManageAll/ManageUser/edit/EditUser"
 import Home from "../../pages/home/Home";
 import {Link} from "react-router-dom";
-import LoginFormPage from "../header/LoginFormPage"
 import ManageAsset from "../../pages/ManageAll/ManageAsset/manage/ManageAsset"
 import ManageAssignment from "../../pages/Assignment/manage/ManageAssignment";
 import ManageUser from "../../pages/ManageAll/ManageUser/manage/ManageUser";
@@ -23,7 +22,7 @@ import axios from "axios";
 import logo from "../../resources/logo.jpg";
 import Report from "../../pages/Report/Report";
 
-const Navbar = ({setCurrentPage, setIsLogedIn}) => {
+const Navbar = ({setCurrentPage, setDone}) => {
    const rootAPI = process.env.REACT_APP_SERVER_URL;
    const [authority,setAuthority] = useState([{
        authority: null
@@ -32,6 +31,7 @@ const Navbar = ({setCurrentPage, setIsLogedIn}) => {
    useEffect(()=>{
        axios.get(rootAPI+"/searchby?keyword="+localStorage.getItem("username"))
            .then(response => {
+               setDone(true);
                console.log(response.data)
                setAuthority(response.data[0].authority);
                localStorage.setItem("authority",response.data[0].authority);
