@@ -20,12 +20,12 @@ import {toast} from 'react-toastify';
 import {useHistory} from "react-router-dom";
 
 function Copyright() {
-    
+
     return (
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
             <Link color="inherit" href="https://material-ui.com/">
-                Your Website
+                Rookie Team 4
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
@@ -67,9 +67,10 @@ export default function SignIn() {
             [name]: evt.target.value
         })
     }
-    
-    
+
+
     const rootAPI = process.env.REACT_APP_SERVER_URL;
+    const [showLoginSuccess, setShowLoginSuccess] = useState(false);
     const handleSubmit = evt => {
         evt.preventDefault();
         console.log('Values: ', values)
@@ -85,11 +86,11 @@ export default function SignIn() {
             .then((response) => {
                 console.log(response);
                 localStorage.clear();
+                setShowLoginSuccess(true);
                 localStorage.setItem("jwttoken", "Bearer " + response.data.jwttoken);
                 localStorage.setItem("username", values.username);
-                
                 localStorage.setItem("password", values.password);
-                window.location.href = "/";
+                window.location.href = "/home";
                 toast.success("Logging success");
             }).catch((error) => {
             console.log(error);
@@ -109,19 +110,19 @@ export default function SignIn() {
                 </Typography>
                 <form className={classes.form} onSubmit={handleSubmit}>
                     <TextField
-                        variant="outlined"
+                        variant="filled"
                         margin="normal"
                         required
                         fullWidth
                         id="email"
-                        label="Email Address"
+                        label="User Name"
                         name="username"
                         autoComplete="email"
                         autoFocus
                         onChange={handleOnChange}
                     />
                     <TextField
-                        variant="outlined"
+                        variant="filled"
                         margin="normal"
                         required
                         fullWidth
@@ -132,33 +133,17 @@ export default function SignIn() {
                         autoComplete="current-password"
                         onChange={handleOnChange}
                     />
-                    <FormControlLabel
-                        control={<Checkbox value="remember" color="primary"/>}
-                        label="Remember me"
-                    />
                     <>
                         <Button
                             type="submit"
                             fullWidth
                             variant="contained"
-                            color="primary"
+                            color="secondary"
                             className={classes.submit}
                         >
                             Sign In
                         </Button>
                     </>
-                    <Grid container>
-                        <Grid item xs>
-                            <Link href="#" variant="body2">
-                                Forgot password?
-                            </Link>
-                        </Grid>
-                        <Grid item>
-                            <Link href="#" variant="body2">
-                                {"Don't have an account? Sign Up"}
-                            </Link>
-                        </Grid>
-                    </Grid>
                 </form>
             </div>
             <Box mt={8}>

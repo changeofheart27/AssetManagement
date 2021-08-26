@@ -47,11 +47,9 @@ const LoginFormPage = ({props, loginSuccess}) => {
                 localStorage.setItem("jwttoken", "Bearer " + response.data.jwttoken);
                 localStorage.setItem("username", values.username);
                 localStorage.setItem("password", values.password);
-                
                  window.location.href = "/home";
                 toast.success("Logging success");
             }).catch((error) => {
-                
             setSubmitting(false);
             console.log(error);
             setSubmitError(
