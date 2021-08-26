@@ -36,13 +36,13 @@ const Header = ({currentPage}) => {
                                 Password</Dropdown.Item>
                             <Popup contentStyle={{
                                 width: "25%",
-                                height: "20%",
                                 border: "1px solid black",
                                 borderRadius: 10,
                                 overflow: 'hidden',
                                 padding: "15px"
                             }}
-                                   modal trigger={<Dropdown.Item className={'custom-dropdown'}>Logout</Dropdown.Item>}>
+                                   modal
+                                   trigger={<Dropdown.Item className={'custom-dropdown'}>Logout</Dropdown.Item>}>
                                 {close => (
                                     <Logout close={close}/>
                                 )}

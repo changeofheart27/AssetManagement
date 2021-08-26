@@ -65,7 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/**/categories/**", "/**/assignments/**", 
 						"/**/assets/**" ).hasAnyRole("ADMIN")
 				.antMatchers("/**/admin/**").hasAnyRole("ADMIN")
-				.antMatchers("/**/home", "/**/staff/**", "/**/searchby","/**/users/**","/**/assignments/**").hasAnyRole("STAFF", "ADMIN")
+				.antMatchers("/**/my-assignments", "/**/staff/**", "/**/searchby","/**/users/**","/**/assignments/**").hasAnyRole("STAFF", "ADMIN")
 				.anyRequest().authenticated().and().exceptionHandling()
 				.authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);

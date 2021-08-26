@@ -57,7 +57,8 @@ const ChangeStatus = props => {
             .then(function (response) {
                 setRefresh(false);
                 close()
-            });
+            })
+        ;
     }
     return (
         <div>

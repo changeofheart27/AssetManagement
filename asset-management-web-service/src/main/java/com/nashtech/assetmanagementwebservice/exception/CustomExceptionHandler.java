@@ -37,4 +37,11 @@ public class CustomExceptionHandler {
     ex.printStackTrace();
     return new ResponseEntity<>(err, HttpStatus.INTERNAL_SERVER_ERROR);
   }
+  // Xử lý tất cả các exception chưa được khai báo
+  @ExceptionHandler(BusinessException.class)
+  public ResponseEntity<?> handleBussinessException(BusinessException ex, WebRequest req) {
+    ErrorResponse err = new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+    ex.printStackTrace();
+    return new ResponseEntity<>(err, HttpStatus.BAD_REQUEST);
+  }
 }

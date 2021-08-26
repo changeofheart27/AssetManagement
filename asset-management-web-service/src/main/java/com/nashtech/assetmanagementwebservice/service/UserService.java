@@ -20,7 +20,7 @@ public interface UserService {
 
   public UserDTO updateUser(UpdateUserRequest request, int id);
 
-  public UserDTO ChangeUserStatus(UpdateUserRequest request, int id);
+  public UserDTO changeUserStatus(UpdateUserRequest request, int id);
 
   public UserDTO createUser(CreateUserRequest request);
 

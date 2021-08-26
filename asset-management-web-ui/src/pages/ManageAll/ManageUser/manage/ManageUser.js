@@ -13,13 +13,13 @@ import {useHistory} from 'react-router-dom'
 import dateFormat from 'dateformat';
 
 import '../../../../style/style.css'
+
 const ManageUser = ({responseUser}) => {
 
     const token = localStorage.getItem('jwttoken')
 
     const headers = {
         'Authorization': token
-
     };
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [currentPage, setCurrentPage] = useState(1);
@@ -71,7 +71,7 @@ const ManageUser = ({responseUser}) => {
     const handleSearch = evt => {
         setSearchTerm(evt.target.value)
     }
-    
+
     const isFirstRun = useRef(true);
     useEffect(() => {
         if (isFirstRun.current) {
@@ -84,11 +84,11 @@ const ManageUser = ({responseUser}) => {
             request.params.type = null;
             console.log(request)
         }
-        if (request.params.searchTerm == ''){
-          request.params.searchTerm = null;
-          console.log(request)
+        if (request.params.searchTerm == '') {
+            request.params.searchTerm = null;
+            console.log(request)
         }
-        axios.get(rootAPI + '/admin/filter',request)
+        axios.get(rootAPI + '/admin/filter', request)
             .then(function (response) {
                 setList(response.data);
                 console.log(response.data)

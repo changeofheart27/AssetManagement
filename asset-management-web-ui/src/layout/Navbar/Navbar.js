@@ -28,11 +28,10 @@ const Navbar = ({setCurrentPage}) => {
     }]);
 
     useEffect(() => {
-        axios.get(rootAPI + "/users/" + localStorage.getItem("username"))
+        axios.get(rootAPI + "/users")
             .then(response => {
                 console.log(response.data)
                 setAuthority(response.data.authority);
-                localStorage.setItem("authority", response.data.authority);
             })
     }, [])
     const [responseDataAsset, setResponseDataAsset] = useState({
