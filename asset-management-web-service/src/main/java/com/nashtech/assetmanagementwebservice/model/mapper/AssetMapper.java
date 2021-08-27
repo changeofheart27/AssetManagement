@@ -29,7 +29,6 @@ public class AssetMapper {
 		asset.setSpecification(payload.getSpecification());
 		asset.setInstalledDate(payload.getInstalledDate());
 		asset.setState(payload.getState());
-		asset.setLocation("HN");
 		return asset;
 	}
 			
@@ -39,7 +38,6 @@ public class AssetMapper {
 		entity.setSpecification(payload.getSpecification());
 		entity.setInstalledDate(payload.getInstalledDate());
 		entity.setState(payload.getState());
-		entity.setLocation("HN");
 		return entity;
 	}
 	

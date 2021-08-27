@@ -8,10 +8,12 @@ import com.nashtech.assetmanagementwebservice.exception.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.nashtech.assetmanagementwebservice.entity.Asset;
 import com.nashtech.assetmanagementwebservice.entity.Category;
+import com.nashtech.assetmanagementwebservice.entity.User;
 import com.nashtech.assetmanagementwebservice.exception.InternalServerException;
 import com.nashtech.assetmanagementwebservice.exception.NotFoundException;
 import com.nashtech.assetmanagementwebservice.model.dto.AssetDTO;
@@ -20,20 +22,23 @@ import com.nashtech.assetmanagementwebservice.model.mapper.CategoryMapper;
 import com.nashtech.assetmanagementwebservice.repository.AssetRepository;
 import com.nashtech.assetmanagementwebservice.service.AssetService;
 import com.nashtech.assetmanagementwebservice.service.CategoryService;
+import com.nashtech.assetmanagementwebservice.service.UserService;
 
 @Service
 @Transactional
 public class AssetServiceImpl implements AssetService {
   private final AssetRepository assetRepository;
   private final CategoryService categoryService;
+  private final UserService userService;
   private final AssetMapper assetMapper;
   private final CategoryMapper categoryMapper;
   private static final Logger logger = LoggerFactory.getLogger(AssetServiceImpl.class);
 
   @Autowired
-  public AssetServiceImpl(AssetRepository assetRepository, CategoryService categoryService) {
+  public AssetServiceImpl(AssetRepository assetRepository, CategoryService categoryService, UserService userService) {
     this.assetRepository = assetRepository;
     this.categoryService = categoryService;
+    this.userService = userService;
     assetMapper = new AssetMapper();
     categoryMapper = new CategoryMapper();
   }
@@ -57,7 +62,8 @@ public class AssetServiceImpl implements AssetService {
     if (asset.getState() > 1) {
       throw new BadRequestException("Option is not available");
     }
-
+    User user = userService.findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+    asset.setLocation(user.getLocation());
     Category category = categoryMapper.fromDTO(categoryService.findCategoryById(categoryId));
     asset.setCategory(category);
     String assetCode = generateAssetCode(category);
@@ -76,6 +82,8 @@ public class AssetServiceImpl implements AssetService {
     }
     Asset asset = assetRepository.getById(assetId);
     Asset assetEdit = assetMapper.merge(asset, payload);
+    User user = userService.findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+    asset.setLocation(user.getLocation());
     Asset assetResult = assetRepository.save(assetEdit);
     logger.info("Successfully updated an Asset with id=" + asset.getId() + ",title=" + assetResult.getAssetCode() + ",assetName=" + assetResult.getAssetName() + ",category=" + assetResult.getCategory().getName() + "!");
     return assetMapper.fromEntity(assetResult);
