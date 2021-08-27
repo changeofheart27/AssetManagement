@@ -184,9 +184,9 @@ public class UserServiceImpl implements UserService {
             users = userRepository.findByStatus("enabled");
         } else if (type != null && keyword == null) {
             users = userRepository.getUserByType(type);
-        } else if (type == null && keyword != null) {
+        } else if (type == null) {
             users = userRepository.findUserByFullNameOrStaffCode(fullName, staffCode);
-        } else if (type != null && keyword != null) {
+        } else {
             users = userRepository.findUserByFullNameOrStaffCode(fullName, staffCode);
             users = users.stream().filter(user -> user.getAuthority().getAuthority().equals(type.toUpperCase())).collect(Collectors.toList());
         }
