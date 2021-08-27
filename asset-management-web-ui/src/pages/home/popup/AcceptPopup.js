@@ -40,7 +40,7 @@ const AcceptPopup = props => {
                 <Button variant={"danger"} className={"w-25 me-5 my-5"} onClick={() => onSubmit(close)}>
                     Yes
                 </Button>
-                <Button variant={"danger"} className={"w-25 my-5"} onClick={() => close()}>
+                <Button variant={"secondary"} className={"w-25 my-5"} onClick={() => close()}>
                     No
                 </Button>
             </Row>

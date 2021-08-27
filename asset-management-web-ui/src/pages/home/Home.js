@@ -200,7 +200,7 @@ const Home = () => {
                           <Popup
                             trigger={
                               <td>
-                                <i className="bi bi-check-lg btn m-0 p-0 text-danger " />
+                                <i className="bi bi-check-lg btn m-0 p-0 text-danger zoomin " />
                               </td>
                             }
                             modal
@@ -239,7 +239,7 @@ const Home = () => {
                             contentStyle={PopupStyle}
                             trigger={
                               <td>
-                                <i className="bi bi-x-lg btn m-0 p-0" />
+                                <i className="bi bi-x-lg btn m-0 p-0 zoomin" />
                               </td>
                             }
                             modal
