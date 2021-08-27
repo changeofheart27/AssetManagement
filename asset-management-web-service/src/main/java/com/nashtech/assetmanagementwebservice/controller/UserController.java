@@ -59,7 +59,7 @@ public class UserController {
     @GetMapping("/my-info")
     public ResponseEntity<?> getUserByUsername(Principal principal) {
         String username = principal.getName();
-        UserDTO result = userService.findUserByUsernameCustom(username);
+        UserDTO result = userService.findByUserName(username);
         return ResponseEntity.ok(result);
     }
 
@@ -86,7 +86,7 @@ public class UserController {
     @ApiResponses({@ApiResponse(code = 404, message = "No user found"), @ApiResponse(code = 500, message = "")})
     @PutMapping("/users/status/{id}")
     public ResponseEntity<?> changeUserStatus(@Valid @RequestBody UpdateUserRequest request, @PathVariable int id) {
-        UserDTO result = userService.changeUserStatus(request, id);
+        UserDTO result = userService.disableUser(request, id);
         return ResponseEntity.ok(result);
     }
 

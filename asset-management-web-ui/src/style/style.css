@@ -6,3 +6,11 @@
     transform: rotate(360deg);
     transition-duration: 2s;
 }
+
+.form-check-input:checked{
+    background-color: red;
+    border-color: red;
+}
+.ml-custom{
+    margin-left: -8%;
+}
