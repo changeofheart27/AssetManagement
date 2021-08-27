@@ -21,8 +21,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
   @Transactional
   @Modifying
-  @Query(value = "UPDATE user SET password = ?1  WHERE username = ?2", nativeQuery = true)
-  public void updatePassword(String password, String username);
+  @Query(value = "UPDATE user SET password = ?1 ,first_login =?2 WHERE username = ?3", nativeQuery = true)
+  public void updatePassword(String password,String firstLogin, String username);
 
   public List<User> findByUsernameContainsOrStaffCodeIs(String username, String staffCode);
 

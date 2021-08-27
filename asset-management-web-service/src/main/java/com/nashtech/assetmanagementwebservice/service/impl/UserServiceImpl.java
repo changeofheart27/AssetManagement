@@ -125,11 +125,13 @@ public class UserServiceImpl implements UserService {
         String dob = user.getDob().format(formatters);
         user.setStaffCode(staffCode);
 
-        user.setStatus("enabled");
-        user.setPassword(passwordEncoder.encode(finalUsername + "@" + dob));
-        user.setDefaultPassword(finalUsername + "@" + dob);
 
-        user.setLocation("HN");
+    user.setStatus("enabled");
+    user.setPassword(passwordEncoder.encode(finalUsername + "@" + dob));
+    user.setDefaultPassword(finalUsername + "@" + dob);
+    user.setFirstLogin("true");
+    user.setLocation("HN");
+
 
         Authority authority = new Authority();
         authority.setAuthority(request.getAuthority());
@@ -163,14 +165,17 @@ public class UserServiceImpl implements UserService {
 
         User updateUser = UserMapper.toUser(request, username);
 
-        try {
-            updateUser.setPassword(passwordEncoder.encode(request.getPassword()));
-            userRepository.updatePassword(updateUser.getPassword(), username);
-        } catch (Exception ex) {
-            throw new InternalServerException("Can't update password");
-        }
+
+    try {
+      updateUser.setFirstLogin("false");
+      updateUser.setPassword(passwordEncoder.encode(request.getPassword()));
+      userRepository.updatePassword(updateUser.getPassword(),updateUser.getFirstLogin(), username);
+    } catch (Exception ex) {
+      throw new InternalServerException("Can't update password");
+    }
 
         return UserMapper.toUserDTO(updateUser);
+
 
     }
 

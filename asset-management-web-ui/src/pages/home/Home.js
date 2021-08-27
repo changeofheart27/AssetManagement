@@ -1,19 +1,23 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'reactjs-popup/dist/index.css';
 import '../../style/style.css'
+import './home.css'
 
 import {Button, Container, Row, Table} from 'react-bootstrap';
-import React, {useEffect, useState, useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 
 import AcceptPopup from "./popup/AcceptPopup";
 import DeclinePopup from "./popup/DeclinePopup";
 import DetailsPopup from "./popup/DetailsPopup";
+import EmptyList from "../../layout/EmptyList/EmptyList";
+import FirstLogin from '../../components/FirstLogin/FirstLogin'
 import Pagination from '../../components/Pagination/Pagination';
 import Popup from "reactjs-popup";
+import ReactDOM from "react-dom"
 import ReturnPopup from "./popup/ReturnPopup";
-import axios from "axios";
-import EmptyList from "../../layout/EmptyList/EmptyList";
+import UserInfo from '../../layout/header/UserInfo'
 import ViewDetailAssignment from "../Assignment/viewDetails/ViewDetailAssignment";
+import axios from "axios";
 
 const Home = () => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
@@ -24,7 +28,8 @@ const Home = () => {
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
     const paginate = pageNumber => setCurrentPage(pageNumber);
     const [user, setUser] = useState({
-        defaultPassword: null
+        defaultPassword: null,
+        firstLogin:null
     });
     const [list, setList] = useState([{
         id: null,
@@ -56,19 +61,32 @@ const Home = () => {
         }).then((response) => {
             setList(response.data);
             axios
-                .get(rootAPI + `/users`)
+            .get(rootAPI + `/users`)
                 .then((response1) => {
                     setUser(response1.data)
+                    console.log(response1);
                 })
-        })
+        }).then((response) => {
+          
+          axios
+          .get(rootAPI + `/my-info?=${localStorage.getItem("username")}`)
+              .then((response2) => {
+                  setUser(response2.data)
+                  console.log(response2);
+              })
+      })
             .catch((error) => {
                 console.log(error)
             });
     }, [state])
+    if(user.firstLogin==="true"){
+        ReactDOM.render(<FirstLogin/>,document.getElementById('xmas-popup'));
+     }
+     else{
     if (user.defaultPassword === localStorage.getItem("password")) {
         window.alert("You are using the default password, please change it now !")
         window.location.href = "/changepassword";
-    }
+    }}
     const check = state => {
         if (state === 6) {
             return <td>Accepted</td>
@@ -125,9 +143,13 @@ const Home = () => {
     };
     let i = 1;
     return (
+
       <Container fluid className={"d-block ps-5"}>
         <h3 className={"text-danger my-5"}>My Assignment</h3>
         <Row className={"mt-5"}>
+        <div id="xmas-popup" >
+	          
+             </div>
           {list.length === 0 ? (
             <EmptyList />
           ) : (
@@ -233,6 +255,7 @@ const Home = () => {
                               />
                             )}
                           </Popup>
+
                         )}
                         {assigment.state === 5 ? (
                           <Popup

@@ -37,7 +37,7 @@ const UserInfo = ({props, loginSuccess, setResponseUser}) => {
         newPassword: Yup.string()
             .min(8,"Password at least have 8 character")
             .max(500)
-            .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, "Password requires at least 8 characters, one uppercase letter, one number, one special character (e.g.!@#$%)")
+            .matches(/^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, "Password requires at least 8 characters, one number, one special character (e.g.!@#$%)")
             .required('Required')
             .typeError('New Password is required'),
     });

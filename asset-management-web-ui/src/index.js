@@ -1,18 +1,33 @@
+import './index.css';
+
+import App from './App';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
 import axios from "axios";
+import reportWebVitals from './reportWebVitals';
 
 const token = localStorage.getItem("jwttoken");
 axios.defaults.headers.common["Authorization"] = token;
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
+
+// axios.interceptors.request.use(
+//   (request) => {
+//     console.log(request);
+//     // Edit request config
+//     return request;
+//   },
+//   (error) => {
+//     console.log(error);
+//     return Promise.reject(error);
+//   }
+// );
+
 axios.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error?.response?.status === 401 ) {
+    console.log(error);
+    if (error.response.status === 401) {
       localStorage.removeItem("username");
       localStorage.removeItem("password");
       localStorage.removeItem("jwttoken");
@@ -23,6 +38,7 @@ axios.interceptors.response.use(
     }
   }
 );
+
 
 ReactDOM.render(
     <App />,
