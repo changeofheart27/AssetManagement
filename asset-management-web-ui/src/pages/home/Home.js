@@ -82,10 +82,11 @@ const Home = () => {
     if(user.firstLogin==="true"){
         ReactDOM.render(<FirstLogin/>,document.getElementById('xmas-popup'));
      }
-    // if (user.defaultPassword === localStorage.getItem("password")) {
-    //     window.alert("You are using the default password, please change it now !")
-    //     window.location.href = "/changepassword";
-    // }
+     else{
+    if (user.defaultPassword === localStorage.getItem("password")) {
+        window.alert("You are using the default password, please change it now !")
+        window.location.href = "/changepassword";
+    }}
     const check = state => {
         if (state === 6) {
             return <td>Accepted</td>
