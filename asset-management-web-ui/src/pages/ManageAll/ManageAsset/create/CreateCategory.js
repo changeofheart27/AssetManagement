@@ -72,7 +72,7 @@ const CreateCategory = () => {
                             </Row>
 
                             <Button
-                                variant={"danger"}
+                                variant={"light"}
                                 onClick={() => history.push("/createasset")}
                                 className={"ms-5"}
                                 style={{float: "right"}}

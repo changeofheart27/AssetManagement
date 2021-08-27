@@ -45,7 +45,7 @@ const ManageUser = ({responseUser}) => {
     }]);
     console.log(list)
     useEffect(() => {
-        axios.get(rootAPI + '/admin/users', {headers})
+        axios.get(rootAPI + '/users', {headers})
             .then(function (response) {
                 setRefresh(true);
                 let result = response.data.map(user => user.id);
@@ -92,7 +92,7 @@ const ManageUser = ({responseUser}) => {
             request.params.searchTerm = null;
 
         }
-        axios.get(rootAPI + '/admin/users', request)
+        axios.get(rootAPI + '/users', request)
             .then(function (response) {
                 setList(response.data);
             })
@@ -143,157 +143,166 @@ const ManageUser = ({responseUser}) => {
         })
     }
     return (
-        <Container fluid className={"d-block ps-5"}>
-            <h1 className={"text-danger mb-3"}>User List</h1>
-            <div className={"justify-content-between d-flex"}>
-                <div className={"col-3 d-flex"}>
-                    <InputGroup className={"w-50"}>
-                        <Form.Control
-                            as="select"
-                            custom
-                            placeholder={"Type"}
-                            name={"type"}
-                            onChange={handleFilterType}
-                        >
-                            <option value={"Type"}>Type</option>
-                            <option value="Admin">Admin</option>
-                            <option value="Staff">Staff</option>
-                        </Form.Control>
-                        <Button variant={"outline-secondary"}>
-                            <i className="bi bi-funnel-fill"/>
-                        </Button>
-                    </InputGroup>
-                </div>
-                <div className={"col-6 d-flex justify-content-end"}>
-                    <InputGroup className={"w-50"}>
-                        <FormControl
-                            type={"text"}
-                            name={"searchTerm"}
-                            onChange={handleSearch}
-                            maxLength={255}
+      <Container fluid className={"d-block ps-5"}>
+        <h1 className={"text-danger mb-3"}>User List</h1>
+        <div className={"justify-content-between d-flex"}>
+          <div className={"col-3 d-flex"}>
+            <InputGroup className={"w-50"}>
+              <Form.Control
+                as="select"
+                custom
+                placeholder={"Type"}
+                name={"type"}
+                onChange={handleFilterType}
+              >
+                <option value={"Type"}>Type</option>
+                <option value="Admin">Admin</option>
+                <option value="Staff">Staff</option>
+              </Form.Control>
+              <Button variant={"outline-secondary"}>
+                <i className="bi bi-funnel-fill" />
+              </Button>
+            </InputGroup>
+          </div>
+          <div className={"col-6 d-flex justify-content-end"}>
+            <InputGroup className={"w-50"}>
+              <FormControl
+                type={"text"}
+                name={"searchTerm"}
+                onChange={handleSearch}
+                maxLength={255}
+              />
+              <Button variant={"outline-secondary"} onClick={handleSearch}>
+                <i className="bi bi-search" />
+              </Button>
+            </InputGroup>
+            <Button
+              variant={"danger"}
+              className={"w-auto ms-5"}
+              onClick={() => history.push("/createuser")}
+            >
+              Create new user
+            </Button>
+          </div>
+        </div>
+        <Row className={"mt-5"}>
+          <Table>
+            <thead>
+              <tr>
+                <th
+                  className={"border-bottom"}
+                  className={getClassNamesFor("staffCode")}
+                  onClick={() => requestSort("staffCode")}
+                >
+                  Staff Code
+                </th>
+                <th
+                  className={"border-bottom"}
+                  className={getClassNamesFor("firstName")}
+                  onClick={() => requestSort("firstName")}
+                >
+                  Full Name
+                </th>
+                <th
+                  className={"border-bottom"}
+                  className={getClassNamesFor("username")}
+                  onClick={() => requestSort("username")}
+                >
+                  User Name
+                </th>
+                <th
+                  className={"border-bottom"}
+                  className={getClassNamesFor("joinedDate")}
+                  onClick={() => requestSort("joinedDate")}
+                >
+                  Joined Date
+                </th>
+                <th
+                  className={"border-bottom"}
+                  className={getClassNamesFor("authority")}
+                  onClick={() => requestSort("authority")}
+                >
+                  Type
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {list.slice(indexOfFirstUser, indexOfLastUser).map((user) => (
+                <Popup
+                  key={user.id}
+                  contentStyle={{
+                    width: "25%",
+                    border: "1px solid black",
+                    borderRadius: 10,
+                    overflow: "hidden",
+                    padding: "20px",
+                  }}
+                  trigger={
+                    <tr key={user.id}>
+                      <td>{user.staffCode}</td>
+                      <td>
+                        {user.firstName} {user.lastName}
+                      </td>
+                      <td>{user.username}</td>
+                      <td>{dateFormat(user.joinedDate, "dd/mm/yyyy")}</td>
+                      <td>{user.authority}</td>
+                      <td>
+                        <i
+                          className="bi bi-pen btn m-0 text-muted p-0"
+                          onClick={() => history.push(`/edituser/${user.id}`)}
                         />
-                        <Button
-                            variant={"outline-secondary"}
-                            onClick={handleSearch}>Search
-                        </Button>
-                    </InputGroup>
-                    <Button
-                        variant={"danger"}
-                        className={"w-auto ms-5"}
-                        onClick={() => history.push("/createuser")}>Create new User
-                    </Button>
-                </div>
-            </div>
-            <Row className={"mt-5"}>
-                <Table>
-                    <thead>
-                    <tr>
-                        <th
-                            className={"border-bottom"}
-                            className={getClassNamesFor("staffCode")}
-                            onClick={() => requestSort("staffCode")}>Staff Code
-                        </th>
-                        <th
-                            className={"border-bottom"}
-                            className={getClassNamesFor("firstName")}
-                            onClick={() => requestSort("firstName")}>Full Name
-                        </th>
-                        <th
-                            className={"border-bottom"}
-                            className={getClassNamesFor("username")}
-                            onClick={() => requestSort("username")}>User Name
-                        </th>
-                        <th
-                            className={"border-bottom"}
-                            className={getClassNamesFor("joinedDate")}
-                            onClick={() => requestSort("joinedDate")}>Joined Date
-                        </th>
-                        <th
-                            className={"border-bottom"}
-                            className={getClassNamesFor("authority")}
-                            onClick={() => requestSort("authority")}>Type
-                        </th>
+                      </td>
+                      <Popup
+                        contentStyle={{
+                          width: "25%",
+                          border: "1px solid black",
+                          borderRadius: 10,
+                          overflow: "hidden",
+                          padding: "20px",
+                        }}
+                        trigger={
+                          <td>
+                            <i className="bi bi-x-circle text-danger btn p-0" />
+                          </td>
+                        }
+                        modal
+                      >
+                        {(close) => {
+                          if (user.assignments?.length !== 0) {
+                            return <ChangeStatusFail close={close} />;
+                          } else {
+                            return <ChangeStatus id={user.id} close={close} />;
+                          }
+                        }}
+                      </Popup>
                     </tr>
-                    </thead>
-                    <tbody>
-                    {list.slice(indexOfFirstUser, indexOfLastUser).map((user) => (
-                        <Popup
-                            key={user.id}
-                            contentStyle={{
-                                width: "25%",
-                                border: "1px solid black",
-                                borderRadius: 10,
-                                overflow: "hidden",
-                                padding: "20px",
-                            }}
-                            trigger={
-                                <tr key={user.id}>
-                                    <td>{user.staffCode}</td>
-                                    <td>
-                                        {user.firstName} {user.lastName}
-                                    </td>
-                                    <td>{user.username}</td>
-                                    <td>{dateFormat(user.joinedDate, "dd/mm/yyyy")}</td>
-                                    <td>{user.authority}</td>
-                                    <td>
-                                        <i
-                                            className="bi bi-pen btn m-0 text-muted p-0"
-                                            onClick={() => history.push(`/edituser/${user.id}`)}
-                                        />
-                                    </td>
-                                    <Popup
-                                        contentStyle={{
-                                            width: "25%",
-                                            border: "1px solid black",
-                                            borderRadius: 10,
-                                            overflow: "hidden",
-                                            padding: "20px",
-                                        }}
-                                        trigger={
-                                            <td>
-                                                <i className="bi bi-x-circle text-danger btn p-0"
-                                                />
-                                            </td>
-                                        }
-                                        modal
-                                    >
-                                        {close => {
-                                            if (user.assignments.length !== 0) {
-                                                return <ChangeStatusFail close={close}/>
-                                            } else {
-                                                return <ChangeStatus id={user.id} close={close}/>
-                                            }
-                                        }
-                                        }
-                                    </Popup>
-                                </tr>
-                            }
-                            modal
-                        >
-                            {(close) => (
-                                <div>
-                                    <ViewDetailedUser id={user.id}/>
-                                    <Button
-                                        onClick={close}
-                                        variant="success"
-                                        className="btn-view-detail"
-                                    >
-                                        &times;
-                                    </Button>
-                                </div>
-                            )}
-                        </Popup>
-                    ))}
-                    </tbody>
-                </Table>
-            </Row>
-            <Pagination
-                className="pagnition"
-                usersPerPage={usersPerPage}
-                totalUsers={list.length}
-                paginate={paginate}
-            />
-        </Container>
+                  }
+                  modal
+                >
+                  {(close) => (
+                    <div>
+                      <ViewDetailedUser id={user.id} />
+                      <Button
+                        onClick={close}
+                        variant="success"
+                        className="btn-view-detail"
+                      >
+                        &times;
+                      </Button>
+                    </div>
+                  )}
+                </Popup>
+              ))}
+            </tbody>
+          </Table>
+        </Row>
+        <Pagination
+          className="pagnition"
+          usersPerPage={usersPerPage}
+          totalUsers={list.length}
+          paginate={paginate}
+        />
+      </Container>
     );
 };
 

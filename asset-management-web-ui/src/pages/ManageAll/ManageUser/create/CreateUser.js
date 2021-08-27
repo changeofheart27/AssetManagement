@@ -48,7 +48,7 @@ const CreateUser = ({setResponseUser}) => {
         }
 
         axios
-            .post(rootAPI + `/admin/users`, create,{headers})
+            .post(rootAPI + `/users`, create,{headers})
             .then((response) => {
                 setSubmitting(false);
                 setResponseUser({

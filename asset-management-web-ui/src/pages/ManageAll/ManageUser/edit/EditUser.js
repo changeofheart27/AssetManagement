@@ -39,7 +39,7 @@ const EditUser = ({setResponseUser}) => {
     });
     useEffect(() => {
         axios
-            .get(rootAPI+`/admin/users/${id}`,{headers})
+            .get(rootAPI+`/users/${id}`,{headers})
             .then(function (response) {
                 setUser(response.data);
                 setGender(response.data.gender);
@@ -76,7 +76,7 @@ const EditUser = ({setResponseUser}) => {
             password: user.password
         }
         axios
-            .put(rootAPI+`/admin/users/${id}`, editUser,{headers})
+            .put(rootAPI+`/users/${id}`, editUser,{headers})
             .then((response) => {
                 setSubmitting(false);
                 setResponseUser({
@@ -146,155 +146,195 @@ const EditUser = ({setResponseUser}) => {
         }
     }
     return (
-        <div className={"container ps-5 d-block"}>
-            <Row>
-                <h1 className={"text-danger mb-5"}>Edit User</h1>
-            </Row>
-            <Row className={"mt-5"}>
-                <Formik initialValues={initialValues}
-                        onSubmit={onSubmit}
-                        enableReinitialize={"true"}
-                        validationSchema={ValidateSchema}>
-                    {({
-                          values,
-                          errors,
-                          touched,
-                          handleChange,
-                          handleBlur,
-                          handleSubmit,
-                          isSubmitting,
-                          /* and other goodies */
-                      }) => (
-                        <Form onSubmit={handleSubmit}
-                              onKeyDown={onKeyDown}>
-                            <Row className={"mb-3"}>
-                                <p className={"w-25"}>First Name</p>
-                                <FormControl
-                                    readOnly
-                                    aria-label="Username"
-                                    aria-describedby="basic-addon1"
-                                    className={"w-75"}
-                                    name="firstName"
-                                    style={{backgroundColor: '#eff1f5'}}
-                                    value={values.firstName}
-                                    onChange={handleChange}
-                                    onError={errors}
-                                    onBlur={handleBlur}
-                                    isValid={touched.firstName && !errors.firstName}
-                                    isInvalid={touched.firstName && errors.firstName}
-                                />
-                                {errors.firstName && touched.firstName ? (
-                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>{errors.firstName}</div>
-                                ) : null}
-                            </Row>
-                            <Row className={"mb-3"}>
-                                <p className={"w-25"}>Last Name</p>
-                                <FormControl
-                                    readOnly
-                                    aria-label="Username"
-                                    aria-describedby="basic-addon1"
-                                    className={"w-75"}
-                                    name="lastName"
-                                    style={{backgroundColor: '#eff1f5'}}
-                                    value={values.lastName}
-                                    onBlur={handleBlur}
-                                    onChange={handleChange}
-                                    isValid={touched.lastName && !errors.lastName}
-                                    isInvalid={touched.lastName && errors.lastName}
-                                />
-                                {errors.lastName && touched.lastName ? (
-                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>{errors.lastName}</div>
-                                ) : null}
-                            </Row>
-                            <Row className="mb-3">
-                                <p className={"w-25"} id="basic-addon1">Date of Birth</p>
-                                <FormControl
-                                    type={"date"}
-                                    aria-describedby="basic-addon1"
-                                    name={"dob"}
-                                    className={"w-75"}
-                                    onBlur={handleBlur}
-                                    value={values.dob}
-                                    onChange={handleChange}
-                                    isValid={touched.dob && !errors.dob}
-                                    isInvalid={touched.dob && errors.dob}
-                                />
-                                {errors.dob && touched.dob ? (
-                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>{errors.dob}</div>
-                                ) : null}
-                            </Row>
-                            <Row className={"mb-3"}>
-                                <p id="basic-addon1" className={"w-25"}>Gender</p>
-                                <div className={"container-lg w-75"}>
-                                    <FormCheck
-                                        inline
-                                        type={"radio"}
-                                        label={"Female"}
-                                        className={"w-75"}
-                                        name={"gender"}
-                                        checked={gender === "Female"}
-                                        onChange={() => setGender("Female")}
-                                    >
-                                    </FormCheck>
-                                    <FormCheck
-                                        inline
-                                        type={"radio"}
-                                        label={"Male"}
-                                        className={"w-75"}
-                                        name={"gender"}
-                                        checked={gender === "Male"}
-                                        onChange={() => setGender("Male")}
-                                    >
-                                    </FormCheck>
-                                </div>
-                            </Row>
-                            <Row className="mb-3">
-                                <p className={"w-25"} id="basic-addon1">Joined Date</p>
-                                <FormControl
-                                    type={"date"}
-                                    aria-describedby="basic-addon1"
-                                    className={"w-75"}
-                                    name={"joinedDate"}
-                                    value={values.joinedDate}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    isValid={touched.joinedDate && !errors.joinedDate}
-                                    isInvalid={touched.joinedDate && errors.joinedDate}
-                                />
-                                {errors.joinedDate && touched.joinedDate ? (
-                                    <div className={"text-danger"} style={{paddingLeft: "25%"}}>{errors.joinedDate}</div>
-                                ) : null}
-                            </Row>
-                            <Row className="mb-3">
-                                <p className={"col-3"}>Type</p>
-                                <Form.Select
-                                    size="sm"
-                                    className={"w-75"}
-                                    name={"authority"}
-                                    value={values.authority}
-                                    onChange={handleChange}
-                                    isValid={touched.authority && !errors.authority}
-                                    isInvalid={touched.authority && errors.authority}
-                                >
-                                    <option selected></option>
-                                    <option value={"ADMIN"}>Admin</option>
-                                    <option value={"STAFF"}>Staff</option>
-                                </Form.Select>
-                                {errors.authority && touched.authority ? (
-                                    <div className={"text-danger"} style={{paddingLeft:"25%"}}>{errors.authority}</div>
-                                ) : null}
-                            </Row>
-                            <Button variant={"light"} type={"submit"} className={"ms-5"} style={{float: 'right'}}>
-                                Cancel
-                            </Button>
-                            <Button variant={"danger"} type="submit" style={{float: 'right'}}>
-                                Save
-                            </Button>
-                        </Form>
-                    )}
-                </Formik>
-            </Row>
-        </div>
+      <div className={"container ps-5 d-block"}>
+        <Row>
+          <h1 className={"text-danger mb-5"}>Edit User</h1>
+        </Row>
+        <Row className={"mt-5"}>
+          <Formik
+            initialValues={initialValues}
+            onSubmit={onSubmit}
+            enableReinitialize={"true"}
+            validationSchema={ValidateSchema}
+          >
+            {({
+              values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              isSubmitting,
+              /* and other goodies */
+            }) => (
+              <Form onSubmit={handleSubmit} onKeyDown={onKeyDown}>
+                <Row className={"mb-3"}>
+                  <p className={"w-25"}>First Name</p>
+                  <FormControl
+                    readOnly
+                    aria-label="Username"
+                    aria-describedby="basic-addon1"
+                    className={"w-75"}
+                    name="firstName"
+                    style={{ backgroundColor: "#eff1f5" }}
+                    value={values.firstName}
+                    onChange={handleChange}
+                    onError={errors}
+                    onBlur={handleBlur}
+                    isValid={touched.firstName && !errors.firstName}
+                    isInvalid={touched.firstName && errors.firstName}
+                  />
+                  {errors.firstName && touched.firstName ? (
+                    <div
+                      className={"text-danger"}
+                      style={{ paddingLeft: "25%" }}
+                    >
+                      {errors.firstName}
+                    </div>
+                  ) : null}
+                </Row>
+                <Row className={"mb-3"}>
+                  <p className={"w-25"}>Last Name</p>
+                  <FormControl
+                    readOnly
+                    aria-label="Username"
+                    aria-describedby="basic-addon1"
+                    className={"w-75"}
+                    name="lastName"
+                    style={{ backgroundColor: "#eff1f5" }}
+                    value={values.lastName}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    isValid={touched.lastName && !errors.lastName}
+                    isInvalid={touched.lastName && errors.lastName}
+                  />
+                  {errors.lastName && touched.lastName ? (
+                    <div
+                      className={"text-danger"}
+                      style={{ paddingLeft: "25%" }}
+                    >
+                      {errors.lastName}
+                    </div>
+                  ) : null}
+                </Row>
+                <Row className="mb-3">
+                  <p className={"w-25"} id="basic-addon1">
+                    Date of Birth
+                  </p>
+                  <FormControl
+                    type={"date"}
+                    aria-describedby="basic-addon1"
+                    name={"dob"}
+                    className={"w-75"}
+                    onBlur={handleBlur}
+                    value={values.dob}
+                    onChange={handleChange}
+                    isValid={touched.dob && !errors.dob}
+                    isInvalid={touched.dob && errors.dob}
+                  />
+                  {errors.dob && touched.dob ? (
+                    <div
+                      className={"text-danger"}
+                      style={{ paddingLeft: "25%" }}
+                    >
+                      {errors.dob}
+                    </div>
+                  ) : null}
+                </Row>
+                <Row className={"mb-3"}>
+                  <p id="basic-addon1" className={"w-25"}>
+                    Gender
+                  </p>
+                  <div className={"container-lg w-75"}>
+                    <FormCheck
+                      inline
+                      type={"radio"}
+                      label={"Female"}
+                      className={"w-75"}
+                      name={"gender"}
+                      checked={gender === "Female"}
+                      onChange={() => setGender("Female")}
+                    ></FormCheck>
+                    <FormCheck
+                      inline
+                      type={"radio"}
+                      label={"Male"}
+                      className={"w-75"}
+                      name={"gender"}
+                      checked={gender === "Male"}
+                      onChange={() => setGender("Male")}
+                    ></FormCheck>
+                  </div>
+                </Row>
+                <Row className="mb-3">
+                  <p className={"w-25"} id="basic-addon1">
+                    Joined Date
+                  </p>
+                  <FormControl
+                    type={"date"}
+                    aria-describedby="basic-addon1"
+                    className={"w-75"}
+                    name={"joinedDate"}
+                    value={values.joinedDate}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    isValid={touched.joinedDate && !errors.joinedDate}
+                    isInvalid={touched.joinedDate && errors.joinedDate}
+                  />
+                  {errors.joinedDate && touched.joinedDate ? (
+                    <div
+                      className={"text-danger"}
+                      style={{ paddingLeft: "25%" }}
+                    >
+                      {errors.joinedDate}
+                    </div>
+                  ) : null}
+                </Row>
+                <Row className="mb-3">
+                  <p className={"col-3"}>Type</p>
+                  <Form.Select
+                    size="sm"
+                    className={"w-75"}
+                    name={"authority"}
+                    value={values.authority}
+                    onChange={handleChange}
+                    isValid={touched.authority && !errors.authority}
+                    isInvalid={touched.authority && errors.authority}
+                  >
+                    <option selected></option>
+                    <option value={"ADMIN"}>Admin</option>
+                    <option value={"STAFF"}>Staff</option>
+                  </Form.Select>
+                  {errors.authority && touched.authority ? (
+                    <div
+                      className={"text-danger"}
+                      style={{ paddingLeft: "25%" }}
+                    >
+                      {errors.authority}
+                    </div>
+                  ) : null}
+                </Row>
+                <Button
+                  variant={"light"}
+                  type={"submit"}
+                  className={"ms-5"}
+                  style={{ float: "right" }}
+                  onClick={() => history.push("/user")}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant={"danger"}
+                  type="submit"
+                  style={{ float: "right" }}
+                >
+                  Save
+                </Button>
+              </Form>
+            )}
+          </Formik>
+        </Row>
+      </div>
     );
 };
 

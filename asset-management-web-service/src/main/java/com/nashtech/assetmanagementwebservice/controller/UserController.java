@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "Filter By Type of User and Search By name Or staffCode", response = UserDTO.class, responseContainer = "List")
-    @GetMapping(value = "/admin/users", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<UserDTO>> getUsers(@RequestParam(name = "type", required = false) String type, @RequestParam(name = "searchTerm", required = false) String keyword) {
         List<UserDTO> users = userService.getUserByType(type, keyword);
         return ResponseEntity.ok(users);
@@ -47,7 +47,7 @@ public class UserController {
 
     @ApiOperation(value = "Get user By ID", response = UserDTO.class)
     @ApiResponses({@ApiResponse(code = 404, message = "No user found"), @ApiResponse(code = 500, message = "500")})
-    @GetMapping("/admin/users/{id}")
+    @GetMapping("/users/{id}")
     public ResponseEntity<?> getUserById(@PathVariable int id) {
         UserDTO result = userService.getUserById(id);
         return ResponseEntity.ok(result);
@@ -56,7 +56,7 @@ public class UserController {
 
     @ApiOperation(value = "Get user By username", response = UserDTO.class)
     @ApiResponses({@ApiResponse(code = 404, message = "No user found"), @ApiResponse(code = 500, message = "500")})
-    @GetMapping("/users")
+    @GetMapping("/my-info")
     public ResponseEntity<?> getUserByUsername(Principal principal) {
         String username = principal.getName();
         UserDTO result = userService.findUserByUsernameCustom(username);
@@ -66,7 +66,7 @@ public class UserController {
 
     @ApiOperation(value = "Create user", response = UserDTO.class)
     @ApiResponses({@ApiResponse(code = 400, message = "User already exists in the system"), @ApiResponse(code = 500, message = "500")})
-    @PostMapping("/admin/users")
+    @PostMapping("/users")
     public ResponseEntity<?> createUser(@Valid @RequestBody CreateUserRequest request) {
         UserDTO result = userService.createUser(request);
         return ResponseEntity.ok(result);
@@ -75,7 +75,7 @@ public class UserController {
 
     @ApiOperation(value = "Update user", response = UserDTO.class)
     @ApiResponses({@ApiResponse(code = 404, message = "No user found"), @ApiResponse(code = 500, message = "")})
-    @PutMapping("/admin/users/{id}")
+    @PutMapping("/users/{id}")
     public ResponseEntity<?> updateUser(@Valid @RequestBody UpdateUserRequest request, @PathVariable int id) {
         UserDTO result = userService.updateUser(request, id);
         return ResponseEntity.ok(result);
@@ -84,19 +84,12 @@ public class UserController {
 
     @ApiOperation(value = "Change user status", response = UserDTO.class)
     @ApiResponses({@ApiResponse(code = 404, message = "No user found"), @ApiResponse(code = 500, message = "")})
-    @PutMapping("/admin/users/status/{id}")
+    @PutMapping("/users/status/{id}")
     public ResponseEntity<?> changeUserStatus(@Valid @RequestBody UpdateUserRequest request, @PathVariable int id) {
         UserDTO result = userService.changeUserStatus(request, id);
         return ResponseEntity.ok(result);
     }
 
-
-    @ApiOperation(value = "Search User By name Or staffCode", response = UserDTO.class, responseContainer = "List")
-    @GetMapping(value = "/searchby", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<UserDTO>> searchAssetByNameOrStaffCode(@RequestParam(name = "keyword") String keyword) {
-        List<UserDTO> users = userService.searchByNameOrStaffCode(keyword);
-        return ResponseEntity.ok(users);
-    }
 
     @ApiOperation(value = "Change user password", response = UserDTO.class)
     @ApiResponses({@ApiResponse(code = 404, message = "No user found"), @ApiResponse(code = 500, message = "")})

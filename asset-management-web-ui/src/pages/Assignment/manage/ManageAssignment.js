@@ -209,7 +209,7 @@ const ManageAssignment = ({responseAssigment}) => {
                         className={"w-auto"}
                         onClick={() => history.push("/createAssignment")}
                     >
-                        Create new Assigment
+                        Create new Assignment
                     </Button>
 
                 </div>

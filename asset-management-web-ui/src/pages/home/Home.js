@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'reactjs-popup/dist/index.css';
 import '../../style/style.css'
 
-import {Container, Row, Table} from 'react-bootstrap';
+import {Button, Container, Row, Table} from 'react-bootstrap';
 import React, {useEffect, useState, useMemo} from 'react';
 
 import AcceptPopup from "./popup/AcceptPopup";
@@ -125,143 +125,211 @@ const Home = () => {
     };
     let i = 1;
     return (
-
-        <Container fluid className={"d-block ps-5"}>
-            <h3 className={"text-danger my-5"}>My Assignment</h3>
-            <Row className={"mt-5"}>
-                {list.length === 0
-                    ?
-                    <EmptyList/>
-                    :
-                    <Table>
-                        <thead>
-                        <tr>
-                            <th className={"border-bottom"}
-                                className={getClassNamesFor("id")}
-                                onClick={() => requestSort("id")}
-                            >No.
-                            </th>
-                            <th className={"border-bottom"}
-                                className={getClassNamesFor("assetDTO.assetCode")}
-                                onClick={() => requestSort("assetDTO.assetCode")}
-                            >Asset Code
-                            </th>
-                            <th className={"border-bottom"}
-                                className={getClassNamesFor("assetDTO.assetName")}
-                                onClick={() => requestSort("assetDTO.assetName")}
-                            >Asset Name
-                            </th>
-                            <th className={"border-bottom"}
-                                className={getClassNamesFor("assetDTO.categoryDTO.name")}
-                                onClick={() => requestSort("assetDTO.categoryDTO.name")}
-                            >Category
-                            </th>
-                            <th className={"border-bottom"}
-                                className={getClassNamesFor("assignedDate")}
-                                onClick={() => requestSort("assignedDate")}
-                            >Assigned Date
-                            </th>
-                            <th className={"border-bottom"}
-                                className={getClassNamesFor("state")}
-                                onClick={() => requestSort("state")}
-                            >State
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {list.map(assigment =>
-                            <Popup
-                                contentStyle={{
-                                width: "25%", border: "1px solid black", borderRadius: 10,
-                                overflow: 'hidden', padding: "20px"
-                            }} trigger={
-                                <tr key={assigment.id} >
-                                    <td>{i++}</td>
-                                    <td>{assigment.assetDTO.assetCode}</td>
-                                    <td>{assigment.assetDTO.assetName}</td>
-                                    <td>{assigment.assetDTO.categoryDTO.name}</td>
-                                    <td>{assigment.assignedDate}</td>
-                                    <td>{check(assigment.state)}</td>
-                                    {assigment.state === 5 ?
-                                        <Popup
-                                            trigger={<td><i className="bi bi-check-lg btn m-0 p-0 text-danger "/>
-                                            </td>}
-                                            modal
-                                            contentStyle={PopupStyle}
-                                        >
-                                            {close => <AcceptPopup close={close} assigment={assigment}
-                                                                   setState={setState}/>}
-                                        </Popup>
-                                        :
-                                        <Popup
-                                            trigger={<td><i
-                                                className="bi bi-check-lg btn m-0 p-0 text-danger disabled "/>
-                                            </td>}
-                                            modal
-                                            disabled
-                                            contentStyle={PopupStyle}
-                                        >
-                                            {close => <AcceptPopup close={close} assigment={assigment}
-                                                                   setState={setState}/>}
-                                        </Popup>
-                                    }
-                                    {assigment.state === 5 ?
-                                        <Popup contentStyle={PopupStyle}
-                                               trigger={<td><i className="bi bi-x-lg btn m-0 p-0"/></td>}
-                                               modal>
-                                            {close => <DeclinePopup close={close} setState={setState}
-                                                                    assigment={assigment}/>}
-                                        </Popup>
-                                        :
-                                        <Popup contentStyle={PopupStyle}
-                                               trigger={<td><i className="bi bi-x-lg btn m-0 p-0 disabled"/></td>}
-                                               disabled
-                                               modal>
-                                            {close => <DeclinePopup/>}
-                                        </Popup>
-                                    }
-                                    {assigment.state === 7 || assigment.state === 8 || assigment.state === 5 ?
-                                        <Popup
-                                            trigger={<td><i
-                                                className="bi bi-arrow-counterclockwise btn m-0 p-0 text-blue disabled "/>
-                                            </td>}
-                                            modal
-                                            disabled
-                                            contentStyle={PopupStyle}
-                                        >
-                                            {close => <ReturnPopup/>}
-                                        </Popup>
-                                        :
-                                        <Popup
-                                            trigger={<td><i
-                                                className="bi bi-arrow-counterclockwise btn m-0 p-0 text-blue zoomin"/>
-                                            </td>}
-                                            modal
-                                            contentStyle={PopupStyle}
-                                        >
-                                            {close => <ReturnPopup close={close} setState={setState}
-                                                                   assigment={assigment}/>}
-                                        </Popup>
-                                    }
-                                </tr>
-                            } modal>
-                                {close => <ViewDetailAssignment id={assigment.id} close={close}/>}
-                            </Popup>
+      <Container fluid className={"d-block ps-5"}>
+        <h3 className={"text-danger my-5"}>My Assignment</h3>
+        <Row className={"mt-5"}>
+          {list.length === 0 ? (
+            <EmptyList />
+          ) : (
+            <Table>
+              <thead>
+                <tr>
+                  <th
+                    className={"border-bottom"}
+                    className={getClassNamesFor("id")}
+                    onClick={() => requestSort("id")}
+                  >
+                    No.
+                  </th>
+                  <th
+                    className={"border-bottom"}
+                    className={getClassNamesFor("assetDTO.assetCode")}
+                    onClick={() => requestSort("assetDTO.assetCode")}
+                  >
+                    Asset Code
+                  </th>
+                  <th
+                    className={"border-bottom"}
+                    className={getClassNamesFor("assetDTO.assetName")}
+                    onClick={() => requestSort("assetDTO.assetName")}
+                  >
+                    Asset Name
+                  </th>
+                  <th
+                    className={"border-bottom"}
+                    className={getClassNamesFor("assetDTO.categoryDTO.name")}
+                    onClick={() => requestSort("assetDTO.categoryDTO.name")}
+                  >
+                    Category
+                  </th>
+                  <th
+                    className={"border-bottom"}
+                    className={getClassNamesFor("assignedDate")}
+                    onClick={() => requestSort("assignedDate")}
+                  >
+                    Assigned Date
+                  </th>
+                  <th
+                    className={"border-bottom"}
+                    className={getClassNamesFor("state")}
+                    onClick={() => requestSort("state")}
+                  >
+                    State
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {list.map((assigment) => (
+                  <Popup
+                    contentStyle={{
+                      width: "25%",
+                      border: "1px solid black",
+                      borderRadius: 10,
+                      overflow: "hidden",
+                      padding: "20px",
+                    }}
+                    trigger={
+                      <tr key={assigment.id}>
+                        <td>{i++}</td>
+                        <td>{assigment.assetDTO.assetCode}</td>
+                        <td>{assigment.assetDTO.assetName}</td>
+                        <td>{assigment.assetDTO.categoryDTO.name}</td>
+                        <td>{assigment.assignedDate}</td>
+                        <td>{check(assigment.state)}</td>
+                        {assigment.state === 5 ? (
+                          <Popup
+                            trigger={
+                              <td>
+                                <i className="bi bi-check-lg btn m-0 p-0 text-danger " />
+                              </td>
+                            }
+                            modal
+                            contentStyle={PopupStyle}
+                          >
+                            {(close) => (
+                              <AcceptPopup
+                                close={close}
+                                assigment={assigment}
+                                setState={setState}
+                              />
+                            )}
+                          </Popup>
+                        ) : (
+                          <Popup
+                            trigger={
+                              <td>
+                                <i className="bi bi-check-lg btn m-0 p-0 text-danger disabled " />
+                              </td>
+                            }
+                            modal
+                            disabled
+                            contentStyle={PopupStyle}
+                          >
+                            {(close) => (
+                              <AcceptPopup
+                                close={close}
+                                assigment={assigment}
+                                setState={setState}
+                              />
+                            )}
+                          </Popup>
                         )}
-                        </tbody>
-                    </Table>
-                }
-            </Row>
-            <Pagination className="pagnition"
-                        usersPerPage={usersPerPage}
-                        totalUsers={list.length}
-                        paginate={paginate}
-            >
-            </Pagination>
-        </Container>
-
-
-    )
+                        {assigment.state === 5 ? (
+                          <Popup
+                            contentStyle={PopupStyle}
+                            trigger={
+                              <td>
+                                <i className="bi bi-x-lg btn m-0 p-0" />
+                              </td>
+                            }
+                            modal
+                          >
+                            {(close) => (
+                              <DeclinePopup
+                                close={close}
+                                setState={setState}
+                                assigment={assigment}
+                              />
+                            )}
+                          </Popup>
+                        ) : (
+                          <Popup
+                            contentStyle={PopupStyle}
+                            trigger={
+                              <td>
+                                <i className="bi bi-x-lg btn m-0 p-0 disabled" />
+                              </td>
+                            }
+                            disabled
+                            modal
+                          >
+                            {(close) => <DeclinePopup />}
+                          </Popup>
+                        )}
+                        {assigment.state === 7 ||
+                        assigment.state === 8 ||
+                        assigment.state === 5 ? (
+                          <Popup
+                            trigger={
+                              <td>
+                                <i className="bi bi-arrow-counterclockwise btn m-0 p-0 text-blue disabled " />
+                              </td>
+                            }
+                            modal
+                            disabled
+                            contentStyle={PopupStyle}
+                          >
+                            {(close) => <ReturnPopup />}
+                          </Popup>
+                        ) : (
+                          <Popup
+                            trigger={
+                              <td>
+                                <i className="bi bi-arrow-counterclockwise btn m-0 p-0 text-blue zoomin" />
+                              </td>
+                            }
+                            modal
+                            contentStyle={PopupStyle}
+                          >
+                            {(close) => (
+                              <ReturnPopup
+                                close={close}
+                                setState={setState}
+                                assigment={assigment}
+                              />
+                            )}
+                          </Popup>
+                        )}
+                      </tr>
+                    }
+                    modal
+                  >
+                    {(close) => (
+                      <div>
+                        <ViewDetailAssignment id={assigment.id} />
+                        <Button
+                          onClick={close}
+                          variant="success"
+                          className="btn-view-detail"
+                        >
+                          &times;
+                        </Button>
+                      </div>
+                    )}
+                  </Popup>
+                ))}
+              </tbody>
+            </Table>
+          )}
+        </Row>
+        <Pagination
+          className="pagnition"
+          usersPerPage={usersPerPage}
+          totalUsers={list.length}
+          paginate={paginate}
+        ></Pagination>
+      </Container>
+    );
 
 }
 

@@ -17,13 +17,13 @@ const SearchAsset = ({setAssetSelect,close}) => {
         state:null
     }]);
     useEffect(() => {
-        axios.get(rootAPI + '/assets/filter')
+        axios.get(rootAPI + '/assets')
             .then(response => {
                 setAsset(response.data)
             })
     }, [])
     useEffect(()=>{
-        axios.get(rootAPI+'/assets/filter?searchTerm='+searchTerm)
+        axios.get(rootAPI+'/assets?searchTerm='+searchTerm)
             .then(response => {
                 setAsset(response.data);
             })
