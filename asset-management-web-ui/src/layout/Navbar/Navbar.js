@@ -84,8 +84,7 @@ const Navbar = ({setCurrentPage}) => {
                     ) : (
                         <ListGroup className="navbar-list">
                             <NavLink to="/home"
-                                     onClick={() => setCurrentPage("Home")
-                                     }
+                                     onClick={() => setCurrentPage("Home")}
                                      activeClassName={"custom-class"}
                             >
                                 <li className="navbar-list--item">Home</li>
@@ -101,8 +100,7 @@ const Navbar = ({setCurrentPage}) => {
                             </NavLink>
                             <NavLink
                                 to="/asset"
-                                onClick={() => setCurrentPage("Manage Asset")
-                                }
+                                onClick={() => setCurrentPage("Manage Asset")}
                                 activeClassName={"custom-class"}
                             >
                                 <li className="navbar-list--item">Manage Asset</li>
@@ -123,14 +121,9 @@ const Navbar = ({setCurrentPage}) => {
                             </NavLink>
                             <NavLink to="/report"
                                      activeClassName={"custom-class"}
+                                     onClick={() => setCurrentPage("Report")}
                             >
-                                <li
-                                    className="navbar-list--item"
-                                    onClick={() => setCurrentPage("Report")}
-
-                                >
-                                    Report
-                                </li>
+                                <li className="navbar-list--item">Report</li>
                             </NavLink>
                         </ListGroup>
                     )}
