@@ -61,12 +61,12 @@ const ChangeStatus = props => {
     }
     return (
         <div>
-            <h3 className={"text-danger"}>Are you sure?</h3>
-            <hr/>
-            <p>Do you want to disable this user?</p>
-            <Row className>
+            <h3 className={"text-danger"} style={{padding: '10px 20px'}}>Are you sure?</h3>
+            <hr style={{margin: '0'}}/>
+            <Row style={{padding: '10px 20px'}}>
+                <p>Do you want to disable this user?</p>
                 <ButtonGroup className={"w-50"}>
-                    <Button variant={"danger"} className={"px-5"} onClick={onSubmit}>Change</Button>
+                    <Button variant={"danger"} className={"px-5"} onClick={onSubmit}>Disable</Button>
                 </ButtonGroup>
                 <ButtonGroup className={"w-50"}>
                     <Button variant={"secondary"} className={"px-5"} onClick={() => close()}>Cancel</Button>

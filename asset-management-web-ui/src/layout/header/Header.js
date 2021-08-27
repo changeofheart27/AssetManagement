@@ -18,7 +18,7 @@ const Header = ({currentPage}) => {
             <header className="main-header">
                 <div className="container-fluid justify-content-between d-flex">
                     <div className="content-info">
-                        <p> {currentPage}</p>   
+                        <p>{currentPage}</p>   
                     </div>
                     <Dropdown>
                         <Dropdown.Toggle style={{backgroundColor: "#CF2338", borderColor: "#CF2338"}}

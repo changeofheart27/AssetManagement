@@ -235,18 +235,16 @@ const ManageUser = ({responseUser}) => {
                       <td>{dateFormat(user.joinedDate, "dd/mm/yyyy")}</td>
                       <td>{capitalizeFirstLetter(user.authority)}</td>
                       <td>
-                        <i
-                          className="bi bi-pen btn m-0 text-muted p-0"
+                        <i className="bi bi-pen btn m-0 text-muted p-0"
                           onClick={() => history.push(`/edituser/${user.id}`)}
                         />
                       </td>
                       <Popup
                         contentStyle={{
-                          width: "25%",
+                          width: "27%",
                           border: "1px solid black",
                           borderRadius: 10,
                           overflow: "hidden",
-                          padding: "20px",
                         }}
                         trigger={
                           <td>
@@ -259,7 +257,7 @@ const ManageUser = ({responseUser}) => {
                           if (user.assignments?.length !== 0) {
                             return <ChangeStatusFail close={close} />;
                           } else {
-                            return <ChangeStatus id={user.id} close={close} />;
+                            return <ChangeStatus id={user.id} close={close} setRefresh={setRefresh}/>;
                           }
                         }}
                       </Popup>
