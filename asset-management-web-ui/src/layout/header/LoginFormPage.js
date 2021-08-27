@@ -41,7 +41,6 @@ const LoginFormPage = ({props, loginSuccess}) => {
         )
             .then((response) => {
                 setSubmitting(false);
-                console.log(response);
                 localStorage.clear();
                 setShowLoginSuccess(true);
                 localStorage.setItem("jwttoken", "Bearer " + response.data.jwttoken);
@@ -51,7 +50,6 @@ const LoginFormPage = ({props, loginSuccess}) => {
                 toast.success("Logging success");
             }).catch((error) => {
             setSubmitting(false);
-            console.log(error);
             setSubmitError(
                 "Login fails status code: " + error
             );

@@ -27,7 +27,6 @@ const DeleteAsset = () => {
       .delete(rootAPI+`/assets/${id}`)
       .then(function (response) {
         setList(response.data);
-        console.log(response.data);
       });
   }, [id]);
 

@@ -11,9 +11,9 @@ import DetailsPopup from "./popup/DetailsPopup";
 import Pagination from '../../components/Pagination/Pagination';
 import Popup from "reactjs-popup";
 import ReturnPopup from "./popup/ReturnPopup";
-import {Window} from 'react-bootstrap-icons';
 import axios from "axios";
 import EmptyList from "../../layout/EmptyList/EmptyList";
+import ViewDetailAssignment from "../Assignment/viewDetails/ViewDetailAssignment";
 
 const Home = () => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
@@ -49,17 +49,16 @@ const Home = () => {
     const Authentoken = localStorage.getItem("jwttoken");
 
     useEffect(() => {
-        axios.get(rootAPI + '/home?username=' + localStorage.getItem("username"), {
+        axios.get(rootAPI + '/my-assignments', {
             headers: {
                 Authorization: Authentoken
             }
         }).then((response) => {
             setList(response.data);
             axios
-                .get(rootAPI + `/users/${localStorage.getItem("username")}`)
+                .get(rootAPI + `/users`)
                 .then((response1) => {
                     setUser(response1.data)
-                    console.log(response1)
                 })
         })
             .catch((error) => {
@@ -171,11 +170,12 @@ const Home = () => {
                         </thead>
                         <tbody>
                         {list.map(assigment =>
-                            <Popup contentStyle={{
+                            <Popup
+                                contentStyle={{
                                 width: "25%", border: "1px solid black", borderRadius: 10,
                                 overflow: 'hidden', padding: "20px"
                             }} trigger={
-                                <tr key={assigment.id}>
+                                <tr key={assigment.id} >
                                     <td>{i++}</td>
                                     <td>{assigment.assetDTO.assetCode}</td>
                                     <td>{assigment.assetDTO.assetName}</td>
@@ -234,7 +234,7 @@ const Home = () => {
                                         :
                                         <Popup
                                             trigger={<td><i
-                                                className="bi bi-arrow-counterclockwise btn m-0 p-0 text-blue"/>
+                                                className="bi bi-arrow-counterclockwise btn m-0 p-0 text-blue zoomin"/>
                                             </td>}
                                             modal
                                             contentStyle={PopupStyle}
@@ -245,7 +245,7 @@ const Home = () => {
                                     }
                                 </tr>
                             } modal>
-                                {close => <DetailsPopup close={close}/>}
+                                {close => <ViewDetailAssignment id={assigment.id} close={close}/>}
                             </Popup>
                         )}
                         </tbody>

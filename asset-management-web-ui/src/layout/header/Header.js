@@ -1,10 +1,10 @@
 import "./Header.css";
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-import { Dropdown, DropdownButton } from "react-bootstrap";
-import React, { useState } from "react";
+import {Dropdown, DropdownButton} from "react-bootstrap";
+import React, {useState} from "react";
 
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import Logout from "./Logout";
 import Popup from "reactjs-popup";
 import UserInfo from "./UserInfo";
@@ -18,7 +18,13 @@ const Header = ({currentPage}) => {
             <header className="main-header">
                 <div className="container-fluid justify-content-between d-flex">
                     <div className="content-info">
-                        <p>{currentPage}</p>
+                        {currentPage === "Home"
+                            ?
+                            <p>Home</p>
+                            :
+                            <p>Home > {currentPage}</p>
+                        }
+
                     </div>
                     <Dropdown>
                         <Dropdown.Toggle style={{backgroundColor: "#CF2338", borderColor: "#CF2338"}}
@@ -26,16 +32,17 @@ const Header = ({currentPage}) => {
                             {localStorage.getItem("username")}
                         </Dropdown.Toggle>
                         <Dropdown.Menu className={"p-0"}>
-                          <Dropdown.Item className={'custom-dropdown'} href="/changepassword">Change Password</Dropdown.Item>
+                            <Dropdown.Item className={'custom-dropdown'} href="/changepassword">Change
+                                Password</Dropdown.Item>
                             <Popup contentStyle={{
                                 width: "25%",
-                                height: "20%",
                                 border: "1px solid black",
                                 borderRadius: 10,
                                 overflow: 'hidden',
                                 padding: "15px"
                             }}
-                                   modal trigger={<Dropdown.Item className={'custom-dropdown'}>Logout</Dropdown.Item>}>
+                                   modal
+                                   trigger={<Dropdown.Item className={'custom-dropdown'}>Logout</Dropdown.Item>}>
                                 {close => (
                                     <Logout close={close}/>
                                 )}

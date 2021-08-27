@@ -59,6 +59,8 @@ public class UserDTO {
 
     private String defaultPassword;
 
+    private List<AssignmentDTO> assignments;
+
 
 
 

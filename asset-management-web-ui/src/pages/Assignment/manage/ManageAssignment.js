@@ -53,21 +53,16 @@ const ManageAssignment = ({responseAssigment}) => {
             isFirstRun.current = false;
             return;
         }
-        console.log("use Effect Run");
-        console.log(request);
         if (request.params.type === "State") {
             request.params.type = null;
-            console.log(request);
         }
         if (request.params.date === "Assigned Date") {
             request.params.date = null;
-            console.log(request);
         }
         axios
             .get(rootAPI + `/assignments/filter`, request)
             .then(function (response) {
                 setList(response.data);
-                console.log(response.data);
             });
     }, [type, date]);
 
@@ -82,7 +77,6 @@ const ManageAssignment = ({responseAssigment}) => {
             } else {
                 setList(response.data);
             }
-            console.log(response.data);
         });
     }, []);
     const check = (state) => {
@@ -106,13 +100,11 @@ const ManageAssignment = ({responseAssigment}) => {
             .get(rootAPI + `/assignments/search?keyword=${search}`)
             .then(function (response) {
                 setList(response.data);
-                console.log(response.data);
             });
     };
     if (search === null) {
-        axios.get(rootAPI + "/assets").then(function (response) {
+        axios.get(rootAPI + "/assets/filter").then(function (response) {
             setList(response.data);
-            console.log(response.data);
         });
     }
     const sortingData = useMemo(() => {
