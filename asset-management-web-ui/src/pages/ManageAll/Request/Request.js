@@ -88,11 +88,9 @@ const Request = () => {
         return sortConfig.key === name ? sortConfig.direction : undefined;
     };
     const handleFilterType = evt => {
-        const name = evt.target.name;
         setType(evt.target.value)
     }
     const handleFilterDate = evt => {
-        const name = evt.target.name;
         setDate(evt.target.value)
     }
     const handleSearch = evt => {
@@ -128,7 +126,7 @@ const Request = () => {
             return <td>Completed</td>;
         }
     };
-
+    let i = 1;
     return (
         <Container fluid className={"d-block ps-5"}>
             <h1 className={"text-danger mb-3"}>Request List</h1>
@@ -142,7 +140,6 @@ const Request = () => {
                         onChange={handleFilterType}
                     >
                         <option>State</option>
-
                         <option value="0">Waiting for returning</option>
                         <option value="1">Completed</option>
                     </Form.Control>
@@ -220,7 +217,7 @@ const Request = () => {
                     <tbody>
                     {list.map(assign =>
                         <tr>
-                            <td>{assign.id}</td>
+                            <td>{i++}</td>
                             <td>{assign.assignmentDTO.assetDTO.assetCode}</td>
                             <td>{assign.assignmentDTO.assetDTO.assetName}</td>
                             <td>{assign.assignmentDTO.userDTO.username}</td>

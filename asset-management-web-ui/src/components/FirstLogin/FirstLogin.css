@@ -1,0 +1,19 @@
+.first-login{
+    background-color: aliceblue;
+    width: 25%;
+    border-radius: 5px;
+    margin-top: 300px;
+padding-right: -100px;
+}
+.row-first-login{
+    margin-right: -100px;
+}
+  
+  .form-control {
+   
+   margin-left: 30px;
+    margin-top: 10px;
+    width: 50% !important;
+    height: 50%;
+  }
+  

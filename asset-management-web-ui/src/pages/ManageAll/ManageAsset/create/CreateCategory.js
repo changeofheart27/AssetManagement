@@ -18,7 +18,7 @@ const CreateCategory = () => {
             prefix: values.prefix
         };
         axios
-            .post(rootAPI + `/api/v1/categories`, create)
+            .post(rootAPI + `/categories`, create)
             .then((response) => {
                 setSubmitting(false);
                 history.push("/createasset");

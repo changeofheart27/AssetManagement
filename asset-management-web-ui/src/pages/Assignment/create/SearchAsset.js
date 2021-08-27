@@ -24,7 +24,7 @@ const SearchAsset = ({setAssetSelect,close}) => {
             })
     }, [])
     useEffect(()=>{
-        axios.get(rootAPI+'/assets/search?keyword='+searchTerm)
+        axios.get(rootAPI+'/assets/filter?searchTerm='+searchTerm)
             .then(response => {
                 setAsset(response.data);
             })
@@ -121,7 +121,7 @@ const SearchAsset = ({setAssetSelect,close}) => {
                 </Table>
                 <Row className={"justify-content-end"}>
                     <Button variant={"danger"} className={"w-25 mx-5"} onClick={()=> close()}>Save</Button>
-                    <Button variant={"danger"} className={"w-25"} onClick={()=>{
+                    <Button variant={"secondary"} className={"w-25"} onClick={()=>{
                         setAssetSelect({id:null, assetCode:"", assetName:""})
                         close()
                     }} >Cancel</Button>

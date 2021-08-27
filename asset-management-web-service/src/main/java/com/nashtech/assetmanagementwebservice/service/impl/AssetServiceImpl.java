@@ -1,5 +1,6 @@
 package com.nashtech.assetmanagementwebservice.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
@@ -36,20 +37,9 @@ public class AssetServiceImpl implements AssetService {
   }
 
   @Override
-  public List<AssetDTO> getAssetList() {
-    logger.info("Attempting to get all Asset...");
-    List<Asset> assets = assetRepository.findAllByOrderByAssetName();
-    logger.info("Successfully got all " + assets.size() + " Asset!");
-    return assets.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
-  }
-
-  @Override
   public AssetDTO findAssetById(Integer id) {
     logger.info("Attempting to find Asset with id " + id + "...");
     Asset asset = assetRepository.getById(id);
-    if (asset == null) {
-      throw new NotFoundException("No record found with id " + id);
-    }
     logger.info("Successfully found an Asset with id=" + asset.getId() + ",title=" + asset.getAssetCode() + ",assetName=" + asset.getAssetName() + ",category=" + asset.getCategory().getName() + "!");
     return assetMapper.fromEntity(asset);
   }
@@ -99,9 +89,6 @@ public class AssetServiceImpl implements AssetService {
   public void deleteAssetById(Integer id) {
     logger.info("Attempting to delete Asset with id " + id + "...");
     Asset asset = assetRepository.getById(id);
-    if (asset == null) {
-      throw new NotFoundException("No record found with id " + id);
-    }
     // 4 Assigned => can not delete
     if (asset.getState() == 4) {
       throw new InternalServerException("Asset is current assigned to someone");
@@ -110,58 +97,37 @@ public class AssetServiceImpl implements AssetService {
     assetRepository.delete(asset);
   }
 
-  @Override
-  public List<AssetDTO> searchAssetByAssetNameOrAssetCode(String keyword) {
-
-    logger.info("Attempting to search Asset with keyword " + keyword + "...");
-    String assetName = "%" + keyword + "%";
-    String assetCode = keyword;
-    List<Asset> assets = assetRepository.findAssetsByAssetNameContainsOrAssetCodeContains(assetName, assetCode);
-    logger.info("Successfully got " + assets.size() + " Asset!");
-    return assets.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
-  }
 
   @Override
   public List<AssetDTO> filterAssets(String category, Integer state, String keyword) {
-    List<Asset> assets;
+    List<Asset> assets = new ArrayList<>();
     String assetName = "%" + keyword + "%";
     String assetCode = keyword;
     if (state == null && category == null && keyword == null) {
       assets = assetRepository.findAllByOrderByAssetName();
-      return assets.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
     } else if (state == null && category != null && keyword == null) {
       assets = assetRepository.findAssetByCategory(category);
-      logger.info("Successfully got " + assets.size() + " Asset!");
-      return assets.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
     } else if (category == null && state != null && keyword == null) {
       assets = assetRepository.findAssetByState(state);
-      logger.info("Successfully got " + assets.size() + " Asset!");
-      return assets.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
     } else if (category != null && state != null && keyword == null) {
       assets = assetRepository.findAssetByState(state);
-      List<Asset> result = assets.stream().filter(asset -> asset.getCategory().getName().equals(category)).collect(Collectors.toList());
-      return result.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
+      assets = assets.stream().filter(asset -> asset.getCategory().getName().equals(category)).collect(Collectors.toList());
     } else if (state == null && category == null && keyword != null) {
       assets = assetRepository.findAssetsByAssetNameContainsOrAssetCodeContains(assetName, assetCode);
-      logger.info("Successfully got " + assets.size() + " Asset!");
-      return assets.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
     } else if (state == null && category != null && keyword != null) {
       assets = assetRepository.findAssetsByAssetNameContainsOrAssetCodeContains(assetName, assetCode);
-      List<Asset> result = assets.stream().filter(asset -> asset.getCategory().getName().equals(category)).collect(Collectors.toList());
-      logger.info("Successfully got " + assets.size() + " Asset!");
-      return result.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
+      assets  = assets.stream().filter(asset -> asset.getCategory().getName().equals(category)).collect(Collectors.toList());
     } else if (category == null && state != null && keyword != null) {
       assets = assetRepository.findAssetsByAssetNameContainsOrAssetCodeContains(assetName, assetCode);
-      List<Asset> result = assets.stream().filter(asset -> asset.getState() == state).collect(Collectors.toList());
-      logger.info("Successfully got " + assets.size() + " Asset!");
-      return result.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
+      assets = assets.stream().filter(asset -> asset.getState() == state).collect(Collectors.toList());
     } else if (category != null && state != null && keyword != null) {
       assets = assetRepository.findAssetsByAssetNameContainsOrAssetCodeContains(assetName, assetCode);
-      List<Asset> result = assets.stream().filter(asset -> asset.getState() == state && asset.getCategory().getName().equals(category)).collect(Collectors.toList());
-      logger.info("Successfully got " + assets.size() + " Asset!");
-      return result.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
+      assets = assets.stream()
+              .filter(asset -> asset.getState() == state && asset.getCategory().getName().equals(category))
+              .collect(Collectors.toList());
     }
-    return null;
+    logger.info("Successfully got " + assets.size() + " Asset!");
+    return assets.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
   }
 
 
@@ -207,10 +173,4 @@ public class AssetServiceImpl implements AssetService {
   }
 
 
-  // private String generateAssetCode(Category category) {
-  // String prefix = category.getPrefix();
-  // Integer count = assetRepository.count(category.getId()) + 1;
-  // String assetCode = prefix + String.format("%06d", count);
-  // return assetCode;
-  // }
 }

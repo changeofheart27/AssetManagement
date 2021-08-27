@@ -6,6 +6,7 @@ import axios from "axios";
 import {useHistory} from "react-router-dom";
 import * as Yup from 'yup'
 import {isValid} from 'date-fns';
+import {TextField} from "@material-ui/core";
 
 const CreateAsset = ({setResponseDataAsset}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
@@ -66,6 +67,19 @@ const CreateAsset = ({setResponseDataAsset}) => {
             .required('Required')
             .typeError('State can not empty'),
     });
+    const formValid = values => {
+        return (values.assetName === null
+            || values.category === null
+            || values.installedDate === null
+        )
+    }
+
+    function onKeyDown(keyEvent) {
+        if ((keyEvent.charCode || keyEvent.keyCode) === 13) {
+            keyEvent.preventDefault();
+        }
+    }
+
     return (
         <div className={"container ps-5 d-block"}>
             <Row>
@@ -87,10 +101,10 @@ const CreateAsset = ({setResponseDataAsset}) => {
                           isSubmitting,
                           /* and other goodies */
                       }) => (
-                        <Form onSubmit={handleSubmit}>
+                        <Form onSubmit={handleSubmit} onKeyDown={onKeyDown}>
                             <Row className={"mb-3"}>
                                 <p className={"w-25"}>Name</p>
-                                <FormControl
+                                <Form.Control
                                     aria-label="Username"
                                     aria-describedby="basic-addon1"
                                     className={"w-75"}
@@ -114,7 +128,7 @@ const CreateAsset = ({setResponseDataAsset}) => {
                                 <Form.Select
                                     name={"category"}
                                     size="sm"
-                                    style={{width:'70%'}}
+                                    style={{width: '70%'}}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     isValid={touched.category && !errors.category}
@@ -125,11 +139,11 @@ const CreateAsset = ({setResponseDataAsset}) => {
                                         <option value={category.id}>{category.name}</option>
                                     ))}
                                 </Form.Select>
-                                <Button style={{width:'5%'}} 
+                                <Button style={{width: '5%'}}
                                         variant="outline-secondary"
                                         onClick={() => history.push('/createcategory')}
                                 >
-                                    <i class="bi bi-plus-lg"/>
+                                    <i className="bi bi-plus-lg"/>
                                 </Button>
                                 {errors.category && touched.category ? (
                                     <div
@@ -142,9 +156,9 @@ const CreateAsset = ({setResponseDataAsset}) => {
                             </Row>
                             <Row className="mb-3">
                                 <p className={"w-25"}>Specification</p>
-                                <FormControl
+                                <Form.Control
                                     name={"specification"}
-                                    aria-label="Username"
+                                    label={"Specification"}
                                     aria-describedby="basic-addon1"
                                     className={"w-75"}
                                     style={{height: "5em"}}
@@ -215,7 +229,7 @@ const CreateAsset = ({setResponseDataAsset}) => {
                                 variant={"danger"}
                                 type={"submit"}
                                 style={{float: "right"}}
-                                on
+                                disabled={formValid(values)}
                             >
                                 Save
                             </Button>

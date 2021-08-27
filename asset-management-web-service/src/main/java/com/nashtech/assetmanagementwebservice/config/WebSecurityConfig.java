@@ -59,31 +59,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						"/v2/api-docs",
 						"/webjars/**").permitAll()
 				.antMatchers("/api/v1/authenticate").permitAll()
-
 				.antMatchers("/**/check-change-password/**").permitAll()
-
-				.antMatchers("/**/request/**").permitAll()
-
+				.antMatchers("/**/request/**").hasAnyRole("STAFF", "ADMIN")
 				.antMatchers("/**/change-password/**").permitAll()
-
-				.antMatchers("/**/assignments/**").permitAll()
-
-				.antMatchers("/**/categories/**").permitAll()
-
-				.antMatchers("/**/assets/**").permitAll()
-
-				.antMatchers("/**/searchby").permitAll()
-
+				.antMatchers("/**/categories/**", "/**/assignments/**", 
+						"/**/assets/**", "/**/users/**").hasAnyRole("ADMIN")
 				.antMatchers("/**/admin/**").hasAnyRole("ADMIN")
-
-				.antMatchers("/**/staff/**").hasAnyRole("STAFF")
-
-				.antMatchers("/**/users/**").permitAll()
-
-				.antMatchers("/**/user/home").permitAll()
-
-
-
+				.antMatchers("/**/home", "/**/staff/**", "/**/searchby").hasAnyRole("STAFF", "ADMIN")
 				.anyRequest().authenticated().and().exceptionHandling()
 				.authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);

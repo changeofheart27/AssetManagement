@@ -1,6 +1,7 @@
 package com.nashtech.assetmanagementwebservice.repository;
 
 
+import com.nashtech.assetmanagementwebservice.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -31,7 +32,8 @@ public interface AssetRepository extends JpaRepository<Asset, Integer> {
 	public List<Asset> findAssetByCategory(String category);
 	
 	public List<Asset> findAssetByState(int state);
-	
+	public List<Asset> findAssetByStateAndCategory(int state, Category category);
+
 	@Query(value = "select \r\n"
 			+ "  category.name as \"Category\", \r\n"
 			+ "  count(*) as \"Total\", \r\n"

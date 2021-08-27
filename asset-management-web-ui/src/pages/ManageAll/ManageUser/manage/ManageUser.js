@@ -22,8 +22,6 @@ const ManageUser = ({responseUser}) => {
     
 };
     const rootAPI = process.env.REACT_APP_SERVER_URL;
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(10);
     const [sortConfig, setSortConfig] = useState(null);
@@ -69,11 +67,9 @@ const ManageUser = ({responseUser}) => {
         }
     }
     const handleFilterType = evt => {
-        const name = evt.target.name;
         setType(evt.target.value)
     }
     const handleSearch = evt => {
-        const name = evt.target.name;
         setSearchTerm(evt.target.value)
     }
     
@@ -147,14 +143,14 @@ const ManageUser = ({responseUser}) => {
               </Button>
             </InputGroup>
           </div>
-          <div className={"col-5 d-flex"}>
+          <div className={"col-6 d-flex justify-content-end"}>
             <InputGroup className={"w-50"}>
               <FormControl
                 type={"text"}
                 name={"searchTerm"}
                 onChange={handleSearch}
                 maxLength={255}
-              ></FormControl>
+              />
               <Button
                 variant={"outline-secondary"}
                 onClick={handleSearch}>Search

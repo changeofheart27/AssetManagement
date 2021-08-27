@@ -23,7 +23,7 @@ public class UserMapper {
     tmp.setStatus(user.getStatus());
     tmp.setPassword(user.getPassword());
     tmp.setDefaultPassword(user.getDefaultPassword());
-
+    tmp.setFirstLogin(user.getFirstLogin());
     return tmp;
   }
 
@@ -40,7 +40,7 @@ public class UserMapper {
     user.setStaffCode(user.getStaffCode());
     user.setStatus(request.getStatus());
     user.setDefaultPassword(request.getDefaultPassword());
-
+    user.setFirstLogin(request.getFirstLogin());
     return user;
   }
 
