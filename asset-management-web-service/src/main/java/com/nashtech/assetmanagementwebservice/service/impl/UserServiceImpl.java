@@ -145,9 +145,22 @@ public class UserServiceImpl implements UserService {
     }
 
 
+//    @Override
+//    public List<UserDTO> searchByNameOrStaffCode(String keyword) {
+//        List<User> users = userRepository.findByUsernameContainsOrStaffCodeContains(keyword, keyword);
+//        List<UserDTO> result = new ArrayList<>();
+//        for (User user : users) {
+//            result.add(UserMapper.toUserDTO(user));
+//        }
+//        return result;
+//
+//    }
+    
     @Override
     public List<UserDTO> searchByNameOrStaffCode(String keyword) {
-        List<User> users = userRepository.findByUsernameContainsOrStaffCodeContains(keyword, keyword);
+    	String fullName = "%" + keyword + "%";
+    	String staffCode = keyword;
+        List<User> users = userRepository.findUserByFullNameOrStaffCode(fullName, staffCode);
         List<UserDTO> result = new ArrayList<>();
         for (User user : users) {
             result.add(UserMapper.toUserDTO(user));
@@ -173,31 +186,50 @@ public class UserServiceImpl implements UserService {
     }
 
 
+//    @Override
+//    public List<UserDTO> getUserByType(String type, String keyword) {
+//        List<User> users = new ArrayList<>();
+//
+//        if (type == null && keyword == null) {
+//            users = userRepository.findByStatus("enabled");
+//        } else if (type != null && keyword == null) {
+//            users = userRepository.getUserByType(type);
+//        } else if (type == null && keyword != null) {
+//            String[] tmp = keyword.split("\\s+");
+//            String firstName = tmp[tmp.length - 1];
+//            String lastName = "";
+//            if (tmp.length > 1) {
+//                lastName = tmp[0];
+//            }
+//
+//            users = userRepository.findByNameOrStaffCode(firstName, lastName, keyword);
+//        } else if (type != null && keyword != null) {
+//            String tmp[] = keyword.split("\\s+");
+//            String firstName = tmp[tmp.length - 1];
+//            String lastName = "";
+//            if (tmp.length > 1) {
+//                lastName = tmp[0];
+//            }
+//            users = userRepository.findByNameOrStaffCode(firstName, lastName, keyword);
+//            users = users.stream().filter(user -> user.getAuthority().getAuthority().equals(type.toUpperCase())).collect(Collectors.toList());
+//        }
+//        return users.stream().map(UserMapper::toUserDTO).collect(Collectors.toList());
+//
+//    }
+    
     @Override
     public List<UserDTO> getUserByType(String type, String keyword) {
         List<User> users = new ArrayList<>();
-
+        String fullName = "%" + keyword + "%";
+        String staffCode = keyword;
         if (type == null && keyword == null) {
             users = userRepository.findByStatus("enabled");
         } else if (type != null && keyword == null) {
             users = userRepository.getUserByType(type);
         } else if (type == null && keyword != null) {
-            String[] tmp = keyword.split("\\s+");
-            String firstName = tmp[tmp.length - 1];
-            String lastName = "";
-            if (tmp.length > 1) {
-                lastName = tmp[0];
-            }
-
-            users = userRepository.findByNameOrStaffCode(firstName, lastName, keyword);
+            users = userRepository.findUserByFullNameOrStaffCode(fullName, staffCode);
         } else if (type != null && keyword != null) {
-            String tmp[] = keyword.split("\\s+");
-            String firstName = tmp[tmp.length - 1];
-            String lastName = "";
-            if (tmp.length > 1) {
-                lastName = tmp[0];
-            }
-            users = userRepository.findByNameOrStaffCode(firstName, lastName, keyword);
+            users = userRepository.findUserByFullNameOrStaffCode(fullName, staffCode);
             users = users.stream().filter(user -> user.getAuthority().getAuthority().equals(type.toUpperCase())).collect(Collectors.toList());
         }
         return users.stream().map(UserMapper::toUserDTO).collect(Collectors.toList());
