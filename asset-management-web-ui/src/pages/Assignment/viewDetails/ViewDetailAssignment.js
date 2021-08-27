@@ -27,16 +27,16 @@ const ViewDetailAssignment = props => {
     setAssignment(res.data);
   };
   const check = state => {
-    if(state == 5){
+    if(state === 5){
       return <span>Waiting for acceptance</span>
     }
-    if(state == 6){
+    if(state === 6){
       return <span>Accepted</span>
     }
-    if(state == 7){
+    if(state === 7){
       return <span>Decline</span>
     }
-    if(state == 8){
+    if(state === 8){
       return <span>Waiting for returning</span>
     }
   }

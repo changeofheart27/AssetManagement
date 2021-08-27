@@ -54,4 +54,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
 //  @Query(value = "SELECT * FROM user u WHERE u.status = 'enabled'", nativeQuery = true)
 //  public List<User> findUserEnabled();
+  
+  
+  @Query(value = "SELECT * FROM user WHERE CONCAT(first_name, \" \", last_name) LIKE :fullName "
+  		+ "OR staff_code = :staffCode", nativeQuery = true)
+  public List<User> findUserByFullNameOrStaffCode(String fullName, String staffCode);
 }

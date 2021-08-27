@@ -2,7 +2,6 @@ import React from 'react';
 import {Button, Container, Row} from "react-bootstrap";
 import './popup.css'
 import axios from "axios";
-import moment from "moment";
 
 const ReturnPopup = (props) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
