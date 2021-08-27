@@ -5,7 +5,7 @@ import '../../ManageAll/ManageAsset/viewDetails/ViewDetailedAsset.css'
 
 const ViewDetailAssignment = props => {
   const rootAPI = process.env.REACT_APP_SERVER_URL;
-  let {id} = props;
+  let {id,close} = props;
   const [assignment, setAssignment] = useState({
     id: "",
     assetDTO: {

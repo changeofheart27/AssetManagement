@@ -11,9 +11,9 @@ import DetailsPopup from "./popup/DetailsPopup";
 import Pagination from '../../components/Pagination/Pagination';
 import Popup from "reactjs-popup";
 import ReturnPopup from "./popup/ReturnPopup";
-import {Window} from 'react-bootstrap-icons';
 import axios from "axios";
 import EmptyList from "../../layout/EmptyList/EmptyList";
+import ViewDetailAssignment from "../Assignment/viewDetails/ViewDetailAssignment";
 
 const Home = () => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
@@ -234,7 +234,7 @@ const Home = () => {
                                         :
                                         <Popup
                                             trigger={<td><i
-                                                className="bi bi-arrow-counterclockwise btn m-0 p-0 text-blue"/>
+                                                className="bi bi-arrow-counterclockwise btn m-0 p-0 text-blue zoomin"/>
                                             </td>}
                                             modal
                                             contentStyle={PopupStyle}
@@ -245,7 +245,7 @@ const Home = () => {
                                     }
                                 </tr>
                             } modal>
-                                {close => <DetailsPopup close={close}/>}
+                                {close => <ViewDetailAssignment id={assigment.id} close={close}/>}
                             </Popup>
                         )}
                         </tbody>
