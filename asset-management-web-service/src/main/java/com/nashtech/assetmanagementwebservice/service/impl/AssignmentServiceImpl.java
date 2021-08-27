@@ -3,6 +3,7 @@ package com.nashtech.assetmanagementwebservice.service.impl;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.nashtech.assetmanagementwebservice.exception.BadRequestException;
@@ -53,7 +54,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     @Override
     public AssignmentDTO createAssignment(AssignmentDTO payload) {
         Assignment a = assignmentRepository.findByAsset_Id(payload.getAssetDTO().getId());
-        if (a != null && a.getState() != -1){
+        if (a != null && a.getState() != -1) {
             throw new BadRequestException("Asset id exist & not complete yet");
         }
         User user = userRepository.getById(payload.getUserDTO().getId());
@@ -84,21 +85,28 @@ public class AssignmentServiceImpl implements AssignmentService {
     public AssignmentDTO edit(Integer id, AssignmentDTO payload) {
         Assignment oldAssignment = assignmentRepository.getById(id);
         Asset oldAsset = oldAssignment.getAsset();
+        User user = oldAssignment.getUser();
         if (oldAsset.getId() != payload.getAssetDTO().getId()) {
             oldAsset.setState(0);
             assetRepository.save(oldAsset);
+            Asset newAsset = assetRepository.getById(payload.getAssetDTO().getId());
+            newAsset.setState(4);
+            assetRepository.save(newAsset);
+            oldAssignment.setAsset(newAsset);
+        }
+        if (!Objects.equals(user.getId(), payload.getUserDTO().getId())) {
+            User newUser = userRepository.getById(payload.getUserDTO().getId());
+            oldAssignment.setUser(newUser);
         }
         log.info(payload.getAssetDTO().getId() + " " + payload.getUserDTO().getId() + " " + id);
-        Asset newAsset = assetRepository.getById(payload.getAssetDTO().getId());
-        newAsset.setState(4);
-        assetRepository.save(newAsset);
-        assignmentRepository.saveAssign(payload.getAssetDTO().getId(), payload.getUserDTO().getId(), id, payload.getState(), payload.getAssignedDate(), payload.getNote());
-        return payload;
+        Assignment newAssignment = assignmentMapper.merge(payload, oldAssignment);
+        assignmentRepository.save(newAssignment);
+        return assignmentMapper.fromEntity(newAssignment);
     }
 
     @Override
     public List<AssignmentDTO> findAssignmentsByUsername(String username) {
-        List<Assignment> assignments = assignmentRepository.findByUser_UsernameAndStateNot(username,-1);
+        List<Assignment> assignments = assignmentRepository.findByUser_UsernameAndStateNot(username, -1);
         return assignments.stream().map(assignmentMapper::fromEntity).collect(Collectors.toList());
     }
 
@@ -126,5 +134,12 @@ public class AssignmentServiceImpl implements AssignmentService {
         }
         return assignments.stream().map(assignmentMapper::fromEntity).collect(Collectors.toList());
     }
+
+    @Override
+    public List<AssignmentDTO> test(String keyword, Integer state, LocalDate date) {
+        List<Assignment> assignments = assignmentRepository.get(keyword,state,date);
+        return assignments.stream().map(assignmentMapper::fromEntity).collect(Collectors.toList());
+    }
+
 
 }

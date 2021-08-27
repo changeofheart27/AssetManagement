@@ -11,18 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.nashtech.assetmanagementwebservice.entity.Assignment;
 
 @Repository
-public interface AssignmentRepository extends JpaRepository<Assignment, Integer> {
-
-    @Transactional
-    @Modifying
-    @Query(value = "UPDATE Assignment a set a.asset.id = :assetID , a.user.id =:userID, a.state=:state, a.assignedDate=:assignedDate, a.note=:note " +
-            "where a.id=:assignID")
-    void saveAssign(@Param("assetID") Integer assetID
-            ,@Param("userID") Integer userID
-            ,@Param("assignID") Integer assignID
-            ,@Param("state") Integer state
-            ,@Param("assignedDate") LocalDate assignedDate
-            ,@Param("note") String note);
+public interface AssignmentRepository extends JpaRepository<Assignment, Integer>, AssignmentRepositoryCustom {
 
   List<Assignment> findByUser_UsernameAndStateNot(String name, int state);
 

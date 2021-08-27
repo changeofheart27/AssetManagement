@@ -47,5 +47,11 @@ public class AssignmentMapper {
         dto.setNote(assignment.getNote());
         return dto;
     }
+    public Assignment merge(AssignmentDTO payload, Assignment entity){
+        entity.setAssignedDate(payload.getAssignedDate());
+        entity.setNote(payload.getNote());
+        entity.setState(payload.getState());
+        return entity;
+    }
 
 }

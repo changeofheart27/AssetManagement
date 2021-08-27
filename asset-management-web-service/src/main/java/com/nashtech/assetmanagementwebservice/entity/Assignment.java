@@ -105,16 +105,4 @@ public class Assignment {
 		this.note = note;
 	}
 
-/*	@Override
-	public String toString() {
-		return "Assignment{" +
-				"id=" + id +
-				", user=" + user +
-				", asset=" + asset +
-				", assignedBy='" + assignedBy + '\'' +
-				", assignedDate=" + assignedDate +
-				", state=" + state +
-				", note='" + note + '\'' +
-				'}';
-	}*/
 }

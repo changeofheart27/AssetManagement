@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.nashtech.assetmanagementwebservice.entity.User;
 import com.nashtech.assetmanagementwebservice.model.dto.AssetDTO;
 import com.nashtech.assetmanagementwebservice.model.dto.AssignmentDTO;
 import com.nashtech.assetmanagementwebservice.service.AssignmentService;
@@ -85,7 +83,6 @@ public class AssignmentController {
         return ResponseEntity.ok(assignmentDTO);
     }
 
-
     @ApiOperation(value = "Search All Assignments By assetName Or assetCode", response = AssetDTO.class, responseContainer = "List")
     @GetMapping(value = "/assignments/search", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<AssignmentDTO>> searchAssetByAssetNameOrAssetCode(@RequestParam String keyword) {
@@ -110,12 +107,16 @@ public class AssignmentController {
         return ResponseEntity.ok(assignmentDTO);
     }
 
-    @ApiOperation(value = "Filter Assignments", response = AssetDTO.class, responseContainer = "List")
-    @GetMapping(value = "/assignments/filter", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<AssignmentDTO>> filterAssignment(@RequestParam(value = "type", required = false) Integer state, @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate assignedDate) {
-        List<AssignmentDTO> assignments = assignmentService.filterBy(state, assignedDate);
-        return ResponseEntity.ok(assignments);
 
+    @ApiOperation(value = "Filter Assignments", response = AssignmentDTO.class)
+    @GetMapping(value = "/assignments/filter", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<AssignmentDTO>> test(@RequestParam(value = "type", required = false) Integer state,
+                                                    @RequestParam(value = "date", required = false)
+                                                    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate assignedDate,
+                                                    @RequestParam(value ="keyword", required = false) String keyword
+    ) {
+        List<AssignmentDTO> assignments = assignmentService.test(keyword, state, assignedDate);
+        return ResponseEntity.ok(assignments);
     }
 
 
