@@ -24,7 +24,6 @@ const ReturnPopup = (props) => {
             }
         )
             .then(response => {
-                console.log(`Accept Assignment`);
                 close();
                 setState(data.state);
                 const requestdata={

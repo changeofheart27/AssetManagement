@@ -1,5 +1,6 @@
 package com.nashtech.assetmanagementwebservice.controller;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -101,8 +103,9 @@ public class AssignmentController {
     }
 
     @ApiOperation(value = "Edit assignment", response = AssignmentDTO.class)
-    @GetMapping(value = "/home", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<AssignmentDTO>> findAssignmentByUserName(@RequestParam String username) {
+    @GetMapping(value = "/my-assignments", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<AssignmentDTO>> findAssignmentByUserName(Principal principal) {
+        String username = principal.getName();
         List<AssignmentDTO> assignmentDTO = assignmentService.findAssignmentsByUsername(username);
         return ResponseEntity.ok(assignmentDTO);
     }

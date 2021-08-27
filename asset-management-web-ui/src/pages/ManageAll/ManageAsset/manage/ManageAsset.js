@@ -46,16 +46,14 @@ const ManageAsset = ({responseDataAsset}) => {
                 let result = response.data.map(asset => asset.id);
                 if (result.includes(responseDataAsset.id)) {
                     const index = result.indexOf(responseDataAsset.id);
-                    console.log(index, " index")
                     response.data.splice(index, 1);
                     response.data.unshift(responseDataAsset);
                     setList(response.data);
                 } else {
                     setList(response.data);
                 }
-                console.log(response.data);
             })
-    }, [])
+    }, []);
     const check = state => {
         if (state === 0) {
             return <td>Available</td>
@@ -97,30 +95,25 @@ const ManageAsset = ({responseDataAsset}) => {
             isFirstRun.current = false;
             return;
         }
-        console.log("use Effect Run")
-        console.log(request)
         if (request.params.type === 'State') {
             request.params.type = null;
-            console.log(request)
         }
         if (request.params.category === 'Category') {
             request.params.category = null;
-            console.log(request)
         }
-        axios.get(rootAPI + `/assets/filter`, request)
+        axios.get(rootAPI + `/assets`, request)
             .then(function (response) {
                 setList(response.data);
-                console.log(response.data)
             })
     }, [type, category,searchTerm])
 
     const sortingData = useMemo(() => {
         if (sortConfig !== null) {
             list.sort((a, b) => {
-                if (a[sortConfig.key] < (b[sortConfig.key]) || a.categoryDTO.name > b.categoryDTO.name) {
+                if (a[sortConfig.key] < (b[sortConfig.key]) || a.categoryDTO.name < b.categoryDTO.name) {
                     return sortConfig.direction === "asc" ? -1 : 1;
                 }
-                if (a[sortConfig.key] > (b[sortConfig.key]) || a.categoryDTO.name < b.categoryDTO.name) {
+                if (a[sortConfig.key] > (b[sortConfig.key]) || a.categoryDTO.name > b.categoryDTO.name) {
                     return sortConfig.direction === "asc" ? 1 : -1;
                 }
                 return 0;

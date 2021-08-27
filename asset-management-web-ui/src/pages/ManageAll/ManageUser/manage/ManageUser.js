@@ -1,10 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './Manage.css'
 import 'reactjs-popup/dist/index.css';
-
-import {Button, Container, Dropdown, Form, FormControl, InputGroup, Row, SplitButton, Table} from 'react-bootstrap';
-import {useEffect, useRef, useMemo , useState} from 'react';
-
+import {Button, Container, Form, FormControl, InputGroup, Row, Table} from 'react-bootstrap';
+import {useEffect, useRef, useMemo, useState} from 'react';
 import ChangeStatus from '../changeStatus/ChangeStatus';
 import Pagination from '../../../../components/Pagination/Pagination'
 import Popup from "reactjs-popup";
@@ -12,24 +10,27 @@ import React from 'react';
 import ViewDetailedUser from "../viewDetails/ViewDetailedUser"
 import axios from "axios";
 import {useHistory} from 'react-router-dom'
+import dateFormat from 'dateformat';
+
+import '../../../../style/style.css'
+import ChangeStatusFail from "../changeStatus/ChangeStatusFail";
 
 const ManageUser = ({responseUser}) => {
 
-  const token = localStorage.getItem('jwttoken')
-    
-  const headers = { 
-    'Authorization': token
-    
-};
+    const token = localStorage.getItem('jwttoken')
+    const headers = {
+        'Authorization': token
+    };
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(10);
     const [sortConfig, setSortConfig] = useState(null);
     const indexOfLastUser = currentPage * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
+    const [refresh, setRefresh] = useState(true);
     const paginate = pageNumber => setCurrentPage(pageNumber);
-
     const history = useHistory();
+
     const [list, setList] = useState([{
         staffCode: null,
         firstName: null,
@@ -37,61 +38,65 @@ const ManageUser = ({responseUser}) => {
         username: null,
         joinedDate: null,
         authority: null,
-        status: null
+        status: null,
+        assignments: [{
+            state: null
+        }]
     }]);
+    console.log(list)
     useEffect(() => {
-
-        axios.get(rootAPI + '/admin/users',{headers})
-
+        axios.get(rootAPI + '/users', {headers})
             .then(function (response) {
+                setRefresh(true);
                 let result = response.data.map(user => user.id);
                 if (result.includes(responseUser.id)) {
                     const index = result.indexOf(responseUser.id);
-                    console.log(index, " index")
                     response.data.splice(index, 1);
                     response.data.unshift(responseUser);
                     setList(response.data);
                 } else {
                     setList(response.data);
                 }
-                console.log(response.data);
             })
-    }, [])
+    }, [refresh])
+
     const [type, setType] = useState();
     const [searchTerm, setSearchTerm] = useState();
     const request = {
-        headers : headers,
+        headers: headers,
         params: {
             type,
             searchTerm
         }
     }
+
     const handleFilterType = evt => {
         setType(evt.target.value)
     }
+
     const handleSearch = evt => {
         setSearchTerm(evt.target.value)
     }
-    
+
     const isFirstRun = useRef(true);
     useEffect(() => {
-        if(isFirstRun.current) {
+        if (isFirstRun.current) {
             isFirstRun.current = false;
             return;
         }
-        console.log("use Effect Run")
-        console.log(request)
         if (request.params.type === 'Type') {
             request.params.type = null;
-            console.log(request)
+
         }
-        
-        axios.get(rootAPI + '/admin/filter',request)
+        if (request.params.searchTerm === '') {
+            request.params.searchTerm = null;
+
+        }
+        axios.get(rootAPI + '/users', request)
             .then(function (response) {
                 setList(response.data);
-                console.log(response.data)
             })
-    }, [type,searchTerm])
+    }, [type, searchTerm])
 
     const sortingData = useMemo(() => {
         let listData = list;
@@ -107,6 +112,7 @@ const ManageUser = ({responseUser}) => {
             })
         }
     }, [list, sortConfig]);
+
     const requestSort = key => {
         let direction = "asc";
         if (sortConfig && sortConfig.key === key && sortConfig.direction === "asc") {
@@ -114,13 +120,16 @@ const ManageUser = ({responseUser}) => {
         }
         setSortConfig({key, direction});
     }
+
     const getClassNamesFor = (name) => {
         if (!sortConfig) {
             return;
         }
         return sortConfig.key === name ? sortConfig.direction : undefined;
     };
-
+    function capitalizeFirstLetter(string) {
+        return string?.charAt(0) + string?.slice(1).toLowerCase();
+    }
     return (
       <Container fluid className={"d-block ps-5"}>
         <h1 className={"text-danger mb-3"}>User List</h1>
@@ -151,15 +160,16 @@ const ManageUser = ({responseUser}) => {
                 onChange={handleSearch}
                 maxLength={255}
               />
-              <Button
-                variant={"outline-secondary"}
-                onClick={handleSearch}>Search
+              <Button variant={"outline-secondary"} onClick={handleSearch}>
+                <i className="bi bi-search" />
               </Button>
             </InputGroup>
             <Button
               variant={"danger"}
               className={"w-auto ms-5"}
-              onClick={() => history.push("/createuser")}>Create new User
+              onClick={() => history.push("/createuser")}
+            >
+              Create new user
             </Button>
           </div>
         </div>
@@ -170,27 +180,37 @@ const ManageUser = ({responseUser}) => {
                 <th
                   className={"border-bottom"}
                   className={getClassNamesFor("staffCode")}
-                  onClick={() => requestSort("staffCode")}>Staff Code
+                  onClick={() => requestSort("staffCode")}
+                >
+                  Staff Code
                 </th>
                 <th
                   className={"border-bottom"}
-                  className={getClassNamesFor("lastName")}
-                  onClick={() => requestSort("lastName")}>Full Name
+                  className={getClassNamesFor("firstName")}
+                  onClick={() => requestSort("firstName")}
+                >
+                  Full Name
                 </th>
                 <th
                   className={"border-bottom"}
                   className={getClassNamesFor("username")}
-                  onClick={() => requestSort("username")}>User Name
+                  onClick={() => requestSort("username")}
+                >
+                  User Name
                 </th>
                 <th
                   className={"border-bottom"}
                   className={getClassNamesFor("joinedDate")}
-                  onClick={() => requestSort("joinedDate")}>Joined Date
+                  onClick={() => requestSort("joinedDate")}
+                >
+                  Joined Date
                 </th>
                 <th
                   className={"border-bottom"}
                   className={getClassNamesFor("authority")}
-                  onClick={() => requestSort("authority")}>Type
+                  onClick={() => requestSort("authority")}
+                >
+                  Type
                 </th>
               </tr>
             </thead>
@@ -212,8 +232,8 @@ const ManageUser = ({responseUser}) => {
                         {user.firstName} {user.lastName}
                       </td>
                       <td>{user.username}</td>
-                      <td>{user.joinedDate}</td>
-                      <td>{user.authority}</td>
+                      <td>{dateFormat(user.joinedDate, "dd/mm/yyyy")}</td>
+                      <td>{capitalizeFirstLetter(user.authority)}</td>
                       <td>
                         <i
                           className="bi bi-pen btn m-0 text-muted p-0"
@@ -235,7 +255,13 @@ const ManageUser = ({responseUser}) => {
                         }
                         modal
                       >
-                        <ChangeStatus id={user.id} />
+                        {(close) => {
+                          if (user.assignments?.length !== 0) {
+                            return <ChangeStatusFail close={close} />;
+                          } else {
+                            return <ChangeStatus id={user.id} close={close} />;
+                          }
+                        }}
                       </Popup>
                     </tr>
                   }
@@ -263,7 +289,7 @@ const ManageUser = ({responseUser}) => {
           usersPerPage={usersPerPage}
           totalUsers={list.length}
           paginate={paginate}
-        ></Pagination>
+        />
       </Container>
     );
 };

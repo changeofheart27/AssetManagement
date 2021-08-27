@@ -59,7 +59,11 @@ public class UserDTO {
 
     private String defaultPassword;
 
+
     private String firstLogin;
+
+    private List<AssignmentDTO> assignments;
+
 
 
 

@@ -28,7 +28,6 @@ const Report = () => {
         };
         newList.push(obj);
       })
-      console.log(newList);
       setList(newList);
       // setList(response.data);
       // console.log("-------------------------------------");

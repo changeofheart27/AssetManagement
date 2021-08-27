@@ -6,15 +6,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.nashtech.assetmanagementwebservice.entity.Assignment;
+import com.nashtech.assetmanagementwebservice.exception.*;
+import com.nashtech.assetmanagementwebservice.repository.AssignmentRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.nashtech.assetmanagementwebservice.entity.Authority;
 import com.nashtech.assetmanagementwebservice.entity.User;
-import com.nashtech.assetmanagementwebservice.exception.CustomExceptionHandler;
-import com.nashtech.assetmanagementwebservice.exception.DuplicateRecordException;
-import com.nashtech.assetmanagementwebservice.exception.InternalServerException;
-import com.nashtech.assetmanagementwebservice.exception.NotFoundException;
 import com.nashtech.assetmanagementwebservice.model.dto.UserDTO;
 import com.nashtech.assetmanagementwebservice.model.mapper.UserMapper;
 import com.nashtech.assetmanagementwebservice.model.request.ChangePasswordRequest;
@@ -23,29 +24,26 @@ import com.nashtech.assetmanagementwebservice.model.request.UpdateUserRequest;
 import com.nashtech.assetmanagementwebservice.repository.UserRepository;
 import com.nashtech.assetmanagementwebservice.service.UserService;
 
+
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+    private final AssignmentRepository assignmentRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
-
+    public UserServiceImpl(UserRepository userRepository, AssignmentRepository assignmentRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.assignmentRepository = assignmentRepository;
+        this.passwordEncoder = passwordEncoder;
     }
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    CustomExceptionHandler customExceptionHandler;
 
     @Override
     public List<UserDTO> getAllUser() {
 
         List<User> users = userRepository.findByStatus("enabled");
-
-        // List<User> users = userRepository.findUserEnabled();
-
         List<UserDTO> result = new ArrayList<>();
         for (User user : users) {
             result.add(UserMapper.toUserDTO(user));
@@ -54,9 +52,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO findUserByUsernameCustom(String username) {
+    public UserDTO findByUserName(String username) {
         User user = userRepository.findByUsername(username);
-
         return UserMapper.toUserDTO(user);
 
     }
@@ -83,47 +80,30 @@ public class UserServiceImpl implements UserService {
         if (user.isEmpty()) {
             throw new NotFoundException("No user found");
         }
-        // int idAuthority = userRepository.findAuthorityByUserId(id);
-        // User updateUser = UserMapper.toUser(request, id);
-        // Authority updateAuthority = UserMapper.toAuthority(request, idAuthority );
         User updateUser = UserMapper.mergeUpdate(request, user.get());
-        try {
-
-            // updateAuthority.setUser(updateUser);
-            // updateUser.setAuthority(updateAuthority);
-
-
-            userRepository.save(updateUser);
-        } catch (Exception ex) {
-            throw new InternalServerException("Can't update user");
-        }
-
+        userRepository.save(updateUser);
         return UserMapper.toUserDTO(updateUser);
     }
 
     @Override
-    public UserDTO ChangeUserStatus(UpdateUserRequest request, int id) {
+    public UserDTO disableUser(UpdateUserRequest request, int id) {
         Optional<User> user = userRepository.findById(id);
+        List<Assignment> assignment = assignmentRepository.findByUser_UsernameAndStateNot(request.getUsername(), -1);
+        if (assignment.size() > 0) {
+            throw new BusinessException("This user got some assignment");
+        }
         User changeUserStatus = UserMapper.mergeDisable(request, user.get());
         try {
             userRepository.save(changeUserStatus);
         } catch (Exception ex) {
-            throw new InternalServerException("Can't change user status");
+            throw new BadRequestException("Can't change user status");
         }
         return UserMapper.toUserDTO(changeUserStatus);
     }
-
-
     @Override
     public UserDTO createUser(CreateUserRequest request) {
 
         User user = userRepository.findByUsername(request.getUsername());
-
-
-        if (user != null) {
-            throw new DuplicateRecordException("User name already exist !");
-        }
-
         long count = userRepository.count() + 1;
         String staffCode = "SD" + String.format("%04d", count);
         user = UserMapper.toUser(request);
@@ -184,12 +164,10 @@ public class UserServiceImpl implements UserService {
         User updateUser = UserMapper.toUser(request, username);
 
 
-
-
     try {
       updateUser.setFirstLogin("false");
       updateUser.setPassword(passwordEncoder.encode(request.getPassword()));
-      userRepository.updatePassword(updateUser.getPassword(), username);
+      userRepository.updatePassword(updateUser.getPassword(),updateUser.getFirstLogin(), username);
     } catch (Exception ex) {
       throw new InternalServerException("Can't update password");
     }
@@ -203,17 +181,30 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> getUserByType(String type, String keyword) {
         List<User> users = new ArrayList<>();
+
         if (type == null && keyword == null) {
             users = userRepository.findByStatus("enabled");
         } else if (type != null && keyword == null) {
             users = userRepository.getUserByType(type);
-        } else if (type == null) {
-            users = userRepository.findByUsernameContainsOrStaffCodeIs(keyword, null);
-        } else {
-            users = userRepository.findByUsernameContainsOrStaffCodeIs(keyword, type);
+        } else if (type == null && keyword != null) {
+            String[] tmp = keyword.split("\\s+");
+            String firstName = tmp[tmp.length - 1];
+            String lastName = "";
+            if (tmp.length > 1) {
+                lastName = tmp[0];
+            }
+
+            users = userRepository.findByNameOrStaffCode(firstName, lastName, keyword);
+        } else if (type != null && keyword != null) {
+            String tmp[] = keyword.split("\\s+");
+            String firstName = tmp[tmp.length - 1];
+            String lastName = "";
+            if (tmp.length > 1) {
+                lastName = tmp[0];
+            }
+            users = userRepository.findByNameOrStaffCode(firstName, lastName, keyword);
             users = users.stream().filter(user -> user.getAuthority().getAuthority().equals(type.toUpperCase())).collect(Collectors.toList());
         }
-
         return users.stream().map(UserMapper::toUserDTO).collect(Collectors.toList());
 
     }

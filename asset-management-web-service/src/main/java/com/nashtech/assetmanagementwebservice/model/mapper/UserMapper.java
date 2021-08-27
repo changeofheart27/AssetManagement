@@ -1,14 +1,24 @@
 package com.nashtech.assetmanagementwebservice.model.mapper;
 
+import com.nashtech.assetmanagementwebservice.entity.Assignment;
 import com.nashtech.assetmanagementwebservice.entity.Authority;
 import com.nashtech.assetmanagementwebservice.entity.User;
+import com.nashtech.assetmanagementwebservice.model.dto.AssignmentDTO;
 import com.nashtech.assetmanagementwebservice.model.dto.UserDTO;
 import com.nashtech.assetmanagementwebservice.model.request.ChangePasswordRequest;
 import com.nashtech.assetmanagementwebservice.model.request.CreateUserRequest;
 import com.nashtech.assetmanagementwebservice.model.request.UpdateUserRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserMapper {
-  public static UserDTO toUserDTO(User user) {
+    private static AssignmentMapper assignmentMapper = new AssignmentMapper();
+
+
+    public static UserDTO toUserDTO(User user) {
     UserDTO tmp = new UserDTO();
     tmp.setId(user.getId());
     tmp.setUsername(user.getUsername());
@@ -24,6 +34,11 @@ public class UserMapper {
     tmp.setPassword(user.getPassword());
     tmp.setDefaultPassword(user.getDefaultPassword());
     tmp.setFirstLogin(user.getFirstLogin());
+      List<AssignmentDTO> assignmentDTO = new ArrayList<>();
+      if (user.getAssignments() != null) {
+          assignmentDTO = user.getAssignments().stream().filter(assignment -> assignment.getState() != -1).map(assignmentMapper::fromEntityNoUser).collect(Collectors.toList());
+      }
+      tmp.setAssignments(assignmentDTO);
     return tmp;
   }
 
@@ -94,9 +109,23 @@ public class UserMapper {
   }
 
 
-
-
-
+    public static UserDTO toUserDTONoAssignment(User user) {
+        UserDTO tmp = new UserDTO();
+        tmp.setId(user.getId());
+        tmp.setUsername(user.getUsername());
+        tmp.setFirstName(user.getFirstName());
+        tmp.setLastName(user.getLastName());
+        tmp.setGender(user.getGender());
+        tmp.setJoinedDate(user.getJoinedDate());
+        tmp.setDob(user.getDob());
+        tmp.setLocation(user.getLocation());
+        tmp.setStaffCode(user.getStaffCode());
+        tmp.setAuthority(user.getAuthority().getAuthority());
+        tmp.setStatus(user.getStatus());
+        tmp.setPassword(user.getPassword());
+        tmp.setDefaultPassword(user.getDefaultPassword());
+        return tmp;
+    }
 
 
 }

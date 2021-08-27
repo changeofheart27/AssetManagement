@@ -5,11 +5,11 @@ import React from 'react';
 
 const Logout = ({close}) => {
 
-    const refreshPage = ()=>{
+    const refreshPage = () => {
         window.location.reload();
     }
 
-    const onSubmit = () =>{
+    const onSubmit = () => {
         localStorage.removeItem("username");
         localStorage.removeItem("jwttoken");
         localStorage.removeItem("authority");
@@ -18,13 +18,15 @@ const Logout = ({close}) => {
 
     return (
         <div>
-            <h3 className={"text-danger"}>Are you sure</h3>
+            <Row>
+                <h3 className={"text-danger"}>Are you sure?</h3>
+            </Row>
             <hr/>
-            <p>Do you want to Logout</p>
+            <p>Do you want to Logout?</p>
             <Row>
                 <ButtonGroup>
-                    <Button variant={"danger"} className={"mx-5"} onClick={onSubmit} >Logout</Button>
-                    <Button variant={"secondary"} className={"mx-5"} onClick={()=> close()}>Cancel</Button>
+                    <Button variant={"danger"} className={"mx-5"} onClick={onSubmit}>Logout</Button>
+                    <Button variant={"secondary"} className={"mx-5"} onClick={() => close()}>Cancel</Button>
                 </ButtonGroup>
             </Row>
         </div>

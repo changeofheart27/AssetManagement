@@ -16,56 +16,54 @@ const SearchUser = ({setSingleUser, close}) => {
         staffCode: null
     }]);
     useEffect(() => {
-        axios.get(rootAPI + '/admin/users')
+        axios.get(rootAPI + '/users')
             .then(response => {
                 setUser(response.data)
             })
     }, [])
     useEffect(() => {
-        axios.get(rootAPI + '/searchby?keyword=' + searchTerm)
-            .then(response => {
-                setUser(response.data);
-            })
+        axios
+          .get(rootAPI + "/users?searchTerm=" + searchTerm)
+          .then((response) => {
+            setUser(response.data);
+          });
     }, [searchTerm])
     const rootAPI = process.env.REACT_APP_SERVER_URL;
 
     const [value, setValue] = useState({
         username: null
     })
-    useEffect(() => {
-        console.log(value);
-    })
 
     const sortingData = useMemo(() => {
         if (sortConfig !== null) {
-          user.sort((a, b) => {
-            if (a[sortConfig.key] < b[sortConfig.key]) {
-              return sortConfig.direction === "asc" ? -1 : 1;
-            }
-            if (a[sortConfig.key] > b[sortConfig.key]) {
-              return sortConfig.direction === "asc" ? 1 : -1;
-            }
-            return 0;
-          });
+            user.sort((a, b) => {
+                if (a[sortConfig.key] < b[sortConfig.key]) {
+                    return sortConfig.direction === "asc" ? -1 : 1;
+                }
+                if (a[sortConfig.key] > b[sortConfig.key]) {
+                    return sortConfig.direction === "asc" ? 1 : -1;
+                }
+                return 0;
+            });
         }
-      }, [sortConfig]);
-      const requestSort = (key) => {
+    }, [sortConfig]);
+    const requestSort = (key) => {
         let direction = "asc";
         if (
-          sortConfig &&
-          sortConfig.key === key &&
-          sortConfig.direction === "asc"
+            sortConfig &&
+            sortConfig.key === key &&
+            sortConfig.direction === "asc"
         ) {
-          direction = "desc";
+            direction = "desc";
         }
-        setSortConfig({ key, direction });
-      };
-      const getClassNamesFor = (name) => {
+        setSortConfig({key, direction});
+    };
+    const getClassNamesFor = (name) => {
         if (!sortConfig) {
-          return;
+            return;
         }
         return sortConfig.key === name ? sortConfig.direction : undefined;
-      };
+    };
 
     return (
         <>
@@ -77,7 +75,9 @@ const SearchUser = ({setSingleUser, close}) => {
                             type={"input"}
                             className={"w-25"}
                             name={"searchTerm"}
-                            onChange={evt => {setSearchTerm(evt.target.value)}}
+                            onChange={evt => {
+                                setSearchTerm(evt.target.value)
+                            }}
                         />
                         <Button variant={"outline-secondary"}
                                 className={"me-5"}
@@ -91,15 +91,18 @@ const SearchUser = ({setSingleUser, close}) => {
                     <th className={"border-bottom"}
                         className={getClassNamesFor("staffCode")}
                         onClick={() => requestSort("staffCode")}
-                    >Staff Code</th>
+                    >Staff Code
+                    </th>
                     <th className={"border-bottom"}
                         className={getClassNamesFor("lastName")}
                         onClick={() => requestSort("lastName")}
-                    >Full Name</th>
+                    >Full Name
+                    </th>
                     <th className={"border-bottom"}
                         className={getClassNamesFor("authority")}
                         onClick={() => requestSort("authority")}
-                    >Type</th>
+                    >Type
+                    </th>
                     </thead>
                     <tbody>
                     {user.map(user => (

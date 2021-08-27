@@ -16,6 +16,7 @@ import Popup from "reactjs-popup";
 import ViewDetailAssignment from "../viewDetails/ViewDetailAssignment";
 import axios from "axios";
 import {useHistory} from "react-router-dom";
+import dateFormat from 'dateformat';
 
 const ManageAssignment = ({responseAssigment}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
@@ -52,21 +53,16 @@ const ManageAssignment = ({responseAssigment}) => {
             isFirstRun.current = false;
             return;
         }
-        console.log("use Effect Run");
-        console.log(request);
         if (request.params.type === "State") {
             request.params.type = null;
-            console.log(request);
         }
         if (request.params.date === "Assigned Date") {
             request.params.date = null;
-            console.log(request);
         }
         axios
             .get(rootAPI + `/assignments/filter`, request)
             .then(function (response) {
                 setList(response.data);
-                console.log(response.data);
             });
     }, [type, date]);
 
@@ -81,14 +77,13 @@ const ManageAssignment = ({responseAssigment}) => {
             } else {
                 setList(response.data);
             }
-            console.log(response.data);
         });
     }, []);
     const check = (state) => {
-        if (state === 6) {
-            return <td>Accepted</td>;
-        } else if (state === 5) {
+        if (state === 5) {
             return <td>Waiting for acceptance</td>;
+        } else if (state === 6) {
+            return <td>Accepted</td>;
         } else if (state === 7) {
             return <td>Decline</td>;
         } else if (state === 8) {
@@ -105,32 +100,38 @@ const ManageAssignment = ({responseAssigment}) => {
             .get(rootAPI + `/assignments/search?keyword=${search}`)
             .then(function (response) {
                 setList(response.data);
-                console.log(response.data);
             });
     };
     if (search === null) {
-        axios.get(rootAPI + "/assets").then(function (response) {
+        axios.get(rootAPI + "/assets/filter").then(function (response) {
             setList(response.data);
-            console.log(response.data);
         });
     }
     const sortingData = useMemo(() => {
         if (sortConfig !== null) {
             list.sort((a, b) => {
-                if (
-                    a[sortConfig.key] < b[sortConfig.key] ||
-                    a.userDTO.username < b.userDTO.username ||
-                    a.assetDTO.assetName < b.assetDTO.assetName ||
-                    a.assetDTO.assetCode < b.assetDTO.assetCode
-                ) {
+                if(sortConfig.key == 'assetCode') {
+                    if(a.assetDTO.assetCode < b.assetDTO.assetCode)
+                        return sortConfig.direction === "asc" ? -1 : 1;
+                    if(a.assetDTO.assetCode > b.assetDTO.assetCode)
+                        return sortConfig.direction === "asc" ? 1 : -1;
+                }
+                if(sortConfig.key == 'assetName') {
+                    if(a.assetDTO.assetName < b.assetDTO.assetName)
+                        return sortConfig.direction === "asc" ? -1 : 1;
+                    if(a.assetDTO.assetName > b.assetDTO.assetName)
+                        return sortConfig.direction === "asc" ? 1 : -1;
+                }
+                if(sortConfig.key == 'username') {
+                    if(a.userDTO.username < b.userDTO.username)
+                        return sortConfig.direction === "asc" ? -1 : 1;
+                    if(a.userDTO.username > b.userDTO.username)
+                        return sortConfig.direction === "asc" ? 1 : -1;
+                }
+                if (a[sortConfig.key] < b[sortConfig.key]) {
                     return sortConfig.direction === "asc" ? -1 : 1;
                 }
-                if (
-                    a[sortConfig.key] > b[sortConfig.key] ||
-                    a.userDTO.username > b.userDTO.username ||
-                    a.assetDTO.assetName > b.assetDTO.assetName ||
-                    a.assetDTO.assetCode > b.assetDTO.assetCode
-                ) {
+                if (a[sortConfig.key] > b[sortConfig.key]) {
                     return sortConfig.direction === "asc" ? 1 : -1;
                 }
                 return 0;
@@ -170,8 +171,8 @@ const ManageAssignment = ({responseAssigment}) => {
                             onChange={handleFilterType}
                         >
                             <option>State</option>
-                            <option value="6">Accepted</option>
                             <option value="5">Waiting for acceptance</option>
+                            <option value="6">Accepted</option>
                             <option value="7">Decline</option>
                             <option value="8">Waiting for returning</option>
                         </Form.Control>
@@ -208,7 +209,7 @@ const ManageAssignment = ({responseAssigment}) => {
                         className={"w-auto"}
                         onClick={() => history.push("/createAssignment")}
                     >
-                        Create new Assigment
+                        Create new Assignment
                     </Button>
 
                 </div>
@@ -233,15 +234,15 @@ const ManageAssignment = ({responseAssigment}) => {
                         </th>
                         <th
                             className={"border-bottom"}
-                            className={getClassNamesFor("assetDTO.assetName")}
-                            onClick={() => requestSort("assetDTO.assetName")}
+                            className={getClassNamesFor("assetName")}
+                            onClick={() => requestSort("assetName")}
                         >
                             Asset Name
                         </th>
                         <th
                             className={"border-bottom"}
-                            className={getClassNamesFor("userDTO.username")}
-                            onClick={() => requestSort("userDTO.username")}
+                            className={getClassNamesFor("username")}
+                            onClick={() => requestSort("username")}
                         >
                             Assigned To
                         </th>
@@ -285,7 +286,7 @@ const ManageAssignment = ({responseAssigment}) => {
                                     <td>{assigment.assetDTO.assetName}</td>
                                     <td>{assigment.userDTO.username}</td>
                                     <td>{assigment.assignedBy}</td>
-                                    <td>{assigment.assignedDate}</td>
+                                    <td>{dateFormat(assigment.assignedDate, "dd/mm/yyyy")}</td>
                                     <td>{check(assigment.state)}</td>
                                     {assigment.state !== 6 && assigment.state !== 8 ? (
                                         <>

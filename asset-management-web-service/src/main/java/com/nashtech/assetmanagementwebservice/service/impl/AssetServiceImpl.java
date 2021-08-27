@@ -3,6 +3,8 @@ package com.nashtech.assetmanagementwebservice.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.nashtech.assetmanagementwebservice.exception.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,15 +50,12 @@ public class AssetServiceImpl implements AssetService {
   public AssetDTO createAsset(Integer categoryId, AssetDTO payload) {
     logger.info("Attempting to create new Asset...");
     if (categoryId == null) {
-      throw new IllegalArgumentException("Category id can not be null");
-    }
-    if (payload == null) {
-      throw new IllegalArgumentException("Request payload can not be null");
+      throw new BadRequestException("Category id can not be null");
     }
     Asset asset = assetMapper.fromDTO(payload);
     // 0 Available, 1 Not Available, 2 Waiting for recycling, 3 Recycled, 4 Assigned, 5 Waiting for acceptance, 6 Accepted
     if (asset.getState() > 1) {
-      throw new InternalServerException("Option is not available");
+      throw new BadRequestException("Option is not available");
     }
 
     Category category = categoryMapper.fromDTO(categoryService.findCategoryById(categoryId));
@@ -73,10 +72,7 @@ public class AssetServiceImpl implements AssetService {
   public AssetDTO editAsset(Integer assetId, AssetDTO payload) {
     logger.info("Attempting to update Asset with id " + assetId + "...");
     if (assetId == null) {
-      throw new IllegalArgumentException("Asset id can not be null");
-    }
-    if (payload == null) {
-      throw new IllegalArgumentException("Request payload can not be null");
+      throw new BadRequestException("Asset id can not be null");
     }
     Asset asset = assetRepository.getById(assetId);
     Asset assetEdit = assetMapper.merge(asset, payload);
@@ -91,7 +87,7 @@ public class AssetServiceImpl implements AssetService {
     Asset asset = assetRepository.getById(id);
     // 4 Assigned => can not delete
     if (asset.getState() == 4) {
-      throw new InternalServerException("Asset is current assigned to someone");
+      throw new BadRequestException("Asset is current assigned to someone");
     }
     logger.info("Successfully delete an Asset with id=" + asset.getId() + "!");
     assetRepository.delete(asset);

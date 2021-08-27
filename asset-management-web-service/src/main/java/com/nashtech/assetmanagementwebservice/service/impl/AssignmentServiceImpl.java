@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.nashtech.assetmanagementwebservice.exception.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.nashtech.assetmanagementwebservice.entity.Asset;
 import com.nashtech.assetmanagementwebservice.entity.Assignment;
 import com.nashtech.assetmanagementwebservice.entity.User;
-import com.nashtech.assetmanagementwebservice.exception.InternalServerException;
-import com.nashtech.assetmanagementwebservice.exception.NotFoundException;
 import com.nashtech.assetmanagementwebservice.model.dto.AssignmentDTO;
-import com.nashtech.assetmanagementwebservice.model.mapper.AssetMapper;
 import com.nashtech.assetmanagementwebservice.model.mapper.AssignmentMapper;
 import com.nashtech.assetmanagementwebservice.repository.AssetRepository;
 import com.nashtech.assetmanagementwebservice.repository.AssignmentRepository;
 import com.nashtech.assetmanagementwebservice.repository.UserRepository;
-import com.nashtech.assetmanagementwebservice.service.AssetService;
 import com.nashtech.assetmanagementwebservice.service.AssignmentService;
 
 @Service
@@ -31,17 +28,13 @@ public class AssignmentServiceImpl implements AssignmentService {
     private final AssetRepository assetRepository;
     private final UserRepository userRepository;
     private final AssignmentMapper assignmentMapper;
-    private final AssetMapper assetMapper;
-    private final AssetService assetService;
     private final Logger log = LoggerFactory.getLogger(AssignmentServiceImpl.class);
 
     @Autowired
-    public AssignmentServiceImpl(AssignmentRepository assignmentRepository, AssetRepository assetRepository, UserRepository userRepository, AssetMapper assetMapper, AssetService assetService) {
+    public AssignmentServiceImpl(AssignmentRepository assignmentRepository, AssetRepository assetRepository, UserRepository userRepository) {
         this.assignmentRepository = assignmentRepository;
         this.assetRepository = assetRepository;
         this.userRepository = userRepository;
-        this.assetMapper = assetMapper;
-        this.assetService = assetService;
         assignmentMapper = new AssignmentMapper();
     }
 
@@ -54,9 +47,6 @@ public class AssignmentServiceImpl implements AssignmentService {
     @Override
     public AssignmentDTO findAssignmentById(int id) {
         Assignment assignment = assignmentRepository.getById(id);
-        if (assignment == null) {
-            throw new NotFoundException("No record found with id " + id);
-        }
         return assignmentMapper.fromEntity(assignment);
     }
 
@@ -64,7 +54,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     public AssignmentDTO createAssignment(AssignmentDTO payload) {
         Assignment a = assignmentRepository.findByAsset_Id(payload.getAssetDTO().getId());
         if (a != null && a.getState() != -1){
-            throw new RuntimeException("Asset id exist & not complete yet");
+            throw new BadRequestException("Asset id exist & not complete yet");
         }
         User user = userRepository.getById(payload.getUserDTO().getId());
         Asset asset = assetRepository.getById(payload.getAssetDTO().getId());
@@ -82,7 +72,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     public void delete(Integer id) {
         Assignment assignment = assignmentRepository.getById(id);
         if (assignment.getState() == 4) {
-            throw new InternalServerException("Asset is current assigned to someone");
+            throw new BadRequestException("Asset is current assigned to someone");
         }
         Asset asset = assetRepository.getById(assignment.getAsset().getId());
         asset.setState(0);
@@ -120,21 +110,6 @@ public class AssignmentServiceImpl implements AssignmentService {
         return assets.stream().map(assignmentMapper::fromEntity).collect(Collectors.toList());
     }
 
-//  @Override
-//  public List<AssignmentDTO> filterBy(Integer state, LocalDate assignedDate) {
-//    List<Assignment> assignments = null;
-//    if (assignedDate == null && state == null) {
-//      assignments = assignmentRepository.findAll();
-//      return assignments.stream().map(assignmentMapper::fromEntity).collect(Collectors.toList());
-//    } else if (assignedDate == null && state != null) {
-//      assignments = assignmentRepository.findAssignmentsByState(state);
-//      return assignments.stream().map(assignmentMapper::fromEntity).collect(Collectors.toList());
-//    } else if (assignedDate != null && state == null) {
-//      assignments = assignmentRepository.findAssignmentsByAssignedDate(assignedDate);
-//      return assignments.stream().map(assignmentMapper::fromEntity).collect(Collectors.toList());
-//    }
-//    return null;
-//  }
 
     @Override
     public List<AssignmentDTO> filterBy(Integer state, LocalDate assignedDate) {

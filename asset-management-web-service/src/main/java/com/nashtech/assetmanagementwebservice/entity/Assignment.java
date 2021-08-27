@@ -105,7 +105,7 @@ public class Assignment {
 		this.note = note;
 	}
 
-	@Override
+/*	@Override
 	public String toString() {
 		return "Assignment{" +
 				"id=" + id +
@@ -116,5 +116,5 @@ public class Assignment {
 				", state=" + state +
 				", note='" + note + '\'' +
 				'}';
-	}
+	}*/
 }

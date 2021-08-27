@@ -32,9 +32,11 @@ const FirstLogin= ({props,loginSuccess,setResponseUser}) => {
     const ValidateSchema = Yup.object().shape({
      
       newPassword: Yup.string()
-          .max(500)
-          .required('Required')
-          .typeError('New Password is required'),    
+      .min(8,"Password at least have 8 character")
+      .max(500)
+      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, "Password requires at least 8 characters, one uppercase letter, one number, one special character (e.g.!@#$%)")
+      .required('Required')
+      .typeError('New Password is required'), 
   });
   const onSubmit = (values, {setSubmitting}) => {
     let editUserPassword = {
@@ -56,10 +58,13 @@ const FirstLogin= ({props,loginSuccess,setResponseUser}) => {
 } 
 
   
-    return (
-      <div className="body-changepassword first-login">
+    return ( 
+    <div className="popup">
+      <div className="body-changepassword first-login ">
       <h3 className={"text-danger"}>Change Password</h3>
        <hr/>
+       <h6>This is a first time you logged in </h6>
+       <h6>You have to change your password to continue</h6>
        <Formik
         initialValues={initialValues}
         validationSchema={ValidateSchema}
@@ -77,12 +82,12 @@ const FirstLogin= ({props,loginSuccess,setResponseUser}) => {
         }) => (
             <Form onSubmit={handleSubmit}>
           
-                            <Row className={"mb-4 row-first-login"}>
-                                <p   className={"w-25 p-3"}>New Password</p>
+                            <Row className={"mb-0 row-first-login"}>
+                                <p   className={"w-25 p-3 mb-0"}>New Password</p>
                                 <FormControl
                                     aria-label="New Password"
                                     aria-describedby="basic-addon1"
-                                    className={"w-auto"}
+                                    className={"w-auto form-control1"}
                                     value={values.newPassword}
                                     name={"newPassword"}
                                     type = {"password"}
@@ -91,17 +96,17 @@ const FirstLogin= ({props,loginSuccess,setResponseUser}) => {
                                     isInvalid={touched.newPassword && errors.newPassword}
                                 />
                                 {errors.newPassword && touched.newPassword ? (
-                                    <div className={"text-danger"} style={{paddingLeft: "25%"}}>{errors.newPassword}</div>
+                                    <div className={"text-danger text-error-first-login"} style={{paddingLeft: "25%"}}>{errors.newPassword}</div>
                                 ) : null}
                             </Row>
                             
                             <Row>
-                              <ButtonGroup>
-                              <Button variant={"danger"} type={"submit"} style={{float: 'right'}}  disabled={isSubmitting} on>
+                         
+                              <Button variant={"danger"} type={"submit"} style={{float: 'right'}} className='btn-first-login'  disabled={isSubmitting} on>
                                   Submit
                               </Button>
                           
-                              </ButtonGroup>
+                           
                             </Row>
                             
                       </Form>
@@ -109,7 +114,7 @@ const FirstLogin= ({props,loginSuccess,setResponseUser}) => {
         )
         } 
       </Formik>
-   </div>
+   </div></div>
 
 
     );

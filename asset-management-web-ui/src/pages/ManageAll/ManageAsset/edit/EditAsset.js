@@ -30,7 +30,6 @@ const EditAsset = ({setResponseDataAsset}) => {
             });
     }, [id])
     const [state, setState] = useState("");
-    console.log('state ' + state);
     const initialValues = {
         assetName: asset.assetName,
         specification: asset.specification,
@@ -204,7 +203,7 @@ const EditAsset = ({setResponseDataAsset}) => {
                                     </FormCheck>
                                 </div>
                             </Row>
-                            <Button variant={"danger"} onClick={() => history.push('/asset')} className={"ms-5"}
+                            <Button variant={"light"} onClick={() => history.push('/asset')} className={"ms-5"}
                                     style={{float: 'right'}}>
                                 Cancel
                             </Button>
