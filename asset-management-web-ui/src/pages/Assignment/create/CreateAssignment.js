@@ -218,7 +218,7 @@ const CreateAssignment = ({ setResponseAssigment }) => {
                 ) : null}
               </Row>
               <Button
-                variant={"danger"}
+                variant={"light"}
                 onClick={() => history.push("/assignment")}
                 className={"ms-5"}
                 style={{ float: "right" }}

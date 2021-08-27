@@ -28,7 +28,7 @@ const Navbar = ({setCurrentPage}) => {
     }]);
 
     useEffect(() => {
-        axios.get(rootAPI + "/users")
+        axios.get(rootAPI + "/my-info")
             .then(response => {
                 setAuthority(response.data.authority);
             })

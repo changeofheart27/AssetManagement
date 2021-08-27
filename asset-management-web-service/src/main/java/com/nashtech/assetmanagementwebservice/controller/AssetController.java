@@ -33,14 +33,6 @@ public class AssetController {
     this.assetService = assetService;
   }
 
-  @ApiOperation(value = "Get All Assets", response = AssetDTO.class, responseContainer = "List")
-  @GetMapping(value = "/assets", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<List<AssetDTO>> getAllAssets() {
-    logger.info("Execute getAllAssets() inside AssetController");
-    List<AssetDTO> assets = assetService.filterAssets(null,null,null);
-    logger.info("Executed successful!");
-    return ResponseEntity.ok(assets);
-  }
 
   @ApiOperation(value = "Get An Asset Using id", response = AssetDTO.class)
   @GetMapping(value = "/assets/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -82,7 +74,7 @@ public class AssetController {
   }
 
   @ApiOperation(value = "Filter Asset", response = AssetDTO.class, responseContainer = "List")
-  @GetMapping(value = "/assets/filter", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(value = "/assets", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<List<AssetDTO>> filterAsset(@RequestParam(value = "category", required = false) String category
           , @RequestParam(value = "type", required = false) Integer state
           , @RequestParam(value = "searchTerm", required = false) String keyword) {

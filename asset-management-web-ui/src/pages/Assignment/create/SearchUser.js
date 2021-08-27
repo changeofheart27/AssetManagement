@@ -16,16 +16,17 @@ const SearchUser = ({setSingleUser, close}) => {
         staffCode: null
     }]);
     useEffect(() => {
-        axios.get(rootAPI + '/admin/users')
+        axios.get(rootAPI + '/users')
             .then(response => {
                 setUser(response.data)
             })
     }, [])
     useEffect(() => {
-        axios.get(rootAPI + '/searchby?keyword=' + searchTerm)
-            .then(response => {
-                setUser(response.data);
-            })
+        axios
+          .get(rootAPI + "/users?searchTerm=" + searchTerm)
+          .then((response) => {
+            setUser(response.data);
+          });
     }, [searchTerm])
     const rootAPI = process.env.REACT_APP_SERVER_URL;
 

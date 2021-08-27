@@ -30,7 +30,7 @@ const ChangeStatus = props => {
     });
     useEffect(() => {
         axios
-            .get(rootAPI + `/admin/users/${id}`, {headers})
+            .get(rootAPI + `/users/${id}`, {headers})
             .then(function (response) {
                 setUser(response.data);
             })
@@ -52,7 +52,7 @@ const ChangeStatus = props => {
         }
 
         axios
-            .put(rootAPI + `/admin/users/status/${id}`, data, {headers})
+            .put(rootAPI + `/users/status/${id}`, data, {headers})
             .then(function (response) {
                 setRefresh(false);
                 close()

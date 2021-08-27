@@ -35,7 +35,7 @@ const ViewDetailedUser = props => {
     loadUser();
   }, []);
   const loadUser = async () => {
-    const res = await axios.get(rootAPI+`/admin/users/${id}` ,{headers});
+    const res = await axios.get(rootAPI+`/users/${id}` ,{headers});
     setUser(res.data);
   };
 

@@ -41,7 +41,7 @@ const ManageAsset = ({responseDataAsset}) => {
     }, []);
 
     useEffect(() => {
-        axios.get(rootAPI + '/assets/filter')
+        axios.get(rootAPI + '/assets')
             .then(function (response) {
                 let result = response.data.map(asset => asset.id);
                 if (result.includes(responseDataAsset.id)) {
@@ -101,7 +101,7 @@ const ManageAsset = ({responseDataAsset}) => {
         if (request.params.category === 'Category') {
             request.params.category = null;
         }
-        axios.get(rootAPI + `/assets/filter`, request)
+        axios.get(rootAPI + `/assets`, request)
             .then(function (response) {
                 setList(response.data);
             })
