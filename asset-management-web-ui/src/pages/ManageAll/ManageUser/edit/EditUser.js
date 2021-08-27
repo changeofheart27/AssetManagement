@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import {Button, Form, FormCheck, FormControl, Row} from "react-bootstrap";
 import React, {useEffect, useState} from 'react';
 import {useHistory, useParams} from 'react-router-dom';
-
+import '../../../../style/style.css'
 import {Formik} from 'formik';
 import axios from "axios";
 import differenceInDays from 'date-fns/differenceInDays/index.js';
@@ -174,7 +174,7 @@ const EditUser = ({setResponseUser}) => {
                     readOnly
                     aria-label="Username"
                     aria-describedby="basic-addon1"
-                    className={"w-75"}
+                    className={"w-75 ml-custom"}
                     name="firstName"
                     style={{ backgroundColor: "#eff1f5" }}
                     value={values.firstName}
@@ -199,7 +199,7 @@ const EditUser = ({setResponseUser}) => {
                     readOnly
                     aria-label="Username"
                     aria-describedby="basic-addon1"
-                    className={"w-75"}
+                    className={"w-75 ml-custom"}
                     name="lastName"
                     style={{ backgroundColor: "#eff1f5" }}
                     value={values.lastName}
@@ -225,7 +225,7 @@ const EditUser = ({setResponseUser}) => {
                     type={"date"}
                     aria-describedby="basic-addon1"
                     name={"dob"}
-                    className={"w-75"}
+                    className={"w-75 ml-custom"}
                     onBlur={handleBlur}
                     value={values.dob}
                     onChange={handleChange}
@@ -245,16 +245,16 @@ const EditUser = ({setResponseUser}) => {
                   <p id="basic-addon1" className={"w-25"}>
                     Gender
                   </p>
-                  <div className={"container-lg w-75"}>
+                  <div className={"container-lg w-75 d-flex"}>
                     <FormCheck
                       inline
                       type={"radio"}
                       label={"Female"}
-                      className={"w-75"}
+                      className={"w-75 ml-custom"}
                       name={"gender"}
                       checked={gender === "Female"}
                       onChange={() => setGender("Female")}
-                    ></FormCheck>
+                    />
                     <FormCheck
                       inline
                       type={"radio"}
@@ -263,7 +263,7 @@ const EditUser = ({setResponseUser}) => {
                       name={"gender"}
                       checked={gender === "Male"}
                       onChange={() => setGender("Male")}
-                    ></FormCheck>
+                    />
                   </div>
                 </Row>
                 <Row className="mb-3">
@@ -273,7 +273,7 @@ const EditUser = ({setResponseUser}) => {
                   <FormControl
                     type={"date"}
                     aria-describedby="basic-addon1"
-                    className={"w-75"}
+                    className={"w-75 ml-custom"}
                     name={"joinedDate"}
                     value={values.joinedDate}
                     onChange={handleChange}
@@ -294,7 +294,7 @@ const EditUser = ({setResponseUser}) => {
                   <p className={"col-3"}>Type</p>
                   <Form.Select
                     size="sm"
-                    className={"w-75"}
+                    className={"w-75 ml-custom"}
                     name={"authority"}
                     value={values.authority}
                     onChange={handleChange}

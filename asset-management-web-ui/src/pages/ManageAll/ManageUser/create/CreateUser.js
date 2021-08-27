@@ -1,15 +1,14 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import * as Yup from "yup";
-
 import {Button, Form, FormCheck, FormControl, Row} from "react-bootstrap";
-
 import {Formik} from 'formik';
 import React from 'react';
 import axios from "axios";
 import differenceInDays from 'date-fns/differenceInDays/index.js';
 import {differenceInYears} from "date-fns";
 import {useHistory} from 'react-router-dom';
+import '../../../../style/style.css'
 
 const CreateUser = ({setResponseUser}) => {
 
@@ -169,7 +168,7 @@ const CreateUser = ({setResponseUser}) => {
                                 <FormControl
                                     type={"date"}
                                     aria-describedby="basic-addon1"
-                                    className={"w-75"}
+                                    className={"w-75 custom-checkbox"}
                                     name={"dob"}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
@@ -182,13 +181,12 @@ const CreateUser = ({setResponseUser}) => {
                             </Row>
                             <Row>
                                 <p id="basic-addon1" className={"w-25"}>Gender</p>
-                                <div className={"container-lg w-75"}>
+                                <div className={"container-lg w-75 d-flex"}>
                                     <FormCheck
                                         inline
-                                        color={"red"}
                                         type={"radio"}
                                         label={"Female"}
-                                        className={"w-75"}
+                                        className={"w-50"}
                                         name={"gender"}
                                         onChange={() => values.gender = "Female"}
                                     >
@@ -197,7 +195,7 @@ const CreateUser = ({setResponseUser}) => {
                                         inline
                                         type={"radio"}
                                         label={"Male"}
-                                        className={"w-75"}
+                                        className={"w-50"}
                                         name={"gender"}
                                         onChange={() => values.gender = "Male"}
                                     >
@@ -208,7 +206,6 @@ const CreateUser = ({setResponseUser}) => {
                                 <p className={"w-25"} id="basic-addon1">Joined Date</p>
                                 <FormControl
                                     type={"date"}
-                                    aria-describedby="basic-addon1"
                                     className={"w-75"}
                                     name={"joinedDate"}
                                     onChange={handleChange}

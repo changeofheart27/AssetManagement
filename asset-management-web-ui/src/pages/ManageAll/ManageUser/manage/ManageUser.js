@@ -127,20 +127,8 @@ const ManageUser = ({responseUser}) => {
         }
         return sortConfig.key === name ? sortConfig.direction : undefined;
     };
-
-    const [assignment, setAssignment] = useState([{
-        assignments: [{
-            state: null
-        }]
-    }]);
-    //return true if get more than one assignment not complete yet
-    let i = 0;
-    const checkAssignment = user => {
-        console.log('checkAssignment method run')
-        user.assignments.forEach(assignment => {
-            if (assignment.state !== -1) i = 1
-            else i = 0;
-        })
+    function capitalizeFirstLetter(string) {
+        return string?.charAt(0) + string?.slice(1).toLowerCase();
     }
     return (
       <Container fluid className={"d-block ps-5"}>
@@ -245,7 +233,7 @@ const ManageUser = ({responseUser}) => {
                       </td>
                       <td>{user.username}</td>
                       <td>{dateFormat(user.joinedDate, "dd/mm/yyyy")}</td>
-                      <td>{user.authority}</td>
+                      <td>{capitalizeFirstLetter(user.authority)}</td>
                       <td>
                         <i
                           className="bi bi-pen btn m-0 text-muted p-0"

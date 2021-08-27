@@ -12,7 +12,7 @@ import com.nashtech.assetmanagementwebservice.model.request.UpdateUserRequest;
 public interface UserService {
   public List<UserDTO> getAllUser();
 
-  public UserDTO findUserByUsernameCustom(String username);
+  public UserDTO findByUserName(String username);
 
   public User findUserByUsername(String username);
 
@@ -20,7 +20,7 @@ public interface UserService {
 
   public UserDTO updateUser(UpdateUserRequest request, int id);
 
-  public UserDTO changeUserStatus(UpdateUserRequest request, int id);
+  public UserDTO disableUser(UpdateUserRequest request, int id);
 
   public UserDTO createUser(CreateUserRequest request);
 
