@@ -6,7 +6,6 @@ import moment from "moment";
 const CompleteRequest = props => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     let {id, assign, close, setState} = props;
-    console.log(id);
     // setState(assign.state);
     const refreshPage = () => {
         window.location.reload();

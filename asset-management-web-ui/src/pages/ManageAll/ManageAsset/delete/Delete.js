@@ -5,7 +5,6 @@ import axios from "axios";
 const Delete = props => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     let {id,close,setList} = props;
-    console.log(id);
     const refreshPage = ()=>{
         window.location.reload();
     }
@@ -13,11 +12,9 @@ const Delete = props => {
         axios
             .delete(rootAPI+`/assets/${id}`)
             .then(function (response) {
-                console.log("Delete success");
                 axios.get(rootAPI + "/assets/filter")
                     .then((response) => {
                         setList(response.data);
-                        console.log("delete axios get list run")
                     });
             });
 

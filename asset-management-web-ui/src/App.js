@@ -10,7 +10,6 @@ import {ToastContainer} from "react-toastify";
 import {LinearProgress} from "@material-ui/core";
 
 const App = () => {
-    console.log(localStorage.getItem("username") + 'console.log');
     return (
         <BrowserRouter>
             <ToastContainer/>

@@ -30,7 +30,6 @@ const EditAsset = ({setResponseDataAsset}) => {
             });
     }, [id])
     const [state, setState] = useState("");
-    console.log('state ' + state);
     const initialValues = {
         assetName: asset.assetName,
         specification: asset.specification,

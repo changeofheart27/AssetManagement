@@ -36,7 +36,7 @@ public class UserMapper {
         tmp.setDefaultPassword(user.getDefaultPassword());
         List<AssignmentDTO> assignmentDTO = new ArrayList<>();
         if (user.getAssignments() != null) {
-            assignmentDTO = user.getAssignments().stream().map(assignmentMapper::fromEntityNoUser).collect(Collectors.toList());
+            assignmentDTO = user.getAssignments().stream().filter(assignment -> assignment.getState() != -1).map(assignmentMapper::fromEntityNoUser).collect(Collectors.toList());
         }
         tmp.setAssignments(assignmentDTO);
         return tmp;

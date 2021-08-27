@@ -51,8 +51,6 @@ const UserInfo = ({props,loginSuccess,setResponseUser}) => {
     )
         .then((response) => {
             setSubmitting(false);
-            console.log(response);
-            
             localStorage.setItem("jwttoken", "Bearer " + response.data.jwttoken);
             setShowLoginSuccess(true);
       
@@ -68,7 +66,6 @@ const UserInfo = ({props,loginSuccess,setResponseUser}) => {
             .put(rootAPI+`/change-password/${username}`, editUserPassword,{headers})
             .then((response) => {
                 setSubmitting(false);
-                console.log("response :"+response)
                
             }).catch((error) => {
               localStorage.clear()
@@ -78,7 +75,6 @@ const UserInfo = ({props,loginSuccess,setResponseUser}) => {
         
         .catch((error) => {
         setSubmitting(false);
-        console.log(error);
         setSubmitError(
             "Login fails status code: " + error
         );

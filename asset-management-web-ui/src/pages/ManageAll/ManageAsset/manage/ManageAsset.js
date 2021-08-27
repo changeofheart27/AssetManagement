@@ -46,14 +46,12 @@ const ManageAsset = ({responseDataAsset}) => {
                 let result = response.data.map(asset => asset.id);
                 if (result.includes(responseDataAsset.id)) {
                     const index = result.indexOf(responseDataAsset.id);
-                    console.log(index, " index")
                     response.data.splice(index, 1);
                     response.data.unshift(responseDataAsset);
                     setList(response.data);
                 } else {
                     setList(response.data);
                 }
-                console.log(response.data);
             })
     }, []);
     const check = state => {
@@ -97,20 +95,15 @@ const ManageAsset = ({responseDataAsset}) => {
             isFirstRun.current = false;
             return;
         }
-        console.log("use Effect Run")
-        console.log(request)
         if (request.params.type === 'State') {
             request.params.type = null;
-            console.log(request)
         }
         if (request.params.category === 'Category') {
             request.params.category = null;
-            console.log(request)
         }
         axios.get(rootAPI + `/assets/filter`, request)
             .then(function (response) {
                 setList(response.data);
-                console.log(response.data)
             })
     }, [type, category,searchTerm])
 

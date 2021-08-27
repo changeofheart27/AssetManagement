@@ -56,10 +56,9 @@ const Home = () => {
         }).then((response) => {
             setList(response.data);
             axios
-                .get(rootAPI + `/users/${localStorage.getItem("username")}`)
+                .get(rootAPI + `/users`)
                 .then((response1) => {
                     setUser(response1.data)
-                    console.log(response1)
                 })
         })
             .catch((error) => {
@@ -171,11 +170,12 @@ const Home = () => {
                         </thead>
                         <tbody>
                         {list.map(assigment =>
-                            <Popup contentStyle={{
+                            <Popup
+                                contentStyle={{
                                 width: "25%", border: "1px solid black", borderRadius: 10,
                                 overflow: 'hidden', padding: "20px"
                             }} trigger={
-                                <tr key={assigment.id}>
+                                <tr key={assigment.id} >
                                     <td>{i++}</td>
                                     <td>{assigment.assetDTO.assetCode}</td>
                                     <td>{assigment.assetDTO.assetName}</td>

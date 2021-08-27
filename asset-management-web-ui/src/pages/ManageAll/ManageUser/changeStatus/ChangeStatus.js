@@ -6,7 +6,6 @@ import axios from "axios";
 const ChangeStatus = props => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     let {id, close, setRefresh} = props;
-    console.log(id);
     const refreshPage = () => {
         window.location.reload();
     }

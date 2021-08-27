@@ -123,20 +123,17 @@ const Request = () => {
             isFirstRun.current = false;
             return;
         }
-        console.log("use Effect Run")
-        console.log(request)
+
         if (request.params.type === "State") {
             request.params.type = null;
-            console.log(request);
+
         }
         if (request.params.date === "Assigned Date") {
             request.params.date = null;
-            console.log(request);
         }
         axios.get(rootAPI + `/request/filter`, request)
             .then(function (response) {
                 setList(response.data);
-                console.log(response.data)
             })
     }, [type, date, searchTerm])
     const check = (state) => {

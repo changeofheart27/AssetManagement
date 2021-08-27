@@ -5,7 +5,6 @@ import axios from "axios";
 const DeleteRequest = props => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     let {id, close} = props;
-    console.log(id);
     const onSubmit = () => {
         axios
             .delete(rootAPI + `/request/${id}`)

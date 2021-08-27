@@ -72,7 +72,6 @@ const CreateUser = ({setResponseUser}) => {
             .required('Required')
             .typeError('First name is required')
             .test("firstName", "First Name is only 1 word", function (value) {
-                console.log(value)
                 return !/\s/g.test(value) ;
             }),
         lastName: Yup.string()
