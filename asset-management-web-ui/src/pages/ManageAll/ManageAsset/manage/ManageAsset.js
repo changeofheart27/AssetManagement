@@ -31,6 +31,8 @@ const ManageAsset = ({responseDataAsset}) => {
             name: null
         }
     }]);
+
+    const [refreshList, setRefreshList] = useState(false);
     const history = useHistory();
 
     const [categories, setCategories] = useState([]);
@@ -52,8 +54,9 @@ const ManageAsset = ({responseDataAsset}) => {
                 } else {
                     setList(response.data);
                 }
+                setRefreshList(false);
             })
-    }, []);
+    }, [refreshList]);
     const check = state => {
         if (state === 0) {
             return <td>Available</td>
@@ -240,7 +243,7 @@ const ManageAsset = ({responseDataAsset}) => {
                                        trigger={<td><i className="bi bi-x-circle text-danger btn p-0"/></td>}
                                        modal>
                                     {asset.state !== 4 ?
-                                        close => <Delete id={asset.id} close={close} setList={setList}/> :
+                                        close => <Delete id={asset.id} close={close} setRefreshList={setRefreshList}/> :
                                         close => <DeleteFail id={asset.id} close={close}/>}
                                 </Popup>
                             </tr>

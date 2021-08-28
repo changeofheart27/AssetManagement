@@ -69,7 +69,6 @@ export default function SignIn() {
             [name]: evt.target.value
         })
     }
-    console.log(values);
 
     const handleClickShowPassword = () => {
         setValues({...values, showPassword: !values.showPassword});

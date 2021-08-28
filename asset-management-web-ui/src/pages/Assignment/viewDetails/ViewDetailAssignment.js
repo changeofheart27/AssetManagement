@@ -50,10 +50,6 @@ const ViewDetailAssignment = props => {
      <table> 
        <tbody>
        <tr>
-         <td className="fields-name">ID</td>
-         <td>: {assignment.id}</td>
-       </tr>
-       <tr>
          <td className="fields-name">Asset Code</td>
          <td>: {assignment.assetDTO.assetCode}</td>
        </tr>

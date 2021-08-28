@@ -81,42 +81,53 @@ const SearchUserAntD = (props) => {
     })
 
     return (
-        <div>
-            <Row>
-                <h3 className={"text-danger w-50"}>Select User</h3>
-                <InputGroup className={"w-50"}>
-                    <Form.Control
-                        type={"input"}
-                        className={"w-25"}
-                        name={"searchTerm"}
-                        onChange={evt => {
-                            setSearchTerm(evt.target.value)
-                        }}
-                    />
-                    <Button variant={"outline-secondary"}
-                            className={"me-5"}
-                    ><i className="bi bi-search"/>
-                    </Button>
-                </InputGroup>
-                <Divider/>
-                <Table
-                    rowSelection={{
-                        type: "radio",
-                        ...rowSelection,
-
-                    }}
-                    columns={columns}
-                    dataSource={data}
-                />
-            </Row>
-            <Row className={"justify-content-end"}>
-                <Button variant={"danger"} className={"w-25 mx-5"} onClick={()=> close()}>Save</Button>
-                <Button variant={"secondary"} className={"w-25 me-3"} onClick={()=>{
-                    setSingleUser({id:null, username:""})
-                    close()
-                }} >Cancel</Button>
-            </Row>
-        </div>
+      <div>
+        <Row>
+          <h3 className={"text-danger w-50"}>Select User</h3>
+          <InputGroup className={"w-50"}>
+            <Form.Control
+              type={"input"}
+              className={"w-25"}
+              name={"searchTerm"}
+              onChange={(evt) => {
+                setSearchTerm(evt.target.value);
+              }}
+              maxLength={255}
+            />
+            <Button variant={"outline-secondary"} className={"me-5"}>
+              <i className="bi bi-search" />
+            </Button>
+          </InputGroup>
+          <Divider />
+          <Table
+            rowSelection={{
+              type: "radio",
+              ...rowSelection,
+            }}
+            columns={columns}
+            dataSource={data}
+          />
+        </Row>
+        <Row className={"justify-content-end"}>
+          <Button
+            variant={"danger"}
+            className={"w-25 mx-5"}
+            onClick={() => close()}
+          >
+            Save
+          </Button>
+          <Button
+            variant={"secondary"}
+            className={"w-25 me-3"}
+            onClick={() => {
+              setSingleUser({ id: null, username: "" });
+              close();
+            }}
+          >
+            Cancel
+          </Button>
+        </Row>
+      </div>
     );
 };
 

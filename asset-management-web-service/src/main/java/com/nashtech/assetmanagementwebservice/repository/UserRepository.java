@@ -31,11 +31,11 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
 
 
-
-  @Query(value = "SELECT user.id ,user.staff_code ,user.first_name,user.last_Name," +
-          " user.joined_date,user.dob,user.location,user.gender,user.password," +
-          " user.username ,user.status ,user.default_password,authorities.authority" +
-          " from user  INNER JOIN  authorities " +
+  //used to filter user with type: Admin or Staff
+  @Query(value = "SELECT user.id,user.staff_code,user.first_name,user.last_Name," +
+          " user.joined_date,user.dob,user.location,user.gender,user.password,user.username," +
+          " user.status,user.default_password,user.first_login,authorities.authority" +
+          " from user INNER JOIN authorities " +
           " on user.id = authorities.user_id " +
           " where authorities.authority= ?1 and user.status = 'enabled' ", nativeQuery = true)
   public List<User> getUserByType(String type);
@@ -43,20 +43,11 @@ public interface UserRepository extends JpaRepository<User, Integer> {
   @Query(value = "SELECT COUNT(*) FROM user u WHERE u.username LIKE :username% ", nativeQuery = true)
   public Integer countByDuplicateFullName(String username);
   
-  @Query(value = "Select user.id ,user.staff_code ,user.first_name,user.last_Name,"
-      + "user.joined_date,user.dob,user.location,user.gender,user.password,"
-      + "user.username ,user.status ,user.default_password,authorities.authority"
-      + "   from user  INNER JOIN  authorities"
-      + " on user.id = authorities.user_id"
-      + "   where user.first_name LIKE :firstName and user.status = 'enabled' and user.last_name LIKE %:lastName%"
-      + "    or user.staff_code = :keyword and user.status = 'enabled'" , nativeQuery = true)
-  public List<User> findByNameOrStaffCode(String firstName, String lastName, String keyword);
-
 //  @Query(value = "SELECT * FROM user u WHERE u.status = 'enabled'", nativeQuery = true)
 //  public List<User> findUserEnabled();
   
-  
+  //used to search user by fullName or staffCode
   @Query(value = "SELECT * FROM user WHERE CONCAT(first_name, \" \", last_name) LIKE :fullName "
-  		+ "OR staff_code = :staffCode", nativeQuery = true)
+  		+ "OR staff_code = :staffCode AND status = 'enabled'", nativeQuery = true)
   public List<User> findUserByFullNameOrStaffCode(String fullName, String staffCode);
 }

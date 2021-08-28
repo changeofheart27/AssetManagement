@@ -83,43 +83,53 @@ const SearchAssetAntD = props => {
     }, [searchTerm])
 
     return (
-        <div>
-            <Row className={"justify-content-between align-items-center"}>
-                <h3 className={"text-danger w-auto m-0ky"}>Select Asset</h3>
-                <InputGroup className={"w-50"}>
-                    <FormControl
-                        type={"input"}
-                        className={"w-50"}
-                        name={"searchTerm"}
-                        onChange={evt => {
-                            setSearchTerm(evt.target.value)
-                        }}
-                    >
-                    </FormControl>
-                    <Button variant={"outline-secondary"}
-                            className={"me-5"}
-                    ><i className="bi bi-search"/>
-                    </Button>
-                </InputGroup>
-            </Row>
-            <Divider/>
-            <Table
-                rowSelection={{
-                    type: "radio",
-                    ...rowSelection,
-
-                }}
-                columns={columns}
-                dataSource={data}
-            />
-            <Row className={"justify-content-end"}>
-                <Button variant={"danger"} className={"w-25 mx-5"} onClick={() => close()}>Save</Button>
-                <Button variant={"secondary"} className={"w-25 me-3"} onClick={() => {
-                    setAssetSelect({id: null, assetCode: "", assetName: ""})
-                    close()
-                }}>Cancel</Button>
-            </Row>
-        </div>
+      <div>
+        <Row className={"justify-content-between align-items-center"}>
+          <h3 className={"text-danger w-auto m-0ky"}>Select Asset</h3>
+          <InputGroup className={"w-50"}>
+            <FormControl
+              type={"input"}
+              className={"w-50"}
+              name={"searchTerm"}
+              onChange={(evt) => {
+                setSearchTerm(evt.target.value);
+              }}
+              maxLength={255}
+            ></FormControl>
+            <Button variant={"outline-secondary"} className={"me-5"}>
+              <i className="bi bi-search" />
+            </Button>
+          </InputGroup>
+        </Row>
+        <Divider />
+        <Table
+          rowSelection={{
+            type: "radio",
+            ...rowSelection,
+          }}
+          columns={columns}
+          dataSource={data}
+        />
+        <Row className={"justify-content-end"}>
+          <Button
+            variant={"danger"}
+            className={"w-25 mx-5"}
+            onClick={() => close()}
+          >
+            Save
+          </Button>
+          <Button
+            variant={"secondary"}
+            className={"w-25 me-3"}
+            onClick={() => {
+              setAssetSelect({ id: null, assetCode: "", assetName: "" });
+              close();
+            }}
+          >
+            Cancel
+          </Button>
+        </Row>
+      </div>
     );
 };
 export default SearchAssetAntD;

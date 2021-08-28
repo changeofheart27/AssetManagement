@@ -4,29 +4,31 @@ import { Container, InputGroup, Row, Table } from "react-bootstrap";
 import React, { useEffect, useState, useMemo } from "react";
 import axios from "axios";
 import ExportFile from "./ExportFile";
+import moment from "moment";
 
 const Report = () => {
   const rootAPI = process.env.REACT_APP_SERVER_URL;
   const [list, setList] = useState([]);
   const [sortConfig, setSortConfig] = useState(null);
-  const fileName = "AssetManagement";
+  const fileName =
+    "DataExport-" + moment().format("YYYY-MM-DD HHmmSS").toString();
 
   useEffect(() => {
     axios.get(rootAPI + "/assets/report").then(function (response) {
       let newList = [];
 
-      response.data.map(row => {
+      response.data.map((row) => {
         let obj = {
-          category: row[0],
-          total: row[1],
-          assigned: row[2],
-          available: row[3],
-          notAvailable: row[4],
-          waitingForRecycling: row[5],
-          recycled: row[6],
+          Category: row[0],
+          Total: row[1],
+          Assigned: row[2],
+          Available: row[3],
+          NotAvailable: row[4],
+          WaitingForRecycling: row[5],
+          Recycled: row[6],
         };
         newList.push(obj);
-      })
+      });
       setList(newList);
       // setList(response.data);
       // console.log("-------------------------------------");
@@ -83,45 +85,52 @@ const Report = () => {
         <Table>
           <thead>
             <tr>
-              <th className={"border-bottom"}
-                  className={getClassNamesFor("category")}
-                  onClick={() => requestSort("category")}
+              <th
+                className={"border-bottom"}
+                className={getClassNamesFor("Category")}
+                onClick={() => requestSort("Category")}
               >
                 Category
               </th>
-              <th className={"border-bottom"}
-                  className={getClassNamesFor("total")}
-                  onClick={() => requestSort("total")}
+              <th
+                className={"border-bottom"}
+                className={getClassNamesFor("Total")}
+                onClick={() => requestSort("Total")}
               >
                 Total
               </th>
-              <th className={"border-bottom"}
-                  className={getClassNamesFor("assigned")}
-                  onClick={() => requestSort("assigned")}
+              <th
+                className={"border-bottom"}
+                className={getClassNamesFor("Assigned")}
+                onClick={() => requestSort("Assigned")}
               >
                 Assigned
               </th>
-              <th className={"border-bottom"}
-                  className={getClassNamesFor("available")}
-                  onClick={() => requestSort("available")}
+              <th
+                className={"border-bottom"}
+                className={getClassNamesFor("Available")}
+                onClick={() => requestSort("Available")}
               >
                 Available
               </th>
-              <th className={"border-bottom"}
-                  className={getClassNamesFor("notAvailable")}
-                  onClick={() => requestSort("notAvailable")}
+              <th
+                className={"border-bottom"}
+                className={getClassNamesFor("NotAvailable")}
+                onClick={() => requestSort("NotAvailable")}
               >
                 Not Available
               </th>
-              <th className={"border-bottom"}
-                  className={getClassNamesFor("waitingForRecycling")}
-                  onClick={() => requestSort("waitingForRecycling")}
+              <th
+                className={"border-bottom"}
+                className={getClassNamesFor("WaitingForRecycling")}
+                onClick={() => requestSort("WaitingForRecycling")}
               >
                 Waiting for recycling
               </th>
-              <th className={"border-bottom"}
-                  className={getClassNamesFor("recycled")}
-                  onClick={() => requestSort("recycled")}
+              <th
+                className={"border-bottom"}
+                className={getClassNamesFor("Recycled")}
+                onClick={() => requestSort("Recycled")}
               >
                 Recycled
               </th>
@@ -138,15 +147,15 @@ const Report = () => {
                 <td>{row[5]}</td>
                 <td>{row[6]}</td>
               </tr> */}
-              {list.map((row) => (
-              <tr key={row.category}>
-                <td>{row.category}</td>
-                <td>{row.total}</td>
-                <td>{row.assigned}</td>
-                <td>{row.available}</td>
-                <td>{row.notAvailable}</td>
-                <td>{row.waitingForRecycling}</td>
-                <td>{row.recycled}</td>
+            {list.map((row) => (
+              <tr key={row.Category}>
+                <td>{row.Category}</td>
+                <td>{row.Total}</td>
+                <td>{row.Assigned}</td>
+                <td>{row.Available}</td>
+                <td>{row.NotAvailable}</td>
+                <td>{row.WaitingForRecycling}</td>
+                <td>{row.Recycled}</td>
               </tr>
             ))}
           </tbody>
