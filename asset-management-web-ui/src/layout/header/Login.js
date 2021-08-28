@@ -5,11 +5,10 @@ import React, {useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
+
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Grid from '@material-ui/core/Grid';
+
 import Link from '@material-ui/core/Link';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import TextField from '@material-ui/core/TextField';
@@ -18,6 +17,8 @@ import axios from "axios";
 import {makeStyles} from '@material-ui/core/styles';
 import {toast} from 'react-toastify';
 import {useHistory} from "react-router-dom";
+import {FilledInput, FormControl, IconButton, InputAdornment, InputLabel} from "@material-ui/core";
+import {Visibility, VisibilityOff} from "@material-ui/icons";
 
 function Copyright() {
 
@@ -57,7 +58,8 @@ export default function SignIn() {
     const classes = useStyles();
     const [values, setValues] = useState({
         username: null,
-        password: null
+        password: null,
+        showPassword: false
     });
     let history = useHistory();
     const handleOnChange = evt => {
@@ -67,7 +69,15 @@ export default function SignIn() {
             [name]: evt.target.value
         })
     }
+    console.log(values);
 
+    const handleClickShowPassword = () => {
+        setValues({...values, showPassword: !values.showPassword});
+    };
+
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
 
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [showLoginSuccess, setShowLoginSuccess] = useState(false);
@@ -76,7 +86,7 @@ export default function SignIn() {
         console.log('Values: ', values)
         axios({
                 method: "POST",
-                url:  rootAPI+"/authenticate",
+                url: rootAPI + "/authenticate",
                 data: {
                     username: values.username,
                     password: values.password,
@@ -121,18 +131,37 @@ export default function SignIn() {
                         autoFocus
                         onChange={handleOnChange}
                     />
-                    <TextField
+                    <FormControl
                         variant="filled"
-                        margin="normal"
-                        required
                         fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        autoComplete="current-password"
-                        onChange={handleOnChange}
-                    />
+                        required
+                    >
+                        <InputLabel htmlFor="password">Password*</InputLabel>
+                        <FilledInput
+                            autoFocus
+                            variant="filled"
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="password"
+                            label="Password"
+                            type={values.showPassword ? 'text' : 'password'}
+                            id="password"
+                            autoComplete="current-password"
+                            onChange={handleOnChange}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                    >
+                                        {values.showPassword ? <Visibility/> : <VisibilityOff/>}
+                                    </IconButton>
+                                </InputAdornment>
+                            }
+                        />
+                    </FormControl>
                     <>
                         <Button
                             type="submit"

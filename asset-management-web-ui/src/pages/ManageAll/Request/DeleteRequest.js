@@ -9,7 +9,7 @@ const DeleteRequest = props => {
         axios
             .delete(rootAPI + `/request/${id}`)
             .then(function (response) {
-                setRefreshList(!refreshList);
+                setRefreshList(true);
                 close();
             });
     }

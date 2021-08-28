@@ -14,7 +14,7 @@ public class RequestMapper {
   public RequestDTO fromEntity(Request entity) {
     RequestDTO dto = new RequestDTO();
     dto.setId(entity.getId());
-    // dto.setState(entity.getState());
+    dto.setState(entity.getState());
     dto.setReturnedDate(entity.getReturnedDate());
     dto.setAccepted_by(entity.getUsername());
     Assignment assignment = entity.getAssignment();
