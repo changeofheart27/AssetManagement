@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Container, Row} from "react-bootstrap";
+import {Button, ButtonGroup, Row} from "react-bootstrap";
 import './popup.css'
 import axios from "axios";
 
@@ -42,22 +42,19 @@ const ReturnPopup = (props) => {
             })
     }
     return (
-        <Container fluid>
-            <Row>
-                <h3 className={"text-danger bg-gray mb-0 rounded-top"}>Are you sure?</h3>
-            </Row>
-            <Row>
+        <div>
+            <h3 className={"text-danger"} style={{padding: '10px 20px'}}>Are you sure?</h3>
+            <hr style={{margin: '0'}}/>
+            <Row style={{padding: '10px 20px'}}>
                 <p>Do you want to create a returning request for this asset?</p>
+                <ButtonGroup className={"w-50"}>
+                    <Button variant={"danger"} className={"px-5"} onClick={() =>{onSubmit(close)}}>Yes</Button>
+                </ButtonGroup>
+                <ButtonGroup className={"w-50"}>
+                    <Button variant={"secondary"} className={"px-5"} onClick={() =>{setDisable(false); close()}}>No</Button>
+                </ButtonGroup>
             </Row>
-            <Row className={"justify-content-center"}>
-                <Button variant={"danger"} className={"w-25 me-5 my-5"} onClick={() =>{onSubmit(close)}}>
-                    Yes
-                </Button>
-                <Button variant={"secondary"} className={"w-25 my-5"} onClick={() =>{ setDisable(false); close()}}>
-                    No
-                </Button>
-            </Row>
-        </Container>
+        </div>
     );
 };
 

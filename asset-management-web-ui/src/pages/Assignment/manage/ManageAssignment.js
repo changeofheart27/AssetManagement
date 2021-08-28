@@ -294,20 +294,17 @@ const ManageAssignment = ({responseAssigment}) => {
                                         ? (
                                             <>
                                                 <td>
-                                                    <i
-                                                        className="bi bi-pen btn m-0 text-muted p-0 zoomin"
+                                                    <i className="bi bi-pen btn m-0 text-muted p-0 zoomin"
                                                         onClick={() =>
                                                             history.push(`/editassignment/${assigment.id}`)
                                                         }
                                                     />
                                                 </td>
                                                 <Popup
-                                                    contentStyle={{
-                                                        width: "25%",
+                                                    contentStyle={{width: "25%",
                                                         border: "1px solid black",
                                                         borderRadius: 10,
                                                         overflow: "hidden",
-                                                        padding: "20px",
                                                     }}
                                                     trigger={
                                                         <td>
@@ -352,6 +349,8 @@ const ManageAssignment = ({responseAssigment}) => {
                                                     />
                                                 </td>
                                                 <Popup
+                                                    contentStyle={{width: "27%", border: "1px solid black", borderRadius: 10,
+                                                        overflow: 'hidden'}}
                                                     trigger={
                                                         <td>
                                                             <i className="bi btn m-0 p-0 zoomin bi-arrow-counterclockwise text-blue fw-bold"

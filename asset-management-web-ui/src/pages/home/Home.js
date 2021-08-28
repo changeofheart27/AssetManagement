@@ -97,25 +97,37 @@ const Home = () => {
         }
     }
     const PopupStyle = {
-        width: "500px",
-        border: "none",
-        padding: "0",
-        borderRadius: "5px"
+      width: "25%",
+      border: "1px solid black",
+      borderRadius: 10,
+      overflow: "hidden",
     }
 
     const sortingData = useMemo(() => {
         if (sortConfig !== null) {
             list.sort((a, b) => {
-                if (a[sortConfig.key] < b[sortConfig.key] ||
-                    a.assetDTO.categoryDTO.name < b.assetDTO.categoryDTO.name ||
-                    a.assetDTO.assetName < b.assetDTO.assetName ||
-                    a.assetDTO.assetCode < b.assetDTO.assetCode) {
+                if(sortConfig.key === 'name') {
+                  if(a.assetDTO.categoryDTO.name < b.assetDTO.categoryDTO.name)
+                    return sortConfig.direction === "asc" ? -1 : 1;
+                  if(a.assetDTO.categoryDTO.name > b.assetDTO.categoryDTO.name)
+                    return sortConfig.direction === "asc" ? 1 : -1;
+                }
+                if(sortConfig.key === 'name') {
+                  if(a.assetDTO.assetName < b.assetDTO.assetName)
+                    return sortConfig.direction === "asc" ? -1 : 1;
+                  if(a.assetDTO.assetName > b.assetDTO.assetName)
+                    return sortConfig.direction === "asc" ? 1 : -1;
+                }
+                if(sortConfig.key === 'name') {
+                  if(a.assetDTO.assetCode < b.assetDTO.assetCode)
+                    return sortConfig.direction === "asc" ? -1 : 1;
+                  if(a.assetDTO.assetCode > b.assetDTO.assetCode)
+                    return sortConfig.direction === "asc" ? 1 : -1;
+                }
+                if (a[sortConfig.key] < b[sortConfig.key]) {
                     return sortConfig.direction === "asc" ? -1 : 1;
                 }
-                if (a[sortConfig.key] > b[sortConfig.key] ||
-                    a.assetDTO.categoryDTO.name > b.assetDTO.categoryDTO.name ||
-                    a.assetDTO.assetName > b.assetDTO.assetName ||
-                    a.assetDTO.assetCode > b.assetDTO.assetCode) {
+                if (a[sortConfig.key] > b[sortConfig.key]) {
                     return sortConfig.direction === "asc" ? 1 : -1;
                 }
                 return 0;
@@ -148,7 +160,6 @@ const Home = () => {
         <h3 className={"text-danger my-5"}>My Assignment</h3>
         <Row className={"mt-5"}>
         <div id="xmas-popup" >
-	          
              </div>
           {list.length === 0 ? (
             <EmptyList />

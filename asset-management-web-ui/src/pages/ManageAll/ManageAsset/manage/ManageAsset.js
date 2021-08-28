@@ -235,7 +235,7 @@ const ManageAsset = ({responseDataAsset}) => {
                                        onClick={() => history.push(`/editasset/${asset.id}`)}/></td>
                                 <Popup contentStyle={{
                                     width: "25%", border: "1px solid black", borderRadius: 10,
-                                    overflow: 'hidden', padding: "20px"
+                                    overflow: 'hidden'
                                 }}
                                        trigger={<td><i className="bi bi-x-circle text-danger btn p-0"/></td>}
                                        modal>
