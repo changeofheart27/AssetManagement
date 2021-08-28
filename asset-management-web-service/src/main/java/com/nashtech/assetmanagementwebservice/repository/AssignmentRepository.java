@@ -26,4 +26,7 @@ public interface AssignmentRepository extends JpaRepository<Assignment, Integer>
   List<Assignment> findByStateNot(int state);
   
   Assignment findByAsset_Id(Integer id);
+  
+  Assignment findByAsset_IdAndStateNot(Integer id, int state);
+  
 }

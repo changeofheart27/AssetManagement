@@ -5,7 +5,7 @@ import moment from "moment";
 
 const CompleteRequest = props => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
-    let {id, assign, close, setState} = props;
+    let {id, assign, close, setRefreshList} = props;
     // setState(assign.state);
     const assigmentId = assign.assignmentDTO.id
 
@@ -13,7 +13,7 @@ const CompleteRequest = props => {
         axios
             .put(rootAPI + `/request/${id}/complete`)
             .then(function (response) {
-                setState(1);
+                setRefreshList(true);
                 close();
             });
     }

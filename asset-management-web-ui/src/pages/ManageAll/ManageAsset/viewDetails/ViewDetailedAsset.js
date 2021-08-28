@@ -15,7 +15,6 @@ const ViewDetailedAsset = props => {
     installed_date: "",
     state: "",
     location: "",
-    username: "",
     categoryDTO:{
       name: ""
     }
@@ -55,10 +54,6 @@ const ViewDetailedAsset = props => {
      <table> 
        <tbody>
        <tr>
-         <td className="fields-name">ID</td>
-         <td>: {asset.id}</td>
-       </tr>
-       <tr>
          <td className="fields-name">Asset Code</td>
          <td>: {asset.assetCode}</td>
        </tr>
@@ -85,10 +80,6 @@ const ViewDetailedAsset = props => {
        <tr>
          <td className="fields-name">Category</td>
          <td>: {asset.categoryDTO.name}</td>
-       </tr>
-       <tr>
-         <td className="fields-name">Assigned to </td>
-         <td>: {asset.username}</td>
        </tr>
        </tbody>
      </table>

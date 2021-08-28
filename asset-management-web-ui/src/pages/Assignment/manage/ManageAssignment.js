@@ -34,6 +34,7 @@ const ManageAssignment = ({responseAssigment}) => {
         state: null
     });
 
+    const [refreshList, setRefreshList] = useState(false);
     const [type, setType] = useState();
     const [date, setDate] = useState();
     const [keyword, setKeyword] = useState();
@@ -85,18 +86,19 @@ const ManageAssignment = ({responseAssigment}) => {
 
 
     useEffect(() => {
-        axios.get(rootAPI + "/assignments", config).then(function (response) {
-            let result = response.data.map((assigment) => assigment.id);
-            if (result.includes(responseAssigment.id)) {
-                const index = result.indexOf(responseAssigment.id);
-                response.data.splice(index, 1);
-                response.data.unshift(responseAssigment);
-                setList(response.data);
-            } else {
-                setList(response.data);
-            }
-        });
-    }, [state]);
+      axios.get(rootAPI + "/assignments", config).then(function (response) {
+        let result = response.data.map((assigment) => assigment.id);
+        if (result.includes(responseAssigment.id)) {
+          const index = result.indexOf(responseAssigment.id);
+          response.data.splice(index, 1);
+          response.data.unshift(responseAssigment);
+          setList(response.data);
+        } else {
+          setList(response.data);
+        }
+        setRefreshList(false);
+      });
+    }, [state, refreshList]);
     const check = (state) => {
         if (state === 5) {
             return <td>Waiting for acceptance</td>;
@@ -313,7 +315,7 @@ const ManageAssignment = ({responseAssigment}) => {
                                                     }
                                                     modal
                                                 >
-                                                    {close => <DeleteAssignment id={assigment.id} close={close}/>}
+                                                    {close => <DeleteAssignment id={assigment.id} close={close} setRefreshList={setRefreshList}/>}
                                                 </Popup>
                                                 <Popup
                                                     trigger={

@@ -4,18 +4,12 @@ import axios from "axios";
 
 const Delete = props => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
-    let {id,close,setList} = props;
-    const refreshPage = ()=>{
-        window.location.reload();
-    }
+    let {id,close,setRefreshList} = props;
     const onSubmit = () => {
         axios
             .delete(rootAPI+`/assets/${id}`)
             .then(function (response) {
-                axios.get(rootAPI + "/assets/filter")
-                    .then((response) => {
-                        setList(response.data);
-                    });
+                setRefreshList(true);
             });
 
     }

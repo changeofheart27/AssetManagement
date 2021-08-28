@@ -129,7 +129,7 @@ public class AssetServiceImpl implements AssetService {
                     .collect(Collectors.toList());
         }
         logger.info("Successfully got " + assets.size() + " Asset!");
-        return assets.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
+        return assets.stream().filter(asset -> asset.getLocation().equals("HN")).map(assetMapper::fromEntity).collect(Collectors.toList());
     }
 
 

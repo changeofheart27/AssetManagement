@@ -26,7 +26,7 @@ public interface UserService {
 
   public List<UserDTO> searchByNameOrStaffCode(String keyword);
 
-  public List<UserDTO> getUserByType(String type, String keyword);
+  public List<UserDTO> getUsers(String type, String keyword);
 
   public UserDTO changePassword(ChangePasswordRequest request, String username);
 

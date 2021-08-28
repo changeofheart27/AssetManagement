@@ -66,15 +66,15 @@ public class RequestServiceImpl implements RequestService {
       requests = requestRepository.findRequestsByReturnedDate(returnedDate);
       requests = requests.stream().filter(request -> request.getState() == state).collect(Collectors.toList());
     } else if (state != null && returnedDate != null && keyword != null) {
-      requests = requestRepository.findRequestsByAssetNameContainsOrAssetCode(keyword, keyword);
+      requests = requestRepository.findByAssignment_Asset_AssetCodeContainsOrAssignment_Asset_AssetNameContainsOrAssignment_AssignedByContains(keyword, keyword, keyword);
       requests = requests.stream().filter(request -> request.getState() == state && request.getReturnedDate() == returnedDate).collect(Collectors.toList());
     } else if (state == null && returnedDate != null && keyword != null) {
-      requests = requestRepository.findRequestsByAssetNameContainsOrAssetCode(keyword, keyword);
+      requests = requestRepository.findByAssignment_Asset_AssetCodeContainsOrAssignment_Asset_AssetNameContainsOrAssignment_AssignedByContains(keyword, keyword, keyword);
       requests = requests.stream().filter(request -> request.getReturnedDate() == returnedDate).collect(Collectors.toList());
     } else if (state == null && returnedDate == null && keyword != null) {
-      requests = requestRepository.findRequestsByAssetNameContainsOrAssetCode(keyword, keyword);
+      requests = requestRepository.findByAssignment_Asset_AssetCodeContainsOrAssignment_Asset_AssetNameContainsOrAssignment_AssignedByContains(keyword, keyword, keyword);
     } else if (state != null && returnedDate == null && keyword != null) {
-      requests = requestRepository.findRequestsByAssetNameContainsOrAssetCode(keyword, keyword);
+      requests = requestRepository.findByAssignment_Asset_AssetCodeContainsOrAssignment_Asset_AssetNameContainsOrAssignment_AssignedByContains(keyword, keyword, keyword);
       requests = requests.stream().filter(request -> request.getState() == state).collect(Collectors.toList());
     }
     return requests.stream().map(requestMapper::fromEntity).collect(Collectors.toList());

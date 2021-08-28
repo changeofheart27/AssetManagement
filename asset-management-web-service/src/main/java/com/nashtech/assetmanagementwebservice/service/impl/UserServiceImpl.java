@@ -179,9 +179,9 @@ public class UserServiceImpl implements UserService {
 
     }
 
-
+    //method used for filtering, searching and get all user
     @Override
-    public List<UserDTO> getUserByType(String type, String keyword) {
+    public List<UserDTO> getUsers(String type, String keyword) {
         List<User> users = new ArrayList<>();
         String fullName = "%" + keyword + "%";
         String staffCode = keyword;
@@ -189,14 +189,13 @@ public class UserServiceImpl implements UserService {
             users = userRepository.findByStatus("enabled");
         } else if (type != null && keyword == null) {
             users = userRepository.getUserByType(type);
-        } else if (type == null) {
+        } else if (type == null && keyword != null) {
             users = userRepository.findUserByFullNameOrStaffCode(fullName, staffCode);
-        } else {
+        } else if (type != null && keyword != null) {
             users = userRepository.findUserByFullNameOrStaffCode(fullName, staffCode);
             users = users.stream().filter(user -> user.getAuthority().getAuthority().equals(type.toUpperCase())).collect(Collectors.toList());
         }
-        return users.stream().map(UserMapper::toUserDTO).collect(Collectors.toList());
-
+        return users.stream().filter(user -> user.getLocation().equals("HN")).map(UserMapper::toUserDTO).collect(Collectors.toList());
     }
 
 }

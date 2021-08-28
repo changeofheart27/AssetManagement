@@ -4,13 +4,14 @@ import axios from "axios";
 
 const DeleteAssignment = props => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
-    let {id,close} = props;
+    let {id,close, setRefreshList} = props;
     console.log(id);
 
     const onSubmit = () => {
         axios
           .delete(rootAPI+`/assignments/${id}`)
           .then(function (response) {
+            setRefreshList(true);
             close();
           });
     }

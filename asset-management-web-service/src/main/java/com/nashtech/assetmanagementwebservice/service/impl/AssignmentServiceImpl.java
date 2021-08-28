@@ -53,10 +53,19 @@ public class AssignmentServiceImpl implements AssignmentService {
 
     @Override
     public AssignmentDTO createAssignment(AssignmentDTO payload) {
-        Assignment a = assignmentRepository.findByAsset_Id(payload.getAssetDTO().getId());
-        if (a != null && a.getState() != -1) {
+    	//find assignments that has the assigned asset and not yet completed (state != -1)
+        Assignment a = assignmentRepository.findByAsset_IdAndStateNot(payload.getAssetDTO().getId(), -1);
+        
+        if (a != null) {
             throw new BadRequestException("Asset id exist & not complete yet");
         }
+//        if (a != null) {
+//        	a.stream().forEach(assignment -> {
+//        		if (assignment.getState() != -1) {
+//        			throw new BadRequestException("Asset id exist & not complete yet");
+//        		}
+//        	});
+//        }
         User user = userRepository.getById(payload.getUserDTO().getId());
         Asset asset = assetRepository.getById(payload.getAssetDTO().getId());
         asset.setState(4);

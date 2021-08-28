@@ -41,7 +41,7 @@ public class UserController {
     @ApiOperation(value = "Filter By Type of User and Search By name Or staffCode", response = UserDTO.class, responseContainer = "List")
     @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<UserDTO>> getUsers(@RequestParam(name = "type", required = false) String type, @RequestParam(name = "searchTerm", required = false) String keyword) {
-        List<UserDTO> users = userService.getUserByType(type, keyword);
+        List<UserDTO> users = userService.getUsers(type, keyword);
         return ResponseEntity.ok(users);
     }
 

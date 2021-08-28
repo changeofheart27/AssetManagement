@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useMemo} from 'react';
+import React, {useEffect, useState, useMemo} from 'react';
 import {Button, Container, Form, FormControl, InputGroup, Row, Table} from "react-bootstrap";
 import 'react-calendar/dist/Calendar.css';
 import axios from "axios";
@@ -44,31 +44,31 @@ const Request = () => {
     const sortingData = useMemo(() => {
         if (sortConfig !== null) {
             list.sort((a, b) => {
-                if (sortConfig.key == 'username') {
+                if (sortConfig.key === 'username') {
                     if (a.assignmentDTO.userDTO.username < b.assignmentDTO.userDTO.username)
                         return sortConfig.direction === "asc" ? -1 : 1;
                     if (a.assignmentDTO.userDTO.username > b.assignmentDTO.userDTO.username)
                         return sortConfig.direction === "asc" ? 1 : -1;
                 }
-                if (sortConfig.key == 'assetName') {
+                if (sortConfig.key === 'assetName') {
                     if (a.assignmentDTO.assetDTO.assetName < b.assignmentDTO.assetDTO.assetName)
                         return sortConfig.direction === "asc" ? -1 : 1;
                     if (a.assignmentDTO.assetDTO.assetName > b.assignmentDTO.assetDTO.assetName)
                         return sortConfig.direction === "asc" ? 1 : -1;
                 }
-                if (sortConfig.key == 'assetCode') {
+                if (sortConfig.key === 'assetCode') {
                     if (a.assignmentDTO.assetDTO.assetCode < b.assignmentDTO.assetDTO.assetCode)
                         return sortConfig.direction === "asc" ? -1 : 1;
                     if (a.assignmentDTO.assetDTO.assetCode > b.assignmentDTO.assetDTO.assetCode)
                         return sortConfig.direction === "asc" ? 1 : -1;
                 }
-                if (sortConfig.key == 'state') {
+                if (sortConfig.key === 'state') {
                     if (a.assignmentDTO.assetDTO.state < b.assignmentDTO.assetDTO.state)
                         return sortConfig.direction === "asc" ? -1 : 1;
                     if (a.assignmentDTO.assetDTO.state > b.assignmentDTO.assetDTO.state)
                         return sortConfig.direction === "asc" ? 1 : -1;
                 }
-                if (sortConfig.key == 'assignedDate') {
+                if (sortConfig.key === 'assignedDate') {
                     if (a.assignmentDTO.assignedDate < b.assignmentDTO.assignedDate)
                         return sortConfig.direction === "asc" ? -1 : 1;
                     if (a.assignmentDTO.assignedDate > b.assignmentDTO.assignedDate)
@@ -248,8 +248,7 @@ const Request = () => {
                                         offsetX={200}
                                         modal
                                     >
-                                        {close => <CompleteRequest id={request.id} assign={request} close={close}
-                                                                   setState={setState}/>}
+                                        {close => <CompleteRequest id={request.id} assign={request} close={close} setRefreshList={setRefreshList}/>}
                                     </Popup>
                                     <Popup
                                         contentStyle={{
