@@ -2,6 +2,8 @@ package com.nashtech.assetmanagementwebservice.controller;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import com.nashtech.assetmanagementwebservice.entity.Assignment;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -55,7 +57,6 @@ public class RequestController {
   @ApiOperation(value = "Remove Request Using id")
   @DeleteMapping(value = "/request/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Void> deleteRequest(@PathVariable Integer id) {
-
     requestService.deleteById(id);
     return ResponseEntity.ok().build();
   }

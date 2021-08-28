@@ -5,7 +5,8 @@ import axios from "axios";
 
 const ReturnPopup = (props) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
-    let {close, assigment, setState} = props;
+    let {close, assigment, setState,setDisable,disable} = props;
+    setDisable(true);
     setState(assigment.state)
     const onSubmit = (close) => {
         const data = {
@@ -47,10 +48,10 @@ const ReturnPopup = (props) => {
                 <p>Do you want to create a returning request for this asset?</p>
             </Row>
             <Row className={"justify-content-center"}>
-                <Button variant={"danger"} className={"w-25 me-5 my-5"} onClick={() => onSubmit(close)}>
+                <Button variant={"danger"} className={"w-25 me-5 my-5"} onClick={() =>{setDisable(false); onSubmit(close)}}>
                     Yes
                 </Button>
-                <Button variant={"secondary"} className={"w-25 my-5"} onClick={() => close()}>
+                <Button variant={"secondary"} className={"w-25 my-5"} onClick={() =>{ setDisable(false); close()}}>
                     No
                 </Button>
             </Row>

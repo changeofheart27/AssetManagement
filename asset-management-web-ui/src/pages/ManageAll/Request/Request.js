@@ -28,13 +28,14 @@ const Request = () => {
         accepted_by: null
     }]);
     const [state, setState] = useState(null);
+    const [refreshList, setRefreshList] = useState(true);
     useEffect(() => {
         axios.get(rootAPI + `/request`)
             .then(response => {
                 setList(response.data)
             })
 
-    }, [state, list.length])
+    }, [state, refreshList])
 
 
     const [type, setType] = useState();
@@ -50,35 +51,35 @@ const Request = () => {
     const sortingData = useMemo(() => {
         if (sortConfig !== null) {
             list.sort((a, b) => {
-                if(sortConfig.key == 'username') {
-                    if(a.assignmentDTO.userDTO.username < b.assignmentDTO.userDTO.username)
-                    return sortConfig.direction === "asc" ? -1 : 1;
-                    if(a.assignmentDTO.userDTO.username > b.assignmentDTO.userDTO.username)
-                    return sortConfig.direction === "asc" ? 1 : -1;
+                if (sortConfig.key == 'username') {
+                    if (a.assignmentDTO.userDTO.username < b.assignmentDTO.userDTO.username)
+                        return sortConfig.direction === "asc" ? -1 : 1;
+                    if (a.assignmentDTO.userDTO.username > b.assignmentDTO.userDTO.username)
+                        return sortConfig.direction === "asc" ? 1 : -1;
                 }
-                if(sortConfig.key == 'assetName') {
-                    if(a.assignmentDTO.assetDTO.assetName < b.assignmentDTO.assetDTO.assetName)
-                    return sortConfig.direction === "asc" ? -1 : 1;
-                    if(a.assignmentDTO.assetDTO.assetName > b.assignmentDTO.assetDTO.assetName)
-                    return sortConfig.direction === "asc" ? 1 : -1;
+                if (sortConfig.key == 'assetName') {
+                    if (a.assignmentDTO.assetDTO.assetName < b.assignmentDTO.assetDTO.assetName)
+                        return sortConfig.direction === "asc" ? -1 : 1;
+                    if (a.assignmentDTO.assetDTO.assetName > b.assignmentDTO.assetDTO.assetName)
+                        return sortConfig.direction === "asc" ? 1 : -1;
                 }
-                if(sortConfig.key == 'assetCode') {
-                    if(a.assignmentDTO.assetDTO.assetCode < b.assignmentDTO.assetDTO.assetCode)
-                    return sortConfig.direction === "asc" ? -1 : 1;
-                    if(a.assignmentDTO.assetDTO.assetCode > b.assignmentDTO.assetDTO.assetCode)
-                    return sortConfig.direction === "asc" ? 1 : -1;
+                if (sortConfig.key == 'assetCode') {
+                    if (a.assignmentDTO.assetDTO.assetCode < b.assignmentDTO.assetDTO.assetCode)
+                        return sortConfig.direction === "asc" ? -1 : 1;
+                    if (a.assignmentDTO.assetDTO.assetCode > b.assignmentDTO.assetDTO.assetCode)
+                        return sortConfig.direction === "asc" ? 1 : -1;
                 }
-                if(sortConfig.key == 'state') {
-                    if(a.assignmentDTO.assetDTO.state < b.assignmentDTO.assetDTO.state)
-                    return sortConfig.direction === "asc" ? -1 : 1;
-                    if(a.assignmentDTO.assetDTO.state > b.assignmentDTO.assetDTO.state)
-                    return sortConfig.direction === "asc" ? 1 : -1;
+                if (sortConfig.key == 'state') {
+                    if (a.assignmentDTO.assetDTO.state < b.assignmentDTO.assetDTO.state)
+                        return sortConfig.direction === "asc" ? -1 : 1;
+                    if (a.assignmentDTO.assetDTO.state > b.assignmentDTO.assetDTO.state)
+                        return sortConfig.direction === "asc" ? 1 : -1;
                 }
-                if(sortConfig.key == 'assignedDate') {
-                    if(a.assignmentDTO.assignedDate < b.assignmentDTO.assignedDate)
-                    return sortConfig.direction === "asc" ? -1 : 1;
-                    if(a.assignmentDTO.assignedDate > b.assignmentDTO.assignedDate)
-                    return sortConfig.direction === "asc" ? 1 : -1;
+                if (sortConfig.key == 'assignedDate') {
+                    if (a.assignmentDTO.assignedDate < b.assignmentDTO.assignedDate)
+                        return sortConfig.direction === "asc" ? -1 : 1;
+                    if (a.assignmentDTO.assignedDate > b.assignmentDTO.assignedDate)
+                        return sortConfig.direction === "asc" ? 1 : -1;
                 }
                 if (a[sortConfig.key] < b[sortConfig.key]) {
                     return sortConfig.direction === "asc" ? -1 : 1;
@@ -242,40 +243,47 @@ const Request = () => {
                             <td>{assign.accepted_by}</td>
                             <td>{assign.returnedDate}</td>
                             {check(assign.assignmentDTO.state)}
-                            <Popup
-                                contentStyle={{
-                                    width: "25%",
-                                    border: "1px solid black",
-                                    borderRadius: 10,
-                                    overflow: "hidden",
-                                    padding: "20px",
-                                }}
-                                trigger={
-                                    <td><i className="bi bi-check-lg text-danger"/></td>
-                                }
-                                offsetX={200}
-                                modal
-                            >
-                                {close => <CompleteRequest id={assign.id} assign={assign} close={close}
-                                                           setState={setState}/>}
-                            </Popup>
-                            <Popup
-                                contentStyle={{
-                                    width: "25%",
-                                    border: "1px solid black",
-                                    borderRadius: 10,
-                                    overflow: "hidden",
-                                    padding: "20px",
-                                }}
-                                trigger={
-                                    <td><i className="bi bi-x-lg text-dark fw-bold"/></td>
-                                }
-                                offsetX={200}
-                                modal
-                            >
-                                {close => <DeleteRequest id={assign.id} close={close}/>}
-                            </Popup>
-
+                            {assign.assignmentDTO.state === 8 ?
+                                <>
+                                    <Popup
+                                        contentStyle={{
+                                            width: "25%",
+                                            border: "1px solid black",
+                                            borderRadius: 10,
+                                            overflow: "hidden",
+                                            padding: "20px",
+                                        }}
+                                        trigger={
+                                            <td><i className="bi bi-check-lg text-danger btn m-0 p-0 zoomin"/></td>
+                                        }
+                                        offsetX={200}
+                                        modal
+                                    >
+                                        {close => <CompleteRequest id={assign.id} assign={assign} close={close}
+                                                                   setState={setState}/>}
+                                    </Popup>
+                                    <Popup
+                                        contentStyle={{
+                                            width: "25%",
+                                            border: "1px solid black",
+                                            borderRadius: 10,
+                                            overflow: "hidden",
+                                            padding: "20px",
+                                        }}
+                                        trigger={
+                                            <td><i className="bi bi-x-lg text-dark fw-bold btn m-0 p-0 zoomin"/></td>
+                                        }
+                                        offsetX={200}
+                                        modal
+                                    >
+                                        {close => <DeleteRequest id={assign.id} setRefreshList={setRefreshList} refreshList={refreshList} close={close}/>}
+                                    </Popup>
+                                </> :
+                                <>
+                                    <td><i className="bi bi-check-lg text-danger btn disabled m-0 p-0"/></td>
+                                    <td><i className="bi bi-x-lg text-dark fw-bold m-0 p-0"/></td>
+                                </>
+                            }
                         </tr>
                     )}
                     </tbody>

@@ -22,7 +22,7 @@ public class AssignmentRepositoryCustomImpl implements AssignmentRepositoryCusto
         String sql = "SELECT a FROM Assignment a";
         List<String> conditions = new ArrayList<>();
         if (keyword != null) {
-            conditions.add("(a.asset.assetCode LIKE :assetCode OR a.asset.assetName LIKE :assetName)");
+            conditions.add("(a.asset.assetCode LIKE :assetCode OR a.asset.assetName LIKE :assetName OR a.user.username LIKE :username)");
         }
         if (state != null) {
             conditions.add("a.state = :state");
@@ -30,13 +30,14 @@ public class AssignmentRepositoryCustomImpl implements AssignmentRepositoryCusto
         if (date != null) {
             conditions.add("a.assignedDate = :date");
         }
+        conditions.add("a.state != :complete");
         if (!conditions.isEmpty()) {
             String t = conditions.stream().collect(Collectors.joining(" AND "));
             sql = sql + " WHERE " + t;
         }
         Query query = entityManager.createQuery(sql, Assignment.class);
         if (keyword != null) {
-            query.setParameter("assetName", "%" + keyword + "%").setParameter("assetCode", "%" + keyword + "%");
+            query.setParameter("assetName", "%" + keyword + "%").setParameter("assetCode", "%" + keyword + "%").setParameter("username", "%" + keyword + "%");
         }
         if (state != null) {
             query.setParameter("state", state);
@@ -44,6 +45,8 @@ public class AssignmentRepositoryCustomImpl implements AssignmentRepositoryCusto
         if (date != null) {
             query.setParameter("date", date);
         }
+        query.setParameter("complete", -1);
+
         return query.getResultList();
     }
 }

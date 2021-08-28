@@ -37,12 +37,14 @@ public class AssignmentController {
         this.assignmentService = assignmentService;
     }
 
-    @ApiOperation(value = "Get All Assignments", response = AssignmentDTO.class, responseContainer = "List")
+    @ApiOperation(value = "Get All Assignments and Filter", response = AssignmentDTO.class)
     @GetMapping(value = "/assignments", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<AssignmentDTO>> getAllAssignments() {
-        logger.info("Execute getAllAssignments() inside AssignmentController");
-        List<AssignmentDTO> assignments = assignmentService.getAssignmentList();
-        logger.info("Executed successful!");
+    public ResponseEntity<List<AssignmentDTO>> getAll(@RequestParam(value = "type", required = false) Integer state,
+                                                      @RequestParam(value = "date", required = false)
+                                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate assignedDate,
+                                                      @RequestParam(value ="keyword", required = false) String keyword
+    ) {
+        List<AssignmentDTO> assignments = assignmentService.test(keyword, state, assignedDate);
         return ResponseEntity.ok(assignments);
     }
 
@@ -108,16 +110,7 @@ public class AssignmentController {
     }
 
 
-    @ApiOperation(value = "Filter Assignments", response = AssignmentDTO.class)
-    @GetMapping(value = "/assignments/filter", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<AssignmentDTO>> test(@RequestParam(value = "type", required = false) Integer state,
-                                                    @RequestParam(value = "date", required = false)
-                                                    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate assignedDate,
-                                                    @RequestParam(value ="keyword", required = false) String keyword
-    ) {
-        List<AssignmentDTO> assignments = assignmentService.test(keyword, state, assignedDate);
-        return ResponseEntity.ok(assignments);
-    }
+
 
 
 }

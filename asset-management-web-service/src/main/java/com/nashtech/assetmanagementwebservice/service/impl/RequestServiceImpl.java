@@ -82,6 +82,9 @@ public class RequestServiceImpl implements RequestService {
   @Override
   public void deleteById(Integer id) {
     Request request = requestRepository.getById(id);
+    Assignment assignment = request.getAssignment();
+    assignment.setState(6);
+    assignmentRepository.save(assignment);
     requestRepository.delete(request);
   }
 
