@@ -141,7 +141,7 @@ const Home = () => {
     };
     let i = 1;
     const [disable, setDisable] = useState(false);
-    console.log(disable)
+    console.log(disable," from home page")
     return (
 
       <Container fluid className={"d-block ps-5"}>
@@ -321,7 +321,6 @@ const Home = () => {
                                 setState={setState}
                                 assigment={assigment}
                                 setDisable={setDisable}
-                                disable={disable}
                               />
                             )}
                           </Popup>

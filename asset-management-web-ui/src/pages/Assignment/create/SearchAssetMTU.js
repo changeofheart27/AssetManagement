@@ -47,7 +47,7 @@ const SearchAssetAntD = props => {
         state: null
     }]);
     useEffect(() => {
-        axios.get(rootAPI + '/assets/createassignment')
+        axios.get(rootAPI + '/assets?type=0')
             .then(response => {
                 setAsset(response.data)
             })
@@ -76,7 +76,7 @@ const SearchAssetAntD = props => {
             isFirstRun.current = false;
             return;
         }
-        axios.get(rootAPI + '/assets?searchTerm=' + searchTerm)
+        axios.get(rootAPI + '/assets?type=0&searchTerm=' + searchTerm)
             .then(response => {
                 setAsset(response.data);
             })

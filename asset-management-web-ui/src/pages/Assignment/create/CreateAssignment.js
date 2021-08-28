@@ -127,7 +127,7 @@ const CreateAssignment = ({ setResponseAssigment }) => {
                       </InputGroup.Text>
                     }
                     position={"left top"}
-                    contentStyle={{ width: "750px" }}
+                    contentStyle={{ width: "750px", borderRadius:"10px" }}
                     modal
                   >
                     {(close) => (
@@ -154,7 +154,7 @@ const CreateAssignment = ({ setResponseAssigment }) => {
                       </InputGroup.Text>
                     }
                     position={"left top"}
-                    contentStyle={{ width: "750px"}}
+                    contentStyle={{ width: "750px", borderRadius:"10px"}}
                     modal
                   >
                     {(close) => (

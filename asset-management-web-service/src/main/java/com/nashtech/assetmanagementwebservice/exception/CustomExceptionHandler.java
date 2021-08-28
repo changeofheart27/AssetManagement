@@ -9,10 +9,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
+import javax.persistence.EntityNotFoundException;
+
 
 @RestControllerAdvice
 public class CustomExceptionHandler {
     Logger logger = LoggerFactory.getLogger(CustomExceptionHandler.class);
+
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<?> handlerNotFoundException(NotFoundException ex, WebRequest req) {
         logger.error("Not Found Exception", ex);
@@ -37,8 +40,7 @@ public class CustomExceptionHandler {
         logger.error("handler exception", ex);
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-    // Xử lý tất cả các exception chưa được khai báo
+    
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<?> handleBussinessException(BusinessException ex, WebRequest req) {
         logger.error("handle Bussiness Exception", ex);
@@ -50,4 +52,11 @@ public class CustomExceptionHandler {
         logger.error("handle Bad Request Exception", ex);
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<?> handleEntityNotFound(EntityNotFoundException ex, WebRequest req) {
+        logger.error("handle Entity Not Found Exception", ex);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
 }

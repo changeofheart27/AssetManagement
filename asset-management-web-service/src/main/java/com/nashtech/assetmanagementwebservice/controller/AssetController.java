@@ -39,9 +39,6 @@ public class AssetController {
   public ResponseEntity<AssetDTO> getAsset(@PathVariable Integer id) {
     logger.info("Execute getAsset() inside AssetController");
     AssetDTO asset = assetService.findAssetById(id);
-    if (asset == null) {
-      return ResponseEntity.notFound().build();
-    }
     logger.info("Executed successful!");
     return ResponseEntity.ok(asset);
   }
@@ -81,14 +78,6 @@ public class AssetController {
     List<AssetDTO> assets = assetService.filterAssets(category, state, keyword);
     return ResponseEntity.ok(assets);
   }
-
-    @ApiOperation(value = "Filter Asset", response = AssetDTO.class, responseContainer = "List")
-    @GetMapping(value = "/assets/createassignment", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<AssetDTO>> filterAssetNotAssign(@RequestParam(value = "searchTerm", required = false) String keyword) {
-        List<AssetDTO> assets = assetService.filterAssetAvailable(keyword);
-        return ResponseEntity.ok(assets);
-    }
-
 
   @ApiOperation(value = "Report", response = Object.class, responseContainer = "List")
   @GetMapping(value = "/assets/report", produces = MediaType.APPLICATION_JSON_VALUE)

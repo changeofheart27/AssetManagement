@@ -132,18 +132,6 @@ public class AssetServiceImpl implements AssetService {
         return assets.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
     }
 
-    @Override
-    public List<AssetDTO> filterAssetAvailable(String keyword) {
-        List<Asset> assets = new ArrayList<>();
-        if (keyword == null) {
-            assets = assetRepository.findAssetByState(0);
-        } else {
-            assets = assetRepository.findAssetsByAssetNameContainsOrAssetCodeContains(keyword, keyword);
-        }
-
-        return assets.stream().map(assetMapper::fromEntity).collect(Collectors.toList());
-    }
-
 
     /**
      * generate assetCode for Asset (Example format: Laptop -> LA000001, Monitor: MO000001, Personal Computer: PC000001)
