@@ -1,11 +1,14 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Container, Row} from "react-bootstrap";
 import './popup.css'
 import axios from "axios";
 
 const ReturnPopup = (props) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
-    let {close, assigment, setState} = props;
+    let {close, assigment, setState,setDisable,disable} = props;
+    useEffect(()=>{
+        setDisable(true);
+    })
     setState(assigment.state)
     const onSubmit = (close) => {
         const data = {
@@ -23,7 +26,6 @@ const ReturnPopup = (props) => {
             }
         )
             .then(response => {
-                close();
                 setState(data.state);
                 const requestdata={
                     assignmentDTO: assigment
@@ -33,24 +35,25 @@ const ReturnPopup = (props) => {
                         Authorization: localStorage.getItem("jwttoken")
                     }
                 }).then(response=> {
-                    console.log("request success")
+                    console.log("request success");
+                    setDisable(false);
                 })
+                close();
             })
     }
     return (
         <Container fluid>
             <Row>
                 <h3 className={"text-danger bg-gray mb-0 rounded-top"}>Are you sure?</h3>
-                <hr/>
             </Row>
             <Row>
                 <p>Do you want to create a returning request for this asset?</p>
             </Row>
             <Row className={"justify-content-center"}>
-                <Button variant={"danger"} className={"w-25 me-5 my-5"} onClick={() => onSubmit(close)}>
+                <Button variant={"danger"} className={"w-25 me-5 my-5"} onClick={() =>{onSubmit(close)}}>
                     Yes
                 </Button>
-                <Button variant={"secondary"} className={"w-25 my-5"} onClick={() => close()}>
+                <Button variant={"secondary"} className={"w-25 my-5"} onClick={() =>{ setDisable(false); close()}}>
                     No
                 </Button>
             </Row>

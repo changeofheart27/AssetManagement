@@ -77,7 +77,7 @@ const ManageAssignment = ({responseAssigment}) => {
             request.params.keyword = null;
         }
         axios
-            .get(rootAPI + `/assignments/filter`, config)
+            .get(rootAPI + `/assignments`, config)
             .then(function (response) {
                 setList(response.data);
             });

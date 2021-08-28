@@ -8,14 +8,12 @@ import React, {useEffect, useMemo, useState} from 'react';
 
 import AcceptPopup from "./popup/AcceptPopup";
 import DeclinePopup from "./popup/DeclinePopup";
-import DetailsPopup from "./popup/DetailsPopup";
 import EmptyList from "../../layout/EmptyList/EmptyList";
 import FirstLogin from '../../components/FirstLogin/FirstLogin'
 import Pagination from '../../components/Pagination/Pagination';
 import Popup from "reactjs-popup";
 import ReactDOM from "react-dom"
 import ReturnPopup from "./popup/ReturnPopup";
-import UserInfo from '../../layout/header/UserInfo'
 import ViewDetailAssignment from "../Assignment/viewDetails/ViewDetailAssignment";
 import axios from "axios";
 
@@ -29,7 +27,7 @@ const Home = () => {
     const paginate = pageNumber => setCurrentPage(pageNumber);
     const [user, setUser] = useState({
         defaultPassword: null,
-        firstLogin:null
+        firstLogin: null
     });
     const [list, setList] = useState([{
         id: null,
@@ -61,20 +59,20 @@ const Home = () => {
         }).then((response) => {
             setList(response.data);
             axios
-            .get(rootAPI + `/users`)
+                .get(rootAPI + `/users`)
                 .then((response1) => {
                     setUser(response1.data)
                     console.log(response1);
                 })
         }).then((response) => {
-          
-          axios
-          .get(rootAPI + `/my-info?=${localStorage.getItem("username")}`)
-              .then((response2) => {
-                  setUser(response2.data)
-                  console.log(response2);
-              })
-      })
+
+            axios
+                .get(rootAPI + `/my-info?=${localStorage.getItem("username")}`)
+                .then((response2) => {
+                    setUser(response2.data)
+                    console.log(response2);
+                })
+        })
             .catch((error) => {
                 console.log(error)
             });
@@ -142,6 +140,8 @@ const Home = () => {
         return sortConfig.key === name ? sortConfig.direction : undefined;
     };
     let i = 1;
+    const [disable, setDisable] = useState(false);
+    console.log(disable," from home page")
     return (
 
       <Container fluid className={"d-block ps-5"}>
@@ -312,6 +312,7 @@ const Home = () => {
                               </td>
                             }
                             modal
+                            closeOnDocumentClick={false}
                             contentStyle={PopupStyle}
                           >
                             {(close) => (
@@ -319,6 +320,7 @@ const Home = () => {
                                 close={close}
                                 setState={setState}
                                 assigment={assigment}
+                                setDisable={setDisable}
                               />
                             )}
                           </Popup>
@@ -326,6 +328,7 @@ const Home = () => {
                       </tr>
                     }
                     modal
+                    disabled={disable}
                   >
                     {(close) => (
                       <div>
@@ -350,7 +353,7 @@ const Home = () => {
           usersPerPage={usersPerPage}
           totalUsers={list.length}
           paginate={paginate}
-        ></Pagination>
+        />
       </Container>
     );
 

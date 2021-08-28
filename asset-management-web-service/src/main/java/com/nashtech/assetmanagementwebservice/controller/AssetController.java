@@ -39,9 +39,6 @@ public class AssetController {
   public ResponseEntity<AssetDTO> getAsset(@PathVariable Integer id) {
     logger.info("Execute getAsset() inside AssetController");
     AssetDTO asset = assetService.findAssetById(id);
-    if (asset == null) {
-      return ResponseEntity.notFound().build();
-    }
     logger.info("Executed successful!");
     return ResponseEntity.ok(asset);
   }
@@ -73,15 +70,15 @@ public class AssetController {
     return ResponseEntity.ok().build();
   }
 
-  @ApiOperation(value = "Filter Asset", response = AssetDTO.class, responseContainer = "List")
+  @ApiOperation(value = "Get All Asset and Filter Asset", response = AssetDTO.class, responseContainer = "List")
   @GetMapping(value = "/assets", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<List<AssetDTO>> filterAsset(@RequestParam(value = "category", required = false) String category
+  public ResponseEntity<List<AssetDTO>> getAll(@RequestParam(value = "category", required = false) String category
           , @RequestParam(value = "type", required = false) Integer state
           , @RequestParam(value = "searchTerm", required = false) String keyword) {
     List<AssetDTO> assets = assetService.filterAssets(category, state, keyword);
     return ResponseEntity.ok(assets);
-
   }
+
   @ApiOperation(value = "Report", response = Object.class, responseContainer = "List")
   @GetMapping(value = "/assets/report", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<List<Object[]>> getDataForReport() {

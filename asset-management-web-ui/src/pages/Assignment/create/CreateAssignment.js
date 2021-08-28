@@ -7,9 +7,10 @@ import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 import Popup from "reactjs-popup";
 import SearchUser from "./SearchUser";
-import SearchAsset from "./SearchAsset";
 import moment from "moment";
 import SelectDate from "./SelectDate";
+import SearchAssetAntD from "./SearchAssetMTU";
+import SearchUserAntD from "./SearchUserAntD";
 
 const CreateAssignment = ({ setResponseAssigment }) => {
   const rootAPI = process.env.REACT_APP_SERVER_URL;
@@ -126,11 +127,11 @@ const CreateAssignment = ({ setResponseAssigment }) => {
                       </InputGroup.Text>
                     }
                     position={"left top"}
-                    contentStyle={{ width: "750px" }}
+                    contentStyle={{ width: "750px", borderRadius:"10px" }}
                     modal
                   >
                     {(close) => (
-                      <SearchUser close={close} setSingleUser={setSingleUser} />
+                      <SearchUserAntD close={close} setSingleUser={setSingleUser} />
                     )}
                   </Popup>
                 </InputGroup>
@@ -153,11 +154,11 @@ const CreateAssignment = ({ setResponseAssigment }) => {
                       </InputGroup.Text>
                     }
                     position={"left top"}
-                    contentStyle={{ width: "750px" }}
+                    contentStyle={{ width: "750px", borderRadius:"10px"}}
                     modal
                   >
                     {(close) => (
-                      <SearchAsset
+                      <SearchAssetAntD
                         close={close}
                         setAssetSelect={setAssetSelect}
                       />
