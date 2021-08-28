@@ -9,6 +9,8 @@ import CompleteRequest from './CompleteRequest';
 const Request = () => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [sortConfig, setSortConfig] = useState(null);
+    const [state, setState] = useState(null);
+    const [refreshList, setRefreshList] = useState(false);
     const [list, setList] = useState([{
         id: null,
         returnedDate: null,
@@ -27,23 +29,13 @@ const Request = () => {
         state: null,
         accepted_by: null
     }]);
-    const [state, setState] = useState(null);
-    const [refreshList, setRefreshList] = useState(true);
-    useEffect(() => {
-        axios.get(rootAPI + `/request`)
-            .then(response => {
-                setList(response.data)
-            })
-
-    }, [state, refreshList])
 
 
-    const [type, setType] = useState();
     const [date, setDate] = useState();
     const [searchTerm, setSearchTerm] = useState();
     const request = {
         params: {
-            type,
+            state,
             date,
             searchTerm
         }
@@ -108,35 +100,31 @@ const Request = () => {
         }
         return sortConfig.key === name ? sortConfig.direction : undefined;
     };
-    const handleFilterType = evt => {
-        setType(evt.target.value)
+    const handleFilterState = evt => {
+        setState(evt.target.value)
     }
     const handleFilterDate = evt => {
         setDate(evt.target.value)
     }
     const handleSearch = evt => {
-        const name = evt.target.name;
         setSearchTerm(evt.target.value)
     }
-    const isFirstRun = useRef(true);
     useEffect(() => {
-        if (isFirstRun.current) {
-            isFirstRun.current = false;
-            return;
-        }
-
-        if (request.params.type === "State") {
-            request.params.type = null;
-
+        if (request.params.state === "State") {
+            request.params.state = null;
         }
         if (request.params.date === "Assigned Date") {
             request.params.date = null;
         }
-        axios.get(rootAPI + `/request/filter`, request)
+        if (!request.params.searchTerm) {
+            request.params.searchTerm = null
+        }
+        axios.get(rootAPI + `/request`, request)
             .then(function (response) {
                 setList(response.data);
+                setRefreshList(false);
             })
-    }, [type, date, searchTerm])
+    }, [state, date, searchTerm,refreshList])
     const check = (state) => {
         if (state === 8) {
             return <td>Waiting for returning</td>;
@@ -145,6 +133,7 @@ const Request = () => {
         }
     };
     let i = 1;
+    console.log(refreshList);
     return (
         <Container fluid className={"d-block ps-5"}>
             <h1 className={"text-danger mb-3"}>Request List</h1>
@@ -154,8 +143,8 @@ const Request = () => {
                         as="select"
                         custom
                         className={"w-26"}
-                        name={"type"}
-                        onChange={handleFilterType}
+                        name={"state"}
+                        onChange={handleFilterState}
                     >
                         <option>State</option>
                         <option value="0">Waiting for returning</option>
@@ -233,17 +222,17 @@ const Request = () => {
                     </tr>
                     </thead>
                     <tbody>
-                    {list.map(assign =>
+                    {list.map(request =>
                         <tr>
                             <td>{i++}</td>
-                            <td>{assign.assignmentDTO.assetDTO.assetCode}</td>
-                            <td>{assign.assignmentDTO.assetDTO.assetName}</td>
-                            <td>{assign.assignmentDTO.userDTO.username}</td>
-                            <td>{assign.assignmentDTO.assignedDate}</td>
-                            <td>{assign.accepted_by}</td>
-                            <td>{assign.returnedDate}</td>
-                            {check(assign.assignmentDTO.state)}
-                            {assign.assignmentDTO.state === 8 ?
+                            <td>{request.assignmentDTO.assetDTO.assetCode}</td>
+                            <td>{request.assignmentDTO.assetDTO.assetName}</td>
+                            <td>{request.assignmentDTO.userDTO.username}</td>
+                            <td>{request.assignmentDTO.assignedDate}</td>
+                            <td>{request.accepted_by}</td>
+                            <td>{request.returnedDate}</td>
+                            {check(request.assignmentDTO.state)}
+                            {request.assignmentDTO.state === 8 ?
                                 <>
                                     <Popup
                                         contentStyle={{
@@ -259,7 +248,7 @@ const Request = () => {
                                         offsetX={200}
                                         modal
                                     >
-                                        {close => <CompleteRequest id={assign.id} assign={assign} close={close}
+                                        {close => <CompleteRequest id={request.id} assign={request} close={close}
                                                                    setState={setState}/>}
                                     </Popup>
                                     <Popup
@@ -276,7 +265,8 @@ const Request = () => {
                                         offsetX={200}
                                         modal
                                     >
-                                        {close => <DeleteRequest id={assign.id} setRefreshList={setRefreshList} refreshList={refreshList} close={close}/>}
+                                        {close => <DeleteRequest id={request.id} setRefreshList={setRefreshList}
+                                                                 refreshList={refreshList} close={close}/>}
                                     </Popup>
                                 </> :
                                 <>

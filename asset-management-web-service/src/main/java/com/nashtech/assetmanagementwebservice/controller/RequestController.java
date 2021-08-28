@@ -3,7 +3,6 @@ package com.nashtech.assetmanagementwebservice.controller;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.nashtech.assetmanagementwebservice.entity.Assignment;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,10 +31,10 @@ public class RequestController {
     this.requestService = requestService;
   }
 
-  @ApiOperation(value = "get all request assignment")
-  @GetMapping(value = "/request")
-  public ResponseEntity<List<RequestDTO>> getAll() {
-    List<RequestDTO> requests = requestService.getAllRequest();
+  @ApiOperation(value = "Filter Request", response = RequestDTO.class, responseContainer = "List")
+  @GetMapping(value = "/request", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<List<RequestDTO>> filterAsset(@RequestParam(value = "state", required = false) Integer state, @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate returnedDate, @RequestParam(value = "searchTerm", required = false) String keyword) {
+    List<RequestDTO> requests = requestService.filterRequests(state, returnedDate, keyword);
     return ResponseEntity.ok(requests);
   }
 
@@ -46,13 +45,7 @@ public class RequestController {
     return ResponseEntity.ok(requestDTO);
   }
 
-  @ApiOperation(value = "Filter Request", response = RequestDTO.class, responseContainer = "List")
-  @GetMapping(value = "/request/filter", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<List<RequestDTO>> filterAsset(@RequestParam(value = "state", required = false) Integer state, @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate returnedDate, @RequestParam(value = "searchTerm", required = false) String keyword) {
-    List<RequestDTO> requests = requestService.filterRequests(state, returnedDate, keyword);
-    return ResponseEntity.ok(requests);
 
-  }
 
   @ApiOperation(value = "Remove Request Using id")
   @DeleteMapping(value = "/request/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -62,9 +55,9 @@ public class RequestController {
   }
 
   @ApiOperation(value = "Mark a Request as Completed", response = RequestDTO.class)
-  @PutMapping(value = "/request/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<RequestDTO> edit(@PathVariable Integer id, @RequestBody RequestDTO payload) {
-    RequestDTO assignmentDTO = requestService.edit(id, payload);
+  @PutMapping(value = "/request/{id}/complete", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<RequestDTO> completeRequest(@PathVariable Integer id) {
+    RequestDTO assignmentDTO = requestService.complete(id);
     return ResponseEntity.ok(assignmentDTO);
   }
 }

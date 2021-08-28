@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import com.nashtech.assetmanagementwebservice.entity.Asset;
 import com.nashtech.assetmanagementwebservice.repository.AssetRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import com.nashtech.assetmanagementwebservice.entity.Assignment;
 import com.nashtech.assetmanagementwebservice.entity.Request;
@@ -89,18 +90,18 @@ public class RequestServiceImpl implements RequestService {
   }
 
   @Override
-  public RequestDTO edit(Integer id, RequestDTO payload) {
-    Assignment assignment = assignmentRepository.getById(payload.getAssignmentDTO().getId());
+  public RequestDTO complete(Integer id) {
+    Request request = requestRepository.getById(id);
+    Assignment assignment = request.getAssignment();
     assignment.setState(-1);
     assignmentRepository.save(assignment);
     Asset asset = assetRepository.getById(assignment.getAsset().getId());
     asset.setState(0);
     assetRepository.save(asset);
-    Request request = requestRepository.getById(id);
-    request.setReturnedDate(payload.getReturnedDate());
-    request.setUsername(payload.getAccepted_by());
-    request.setState(payload.getState());
+    request.setReturnedDate(LocalDate.now());
+    request.setUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+    request.setState(1);
     requestRepository.save(request);
-    return payload;
+    return requestMapper.fromEntity(request);
   }
 }

@@ -157,6 +157,7 @@ const ManageAssignment = ({responseAssigment}) => {
         return sortConfig.key === name ? sortConfig.direction : undefined;
     };
     let i = 1;
+    const [disable, setDisable] = useState(false);
     return (
         <Container fluid className={"d-block ps-5"}>
             <h1 className={"text-danger mb-3"}>My Assignment</h1>
@@ -330,7 +331,10 @@ const ManageAssignment = ({responseAssigment}) => {
                                                 >
                                                     {(close) => <ReturnPopup assigment={assigment}
                                                                              setState={setState}
-                                                                             close={close}/>}
+                                                                             close={close}
+                                                                             setDisable={setDisable}
+                                                    />
+                                                    }
                                                 </Popup>
 
                                             </>

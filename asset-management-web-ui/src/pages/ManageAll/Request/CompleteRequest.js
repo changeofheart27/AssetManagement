@@ -8,17 +8,10 @@ const CompleteRequest = props => {
     let {id, assign, close, setState} = props;
     // setState(assign.state);
     const assigmentId = assign.assignmentDTO.id
-    const data = {
-        id: assign.id,
-        returnedDate: moment().format("YYYY-MM-DD"),
-        assignmentDTO: assign.assignmentDTO,
-        accepted_by: localStorage.getItem("username"),
-        state: 1
-    }
 
     const onSubmit = () => {
         axios
-            .put(rootAPI + `/request/${id}`, data)
+            .put(rootAPI + `/request/${id}/complete`)
             .then(function (response) {
                 setState(1);
                 close();

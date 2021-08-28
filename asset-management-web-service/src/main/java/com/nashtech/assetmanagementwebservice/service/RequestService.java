@@ -14,5 +14,5 @@ public interface RequestService {
 
   void deleteById(Integer id);
 
-  RequestDTO edit(Integer id, RequestDTO payload);
+  RequestDTO complete(Integer id);
 }
