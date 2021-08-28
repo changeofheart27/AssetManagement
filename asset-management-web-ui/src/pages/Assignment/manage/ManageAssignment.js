@@ -332,7 +332,6 @@ const ManageAssignment = ({responseAssigment}) => {
                                                     {(close) => <ReturnPopup assigment={assigment}
                                                                              setState={setState}
                                                                              close={close}
-                                                                             setDisable={setDisable}
                                                     />
                                                     }
                                                 </Popup>
@@ -363,7 +362,10 @@ const ManageAssignment = ({responseAssigment}) => {
                                                 >
                                                     {(close) => <ReturnPopup assigment={assigment}
                                                                              setState={setState}
-                                                                             close={close}/>}
+                                                                             close={close}
+                                                                             setDisable={setDisable}
+                                                    />}
+
                                                 </Popup>
                                             </>
                                         )}

@@ -17,7 +17,7 @@ import axios from "axios";
 import {makeStyles} from '@material-ui/core/styles';
 import {toast} from 'react-toastify';
 import {useHistory} from "react-router-dom";
-import {FilledInput, IconButton, InputAdornment} from "@material-ui/core";
+import {FilledInput, FormControl, IconButton, InputAdornment, InputLabel} from "@material-ui/core";
 import {Visibility, VisibilityOff} from "@material-ui/icons";
 
 function Copyright() {
@@ -131,29 +131,37 @@ export default function SignIn() {
                         autoFocus
                         onChange={handleOnChange}
                     />
-                    <FilledInput
+                    <FormControl
                         variant="filled"
-                        margin="normal"
-                        required
                         fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        autoComplete="current-password"
-                        onChange={handleOnChange}
-                        endAdornment={
-                            <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
-                                    onMouseDown={handleMouseDownPassword}
-                                >
-                                    {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                                </IconButton>
-                            </InputAdornment>
-                        }
-                    />
+                        required
+                    >
+                        <InputLabel htmlFor="password">Password*</InputLabel>
+                        <FilledInput
+                            autoFocus
+                            variant="filled"
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="password"
+                            label="Password"
+                            type={values.showPassword ? 'text' : 'password'}
+                            id="password"
+                            autoComplete="current-password"
+                            onChange={handleOnChange}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                    >
+                                        {values.showPassword ? <Visibility/> : <VisibilityOff/>}
+                                    </IconButton>
+                                </InputAdornment>
+                            }
+                        />
+                    </FormControl>
                     <>
                         <Button
                             type="submit"

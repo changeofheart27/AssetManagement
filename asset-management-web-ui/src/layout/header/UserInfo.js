@@ -3,9 +3,9 @@ import './UserInfo.css'
 
 import * as Yup from "yup";
 
-import {Button, Form, FormCheck, FormControl, Row} from "react-bootstrap";
-import {useEffect, useState} from "react";
-import {useHistory, useParams} from 'react-router-dom';
+import {Button, Form, FormControl, Row} from "react-bootstrap";
+import { useState} from "react";
+import {useHistory} from 'react-router-dom';
 
 import {ButtonGroup} from "react-bootstrap";
 import {Formik} from 'formik';
@@ -85,7 +85,7 @@ const UserInfo = ({props, loginSuccess, setResponseUser}) => {
     return (
         <div className="body-changepassword">
             <h3 className={"text-danger"}>Change Password</h3>
-            <hr/>
+            <hr className={"w-75"}/>
             <Formik
                 initialValues={initialValues}
                 validationSchema={ValidateSchema}
@@ -107,7 +107,7 @@ const UserInfo = ({props, loginSuccess, setResponseUser}) => {
                             <FormControl
                                 aria-label="Old Password"
                                 aria-describedby="basic-addon1"
-                                className={"w-75"}
+                                className={"w-50"}
                                 value={values.oldPassword}
                                 name={"oldPassword"}
                                 type={"password"}
@@ -121,10 +121,10 @@ const UserInfo = ({props, loginSuccess, setResponseUser}) => {
                         </Row>
                         <Row className={"mb-3"}>
                             <p className={"w-25"}>New Password</p>
-                            <FormControl
+                            <Form.Control
                                 aria-label="New Password"
                                 aria-describedby="basic-addon1"
-                                className={"w-75"}
+                                className={"w-50"}
                                 value={values.newPassword}
                                 name={"newPassword"}
                                 type={"password"}
@@ -137,14 +137,15 @@ const UserInfo = ({props, loginSuccess, setResponseUser}) => {
                             ) : null}
                         </Row>
 
-                        <Row className={"justify-content-between"}>
-                            <ButtonGroup className={"w-50"}>
-                                <Button variant={"danger"} type={"submit"}
+                        <Row className={"justify-content-center"}>
+                            <ButtonGroup className={"w-25 p-0 me-1"}>
+                                <Button variant={"danger"}
+                                        type={"submit"}
                                         disabled={isSubmitting} on>
                                     Save
                                 </Button>
                             </ButtonGroup>
-                            <ButtonGroup className={"w-50 pe-0"}>
+                            <ButtonGroup className={"w-25 p-0"}>
                                 <Button variant={"secondary"}
                                         onClick={() => history.push('/home')} type={"submit"}>
                                     Cancel
