@@ -127,11 +127,14 @@ const CreateAssignment = ({ setResponseAssigment }) => {
                       </InputGroup.Text>
                     }
                     position={"left top"}
-                    contentStyle={{ width: "750px", borderRadius:"10px" }}
+                    contentStyle={{ width: "750px", borderRadius: "10px" }}
                     modal
                   >
                     {(close) => (
-                      <SearchUserAntD close={close} setSingleUser={setSingleUser} />
+                      <SearchUserAntD
+                        close={close}
+                        setSingleUser={setSingleUser}
+                      />
                     )}
                   </Popup>
                 </InputGroup>
@@ -154,7 +157,7 @@ const CreateAssignment = ({ setResponseAssigment }) => {
                       </InputGroup.Text>
                     }
                     position={"left top"}
-                    contentStyle={{ width: "750px", borderRadius:"10px"}}
+                    contentStyle={{ width: "750px", borderRadius: "10px" }}
                     modal
                   >
                     {(close) => (
@@ -219,7 +222,7 @@ const CreateAssignment = ({ setResponseAssigment }) => {
                 ) : null}
               </Row>
               <Button
-                variant={"light"}
+                variant={"secondary"}
                 onClick={() => history.push("/assignment")}
                 className={"ms-5"}
                 style={{ float: "right" }}

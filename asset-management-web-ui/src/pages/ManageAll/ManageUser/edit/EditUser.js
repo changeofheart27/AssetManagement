@@ -315,7 +315,7 @@ const EditUser = ({setResponseUser}) => {
                   ) : null}
                 </Row>
                 <Button
-                  variant={"light"}
+                  variant={"secondary"}
                   type={"submit"}
                   className={"ms-5"}
                   style={{ float: "right" }}

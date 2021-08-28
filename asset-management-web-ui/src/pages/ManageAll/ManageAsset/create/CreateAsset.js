@@ -218,7 +218,7 @@ const CreateAsset = ({setResponseDataAsset}) => {
                                 </div>
                             </Row>
                             <Button
-                                variant={"light"}
+                                variant={"secondary"}
                                 onClick={() => history.push("/asset")}
                                 className={"ms-5"}
                                 style={{float: "right"}}
