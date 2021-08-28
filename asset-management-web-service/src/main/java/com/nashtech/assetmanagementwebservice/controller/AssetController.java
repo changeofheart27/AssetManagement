@@ -70,9 +70,9 @@ public class AssetController {
     return ResponseEntity.ok().build();
   }
 
-  @ApiOperation(value = "Filter Asset", response = AssetDTO.class, responseContainer = "List")
+  @ApiOperation(value = "Get All Asset and Filter Asset", response = AssetDTO.class, responseContainer = "List")
   @GetMapping(value = "/assets", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<List<AssetDTO>> filterAsset(@RequestParam(value = "category", required = false) String category
+  public ResponseEntity<List<AssetDTO>> getAll(@RequestParam(value = "category", required = false) String category
           , @RequestParam(value = "type", required = false) Integer state
           , @RequestParam(value = "searchTerm", required = false) String keyword) {
     List<AssetDTO> assets = assetService.filterAssets(category, state, keyword);

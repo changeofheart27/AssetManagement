@@ -40,7 +40,7 @@ public class CustomExceptionHandler {
         logger.error("handler exception", ex);
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    
+
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<?> handleBussinessException(BusinessException ex, WebRequest req) {
         logger.error("handle Bussiness Exception", ex);
