@@ -160,7 +160,7 @@ const ManageUser = ({responseUser}) => {
                 onChange={handleSearch}
                 maxLength={255}
               />
-              <Button variant={"outline-secondary"} onClick={handleSearch}>
+              <Button variant={"outline-secondary"}>
                 <i className="bi bi-search" />
               </Button>
             </InputGroup>

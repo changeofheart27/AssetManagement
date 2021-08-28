@@ -5,6 +5,7 @@ import axios from "axios";
 import Popup from 'reactjs-popup';
 import DeleteRequest from './DeleteRequest';
 import CompleteRequest from './CompleteRequest';
+import dateFormat from 'dateformat';
 
 const Request = () => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
@@ -228,9 +229,9 @@ const Request = () => {
                             <td>{request.assignmentDTO.assetDTO.assetCode}</td>
                             <td>{request.assignmentDTO.assetDTO.assetName}</td>
                             <td>{request.assignmentDTO.userDTO.username}</td>
-                            <td>{request.assignmentDTO.assignedDate}</td>
+                            <td>{dateFormat(request.assignmentDTO.assignedDate, "dd/mm/yy")}</td>
                             <td>{request.accepted_by}</td>
-                            <td>{request.returnedDate}</td>
+                            <td>{dateFormat(request.returnedDate, "dd/mm/yy")}</td>
                             {check(request.assignmentDTO.state)}
                             {request.assignmentDTO.state === 8 ?
                                 <>
@@ -240,7 +241,6 @@ const Request = () => {
                                             border: "1px solid black",
                                             borderRadius: 10,
                                             overflow: "hidden",
-                                            padding: "20px",
                                         }}
                                         trigger={
                                             <td><i className="bi bi-check-lg text-danger btn m-0 p-0 zoomin"/></td>
@@ -257,7 +257,6 @@ const Request = () => {
                                             border: "1px solid black",
                                             borderRadius: 10,
                                             overflow: "hidden",
-                                            padding: "20px",
                                         }}
                                         trigger={
                                             <td><i className="bi bi-x-lg text-dark fw-bold btn m-0 p-0 zoomin"/></td>

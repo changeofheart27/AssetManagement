@@ -21,13 +21,15 @@ const Delete = props => {
     }
     return (
         <div>
-            <h3 className={"text-danger"}>Are you sure?</h3>
-            <hr/>
-            <p>Do you want to delete this asset?</p>
-            <Row>
-                <ButtonGroup>
-                    <Button variant={"danger"} className={"mx-5"} onClick={()=>{onSubmit(); close();}} >Yes</Button>
-                    <Button variant={"secondary"} className={"mx-5"} onClick={()=> close()}>No</Button>
+            <h3 className={"text-danger"} style={{padding: '10px 20px'}}>Are you sure?</h3>
+            <hr style={{margin: '0'}}/>
+            <Row style={{padding: '10px 20px'}}>
+                <p>Do you want to delete this asset?</p>
+                <ButtonGroup className={"w-50"}>
+                    <Button variant={"danger"} className={"px-5"} onClick={()=>{onSubmit(); close();}}>Yes</Button>
+                </ButtonGroup>
+                <ButtonGroup className={"w-50"}>
+                    <Button variant={"secondary"} className={"px-5"} onClick={()=> close()}>No</Button>
                 </ButtonGroup>
             </Row>
         </div>

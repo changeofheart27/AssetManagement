@@ -1,9 +1,8 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "reactjs-popup/dist/index.css";
-import { Button, Container, InputGroup, Row, Table } from "react-bootstrap";
+import { Container, InputGroup, Row, Table } from "react-bootstrap";
 import React, { useEffect, useState, useMemo } from "react";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
 import ExportFile from "./ExportFile";
 
 const Report = () => {

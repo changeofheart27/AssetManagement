@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Container, Row} from "react-bootstrap";
+import {Button, ButtonGroup, Row} from "react-bootstrap";
 import axios from "axios";
 
 const DeclinePopup = props => {
@@ -28,23 +28,19 @@ const DeclinePopup = props => {
             })
     }
     return (
-        <Container fluid>
-            <Row>
-                <h3 className={"text-danger bg-gray rounded-top"}>Are you sure</h3>
-                <hr/>
-            </Row>
-            <Row>
+        <div>
+            <h3 className={"text-danger"} style={{padding: '10px 20px'}}>Are you sure?</h3>
+            <hr style={{margin: '0'}}/>
+            <Row style={{padding: '10px 20px'}}>
                 <p>Do you want to decline this assignment?</p>
+                <ButtonGroup className={"w-50"}>
+                    <Button variant={"danger"} className={"px-5"} onClick={() =>{onSubmit(close)}}>Yes</Button>
+                </ButtonGroup>
+                <ButtonGroup className={"w-50"}>
+                    <Button variant={"secondary"} className={"px-5"} onClick={() => close()}>No</Button>
+                </ButtonGroup>
             </Row>
-            <Row className={"justify-content-center"}>
-                <Button variant={"danger"} className={"w-25 me-5 my-5"} onClick={() => onSubmit(close)}>
-                    Yes
-                </Button>
-                <Button variant={"danger"} className={"w-25 my-5"} onClick={() => close()}>
-                    No
-                </Button>
-            </Row>
-        </Container>
+        </div>
     );
 };
 
