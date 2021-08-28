@@ -80,8 +80,16 @@ public class AssetController {
           , @RequestParam(value = "searchTerm", required = false) String keyword) {
     List<AssetDTO> assets = assetService.filterAssets(category, state, keyword);
     return ResponseEntity.ok(assets);
-
   }
+
+    @ApiOperation(value = "Filter Asset", response = AssetDTO.class, responseContainer = "List")
+    @GetMapping(value = "/assets/createassignment", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<AssetDTO>> filterAssetNotAssign(@RequestParam(value = "searchTerm", required = false) String keyword) {
+        List<AssetDTO> assets = assetService.filterAssetAvailable(keyword);
+        return ResponseEntity.ok(assets);
+    }
+
+
   @ApiOperation(value = "Report", response = Object.class, responseContainer = "List")
   @GetMapping(value = "/assets/report", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<List<Object[]>> getDataForReport() {
