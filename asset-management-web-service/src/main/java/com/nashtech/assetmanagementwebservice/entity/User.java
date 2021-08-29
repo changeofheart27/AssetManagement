@@ -53,11 +53,6 @@ public class User {
     @Column(name = "staff_code")
     private String staffCode;
 
-
-//    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-//    private List<Asset> assets;
-
-
     @OneToOne(mappedBy = "user" ,cascade = CascadeType.ALL)
     private Authority authority;
 

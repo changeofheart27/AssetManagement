@@ -10,25 +10,25 @@ import com.nashtech.assetmanagementwebservice.model.request.UpdateUserRequest;
 
 @Service
 public interface UserService {
-  public List<UserDTO> getAllUser();
+  List<UserDTO> getAllUser();
 
-  public UserDTO findByUserName(String username);
+  UserDTO findByUserName(String username);
 
-  public User findUserByUsername(String username);
+  User findUserByUsername(String username);
 
-  public UserDTO getUserById(int id);
+  UserDTO getUserById(int id);
 
-  public UserDTO updateUser(UpdateUserRequest request, int id);
+  UserDTO updateUser(UpdateUserRequest request, int id);
 
-  public UserDTO disableUser(UpdateUserRequest request, int id);
+  UserDTO disableUser(UpdateUserRequest request, int id);
 
-  public UserDTO createUser(CreateUserRequest request);
+  UserDTO createUser(CreateUserRequest request);
 
-  public List<UserDTO> searchByNameOrStaffCode(String keyword);
+  List<UserDTO> searchByNameOrStaffCode(String keyword);
 
-  public List<UserDTO> getUsers(String type, String keyword);
+  List<UserDTO> getUsers(String type, String keyword);
 
-  public UserDTO changePassword(ChangePasswordRequest request, String username);
+  UserDTO changePassword(ChangePasswordRequest request, String username);
 
 
 

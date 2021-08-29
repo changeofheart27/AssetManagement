@@ -14,41 +14,41 @@ import java.util.List;
 @Repository
 @Transactional
 public interface AssetRepository extends JpaRepository<Asset, Integer> {
-    public List<Asset> findAllByOrderByAssetName();
-    public Asset findByAssetCode(String assetCode);
+    List<Asset> findAllByOrderByAssetName();
+    
+    Asset findByAssetCode(String assetCode);
+    
     //get the latest id of the asset based on their category prefix
     @Query(value = "SELECT MAX(CONVERT(SUBSTRING_INDEX(a.asset_code,c.prefix,-1), SIGNED)) as maxIdForEachCategory "
             + "FROM asset a inner join category c on a.category_id = c.id "
             + "WHERE c.prefix = :prefix GROUP BY c.prefix",
             nativeQuery = true)
-    public Integer getAssetMaxId(String prefix);
+    Integer getAssetMaxId(String prefix);
 
     //used for searching
-
-    public List<Asset> findByAssetNameContainsOrAssetCodeContains(String assetName, String assetCode);
+    List<Asset> findByAssetNameContainsOrAssetCodeContains(String assetName, String assetCode);
 
     //used for filtering
     @Query("SELECT a FROM Asset a WHERE a.category.name = :category")
-    public List<Asset> findAssetByCategory(String category);
+    List<Asset> findAssetByCategory(String category);
 
-    public List<Asset> findAssetByState(int state);
+    List<Asset> findAssetByState(int state);
 
-    public List<Asset> findAssetByStateAndCategory(int state, Category category);
+    List<Asset> findAssetByStateAndCategory(int state, Category category);
 
-    @Query(value = "select \r\n"
-            + "  category.name as \"Category\", \r\n"
-            + "  count(*) as \"Total\", \r\n"
-            + "  sum(case when asset.state = 4 then 1 else 0 end) as \"Assigned\", \r\n"
-            + "  sum(case when asset.state = 0 then 1 else 0 end) as \"Available\", \r\n"
-            + "  sum(case when asset.state = 1 then 1 else 0 end) as \"Not Available\", \r\n"
-            + "  sum(case when asset.state = 2 then 1 else 0 end) as \"Waiting for recycling\", \r\n"
-            + "  sum(case when asset.state = 3 then 1 else 0 end) as \"Recycled\"\r\n"
-            + "from category \r\n"
-            + "inner join \r\n"
-            + "  asset \r\n"
-            + "on category.id = asset.category_id\r\n"
+    @Query(value = "select "
+            + "  category.name as \"Category\", "
+            + "  count(*) as \"Total\", "
+            + "  sum(case when asset.state = 4 then 1 else 0 end) as \"Assigned\", "
+            + "  sum(case when asset.state = 0 then 1 else 0 end) as \"Available\", "
+            + "  sum(case when asset.state = 1 then 1 else 0 end) as \"Not Available\", "
+            + "  sum(case when asset.state = 2 then 1 else 0 end) as \"Waiting for recycling\", "
+            + "  sum(case when asset.state = 3 then 1 else 0 end) as \"Recycled\" "
+            + "from category "
+            + "inner join "
+            + "  asset "
+            + "on category.id = asset.category_id "
             + "group by category.name", nativeQuery = true)
-
-    public List<Object[]> getDataForReport();
+    List<Object[]> getDataForReport();
 
 }

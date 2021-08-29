@@ -15,39 +15,24 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-  public List<User> findByStatus(String status);
+  List<User> findByStatus(String status);
 
-  public User findByUsername(String username);
+  User findByUsername(String username);
 
   @Transactional
   @Modifying
   @Query(value = "UPDATE user SET password = ?1 ,first_login =?2 WHERE username = ?3", nativeQuery = true)
-  public void updatePassword(String password,String firstLogin, String username);
-
-  public List<User> findByUsernameContainsOrStaffCodeIs(String username, String staffCode);
-
-  public List<User> findByUsernameContainsOrStaffCodeContains(String userName,String staffCode);
-
-
+  void updatePassword(String password,String firstLogin, String username);
 
 
   //used to filter user with type: Admin or Staff
-  @Query(value = "SELECT user.id,user.staff_code,user.first_name,user.last_Name," +
-          " user.joined_date,user.dob,user.location,user.gender,user.password,user.username," +
-          " user.status,user.default_password,user.first_login,authorities.authority" +
-          " from user INNER JOIN authorities " +
-          " on user.id = authorities.user_id " +
-          " where authorities.authority= ?1 and user.status = 'enabled' ", nativeQuery = true)
-  public List<User> getUserByType(String type);
+  List<User> findByAuthority_authorityAndStatus(String authority, String status);
 
   @Query(value = "SELECT COUNT(*) FROM user u WHERE u.username LIKE :username% ", nativeQuery = true)
-  public Integer countByDuplicateFullName(String username);
-  
-//  @Query(value = "SELECT * FROM user u WHERE u.status = 'enabled'", nativeQuery = true)
-//  public List<User> findUserEnabled();
+  Integer countByDuplicateFullName(String username);
   
   //used to search user by fullName or staffCode
   @Query(value = "SELECT * FROM user WHERE CONCAT(first_name, \" \", last_name) LIKE :fullName "
   		+ "OR staff_code = :staffCode AND status = 'enabled'", nativeQuery = true)
-  public List<User> findUserByFullNameOrStaffCode(String fullName, String staffCode);
+  List<User> findUserByFullNameOrStaffCode(String fullName, String staffCode);
 }

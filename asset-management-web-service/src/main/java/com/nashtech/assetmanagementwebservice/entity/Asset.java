@@ -1,7 +1,5 @@
 package com.nashtech.assetmanagementwebservice.entity;
 
-import org.hibernate.annotations.Cascade;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -36,10 +34,6 @@ public class Asset {
 	
 	@Column(name = "location")
 	private String location;
-	
-	@ManyToOne()
-	@JoinColumn(name = "user_id")
-	private User user;
 	
 	@ManyToOne()
 	@JoinColumn(name = "category_id")
@@ -131,14 +125,6 @@ public class Asset {
 		this.location = location;
 	}
 
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
 	public Category getCategory() {
 		return category;
 	}
@@ -165,7 +151,6 @@ public class Asset {
 				", installedDate=" + installedDate +
 				", state=" + state +
 				", location='" + location + '\'' +
-				", user=" + user +
 				", category=" + category +
 				", assignment=" + assignments +
 				'}';
