@@ -15,7 +15,7 @@ import dateFormat from 'dateformat';
 import '../../../../style/style.css'
 import ChangeStatusFail from "../changeStatus/ChangeStatusFail";
 
-const ManageUser = ({responseUser, setChildPage}) => {
+const ManageUser = ({responseUser, setChildPage, setCurrentPages}) => {
 
     const token = localStorage.getItem('jwttoken')
     const headers = {
@@ -48,6 +48,7 @@ const ManageUser = ({responseUser, setChildPage}) => {
         axios.get(rootAPI + '/users', {headers})
             .then(function (response) {
                 setRefresh(true);
+                setCurrentPages("Manage User")
                 let result = response.data.map(user => user.id);
                 if (result.includes(responseUser.id)) {
                     const index = result.indexOf(responseUser.id);

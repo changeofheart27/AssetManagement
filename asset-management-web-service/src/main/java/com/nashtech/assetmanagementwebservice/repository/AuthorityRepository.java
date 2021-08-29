@@ -11,5 +11,4 @@ public interface AuthorityRepository  extends JpaRepository<Authority, Integer> 
     @Query(value = "SELECT user_id from authorities ", nativeQuery = true)
     Authority findByUserId(int user_id);
 
-
 }

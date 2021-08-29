@@ -8,7 +8,7 @@ import CompleteRequest from './CompleteRequest';
 import dateFormat from 'dateformat';
 import moment from "moment";
 
-const Request = () => {
+const Request = ({setCurrentPages}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [sortConfig, setSortConfig] = useState(null);
     const [state, setState] = useState(null);
@@ -123,6 +123,7 @@ const Request = () => {
         }
         axios.get(rootAPI + `/request`, request)
             .then(function (response) {
+                setCurrentPages("Request For Returning")
                 setList(response.data);
                 setRefreshList(false);
             })

@@ -12,7 +12,7 @@ import axios from "axios";
 import {set} from 'date-fns';
 import {useHistory} from 'react-router-dom'
 
-const ManageAsset = ({responseDataAsset, setChildPage}) => {
+const ManageAsset = ({responseDataAsset, setChildPage, setCurrentPages}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(10);
@@ -54,6 +54,7 @@ const ManageAsset = ({responseDataAsset, setChildPage}) => {
                 } else {
                     setList(response.data);
                 }
+                setCurrentPages("Manage Asset")
                 setRefreshList(false);
             })
     }, [refreshList]);
