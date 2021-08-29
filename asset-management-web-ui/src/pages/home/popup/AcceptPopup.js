@@ -1,11 +1,14 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Button, ButtonGroup, Row} from "react-bootstrap";
 import axios from "axios";
 
 const AcceptPopup = props => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
-    let {close, assigment, setState} = props;
+    let {close, assigment, setState, setDisable} = props;
     setState(assigment.state)
+    useEffect(()=>{
+        setDisable(true);
+    })
     const onSubmit = (close) => {
         const data = {
             assetDTO: assigment.assetDTO,
@@ -34,10 +37,15 @@ const AcceptPopup = props => {
             <Row style={{padding: '10px 20px'}}>
                 <p>Do you want to accept this assignment?</p>
                 <ButtonGroup className={"w-50"}>
-                    <Button variant={"danger"} className={"px-5"} onClick={() =>{onSubmit(close)}}>Yes</Button>
+                    <Button variant={"danger"} className={"px-5"} onClick={() => {
+                        onSubmit(close)
+                    }}>Yes</Button>
                 </ButtonGroup>
                 <ButtonGroup className={"w-50"}>
-                    <Button variant={"secondary"} className={"px-5"} onClick={() =>close()}>No</Button>
+                    <Button variant={"secondary"} className={"px-5"} onClick={() => {
+                        setDisable(false);
+                        close()
+                    }}>No</Button>
                 </ButtonGroup>
             </Row>
         </div>

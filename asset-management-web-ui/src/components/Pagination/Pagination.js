@@ -40,7 +40,7 @@ const Pagination = ({usersPerPage, totalUsers, paginate}) => {
                         </a>
                     </li>
                 ))}
-                {currentPage === Math.ceil(totalUsers/usersPerPage) ? null :
+                {currentPage === Math.ceil(totalUsers/usersPerPage) || Math.ceil(totalUsers/usersPerPage) === 0 ? null :
                     <li className={"page-item page-link px-0 text-danger"}
                         style={{width: "80px", textAlign: "center", cursor: "pointer"}}
                         onClick={() => {

@@ -24,7 +24,7 @@ const CompleteRequest = props => {
             <Row style={{padding: '10px 20px'}}>
                 <p>Do you want to mark this returning request as 'Completed'?</p>
                 <ButtonGroup className={"w-50"}>
-                    <Button variant={"danger"} className={"px-5"} onClick={() =>{onSubmit(close)}}>Yes</Button>
+                    <Button variant={"danger"} className={"px-5"} onClick={() =>{onSubmit(close)}}>Accept</Button>
                 </ButtonGroup>
                 <ButtonGroup className={"w-50"}>
                     <Button variant={"secondary"} className={"px-5"} onClick={() =>close()}>No</Button>

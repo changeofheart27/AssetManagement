@@ -25,39 +25,38 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/api/v1")
 public class RequestController {
 
-  private final RequestService requestService;
+    private final RequestService requestService;
 
-  public RequestController(RequestService requestService) {
-    this.requestService = requestService;
-  }
+    public RequestController(RequestService requestService) {
+        this.requestService = requestService;
+    }
 
-  @ApiOperation(value = "Filter Request", response = RequestDTO.class, responseContainer = "List")
-  @GetMapping(value = "/request", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<List<RequestDTO>> filterAsset(@RequestParam(value = "state", required = false) Integer state, @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate returnedDate, @RequestParam(value = "searchTerm", required = false) String keyword) {
-    List<RequestDTO> requests = requestService.filterRequests(state, returnedDate, keyword);
-    return ResponseEntity.ok(requests);
-  }
+    @ApiOperation(value = "Filter Request", response = RequestDTO.class, responseContainer = "List")
+    @GetMapping(value = "/request", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<RequestDTO>> filterAsset(@RequestParam(value = "state", required = false) Integer state, @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate returnedDate, @RequestParam(value = "searchTerm", required = false) String keyword) {
+        List<RequestDTO> requests = requestService.filterRequests(state, returnedDate, keyword);
+        return ResponseEntity.ok(requests);
+    }
 
-  @ApiOperation(value = "Create Returning request")
-  @PostMapping(value = "/request/create")
-  public ResponseEntity<RequestDTO> create(@RequestBody RequestDTO requestDTO) {
-    requestService.create(requestDTO);
-    return ResponseEntity.ok(requestDTO);
-  }
+    @ApiOperation(value = "Create Returning request")
+    @PostMapping(value = "/request/create")
+    public ResponseEntity<RequestDTO> create(@RequestBody RequestDTO requestDTO) {
+        RequestDTO request = requestService.create(requestDTO);
+        return ResponseEntity.ok(request);
+    }
 
 
+    @ApiOperation(value = "Remove Request Using id")
+    @DeleteMapping(value = "/request/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> deleteRequest(@PathVariable Integer id) {
+        requestService.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
 
-  @ApiOperation(value = "Remove Request Using id")
-  @DeleteMapping(value = "/request/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Void> deleteRequest(@PathVariable Integer id) {
-    requestService.deleteById(id);
-    return ResponseEntity.ok().build();
-  }
-
-  @ApiOperation(value = "Mark a Request as Completed", response = RequestDTO.class)
-  @PutMapping(value = "/request/{id}/complete", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<RequestDTO> completeRequest(@PathVariable Integer id) {
-    RequestDTO assignmentDTO = requestService.complete(id);
-    return ResponseEntity.ok(assignmentDTO);
-  }
+    @ApiOperation(value = "Mark a Request as Completed", response = RequestDTO.class)
+    @PutMapping(value = "/request/{id}/complete", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RequestDTO> completeRequest(@PathVariable Integer id) {
+        RequestDTO assignmentDTO = requestService.complete(id);
+        return ResponseEntity.ok(assignmentDTO);
+    }
 }

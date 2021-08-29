@@ -39,3 +39,6 @@
     background-color: #cf2338;
     color: #fafafa !important;
 }
+.custom-class .navbar-list--item{
+    color: #fafafa !important;
+}
