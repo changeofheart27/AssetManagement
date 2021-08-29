@@ -20,7 +20,7 @@ import {useHistory} from "react-router-dom";
 import dateFormat from 'dateformat';
 import ReturnPopup from "../../home/popup/ReturnPopup";
 
-const ManageAssignment = ({responseAssigment, setChildPage,setCurrentPages}) => {
+const ManageAssignment = ({responseAssigment, setChildPage, setCurrentPages}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(10);
@@ -33,7 +33,6 @@ const ManageAssignment = ({responseAssigment, setChildPage,setCurrentPages}) => 
     const [state, setState] = useState({
         state: null
     });
-
     const [refreshList, setRefreshList] = useState(false);
     const [type, setType] = useState();
     const [date, setDate] = useState();
@@ -63,7 +62,6 @@ const ManageAssignment = ({responseAssigment, setChildPage,setCurrentPages}) => 
         params: request.params
     }
     useEffect(() => {
-
         if (isFirstRun.current) {
             isFirstRun.current = false;
             return;
@@ -83,6 +81,7 @@ const ManageAssignment = ({responseAssigment, setChildPage,setCurrentPages}) => 
                 setCurrentPage(1)
                 setList(response.data);
             });
+        console.log("useEffect type date keyword")
     }, [type, date, keyword]);
 
 
@@ -99,6 +98,8 @@ const ManageAssignment = ({responseAssigment, setChildPage,setCurrentPages}) => 
             }
             setCurrentPages("Manage Assignment")
             setRefreshList(false);
+            setDisable(false);
+            console.log("useEffect state refreshList")
         });
     }, [state, refreshList]);
     const check = (state) => {
@@ -138,8 +139,12 @@ const ManageAssignment = ({responseAssigment, setChildPage,setCurrentPages}) => 
                             </td>
                         }
                         modal
+                        closeOnDocumentClick={false}
                     >
-                        {close => <DeleteAssignment id={assigment.id} close={close} setRefreshList={setRefreshList}/>}
+                        {close => <DeleteAssignment setDisable={setDisable}
+                                                    id={assigment.id}
+                                                    close={close}
+                                                    setRefreshList={setRefreshList}/>}
                     </Popup>
 
                     <td>
@@ -173,7 +178,9 @@ const ManageAssignment = ({responseAssigment, setChildPage,setCurrentPages}) => 
                                 />
                             </td>
                         }
+                        closeOnDocumentClick={false}
                         modal
+
                     >
                         {(close) => <ReturnPopup assigment={assigment}
                                                  setState={setState}
@@ -204,8 +211,14 @@ const ManageAssignment = ({responseAssigment, setChildPage,setCurrentPages}) => 
                             </td>
                         }
                         modal
+                        closeOnDocumentClick={false}
                     >
-                        {close => <DeleteAssignment id={assigment.id} close={close} setRefreshList={setRefreshList}/>}
+                        {close => <DeleteAssignment id={assigment.id}
+                                                    close={close}
+                                                    setRefreshList={setRefreshList}
+                                                    setDisable={setDisable}
+                        />
+                        }
                     </Popup>
                     <td>
                         <i className="bi bi-arrow-counterclockwise btn disabled p-0 text-blue fw-bold"/>
@@ -278,16 +291,17 @@ const ManageAssignment = ({responseAssigment, setChildPage,setCurrentPages}) => 
     };
     let i = 1;
     const [disable, setDisable] = useState(false);
+    console.log(disable);
     return (
         <Container fluid className={"d-block ps-5"}>
             <h3 className={"text-danger mb-3"}>Assignment List</h3>
             <InputGroup className={"justify-content-between"}>
-                <div className={"col-5 d-flex"}>
+                <div className={"col-4 d-flex"}>
                     <InputGroup>
                         <Form.Control
                             as="select"
                             custom
-                            className={"w-25"}
+                            className={"w-25 border-end-0 border-secondary"}
                             placeholder={"State"}
                             name={"state"}
                             onChange={handleFilterType}
@@ -298,30 +312,34 @@ const ManageAssignment = ({responseAssigment, setChildPage,setCurrentPages}) => 
                             <option value="7">Decline</option>
                             <option value="8">Waiting for returning</option>
                         </Form.Control>
-                        <Button variant={"outline-secondary"}>
+                        <Button variant={"outline-secondary"}
+                                className={"border-start-0"}
+                        >
                             <i className="bi bi-funnel-fill"/>
                         </Button>
+                    </InputGroup>
+                    <InputGroup>
                         <Form.Control
                             type={"date"}
-                            className={"w-25 ms-5"}
+                            className={"w-25 ms-5 border-secondary"}
                             placeholder={"Assigned Date"}
                             name={"assignedDate"}
                             onChange={handleFilterAssignedDate}
                         />
                     </InputGroup>
                 </div>
-                <div className={"col-6 d-flex justify-content-end"}>
+                <div className={"col-8 d-flex justify-content-end"}>
                     <InputGroup className={"w-auto"}>
-                        <FormControl
+                        <Form.Control
                             type={"input"}
                             name={"searchTerm"}
                             onChange={handleFilterSearch}
                             maxLength={255}
+                            className={"border-secondary border-end-0"}
                         />
                         <Button
                             variant={"outline-secondary"}
-                            onClick={handleFilterSearch}
-                            className={"me-5"}
+                            className={"me-5 border-start-0"}
                         >
                             <i className={"bi bi-search"}/>
                         </Button>
@@ -418,6 +436,7 @@ const ManageAssignment = ({responseAssigment, setChildPage,setCurrentPages}) => 
                                 </tr>
                             }
                             modal
+                            disabled={disable}
                         >
                             {(close) => (
                                 <div>

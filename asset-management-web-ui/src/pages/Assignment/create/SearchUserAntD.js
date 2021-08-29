@@ -47,15 +47,15 @@ const SearchUserAntD = (props) => {
         status: null,
         staffCode: null
     }]);
-    useEffect(() => {
-        axios.get(rootAPI + '/users')
-            .then(response => {
-                setUser(response.data)
-            })
-    }, [])
+
+    const request= {
+        params:{
+            searchTerm: searchTerm,
+        }
+    }
     useEffect(() => {
         axios
-            .get(rootAPI + "/users?searchTerm=" + searchTerm)
+            .get(rootAPI + "/users",request)
             .then((response) => {
                 setUser(response.data);
             });

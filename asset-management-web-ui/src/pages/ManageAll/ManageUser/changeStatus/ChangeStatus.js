@@ -5,7 +5,7 @@ import axios from "axios";
 
 const ChangeStatus = props => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
-    let {id, close, setRefresh} = props;
+    let {id, close, setRefresh, setDisable} = props;
     const refreshPage = () => {
         window.location.reload();
     }
@@ -33,6 +33,7 @@ const ChangeStatus = props => {
             .get(rootAPI + `/users/${id}`, {headers})
             .then(function (response) {
                 setUser(response.data);
+                setDisable(true)
             })
             .catch(console.log(id));
     }, [id])
@@ -69,7 +70,10 @@ const ChangeStatus = props => {
                     <Button variant={"danger"} className={"px-5"} onClick={onSubmit}>Disable</Button>
                 </ButtonGroup>
                 <ButtonGroup className={"w-50"}>
-                    <Button variant={"secondary"} className={"px-5"} onClick={() => close()}>Cancel</Button>
+                    <Button variant={"secondary"} className={"px-5"} onClick={() => {
+                        setDisable(false);
+                        close()
+                    }}>Cancel</Button>
                 </ButtonGroup>
             </Row>
         </div>

@@ -28,6 +28,7 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages}) => {
     const indexOfLastUser = currentPage * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
     const [refresh, setRefresh] = useState(true);
+    const [disable, setDisable] = useState("false");
     const paginate = pageNumber => setCurrentPage(pageNumber);
     const history = useHistory();
 
@@ -47,6 +48,7 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages}) => {
     useEffect(() => {
         axios.get(rootAPI + '/users', {headers})
             .then(function (response) {
+                setDisable(false);
                 setRefresh(true);
                 setCurrentPages("Manage User")
                 let result = response.data.map(user => user.id);
@@ -146,12 +148,15 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages}) => {
                             placeholder={"Type"}
                             name={"type"}
                             onChange={handleFilterType}
+                            className={"border-end-0 border-secondary"}
                         >
                             <option value={"Type"}>Type</option>
                             <option value="Admin">Admin</option>
                             <option value="Staff">Staff</option>
                         </Form.Control>
-                        <Button variant={"outline-secondary"}>
+                        <Button variant={"outline-secondary"}
+                                className={"border-start-0"}
+                        >
                             <i className="bi bi-funnel-fill"/>
                         </Button>
                     </InputGroup>
@@ -163,8 +168,11 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages}) => {
                             name={"searchTerm"}
                             onChange={handleSearch}
                             maxLength={255}
+                            className={"border-end-0 border-secondary"}
                         />
-                        <Button variant={"outline-secondary"}>
+                        <Button variant={"outline-secondary"}
+                                className={"border-start-0"}
+                        >
                             <i className="bi bi-search"/>
                         </Button>
                     </InputGroup>
@@ -262,19 +270,24 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages}) => {
                                             </td>
                                         }
                                         modal
+                                        closeOnDocumentClick={false}
                                     >
                                         {(close) => {
                                             if (user.assignments?.length !== 0) {
                                                 return <ChangeStatusFail close={close}/>;
                                             } else {
-                                                return <ChangeStatus id={user.id} close={close}
-                                                                     setRefresh={setRefresh}/>;
+                                                return <ChangeStatus id={user.id}
+                                                                     close={close}
+                                                                     setRefresh={setRefresh}
+                                                                     setDisable={setDisable}
+                                                />;
                                             }
                                         }}
                                     </Popup>
                                 </tr>
                             }
                             modal
+                            disabled={disable}
                         >
                             {(close) => (
                                 <div>

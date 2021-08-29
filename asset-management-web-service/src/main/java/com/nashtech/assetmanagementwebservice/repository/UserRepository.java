@@ -32,7 +32,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
   Integer countByDuplicateFullName(String username);
   
   //used to search user by fullName or staffCode
-  @Query(value = "SELECT * FROM user WHERE CONCAT(first_name, \" \", last_name) LIKE :fullName "
-  		+ "OR staff_code = :staffCode AND status = 'enabled'", nativeQuery = true)
+  @Query(value = "SELECT * FROM user WHERE (CONCAT(first_name, \" \", last_name) LIKE :fullName "
+  		+ "OR staff_code = :staffCode) AND status = 'enabled'", nativeQuery = true)
   List<User> findUserByFullNameOrStaffCode(String fullName, String staffCode);
 }

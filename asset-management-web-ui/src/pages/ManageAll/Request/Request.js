@@ -142,7 +142,7 @@ const Request = ({setCurrentPages, responseRequest}) => {
                 setCurrentPages("Request For Returning")
                 setRefreshList(false);
             })
-    }, [state, date, searchTerm,refreshList])
+    }, [state, date, searchTerm, refreshList])
     const check = (state) => {
         if (state === 8) {
             return <td>Waiting for returning</td>;
@@ -156,43 +156,51 @@ const Request = ({setCurrentPages, responseRequest}) => {
         <Container fluid className={"d-block ps-5"}>
             <h3 className={"text-danger mb-3"}>Request List</h3>
             <InputGroup className={"justify-content-between"}>
-                <div className={"col-6 d-flex"}>
-                    <Form.Control
-                        as="select"
-                        custom
-                        className={"w-26"}
-                        name={"state"}
-                        onChange={handleFilterState}
-                    >
-                        <option>State</option>
-                        <option value="0">Waiting for returning</option>
-                        <option value="1">Completed</option>
-                    </Form.Control>
-                    <Button
-                        variant={"outline-secondary"}
-                        className={"me-5"}
-                    >
-                        <i className="bi bi-funnel-fill"/></Button>
-                    <Form.Control
-                        type={"date"}
-                        className={"w-26 ms-3"}
-                        onChange={handleFilterDate}
-                    />
+                <div className={"col-4 d-flex"}>
+                    <InputGroup>
+                        <Form.Control
+                            as="select"
+                            custom
+                            name={"state"}
+                            onChange={handleFilterState}
+                            className={"border-secondary border-end-0"}
+                        >
+                            <option>State</option>
+                            <option value="0">Waiting for returning</option>
+                            <option value="1">Completed</option>
+                        </Form.Control>
+                        <Button
+                            variant={"outline-secondary"}
+                            className={"me-5 border-start-0"}
+                        >
+                            <i className="bi bi-funnel-fill"/></Button>
+                    </InputGroup>
+                    <InputGroup>
+                        <Form.Control
+                            type={"date"}
+                            className={"ms-3 border-secondary"}
+                            onChange={handleFilterDate}
+                        />
+                    </InputGroup>
                 </div>
-                <div className={"col-6 d-flex justify-content-end"}>
-                    <FormControl
-                        type={"input"}
-                        className={"w-25"}
-                        name={"searchTerm"}
-                        onChange={handleSearch}
-                    >
-                    </FormControl>
-                    <Button variant={"outline-secondary"}
-                            className={"me-5"}
-                    ><i className="bi bi-search"/>
-                    </Button>
+                <div className={"col-3 d-flex"}>
+                    <InputGroup>
+                        <FormControl
+                            type={"input"}
+                            className={"w-25 border-end-0 border-secondary"}
+                            name={"searchTerm"}
+                            onChange={handleSearch}
+                        >
+                        </FormControl>
+                        <Button variant={"outline-secondary"}
+                                className={"me-5 border-start-0"}
+                        ><i className="bi bi-search"/>
+                        </Button>
+                    </InputGroup>
                 </div>
+
             </InputGroup>
+
             <Row className={"mt-5"}>
                 <Table>
                     <thead>
@@ -240,7 +248,7 @@ const Request = ({setCurrentPages, responseRequest}) => {
                     </tr>
                     </thead>
                     <tbody>
-                    {list.slice(indexOfFirstUser,indexOfLastUser).map(request =>
+                    {list.slice(indexOfFirstUser, indexOfLastUser).map(request =>
                         <tr>
                             <td>{i++}</td>
                             <td>{request.assignmentDTO.assetDTO.assetCode}</td>
@@ -248,13 +256,14 @@ const Request = ({setCurrentPages, responseRequest}) => {
                             <td>{request.assignmentDTO.userDTO.username}</td>
                             <td>{dateFormat(request.assignmentDTO.assignedDate, "dd/mm/yy")}</td>
                             <td>{request.accepted_by}</td>
-                            {request.returnedDate ?   <td>{moment(request.returnedDate).format("DD/MM/YYYY")}</td> : <td/>}
+                            {request.returnedDate ? <td>{moment(request.returnedDate).format("DD/MM/YYYY")}</td> :
+                                <td/>}
                             {check(request.assignmentDTO.state)}
                             {request.assignmentDTO.state === 8 ?
                                 <>
                                     <Popup
                                         contentStyle={{
-                                            width: "25%",
+                                            width: "22%",
                                             border: "1px solid black",
                                             borderRadius: 10,
                                             overflow: "hidden",
@@ -262,14 +271,15 @@ const Request = ({setCurrentPages, responseRequest}) => {
                                         trigger={
                                             <td><i className="bi bi-check-lg text-danger btn m-0 p-0 zoomin"/></td>
                                         }
-                                        offsetX={200}
+                                        closeOnDocumentClick={false}
                                         modal
                                     >
-                                        {close => <CompleteRequest id={request.id} assign={request} close={close} setRefreshList={setRefreshList}/>}
+                                        {close => <CompleteRequest id={request.id} assign={request} close={close}
+                                                                   setRefreshList={setRefreshList}/>}
                                     </Popup>
                                     <Popup
                                         contentStyle={{
-                                            width: "25%",
+                                            width: "22%",
                                             border: "1px solid black",
                                             borderRadius: 10,
                                             overflow: "hidden",
@@ -277,13 +287,14 @@ const Request = ({setCurrentPages, responseRequest}) => {
                                         trigger={
                                             <td><i className="bi bi-x-lg text-dark fw-bold btn m-0 p-0 zoomin"/></td>
                                         }
-                                        offsetX={200}
+                                        closeOnDocumentClick={false}
                                         modal
                                     >
                                         {close => <DeleteRequest id={request.id} setRefreshList={setRefreshList}
                                                                  refreshList={refreshList} close={close}/>}
                                     </Popup>
-                                </> :
+                                </>
+                                :
                                 <>
                                     <td><i className="bi bi-check-lg text-danger btn disabled m-0 p-0"/></td>
                                     <td><i className="bi bi-x-lg text-dark btn disabled fw-bold m-0 p-0"/></td>
@@ -301,7 +312,8 @@ const Request = ({setCurrentPages, responseRequest}) => {
                 paginate={paginate}
             />
         </Container>
-    );
+    )
+        ;
 };
 
 export default Request;

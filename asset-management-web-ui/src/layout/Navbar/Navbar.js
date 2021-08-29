@@ -100,10 +100,7 @@ const Navbar = ({setCurrentPage, setChildPage}) => {
                                          setChildPage(null);
                                          setCurrentPage("Manage User")
                                      }}
-                                     activeStyle={{
-                                         backgroundColor: "#cf2338",
-                                         color: "#fff"
-                                     }}
+                                     activeClassName={"custom-class"}
                             >
                                 <li className="navbar-list--item">Manage User</li>
                             </NavLink>

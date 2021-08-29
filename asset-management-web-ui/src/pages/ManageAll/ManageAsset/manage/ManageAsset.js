@@ -35,6 +35,7 @@ const ManageAsset = ({responseDataAsset, setChildPage, setCurrentPages}) => {
     const [refreshList, setRefreshList] = useState(false);
     const history = useHistory();
     const [categories, setCategories] = useState([]);
+    const [disable, setDisable] = useState(false);
     useEffect(() => {
         axios.get(rootAPI + "/categories").then((response) => {
             setCategories(response.data);
@@ -53,6 +54,7 @@ const ManageAsset = ({responseDataAsset, setChildPage, setCurrentPages}) => {
                     setList(response.data);
                 }
                 setCurrentPages("Manage Asset")
+                setDisable(false);
                 setRefreshList(false);
             })
     }, [refreshList]);
@@ -146,13 +148,14 @@ const ManageAsset = ({responseDataAsset, setChildPage, setCurrentPages}) => {
         <Container fluid className={"d-block ps-5"}>
             <h3 className={"text-danger mb-3"}>Asset List</h3>
             <div className={"justify-content-between d-flex"}>
-                <div className={"col-3 d-flex"}>
-                    <InputGroup>
+                <div className={"col-4 d-flex"}>
+                    <InputGroup className={""}>
                         <Form.Control
                             as="select"
                             custom
                             name={"type"}
                             onChange={handleFilterType}
+                            className={"border-end-0 border-secondary"}
                         >
                             <option value={null}>State</option>
                             <option value="0">Available</option>
@@ -163,12 +166,15 @@ const ManageAsset = ({responseDataAsset, setChildPage, setCurrentPages}) => {
                         </Form.Control>
                         <Button
                             variant={"outline-secondary"}
+                            className={"border-start-0"}
                         >
                             <i className="bi bi-funnel-fill"/></Button>
+                    </InputGroup>
+                    <InputGroup>
                         <Form.Control
                             as="select"
                             custom
-                            className={"ms-5"}
+                            className={"ms-5 border-secondary border-end-0"}
                             placeholder={"Category"}
                             name={"category"}
                             onChange={handleFilterCategory}
@@ -178,8 +184,9 @@ const ManageAsset = ({responseDataAsset, setChildPage, setCurrentPages}) => {
                                 <option value={category.name}>{category.name}</option>
                             ))}
                         </Form.Control>
-                        <Button variant={"outline-secondary"}><i
-                            className="bi bi-funnel-fill"/></Button>
+                        <Button variant={"outline-secondary"}
+                                className={"border-start-0"}>
+                            <i className="bi bi-funnel-fill "/></Button>
                     </InputGroup>
                 </div>
                 <div className={"col-8 d-flex justify-content-end"}>
@@ -189,11 +196,11 @@ const ManageAsset = ({responseDataAsset, setChildPage, setCurrentPages}) => {
                             name={"searchTerm"}
                             onChange={handleSearch}
                             maxLength={255}
+                            className={"border-end-0 border-secondary"}
                         >
                         </FormControl>
                         <Button variant={"outline-secondary"}
-                                onClick={handleSearch}
-                                className={"me-5"}
+                                className={"me-5 border-start-0"}
                         ><i className="bi bi-search"/>
                         </Button>
                     </InputGroup>
@@ -248,16 +255,26 @@ const ManageAsset = ({responseDataAsset, setChildPage, setCurrentPages}) => {
                                     overflow: 'hidden'
                                 }}
                                        trigger={<td><i className="bi bi-x-circle text-danger btn p-0"/></td>}
-                                       modal>
+                                       modal
+                                       closeOnDocumentClick={false}
+                                >
                                     {asset.state !== 4 ?
-                                        close => <Delete id={asset.id} close={close} setRefreshList={setRefreshList}/> :
+                                        close => <Delete id={asset.id}
+                                                         close={close}
+                                                         setRefreshList={setRefreshList}
+                                                         setDisable={setDisable}
+                                        /> :
                                         close => <DeleteFail id={asset.id} close={close}/>}
                                 </Popup>
                             </tr>
-                        } modal>{close => (<div>
-                            <ViewDetailedAsset id={asset.id}/>
-                            <Button onClick={close} variant="success" className="btn-view-detail">&times;</Button>
-                        </div>)}
+                        }
+                               modal
+                               disabled={disable}
+                        >
+                            {close => (<div>
+                                <ViewDetailedAsset id={asset.id}/>
+                                <Button onClick={close} variant="success" className="btn-view-detail">&times;</Button>
+                            </div>)}
                         </Popup>
                     )}
                     </tbody>
