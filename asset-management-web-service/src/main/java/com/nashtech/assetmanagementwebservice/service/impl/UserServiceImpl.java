@@ -12,6 +12,7 @@ import com.nashtech.assetmanagementwebservice.repository.AssignmentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.nashtech.assetmanagementwebservice.entity.Authority;
@@ -27,14 +28,13 @@ import com.nashtech.assetmanagementwebservice.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {
-
     private final UserRepository userRepository;
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     private final AssignmentRepository assignmentRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, AssignmentRepository assignmentRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, UserService userService, AssignmentRepository assignmentRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.assignmentRepository = assignmentRepository;
         this.passwordEncoder = passwordEncoder;
@@ -126,23 +126,19 @@ public class UserServiceImpl implements UserService {
         user.setStaffCode(staffCode);
 
 
-    user.setStatus("enabled");
-    user.setPassword(passwordEncoder.encode(finalUsername + "@" + dob));
-    user.setDefaultPassword(finalUsername + "@" + dob);
-    user.setFirstLogin("true");
-    user.setLocation("HN");
-
-
+        user.setStatus("enabled");
+        user.setPassword(passwordEncoder.encode(finalUsername + "@" + dob));
+        user.setDefaultPassword(finalUsername + "@" + dob);
+        user.setFirstLogin("true");
+        //set location based on current logged in user (admin)
+        user.setLocation(getCurrentLoggedInUserLocation());
+        
         Authority authority = new Authority();
         authority.setAuthority(request.getAuthority());
-
         authority.setUser(user);
-
-
+        
         user.setAuthority(authority);
-
         userRepository.saveAndFlush(user);
-
         return UserMapper.toUserDTO(user);
     }
 
@@ -195,7 +191,19 @@ public class UserServiceImpl implements UserService {
             users = userRepository.findUserByFullNameOrStaffCode(fullName, staffCode);
             users = users.stream().filter(user -> user.getAuthority().getAuthority().equals(type.toUpperCase())).collect(Collectors.toList());
         }
-        return users.stream().filter(user -> user.getLocation().equals("HN")).map(UserMapper::toUserDTO).collect(Collectors.toList());
+        return users.stream()
+        		.filter(user -> user.getLocation().equals(getCurrentLoggedInUserLocation()))
+        		.map(UserMapper::toUserDTO)
+        		.collect(Collectors.toList());
     }
-
+    
+    
+    /**
+     * get location of current logged in user (admin) for user
+     * @return String
+     */
+    private String getCurrentLoggedInUserLocation() {
+    	User user = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        return user.getLocation();
+    }
 }

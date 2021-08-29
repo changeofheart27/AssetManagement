@@ -80,8 +80,8 @@ public class AssetServiceImpl implements AssetService {
         }
         Asset asset = assetRepository.getById(assetId);
         Asset assetEdit = assetMapper.merge(asset, payload);
-        User user = userService.findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-        asset.setLocation(user.getLocation());
+        //set location based on current logged in user (admin)
+        asset.setLocation(getCurrentLoggedInUserLocation());
         Asset assetResult = assetRepository.save(assetEdit);
         logger.info("Successfully updated an Asset with id=" + asset.getId() + ",title=" + assetResult.getAssetCode() + ",assetName=" + assetResult.getAssetName() + ",category=" + assetResult.getCategory().getName() + "!");
         return assetMapper.fromEntity(assetResult);
@@ -93,7 +93,7 @@ public class AssetServiceImpl implements AssetService {
         Asset asset = assetRepository.getById(id);
         // 4 Assigned => can not delete
         if (asset.getState() == 4) {
-            throw new BadRequestException("Asset is current assigned to someone");
+            throw new BadRequestException("Asset is currently assigned to someone");
         }
         logger.info("Successfully delete an Asset with id=" + asset.getId() + "!");
         assetRepository.delete(asset);
@@ -129,29 +129,12 @@ public class AssetServiceImpl implements AssetService {
                     .collect(Collectors.toList());
         }
         logger.info("Successfully got " + assets.size() + " Asset!");
-        return assets.stream().filter(asset -> asset.getLocation().equals("HN")).map(assetMapper::fromEntity).collect(Collectors.toList());
+        return assets.stream()
+        		.filter(asset -> asset.getLocation().equals(getCurrentLoggedInUserLocation()))
+        		.map(assetMapper::fromEntity)
+        		.collect(Collectors.toList());
     }
-
-
-    /**
-     * generate assetCode for Asset (Example format: Laptop -> LA000001, Monitor: MO000001, Personal Computer: PC000001)
-     *
-     * @param category
-     * @return String
-     */
-    private String generateAssetCode(Category category) {
-        String prefix = category.getPrefix();
-        Integer maxId = assetRepository.getAssetMaxId(prefix);
-
-        String assetCode = "";
-        if (maxId == null) {
-            assetCode = prefix + String.format("%06d", 1);
-        } else {
-            assetCode = prefix + String.format("%06d", maxId + 1);
-        }
-        return assetCode;
-    }
-
+    
     @Override
     public List<Object[]> getDataForReport() {
         List<Object[]> result = assetRepository.getDataForReport();
@@ -174,5 +157,33 @@ public class AssetServiceImpl implements AssetService {
         return result;
     }
 
+
+    /**
+     * generate assetCode for Asset (Example format: Laptop -> LA000001, Monitor: MO000001, Personal Computer: PC000001)
+     *
+     * @param category
+     * @return String
+     */
+    private String generateAssetCode(Category category) {
+        String prefix = category.getPrefix();
+        Integer maxId = assetRepository.getAssetMaxId(prefix);
+
+        String assetCode = "";
+        if (maxId == null) {
+            assetCode = prefix + String.format("%06d", 1);
+        } else {
+            assetCode = prefix + String.format("%06d", maxId + 1);
+        }
+        return assetCode;
+    }
+
+    /**
+     * get location of current logged in user for asset
+     * @return String
+     */
+    private String getCurrentLoggedInUserLocation() {
+    	User user = userService.findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        return user.getLocation();
+    }
 
 }
