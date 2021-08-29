@@ -102,6 +102,7 @@ public class AssetServiceImpl implements AssetService {
 
     @Override
     public List<AssetDTO> filterAssets(String category, Integer state, String keyword) {
+    	String currentUserLocation = getCurrentLoggedInUserLocation();
         List<Asset> assets = new ArrayList<>();
         String assetName = "%" + keyword + "%";
         String assetCode = keyword;
@@ -130,7 +131,7 @@ public class AssetServiceImpl implements AssetService {
         }
         logger.info("Successfully got " + assets.size() + " Asset!");
         return assets.stream()
-        		.filter(asset -> asset.getLocation().equals(getCurrentLoggedInUserLocation()))
+        		.filter(asset -> asset.getLocation().equals(currentUserLocation))
         		.map(assetMapper::fromEntity)
         		.collect(Collectors.toList());
     }

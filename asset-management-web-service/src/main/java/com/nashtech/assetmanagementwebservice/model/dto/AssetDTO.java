@@ -2,7 +2,6 @@ package com.nashtech.assetmanagementwebservice.model.dto;
 
 import java.time.LocalDate;
 
-import com.nashtech.assetmanagementwebservice.entity.User;
 
 public class AssetDTO {
 	private int id;
@@ -18,8 +17,6 @@ public class AssetDTO {
 	private int state;
 	
 	private String location;
-	
-	private User user;
 	
 	private CategoryDTO categoryDTO;
 
@@ -79,14 +76,6 @@ public class AssetDTO {
 		this.location = location;
 	}
 
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
 	public CategoryDTO getCategoryDTO() {
 		return categoryDTO;
 	}
@@ -105,7 +94,6 @@ public class AssetDTO {
 				", installedDate=" + installedDate +
 				", state=" + state +
 				", location='" + location + '\'' +
-				", user=" + user +
 				", categoryDTO=" + categoryDTO +
 				'}';
 	}

@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserService userService, AssignmentRepository assignmentRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, AssignmentRepository assignmentRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.assignmentRepository = assignmentRepository;
         this.passwordEncoder = passwordEncoder;
@@ -100,6 +100,7 @@ public class UserServiceImpl implements UserService {
         }
         return UserMapper.toUserDTO(changeUserStatus);
     }
+    
     @Override
     public UserDTO createUser(CreateUserRequest request) {
 
@@ -175,16 +176,17 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    //method used for filtering, searching and get all user
+    //method used for filtering (type: ADMIN or STAFF), searching (by fullName or staffCode) and get all user
     @Override
     public List<UserDTO> getUsers(String type, String keyword) {
+    	String currentUserLocation = getCurrentLoggedInUserLocation();
         List<User> users = new ArrayList<>();
         String fullName = "%" + keyword + "%";
         String staffCode = keyword;
         if (type == null && keyword == null) {
             users = userRepository.findByStatus("enabled");
         } else if (type != null && keyword == null) {
-            users = userRepository.getUserByType(type);
+            users = userRepository.findByAuthority_authorityAndStatus(type, "enabled");
         } else if (type == null && keyword != null) {
             users = userRepository.findUserByFullNameOrStaffCode(fullName, staffCode);
         } else if (type != null && keyword != null) {
@@ -192,7 +194,7 @@ public class UserServiceImpl implements UserService {
             users = users.stream().filter(user -> user.getAuthority().getAuthority().equals(type.toUpperCase())).collect(Collectors.toList());
         }
         return users.stream()
-        		.filter(user -> user.getLocation().equals(getCurrentLoggedInUserLocation()))
+        		.filter(user -> user.getLocation().equals(currentUserLocation))
         		.map(UserMapper::toUserDTO)
         		.collect(Collectors.toList());
     }

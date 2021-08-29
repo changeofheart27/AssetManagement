@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface AuthorityRepository  extends JpaRepository<Authority, Integer> {
     @Query(value = "SELECT user_id from authorities ", nativeQuery = true)
-    public Authority findByUserId(int user_id);
+    Authority findByUserId(int user_id);
 
 
 }
