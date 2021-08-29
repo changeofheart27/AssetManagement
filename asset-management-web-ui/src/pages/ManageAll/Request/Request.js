@@ -7,12 +7,19 @@ import DeleteRequest from './DeleteRequest';
 import CompleteRequest from './CompleteRequest';
 import dateFormat from 'dateformat';
 import moment from "moment";
+import Pagination from "../../../components/Pagination/Pagination";
 
-const Request = ({setCurrentPages}) => {
+const Request = ({setCurrentPages, responseRequest}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [sortConfig, setSortConfig] = useState(null);
     const [state, setState] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [usersPerPage] = useState(10);
     const [refreshList, setRefreshList] = useState(false);
+    const indexOfLastUser = currentPage * usersPerPage;
+    const indexOfFirstUser = indexOfLastUser - usersPerPage;
+    const paginate = pageNumber => setCurrentPage(pageNumber);
+
     const [list, setList] = useState([{
         id: null,
         returnedDate: null,
@@ -123,8 +130,16 @@ const Request = ({setCurrentPages}) => {
         }
         axios.get(rootAPI + `/request`, request)
             .then(function (response) {
+                let result = response.data.map((request) => request.id);
+                if (result.includes(responseRequest.id)) {
+                    const index = result.indexOf(responseRequest.id);
+                    response.data.splice(index, 1);
+                    response.data.unshift(responseRequest);
+                    setList(response.data);
+                } else {
+                    setList(response.data);
+                }
                 setCurrentPages("Request For Returning")
-                setList(response.data);
                 setRefreshList(false);
             })
     }, [state, date, searchTerm,refreshList])
@@ -225,7 +240,7 @@ const Request = ({setCurrentPages}) => {
                     </tr>
                     </thead>
                     <tbody>
-                    {list.map(request =>
+                    {list.slice(indexOfFirstUser,indexOfLastUser).map(request =>
                         <tr>
                             <td>{i++}</td>
                             <td>{request.assignmentDTO.assetDTO.assetCode}</td>
@@ -279,6 +294,12 @@ const Request = ({setCurrentPages}) => {
                     </tbody>
                 </Table>
             </Row>
+            <Pagination
+                className="pagnition"
+                usersPerPage={usersPerPage}
+                totalUsers={list.length}
+                paginate={paginate}
+            />
         </Container>
     );
 };

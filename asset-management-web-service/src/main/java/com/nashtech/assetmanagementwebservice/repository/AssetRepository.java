@@ -47,7 +47,7 @@ public interface AssetRepository extends JpaRepository<Asset, Integer> {
             "from category " +
             "left join " +
             " asset " +
-            "on category.id = asset.category_id" +
+            "on category.id = asset.category_id " +
             "group by category.name", nativeQuery = true)
     List<Object[]> getDataForReport();
 
