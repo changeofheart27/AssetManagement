@@ -65,7 +65,6 @@ const Home = () => {
                     console.log(response1);
                 })
         }).then((response) => {
-
             axios
                 .get(rootAPI + `/my-info?=${localStorage.getItem("username")}`)
                 .then((response2) => {

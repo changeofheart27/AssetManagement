@@ -6,6 +6,7 @@ import Popup from 'reactjs-popup';
 import DeleteRequest from './DeleteRequest';
 import CompleteRequest from './CompleteRequest';
 import dateFormat from 'dateformat';
+import moment from "moment";
 
 const Request = () => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
@@ -137,7 +138,7 @@ const Request = () => {
     console.log(refreshList);
     return (
         <Container fluid className={"d-block ps-5"}>
-            <h1 className={"text-danger mb-3"}>Request List</h1>
+            <h3 className={"text-danger mb-3"}>Request List</h3>
             <InputGroup className={"justify-content-between"}>
                 <div className={"col-6 d-flex"}>
                     <Form.Control
@@ -231,7 +232,7 @@ const Request = () => {
                             <td>{request.assignmentDTO.userDTO.username}</td>
                             <td>{dateFormat(request.assignmentDTO.assignedDate, "dd/mm/yy")}</td>
                             <td>{request.accepted_by}</td>
-                            <td>{dateFormat(request.returnedDate, "dd/mm/yy")}</td>
+                            {request.returnedDate ?   <td>{moment(request.returnedDate).format("DD/MM/YYYY")}</td> : <td/>}
                             {check(request.assignmentDTO.state)}
                             {request.assignmentDTO.state === 8 ?
                                 <>

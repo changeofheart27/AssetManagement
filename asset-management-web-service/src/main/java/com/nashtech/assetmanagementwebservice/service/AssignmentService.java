@@ -19,9 +19,5 @@ public interface AssignmentService {
 
   List<AssignmentDTO> findAssignmentsByUsername(String username);
 
-  List<AssignmentDTO> searchAssetByAssetNameOrAssetCode(String keyword);
-
-  List<AssignmentDTO> filterBy(Integer state, LocalDate assignedDate);
-
-  List<AssignmentDTO> test(String keyword, Integer state, LocalDate date);
+  List<AssignmentDTO> filter(String keyword, Integer state, LocalDate date);
 }

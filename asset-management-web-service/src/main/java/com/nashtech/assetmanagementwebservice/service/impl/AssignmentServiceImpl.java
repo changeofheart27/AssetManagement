@@ -1,7 +1,6 @@
 package com.nashtech.assetmanagementwebservice.service.impl;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -115,37 +114,13 @@ public class AssignmentServiceImpl implements AssignmentService {
 
     @Override
     public List<AssignmentDTO> findAssignmentsByUsername(String username) {
-        List<Assignment> assignments = assignmentRepository.findByUser_UsernameAndStateNot(username, -1);
+        List<Assignment> assignments = assignmentRepository.findByUser_UsernameAndStateNotAndStateNot(username, -1,7);
         return assignments.stream().map(assignmentMapper::fromEntity).collect(Collectors.toList());
     }
 
-    @Override
-    public List<AssignmentDTO> searchAssetByAssetNameOrAssetCode(String keyword) {
-        String assetName = "%" + keyword + "%";
-        String assetCode = keyword;
-        List<Assignment> assets = assignmentRepository.findAssignmentsByAssetNameContainsOrAssetCode(assetName, assetCode);
-        return assets.stream().map(assignmentMapper::fromEntity).collect(Collectors.toList());
-    }
-
 
     @Override
-    public List<AssignmentDTO> filterBy(Integer state, LocalDate assignedDate) {
-        List<Assignment> assignments = new ArrayList<>();
-        if (assignedDate == null && state == null) {
-            assignments = assignmentRepository.findAll();
-        } else if (assignedDate == null && state != null) {
-            assignments = assignmentRepository.findAssignmentsByState(state);
-        } else if (assignedDate != null && state == null) {
-            assignments = assignmentRepository.findAssignmentsByAssignedDate(assignedDate);
-        } else if (assignedDate != null && state != null) {
-            assignments = assignmentRepository.findAssignmentsByAssignedDate(assignedDate);
-            assignments = assignments.stream().filter(assignment -> assignment.getState() == state).collect(Collectors.toList());
-        }
-        return assignments.stream().map(assignmentMapper::fromEntity).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<AssignmentDTO> test(String keyword, Integer state, LocalDate date) {
+    public List<AssignmentDTO> filter(String keyword, Integer state, LocalDate date) {
         List<Assignment> assignments = assignmentRepository.get(keyword,state,date);
         return assignments.stream().map(assignmentMapper::fromEntity).collect(Collectors.toList());
     }

@@ -44,7 +44,7 @@ public class AssignmentController {
                                                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate assignedDate,
                                                       @RequestParam(value ="keyword", required = false) String keyword
     ) {
-        List<AssignmentDTO> assignments = assignmentService.test(keyword, state, assignedDate);
+        List<AssignmentDTO> assignments = assignmentService.filter(keyword, state, assignedDate);
         return ResponseEntity.ok(assignments);
     }
 
@@ -53,9 +53,6 @@ public class AssignmentController {
     public ResponseEntity<AssignmentDTO> getAssignment(@PathVariable Integer id) {
         logger.info("Execute getAssignment() inside AssignmentController");
         AssignmentDTO assignment = assignmentService.findAssignmentById(id);
-        if (assignment == null) {
-            return ResponseEntity.notFound().build();
-        }
         logger.info("Executed successful!");
         return ResponseEntity.ok(assignment);
     }
@@ -85,22 +82,6 @@ public class AssignmentController {
         return ResponseEntity.ok(assignmentDTO);
     }
 
-    @ApiOperation(value = "Search All Assignments By assetName Or assetCode", response = AssetDTO.class, responseContainer = "List")
-    @GetMapping(value = "/assignments/search", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<AssignmentDTO>> searchAssetByAssetNameOrAssetCode(@RequestParam String keyword) {
-        logger.info("Execute searchAssigmentByAssetNameOrAssetCode() inside AssigmentController");
-        logger.info("REQUEST PARAM IS: " + keyword);
-        if (keyword.equals("")) {
-            List<AssignmentDTO> assignments = assignmentService.getAssignmentList();
-            return ResponseEntity.ok(assignments);
-        } else {
-            List<AssignmentDTO> assignments = assignmentService.findAssignmentsByUsername(keyword);
-            logger.info("Executed successful!");
-            return ResponseEntity.ok(assignments);
-
-        }
-    }
-
     @ApiOperation(value = "Edit assignment", response = AssignmentDTO.class)
     @GetMapping(value = "/my-assignments", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<AssignmentDTO>> findAssignmentByUserName(Principal principal) {
@@ -108,9 +89,5 @@ public class AssignmentController {
         List<AssignmentDTO> assignmentDTO = assignmentService.findAssignmentsByUsername(username);
         return ResponseEntity.ok(assignmentDTO);
     }
-
-
-
-
 
 }
