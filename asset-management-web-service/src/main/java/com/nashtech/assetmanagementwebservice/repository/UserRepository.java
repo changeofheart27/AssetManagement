@@ -24,19 +24,12 @@ public interface UserRepository extends JpaRepository<User, Integer> {
   @Query(value = "UPDATE user SET password = ?1 ,first_login =?2 WHERE username = ?3", nativeQuery = true)
   void updatePassword(String password,String firstLogin, String username);
 
-  List<User> findByUsernameContainsOrStaffCodeIs(String username, String staffCode);
-
-  List<User> findByUsernameContainsOrStaffCodeContains(String userName,String staffCode);
-
 
   //used to filter user with type: Admin or Staff
   List<User> findByAuthority_authorityAndStatus(String authority, String status);
 
   @Query(value = "SELECT COUNT(*) FROM user u WHERE u.username LIKE :username% ", nativeQuery = true)
   Integer countByDuplicateFullName(String username);
-  
-//  @Query(value = "SELECT * FROM user u WHERE u.status = 'enabled'", nativeQuery = true)
-//  public List<User> findUserEnabled();
   
   //used to search user by fullName or staffCode
   @Query(value = "SELECT * FROM user WHERE CONCAT(first_name, \" \", last_name) LIKE :fullName "

@@ -60,8 +60,8 @@ public class AssetServiceImpl implements AssetService {
         if (asset.getState() > 1) {
             throw new BadRequestException("Option is not available");
         }
-        User user = userService.findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-        asset.setLocation(user.getLocation());
+        String location = getCurrentLoggedInUserLocation();
+        asset.setLocation(location);
         Category category = categoryMapper.fromDTO(categoryService.findCategoryById(categoryId));
         asset.setCategory(category);
         String assetCode = generateAssetCode(category);
