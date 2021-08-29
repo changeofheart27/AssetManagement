@@ -20,7 +20,7 @@ import {useHistory} from "react-router-dom";
 import dateFormat from 'dateformat';
 import ReturnPopup from "../../home/popup/ReturnPopup";
 
-const ManageAssignment = ({responseAssigment}) => {
+const ManageAssignment = ({responseAssigment, setChildPage}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(10);
@@ -116,8 +116,10 @@ const ManageAssignment = ({responseAssigment}) => {
                 <>
                     <td>
                         <i className="bi bi-pen btn m-0 text-muted p-0 zoomin"
-                           onClick={() =>
-                               history.push(`/editassignment/${assigment.id}`)
+                           onClick={() => {
+                               setChildPage("Edit Assignment");
+                               history.push(`/editassignment/${assigment.id}`);
+                           }
                            }
                         />
                     </td>
@@ -276,7 +278,7 @@ const ManageAssignment = ({responseAssigment}) => {
     const [disable, setDisable] = useState(false);
     return (
         <Container fluid className={"d-block ps-5"}>
-            <h3 className={"text-danger mb-3"}>Manage Assignment</h3>
+            <h3 className={"text-danger mb-3"}>Assignment List</h3>
             <InputGroup className={"justify-content-between"}>
                 <div className={"col-5 d-flex"}>
                     <InputGroup>
@@ -325,7 +327,10 @@ const ManageAssignment = ({responseAssigment}) => {
                     <Button
                         variant={"danger"}
                         className={"w-auto"}
-                        onClick={() => history.push("/createAssignment")}
+                        onClick={() => {
+                            setChildPage("Create new assignment");
+                            history.push("/createAssignment");
+                        }}
                     >
                         Create new Assignment
                     </Button>

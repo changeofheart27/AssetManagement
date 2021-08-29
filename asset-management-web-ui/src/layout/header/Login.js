@@ -103,8 +103,19 @@ export default function SignIn() {
                 toast.success("Logging success");
             }).catch((error) => {
             console.log(error);
-            toast.error("Wrong password or username");
+            if (error.response.data === "Account Disabled") {
+                toast.error("This account has been disable");
+            } else {
+                toast.error("Wrong username or password");
+            }
         });
+    }
+    const checkEnableButton = (username, password) => {
+        if (username === "" || password === "") {
+            username = null;
+            password = null;
+        }
+        return (username === null || password === null);
     }
 
     return (
@@ -168,6 +179,7 @@ export default function SignIn() {
                             variant="contained"
                             color="secondary"
                             className={classes.submit}
+                            disabled={checkEnableButton(values.username, values.password)}
                         >
                             Login
                         </Button>

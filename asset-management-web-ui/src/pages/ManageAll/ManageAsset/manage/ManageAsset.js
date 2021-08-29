@@ -9,10 +9,10 @@ import Pagination from '../../../../components/Pagination/Pagination'
 import Popup from "reactjs-popup";
 import ViewDetailedAsset from "../viewDetails/ViewDetailedAsset"
 import axios from "axios";
-import { set } from 'date-fns';
+import {set} from 'date-fns';
 import {useHistory} from 'react-router-dom'
 
-const ManageAsset = ({responseDataAsset}) => {
+const ManageAsset = ({responseDataAsset, setChildPage}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(10);
@@ -94,7 +94,7 @@ const ManageAsset = ({responseDataAsset}) => {
     }
     const isFirstRun = useRef(true);
     useEffect(() => {
-        if(isFirstRun.current) {
+        if (isFirstRun.current) {
             isFirstRun.current = false;
             return;
         }
@@ -108,7 +108,7 @@ const ManageAsset = ({responseDataAsset}) => {
             .then(function (response) {
                 setList(response.data);
             })
-    }, [type, category,searchTerm])
+    }, [type, category, searchTerm])
 
     const sortingData = useMemo(() => {
         if (sortConfig !== null) {
@@ -196,7 +196,10 @@ const ManageAsset = ({responseDataAsset}) => {
                         ><i className="bi bi-search"/>
                         </Button>
                     </InputGroup>
-                    <Button variant={"danger"} className={"w-auto"} onClick={() => history.push('/createasset')}>Create
+                    <Button variant={"danger"} className={"w-auto"} onClick={() => {
+                        setChildPage("Create Asset");
+                        history.push('/createasset')
+                    }}>Create
                         new Asset</Button>
 
                 </div>
@@ -235,7 +238,10 @@ const ManageAsset = ({responseDataAsset}) => {
                                 <td>{asset.categoryDTO.name}</td>
                                 {check(asset.state)}
                                 <td><i className="bi bi-pen btn m-0 text-muted p-0"
-                                       onClick={() => history.push(`/editasset/${asset.id}`)}/></td>
+                                       onClick={() => {
+                                           setChildPage("Edit Asset")
+                                           history.push(`/editasset/${asset.id}`)
+                                       }}/></td>
                                 <Popup contentStyle={{
                                     width: "25%", border: "1px solid black", borderRadius: 10,
                                     overflow: 'hidden'

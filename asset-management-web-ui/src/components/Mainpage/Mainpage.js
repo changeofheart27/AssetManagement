@@ -5,11 +5,12 @@ import Navbar from "../../layout/Navbar/Navbar";
 
 const Mainpage = () => {
     const [currentPage, setCurrentPage] = useState("Home");
+    const [childPage, setChildPage] = useState(null);
     return (
 
         <>
-            <Header currentPage={currentPage}/>
-            <Navbar setCurrentPage={setCurrentPage}/>
+            <Header currentPage={currentPage} childPage={childPage}/>
+            <Navbar setCurrentPage={setCurrentPage} setChildPage={setChildPage}/>
             <Footer/>
         </>
 

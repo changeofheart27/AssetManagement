@@ -21,7 +21,7 @@ import logo from "../../resources/logo.jpg";
 import Report from "../../pages/Report/Report";
 import {ListGroup} from "react-bootstrap";
 
-const Navbar = ({setCurrentPage}) => {
+const Navbar = ({setCurrentPage, setChildPage}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [authority, setAuthority] = useState([{
         authority: null
@@ -84,44 +84,62 @@ const Navbar = ({setCurrentPage}) => {
                     ) : (
                         <ListGroup className="navbar-list">
                             <NavLink to="/home"
-                                     onClick={() => setCurrentPage("Home")}
+                                     onClick={() => {
+                                         setChildPage(null);
+                                         setCurrentPage("Home");
+                                     }}
                                      activeClassName={"custom-class"}
                             >
                                 <li className="navbar-list--item">Home</li>
                             </NavLink>
                             <NavLink to="/user"
-                                     onClick={() => setCurrentPage("Manage User")}
+                                     onClick={() => {
+                                         setChildPage(null);
+                                         setCurrentPage("Manage User")
+                                     }}
                                      activeStyle={{
-                                         backgroundColor:"#cf2338",
-                                         color:"#fff"
+                                         backgroundColor: "#cf2338",
+                                         color: "#fff"
                                      }}
                             >
                                 <li className="navbar-list--item">Manage User</li>
                             </NavLink>
                             <NavLink
                                 to="/asset"
-                                onClick={() => setCurrentPage("Manage Asset")}
+                                onClick={() => {
+                                    setChildPage(null);
+                                    setCurrentPage("Manage Asset")
+                                }}
                                 activeClassName={"custom-class"}
                             >
                                 <li className="navbar-list--item">Manage Asset</li>
                             </NavLink>
                             <NavLink
                                 to="/assignment"
-                                onClick={() => setCurrentPage("Manage Assignment")}
+                                onClick={() => {
+                                    setChildPage(null);
+                                    setCurrentPage("Manage Assignment")
+                                }}
                                 activeClassName={"custom-class"}
                             >
                                 <li className="navbar-list--item">Manage Assignment</li>
                             </NavLink>
                             <NavLink
                                 to="/request"
-                                onClick={() => setCurrentPage("Request For Returning")}
+                                onClick={() => {
+                                    setChildPage(null);
+                                    setCurrentPage("Request For Returning")
+                                }}
                                 activeClassName={"custom-class"}
                             >
                                 <li className="navbar-list--item">Request For Returning</li>
                             </NavLink>
                             <NavLink to="/report"
                                      activeClassName={"custom-class"}
-                                     onClick={() => setCurrentPage("Report")}
+                                     onClick={() => {
+                                         setChildPage(null);
+                                         setCurrentPage("Report")
+                                     }}
                             >
                                 <li className="navbar-list--item">Report</li>
                             </NavLink>
@@ -145,7 +163,7 @@ const Navbar = ({setCurrentPage}) => {
                             <Home/>
                         </Route>
                         <Route path={"/user"}>
-                            <ManageUser responseUser={responseUser}/>
+                            <ManageUser setChildPage={setChildPage} responseUser={responseUser}/>
                         </Route>
                         <Route path={"/home"}>
                             <Home/>
@@ -154,31 +172,31 @@ const Navbar = ({setCurrentPage}) => {
                             <UserInfo/>
                         </Route>
                         <Route path={"/createuser"}>
-                            <CreateUser setResponseUser={setResponseUser}/>
+                            <CreateUser setChildPage={setChildPage} setResponseUser={setResponseUser}/>
                         </Route>
                         <Route path={"/edituser/:id"}>
-                            <EditUser setResponseUser={setResponseUser}/>
+                            <EditUser setChildPage={setChildPage} setResponseUser={setResponseUser}/>
                         </Route>
                         <Route path={"/asset"}>
-                            <ManageAsset responseDataAsset={responseDataAsset}/>
+                            <ManageAsset setChildPage={setChildPage}  responseDataAsset={responseDataAsset}/>
                         </Route>
                         <Route path={"/createasset"}>
-                            <CreateAsset setResponseDataAsset={setResponseDataAsset}/>
+                            <CreateAsset setChildPage={setChildPage} setResponseDataAsset={setResponseDataAsset}/>
                         </Route>
                         <Route path={"/editasset/:id"}>
-                            <EditAsset setResponseDataAsset={setResponseDataAsset}/>
+                            <EditAsset setChildPage={setChildPage} setResponseDataAsset={setResponseDataAsset}/>
                         </Route>
                         <Route path={"/createcategory"}>
                             <CreateCategory/>
                         </Route>
                         <Route path={"/assignment"}>
-                            <ManageAssignment responseAssigment={responseAssigment}/>
+                            <ManageAssignment setChildPage={setChildPage} responseAssigment={responseAssigment}/>
                         </Route>
                         <Route path={"/createassignment"}>
-                            <CreateAssignment setResponseAssigment={setResponseAssigment}/>
+                            <CreateAssignment setChildPage={setChildPage} setResponseAssigment={setResponseAssigment}/>
                         </Route>
                         <Route path={"/editassignment/:id"}>
-                            <EditAssignment setResponseAssigment={setResponseAssigment}/>
+                            <EditAssignment setChildPage={setChildPage} setResponseAssigment={setResponseAssigment}/>
                         </Route>
                         <Route path={"/request"}>
                             <Request/>

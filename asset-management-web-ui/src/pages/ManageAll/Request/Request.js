@@ -270,7 +270,7 @@ const Request = () => {
                                 </> :
                                 <>
                                     <td><i className="bi bi-check-lg text-danger btn disabled m-0 p-0"/></td>
-                                    <td><i className="bi bi-x-lg text-dark fw-bold m-0 p-0"/></td>
+                                    <td><i className="bi bi-x-lg text-dark btn disabled fw-bold m-0 p-0"/></td>
                                 </>
                             }
                         </tr>
