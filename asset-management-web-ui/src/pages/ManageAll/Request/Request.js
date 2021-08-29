@@ -20,24 +20,7 @@ const Request = ({setCurrentPages, responseRequest}) => {
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
     const paginate = pageNumber => setCurrentPage(pageNumber);
 
-    const [list, setList] = useState([{
-        id: null,
-        returnedDate: null,
-        assignmentDTO: {
-            assignedDate: null,
-            assetDTO: {
-                assetCode: null,
-                assetName: null,
-                state: null
-            },
-            userDTO: {
-                username: null,
-            },
-            state: null,
-        },
-        state: null,
-        accepted_by: null
-    }]);
+    const [list, setList] = useState([]);
 
 
     const [date, setDate] = useState();
@@ -253,9 +236,9 @@ const Request = ({setCurrentPages, responseRequest}) => {
                             <td>{i++}</td>
                             <td>{request.assignmentDTO.assetDTO.assetCode}</td>
                             <td>{request.assignmentDTO.assetDTO.assetName}</td>
-                            <td>{request.assignmentDTO.userDTO.username}</td>
+                            <td>{request.requestBy}</td>
                             <td>{dateFormat(request.assignmentDTO.assignedDate, "dd/mm/yy")}</td>
-                            <td>{request.accepted_by}</td>
+                            <td>{request.acceptedBy}</td>
                             {request.returnedDate ? <td>{moment(request.returnedDate).format("DD/MM/YYYY")}</td> :
                                 <td/>}
                             {check(request.assignmentDTO.state)}

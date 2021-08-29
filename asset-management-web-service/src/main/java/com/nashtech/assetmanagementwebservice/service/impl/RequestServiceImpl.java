@@ -11,7 +11,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import com.nashtech.assetmanagementwebservice.entity.Assignment;
 import com.nashtech.assetmanagementwebservice.entity.Request;
-import com.nashtech.assetmanagementwebservice.exception.NotFoundException;
 import com.nashtech.assetmanagementwebservice.model.dto.RequestDTO;
 import com.nashtech.assetmanagementwebservice.model.mapper.RequestMapper;
 import com.nashtech.assetmanagementwebservice.repository.AssignmentRepository;
@@ -46,8 +45,10 @@ public class RequestServiceImpl implements RequestService {
     if (r != null) {
       throw new RuntimeException("Assignment ID exist");
     }
-    Request request = requestMapper.fromDTO(requestDTO);
+
+    Request request = new Request();
     request.setAssignment(assignmentRepository.getById(assignID));
+    request.setRequestBy(SecurityContextHolder.getContext().getAuthentication().getName());
     requestRepository.save(request);
     return requestMapper.fromEntity(request);
   }
@@ -65,15 +66,15 @@ public class RequestServiceImpl implements RequestService {
       requests = requestRepository.findRequestsByReturnedDate(returnedDate);
       requests = requests.stream().filter(request -> request.getState() == state).collect(Collectors.toList());
     } else if (state != null && returnedDate != null && keyword != null) {
-      requests = requestRepository.findByAssignment_Asset_AssetCodeContainsOrAssignment_Asset_AssetNameContainsOrAssignment_AssignedByContains(keyword, keyword, keyword);
+      requests = requestRepository.findByAssignment_Asset_AssetCodeContainsOrAssignment_Asset_AssetNameContainsOrRequestByContains(keyword, keyword, keyword);
       requests = requests.stream().filter(request -> request.getState() == state && request.getReturnedDate() == returnedDate).collect(Collectors.toList());
     } else if (state == null && returnedDate != null && keyword != null) {
-      requests = requestRepository.findByAssignment_Asset_AssetCodeContainsOrAssignment_Asset_AssetNameContainsOrAssignment_AssignedByContains(keyword, keyword, keyword);
+      requests = requestRepository.findByAssignment_Asset_AssetCodeContainsOrAssignment_Asset_AssetNameContainsOrRequestByContains(keyword, keyword, keyword);
       requests = requests.stream().filter(request -> request.getReturnedDate() == returnedDate).collect(Collectors.toList());
     } else if (state == null && returnedDate == null && keyword != null) {
-      requests = requestRepository.findByAssignment_Asset_AssetCodeContainsOrAssignment_Asset_AssetNameContainsOrAssignment_AssignedByContains(keyword, keyword, keyword);
+      requests = requestRepository.findByAssignment_Asset_AssetCodeContainsOrAssignment_Asset_AssetNameContainsOrRequestByContains(keyword, keyword, keyword);
     } else if (state != null && returnedDate == null && keyword != null) {
-      requests = requestRepository.findByAssignment_Asset_AssetCodeContainsOrAssignment_Asset_AssetNameContainsOrAssignment_AssignedByContains(keyword, keyword, keyword);
+      requests = requestRepository.findByAssignment_Asset_AssetCodeContainsOrAssignment_Asset_AssetNameContainsOrRequestByContains(keyword, keyword, keyword);
       requests = requests.stream().filter(request -> request.getState() == state).collect(Collectors.toList());
     }
     return requests.stream().map(requestMapper::fromEntity).collect(Collectors.toList());
@@ -98,7 +99,7 @@ public class RequestServiceImpl implements RequestService {
     asset.setState(0);
     assetRepository.save(asset);
     request.setReturnedDate(LocalDate.now());
-    request.setUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+    request.setAcceptedBy(SecurityContextHolder.getContext().getAuthentication().getName());
     request.setState(1);
     requestRepository.save(request);
     return requestMapper.fromEntity(request);

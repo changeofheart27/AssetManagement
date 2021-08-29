@@ -16,20 +16,11 @@ public class RequestMapper {
     dto.setId(entity.getId());
     dto.setState(entity.getState());
     dto.setReturnedDate(entity.getReturnedDate());
-    dto.setAccepted_by(entity.getUsername());
+    dto.setAcceptedBy(entity.getAcceptedBy());
+    dto.setRequestBy(entity.getRequestBy());
     Assignment assignment = entity.getAssignment();
     dto.setAssignmentDTO(assignmentMapper.fromEntity(assignment));
     return dto;
   }
 
-  public Request fromDTO(RequestDTO payload) {
-    Request request = new Request();
-    Assignment assignment = new Assignment();
-    request.setUsername(payload.getAccepted_by());
-    request.setId(payload.getId());
-    request.setReturnedDate(payload.getReturnedDate());
-    // request.setState(payload.getState());
-    request.setAssignment(assignmentMapper.fromDTO(payload.getAssignmentDTO()));
-    return request;
-  }
 }

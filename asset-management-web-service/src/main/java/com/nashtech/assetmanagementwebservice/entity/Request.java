@@ -21,7 +21,7 @@ public class Request {
   private int id;
 
   @Column(name = "accepted_by")
-  private String username;
+  private String acceptedBy;
 
   @OneToOne
   @JoinColumn(name = "assignment_id", referencedColumnName = "id")
@@ -30,8 +30,20 @@ public class Request {
   @Column(name = "returned_date")
   private LocalDate returnedDate;
 
+  @Column(name = "request_by")
+  private String requestBy;
+
+
   @Column(name = "state")
   private int state;
+
+  public String getRequestBy() {
+    return requestBy;
+  }
+
+  public void setRequestBy(String requestBy) {
+    this.requestBy = requestBy;
+  }
 
   public void setReturnedDate(LocalDate returnedDate) {
     this.returnedDate = returnedDate;
@@ -53,12 +65,12 @@ public class Request {
     this.assignment = assignment;
   }
 
-  public String getUsername() {
-    return username;
+  public String getAcceptedBy() {
+    return acceptedBy;
   }
 
-  public void setUsername(String username) {
-    this.username = username;
+  public void setAcceptedBy(String username) {
+    this.acceptedBy = username;
   }
 
   public LocalDate getReturnedDate() {

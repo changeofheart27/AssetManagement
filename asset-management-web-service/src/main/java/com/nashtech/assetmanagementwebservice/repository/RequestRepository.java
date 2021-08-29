@@ -11,7 +11,7 @@ public interface RequestRepository extends JpaRepository<Request, Integer> {
   Request findByAssignment_Id(Integer id);
 
   
-  List<Request> findByAssignment_Asset_AssetCodeContainsOrAssignment_Asset_AssetNameContainsOrAssignment_AssignedByContains(String assetCode, String assetName, String username);
+  List<Request> findByAssignment_Asset_AssetCodeContainsOrAssignment_Asset_AssetNameContainsOrRequestByContains(String assetCode, String assetName, String username);
   
   List<Request> findRequestsByState(Integer state);
 
