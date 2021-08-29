@@ -6,7 +6,7 @@ import axios from "axios";
 import ExportFile from "./ExportFile";
 import moment from "moment";
 
-const Report = () => {
+const Report = ({setCurrentPages}) => {
   const rootAPI = process.env.REACT_APP_SERVER_URL;
   const [list, setList] = useState([]);
   const [sortConfig, setSortConfig] = useState(null);
@@ -15,8 +15,8 @@ const Report = () => {
 
   useEffect(() => {
     axios.get(rootAPI + "/assets/report").then(function (response) {
+      setCurrentPages("Report")
       let newList = [];
-
       response.data.map((row) => {
         let obj = {
           Category: row[0],

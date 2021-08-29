@@ -10,8 +10,6 @@ public interface RequestRepository extends JpaRepository<Request, Integer> {
 
   Request findByAssignment_Id(Integer id);
 
-//  @Query(value = "SELECT r FROM Request r WHERE r.assignment.asset.assetName LIKE :assetName OR r.assignment.asset.assetCode = :assetCode")
-//  List<Request> findRequestsByAssetNameContainsOrAssetCode(String assetName, String assetCode);
   
   List<Request> findByAssignment_Asset_AssetCodeContainsOrAssignment_Asset_AssetNameContainsOrAssignment_AssignedByContains(String assetCode, String assetName, String username);
   

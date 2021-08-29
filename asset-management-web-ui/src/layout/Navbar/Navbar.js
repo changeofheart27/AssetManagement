@@ -163,7 +163,9 @@ const Navbar = ({setCurrentPage, setChildPage}) => {
                             <Home/>
                         </Route>
                         <Route path={"/user"}>
-                            <ManageUser setChildPage={setChildPage} responseUser={responseUser}/>
+                            <ManageUser setChildPage={setChildPage}
+                                        setCurrentPages={setCurrentPage}
+                                        responseUser={responseUser}/>
                         </Route>
                         <Route path={"/home"}>
                             <Home/>
@@ -178,7 +180,7 @@ const Navbar = ({setCurrentPage, setChildPage}) => {
                             <EditUser setChildPage={setChildPage} setResponseUser={setResponseUser}/>
                         </Route>
                         <Route path={"/asset"}>
-                            <ManageAsset setChildPage={setChildPage}  responseDataAsset={responseDataAsset}/>
+                            <ManageAsset setCurrentPages={setCurrentPage} setChildPage={setChildPage} responseDataAsset={responseDataAsset}/>
                         </Route>
                         <Route path={"/createasset"}>
                             <CreateAsset setChildPage={setChildPage} setResponseDataAsset={setResponseDataAsset}/>
@@ -190,7 +192,7 @@ const Navbar = ({setCurrentPage, setChildPage}) => {
                             <CreateCategory/>
                         </Route>
                         <Route path={"/assignment"}>
-                            <ManageAssignment setChildPage={setChildPage} responseAssigment={responseAssigment}/>
+                            <ManageAssignment  setCurrentPages={setCurrentPage} setChildPage={setChildPage} responseAssigment={responseAssigment}/>
                         </Route>
                         <Route path={"/createassignment"}>
                             <CreateAssignment setChildPage={setChildPage} setResponseAssigment={setResponseAssigment}/>
@@ -199,10 +201,10 @@ const Navbar = ({setCurrentPage, setChildPage}) => {
                             <EditAssignment setChildPage={setChildPage} setResponseAssigment={setResponseAssigment}/>
                         </Route>
                         <Route path={"/request"}>
-                            <Request/>
+                            <Request setCurrentPages={setCurrentPage}/>
                         </Route>
                         <Route path={"/report"}>
-                            <Report/>
+                            <Report setCurrentPages={setCurrentPage}/>
                         </Route>
                     </Switch>
                 )}

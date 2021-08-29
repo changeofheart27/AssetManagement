@@ -20,7 +20,7 @@ import {useHistory} from "react-router-dom";
 import dateFormat from 'dateformat';
 import ReturnPopup from "../../home/popup/ReturnPopup";
 
-const ManageAssignment = ({responseAssigment, setChildPage}) => {
+const ManageAssignment = ({responseAssigment, setChildPage,setCurrentPages}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(10);
@@ -96,6 +96,7 @@ const ManageAssignment = ({responseAssigment, setChildPage}) => {
             } else {
                 setList(response.data);
             }
+            setCurrentPages("Manage Assignment")
             setRefreshList(false);
         });
     }, [state, refreshList]);

@@ -1,27 +1,55 @@
 import './Pagination.css'
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
-const Pagination = ({ usersPerPage, totalUsers, paginate }) => {
-  const pageNumbers = [];
+const Pagination = ({usersPerPage, totalUsers, paginate}) => {
+    const pageNumbers = [];
 
-  for (let i = 1; i <= Math.ceil(totalUsers / usersPerPage); i++) {
-    pageNumbers.push(i);
-  }
+    for (let i = 1; i <= Math.ceil(totalUsers / usersPerPage); i++) {
+        pageNumbers.push(i);
+    }
+    const [currentPage, setCurrentPage] = useState(1);
+    console.log(currentPage+" currentpage");
+    return (
 
-  return (
-    <nav>
-      <ul className='pagination'>
-        {pageNumbers.map(number => (
-          <li key={number} className='page-item'>
-            <a onClick={() => paginate(number)} href="#!" className='page-link'>
-              {number}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
-  );
+        <nav>
+            <ul className='pagination'>
+                <li className={"page-item page-link px-0 text-danger"}
+                    style={{width: "80px", textAlign: "center"}}
+                    onClick={() => {
+                        if (currentPage > 1) {
+                            paginate(currentPage - 1)
+                            setCurrentPage(currentPage-1)
+                        }
+                    }}
+                >
+                    Previous
+                </li>
+                {pageNumbers.map(number => (
+                    <li key={number} className='page-item'>
+                        <a onClick={() => {
+                            setCurrentPage(number);
+                            paginate(number)
+                        }}
+                           href="#!" className='page-link'>
+                            {number}
+                        </a>
+                    </li>
+                ))}
+                <li className={"page-item page-link px-0 text-danger"}
+                    style={{width: "80px", textAlign: "center"}}
+                    onClick={() => {
+                        if (currentPage < totalUsers / usersPerPage) {
+                            paginate(currentPage + 1)
+                            setCurrentPage(currentPage + 1)
+                        }
+                    }}
+                >
+                    Next
+                </li>
+            </ul>
+        </nav>
+    );
 };
 
 export default Pagination;
