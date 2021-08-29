@@ -10,7 +10,7 @@ import Popup from "reactjs-popup";
 import UserInfo from "./UserInfo";
 import {useHistory} from 'react-router-dom'
 
-const Header = ({currentPage}) => {
+const Header = ({currentPage,childPage}) => {
     const history = useHistory();
     const [isLogedIn, setIsLogedIn] = useState("Login");
     if (localStorage.getItem("username") !== null) {
@@ -18,7 +18,7 @@ const Header = ({currentPage}) => {
             <header className="main-header">
                 <div className="container-fluid justify-content-between d-flex">
                     <div className="content-info">
-                        <p>{currentPage}</p>
+                        {childPage=== null ? <p>{currentPage}</p> : <p>{currentPage} > {childPage}</p>}
                     </div>
                     <Dropdown>
                         <Dropdown.Toggle style={{backgroundColor: "#CF2338", borderColor: "#CF2338"}}

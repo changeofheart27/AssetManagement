@@ -10,14 +10,14 @@ import {differenceInYears} from "date-fns";
 import {useHistory} from 'react-router-dom';
 import '../../../../style/style.css'
 
-const CreateUser = ({setResponseUser}) => {
+const CreateUser = ({setResponseUser, setChildPage}) => {
 
     const token = localStorage.getItem('jwttoken')
-    
-    const headers = { 
-      'Authorization': token
-      
-  };
+
+    const headers = {
+        'Authorization': token
+
+    };
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const history = useHistory();
     const initialValues = {
@@ -29,8 +29,8 @@ const CreateUser = ({setResponseUser}) => {
         dob: null,
         gender: null,
         joinedDate: null,
-       
-      
+
+
         authority: null
 
     }
@@ -42,12 +42,12 @@ const CreateUser = ({setResponseUser}) => {
             dob: values.dob,
             gender: values.gender,
             joined_date: values.joinedDate,
-         
+
             authority: values.authority
         }
 
         axios
-            .post(rootAPI + `/users`, create,{headers})
+            .post(rootAPI + `/users`, create, {headers})
             .then((response) => {
                 setSubmitting(false);
                 setResponseUser({
@@ -59,9 +59,9 @@ const CreateUser = ({setResponseUser}) => {
                     dob: response.data.dob,
                     gender: response.data.gender,
                     joinedDate: response.data.joinedDate,
-                  
                     authority: response.data.authority
                 });
+                setChildPage(null);
                 history.push("/user");
             });
     };
@@ -71,7 +71,7 @@ const CreateUser = ({setResponseUser}) => {
             .required('Required')
             .typeError('First name is required')
             .test("firstName", "First Name is only 1 word", function (value) {
-                return !/\s/g.test(value) ;
+                return !/\s/g.test(value);
             }),
         lastName: Yup.string()
             .max(255)
@@ -89,15 +89,15 @@ const CreateUser = ({setResponseUser}) => {
         joinedDate: Yup.date()
             .required()
             .typeError('Joined Date is required')
-            .min(Yup.ref('dob'),"Joined date is not later than Date of Birth. Please select a different date")
+            .min(Yup.ref('dob'), "Joined date is not later than Date of Birth. Please select a different date")
             .test("dob", "Joined date is not later than Date of Birth. Please select a different date", function (value) {
                 return differenceInDays(new Date(value), new Date(this.parent.dob)) != 0;
             })
-            .test("dob", "Joined date is Saturday or Sunday. Please select a different date", function(value) {
+            .test("dob", "Joined date is Saturday or Sunday. Please select a different date", function (value) {
                 const currentDate = new Date(value);
                 return (
-                  currentDate.getDay() !== 6 &&
-                  currentDate.getDay() !== 0
+                    currentDate.getDay() !== 6 &&
+                    currentDate.getDay() !== 0
                 );
             })
         ,
@@ -111,184 +111,187 @@ const CreateUser = ({setResponseUser}) => {
         )
     }
     return (
-      <div className={"container ps-5 d-block"}>
-        <Row>
-          <h1 className={"text-danger mb-5"}>Create New User</h1>
-        </Row>
-        <Row className={"mt-5"}>
-          <Formik
-            initialValues={initialValues}
-            onSubmit={onSubmit}
-            validationSchema={ValidateSchema}
-          >
-            {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              isSubmitting,
-              /* and other goodies */
-            }) => (
-              <Form onSubmit={handleSubmit}>
-                <Row className={"mb-3"}>
-                  <p className={"w-25"}>First Name</p>
-                  <FormControl
-                    aria-label="Username"
-                    aria-describedby="basic-addon1"
-                    className={"w-75"}
-                    name={"firstName"}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    isValid={touched.firstName && !errors.firstName}
-                    isInvalid={touched.firstName && errors.firstName}
-                  />
-                  {errors.firstName && touched.firstName ? (
-                    <div
-                      className={"text-danger"}
-                      style={{ paddingLeft: "25%" }}
-                    >
-                      {errors.firstName}
-                    </div>
-                  ) : null}
-                </Row>
-                <Row className={"mb-3"}>
-                  <p className={"w-25"}>Last Name</p>
-                  <FormControl
-                    aria-label="Username"
-                    aria-describedby="basic-addon1"
-                    className={"w-75"}
-                    name={"lastName"}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    isValid={touched.lastName && !errors.lastName}
-                    isInvalid={touched.lastName && errors.lastName}
-                  />
-                  {errors.lastName && touched.lastName ? (
-                    <div
-                      className={"text-danger"}
-                      style={{ paddingLeft: "25%" }}
-                    >
-                      {errors.lastName}
-                    </div>
-                  ) : null}
-                </Row>
-                <Row className="mb-3">
-                  <p className={"w-25"} id="basic-addon1">
-                    Date of Birth
-                  </p>
-                  <FormControl
-                    type={"date"}
-                    aria-describedby="basic-addon1"
-                    className={"w-75 custom-checkbox"}
-                    name={"dob"}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    isValid={touched.dob && !errors.dob}
-                    isInvalid={touched.dob && errors.dob}
-                  />
-                  {errors.dob && touched.dob ? (
-                    <div
-                      className={"text-danger"}
-                      style={{ paddingLeft: "25%" }}
-                    >
-                      {errors.dob}
-                    </div>
-                  ) : null}
-                </Row>
-                <Row>
-                  <p id="basic-addon1" className={"w-25"}>
-                    Gender
-                  </p>
-                  <div className={"container-lg w-75 d-flex"}>
-                    <FormCheck
-                      inline
-                      type={"radio"}
-                      label={"Female"}
-                      className={"w-50"}
-                      name={"gender"}
-                      onChange={() => (values.gender = "Female")}
-                    ></FormCheck>
-                    <FormCheck
-                      inline
-                      type={"radio"}
-                      label={"Male"}
-                      className={"w-50"}
-                      name={"gender"}
-                      onChange={() => (values.gender = "Male")}
-                    ></FormCheck>
-                  </div>
-                </Row>
-                <Row className="mb-3">
-                  <p className={"w-25"} id="basic-addon1">
-                    Joined Date
-                  </p>
-                  <FormControl
-                    type={"date"}
-                    className={"w-75"}
-                    name={"joinedDate"}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    isValid={touched.joinedDate && !errors.joinedDate}
-                    isInvalid={touched.joinedDate && errors.joinedDate}
-                  />
-                  {errors.joinedDate && touched.joinedDate ? (
-                    <div
-                      className={"text-danger"}
-                      style={{ paddingLeft: "25%" }}
-                    >
-                      {errors.joinedDate}
-                    </div>
-                  ) : null}
-                </Row>
-                <Row className="mb-3">
-                  <p className={"col-3"}>Type</p>
-                  <Form.Select
-                    size="sm"
-                    className={"w-75"}
-                    name={"authority"}
-                    value={values.authority}
-                    onChange={handleChange}
-                    isValid={touched.authority && !errors.authority}
-                    isInvalid={touched.authority && errors.authority}
-                    onBlur={handleBlur}
-                  >
-                    <option selected></option>
-                    <option value={"ADMIN"}>Admin</option>
-                    <option value={"STAFF"}>Staff</option>
-                  </Form.Select>
-                  {errors.authority && touched.authority ? (
-                    <div
-                      className={"text-danger"}
-                      style={{ paddingLeft: "25%" }}
-                    >
-                      {errors.authority}
-                    </div>
-                  ) : null}
-                </Row>
-                <Button
-                  variant={"secondary"}
-                  onClick={() => history.push("/user")}
-                  type={"submit"}
-                  className={"ms-5"}
-                  style={{ float: "right" }}
+        <div className={"container ps-5 d-block"}>
+            <Row>
+                <h1 className={"text-danger mb-5"}>Create New User</h1>
+            </Row>
+            <Row className={"mt-5"}>
+                <Formik
+                    initialValues={initialValues}
+                    onSubmit={onSubmit}
+                    validationSchema={ValidateSchema}
                 >
-                  Cancel
-                </Button>
-                <Button
-                  variant={"danger"}
-                  type={"submit"}
-                  style={{ float: "right" }}
-                  disabled={formValid(values)}
-                >
-                  Save
-                </Button>
-              </Form>
-            )}
-          </Formik>
-        </Row>
-      </div>
+                    {({
+                          values,
+                          errors,
+                          touched,
+                          handleChange,
+                          handleBlur,
+                          handleSubmit,
+                          isSubmitting,
+                          /* and other goodies */
+                      }) => (
+                        <Form onSubmit={handleSubmit}>
+                            <Row className={"mb-3"}>
+                                <p className={"w-25"}>First Name</p>
+                                <FormControl
+                                    aria-label="Username"
+                                    aria-describedby="basic-addon1"
+                                    className={"w-75"}
+                                    name={"firstName"}
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    isValid={touched.firstName && !errors.firstName}
+                                    isInvalid={touched.firstName && errors.firstName}
+                                />
+                                {errors.firstName && touched.firstName ? (
+                                    <div
+                                        className={"text-danger"}
+                                        style={{paddingLeft: "25%"}}
+                                    >
+                                        {errors.firstName}
+                                    </div>
+                                ) : null}
+                            </Row>
+                            <Row className={"mb-3"}>
+                                <p className={"w-25"}>Last Name</p>
+                                <FormControl
+                                    aria-label="Username"
+                                    aria-describedby="basic-addon1"
+                                    className={"w-75"}
+                                    name={"lastName"}
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    isValid={touched.lastName && !errors.lastName}
+                                    isInvalid={touched.lastName && errors.lastName}
+                                />
+                                {errors.lastName && touched.lastName ? (
+                                    <div
+                                        className={"text-danger"}
+                                        style={{paddingLeft: "25%"}}
+                                    >
+                                        {errors.lastName}
+                                    </div>
+                                ) : null}
+                            </Row>
+                            <Row className="mb-3">
+                                <p className={"w-25"} id="basic-addon1">
+                                    Date of Birth
+                                </p>
+                                <FormControl
+                                    type={"date"}
+                                    aria-describedby="basic-addon1"
+                                    className={"w-75 custom-checkbox"}
+                                    name={"dob"}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    isValid={touched.dob && !errors.dob}
+                                    isInvalid={touched.dob && errors.dob}
+                                />
+                                {errors.dob && touched.dob ? (
+                                    <div
+                                        className={"text-danger"}
+                                        style={{paddingLeft: "25%"}}
+                                    >
+                                        {errors.dob}
+                                    </div>
+                                ) : null}
+                            </Row>
+                            <Row>
+                                <p id="basic-addon1" className={"w-25"}>
+                                    Gender
+                                </p>
+                                <div className={"container-lg w-75 d-flex"}>
+                                    <FormCheck
+                                        inline
+                                        type={"radio"}
+                                        label={"Female"}
+                                        className={"w-50"}
+                                        name={"gender"}
+                                        onChange={() => (values.gender = "Female")}
+                                    />
+                                    <FormCheck
+                                        inline
+                                        type={"radio"}
+                                        label={"Male"}
+                                        className={"w-50"}
+                                        name={"gender"}
+                                        onChange={() => (values.gender = "Male")}
+                                    />
+                                </div>
+                            </Row>
+                            <Row className="mb-3">
+                                <p className={"w-25"} id="basic-addon1">
+                                    Joined Date
+                                </p>
+                                <FormControl
+                                    type={"date"}
+                                    className={"w-75"}
+                                    name={"joinedDate"}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    isValid={touched.joinedDate && !errors.joinedDate}
+                                    isInvalid={touched.joinedDate && errors.joinedDate}
+                                />
+                                {errors.joinedDate && touched.joinedDate ? (
+                                    <div
+                                        className={"text-danger"}
+                                        style={{paddingLeft: "25%"}}
+                                    >
+                                        {errors.joinedDate}
+                                    </div>
+                                ) : null}
+                            </Row>
+                            <Row className="mb-3">
+                                <p className={"col-3"}>Type</p>
+                                <Form.Select
+                                    size="sm"
+                                    className={"w-75"}
+                                    name={"authority"}
+                                    value={values.authority}
+                                    onChange={handleChange}
+                                    isValid={touched.authority && !errors.authority}
+                                    isInvalid={touched.authority && errors.authority}
+                                    onBlur={handleBlur}
+                                >
+                                    <option selected></option>
+                                    <option value={"ADMIN"}>Admin</option>
+                                    <option value={"STAFF"}>Staff</option>
+                                </Form.Select>
+                                {errors.authority && touched.authority ? (
+                                    <div
+                                        className={"text-danger"}
+                                        style={{paddingLeft: "25%"}}
+                                    >
+                                        {errors.authority}
+                                    </div>
+                                ) : null}
+                            </Row>
+                            <Button
+                                variant={"secondary"}
+                                onClick={() => {
+                                    setChildPage(null);
+                                    history.push("/user");
+                                }}
+                                type={"submit"}
+                                className={"ms-5"}
+                                style={{float: "right"}}
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                variant={"danger"}
+                                type={"submit"}
+                                style={{float: "right"}}
+                                disabled={formValid(values)}
+                            >
+                                Save
+                            </Button>
+                        </Form>
+                    )}
+                </Formik>
+            </Row>
+        </div>
     );
 };
 

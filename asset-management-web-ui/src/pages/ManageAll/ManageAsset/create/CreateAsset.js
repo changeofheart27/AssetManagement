@@ -8,7 +8,7 @@ import * as Yup from 'yup'
 import {isValid} from 'date-fns';
 import {TextField} from "@material-ui/core";
 
-const CreateAsset = ({setResponseDataAsset}) => {
+const CreateAsset = ({setResponseDataAsset, setChildPage}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [categories, setCategories] = useState([]);
     useEffect(() => {
@@ -35,7 +35,6 @@ const CreateAsset = ({setResponseDataAsset}) => {
                 id: values.category
             },
         };
-
         axios.post(rootAPI + `/assets`, create)
             .then((response) => {
                 setSubmitting(false);
@@ -48,6 +47,7 @@ const CreateAsset = ({setResponseDataAsset}) => {
                     state: response.data.state,
                     categoryDTO: response.data.categoryDTO,
                 });
+                setChildPage(null);
                 history.push("/asset");
             });
     };
@@ -219,7 +219,10 @@ const CreateAsset = ({setResponseDataAsset}) => {
                             </Row>
                             <Button
                                 variant={"secondary"}
-                                onClick={() => history.push("/asset")}
+                                onClick={() => {
+                                    setChildPage(null);
+                                    history.push("/asset")
+                                }}
                                 className={"ms-5"}
                                 style={{float: "right"}}
                             >

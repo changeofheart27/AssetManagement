@@ -8,7 +8,7 @@ import {useHistory, useParams} from 'react-router-dom';
 import * as Yup from "yup";
 
 
-const EditAsset = ({setResponseDataAsset}) => {
+const EditAsset = ({setResponseDataAsset, setChildPage}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     let {id} = useParams();
     const history = useHistory();
@@ -60,6 +60,7 @@ const EditAsset = ({setResponseDataAsset}) => {
                     state: response.data.state,
                     categoryDTO: response.data.categoryDTO,
                 });
+                setChildPage(null);
                 history.push("/asset");
             });
     };
@@ -80,162 +81,165 @@ const EditAsset = ({setResponseDataAsset}) => {
             .typeError('Installed date can not empty'),
     });
     return (
-      <div className={"container ps-5 d-block"}>
-        <Row>
-          <h1 className={"text-danger mb-5"}>Edit Asset</h1>
-        </Row>
-        <Row className={"mt-5"}>
-          <Formik
-            initialValues={initialValues}
-            onSubmit={onSubmit}
-            enableReinitialize={"true"}
-            validationSchema={ValidateSchema}
-          >
-            {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              isSubmitting,
-              /* and other goodies */
-            }) => (
-              <Form onSubmit={handleSubmit}>
-                <Row className={"mb-3"}>
-                  <p className={"w-25"}>Name</p>
-                  <FormControl
-                    name={"assetName"}
-                    aria-label="Username"
-                    aria-describedby="basic-addon1"
-                    className={"w-75"}
-                    value={values.assetName}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    isValid={touched.assetName && !errors.assetName}
-                    isInvalid={touched.assetName && errors.assetName}
-                  />
-                  {errors.assetName && touched.assetName ? (
-                    <div
-                      className={"text-danger"}
-                      style={{ paddingLeft: "25%" }}
-                    >
-                      {errors.assetName}
-                    </div>
-                  ) : null}
-                </Row>
-                <Row className="mb-3">
-                  <p className={"col-3"}>Category</p>
-                  <Form.Control
-                    size="sm"
-                    className={"w-75"}
-                    name={"category"}
-                    value={values.categoryDTO.name}
-                    disabled
-                  />
-                </Row>
-                <Row className="mb-3">
-                  <p className={"w-25"}>Specification</p>
-                  <FormControl
-                    aria-label="Specification"
-                    aria-describedby="basic-addon1"
-                    className={"w-75"}
-                    style={{ height: "5em" }}
-                    name={"specification"}
-                    value={values.specification}
-                    onChange={handleChange}
-                  />
-                </Row>
-                <Row className="mb-3">
-                  <p className={"w-25"} id="basic-addon1">
-                    Installed Date
-                  </p>
-                  <FormControl
-                    name={"installedDate"}
-                    type={"date"}
-                    aria-describedby="basic-addon1"
-                    className={"w-75"}
-                    value={values.installedDate}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    isValid={touched.installedDate && !errors.installedDate}
-                    isInvalid={touched.installedDate && errors.installedDate}
-                  />
-                  {errors.installedDate && touched.installedDate ? (
-                    <div
-                      className={"text-danger"}
-                      style={{ paddingLeft: "25%" }}
-                    >
-                      {errors.installedDate}
-                    </div>
-                  ) : null}
-                </Row>
-                <Row>
-                  <p id="basic-addon1" className={"w-25"}>
-                    State
-                  </p>
-                  <div
-                    className={"container-lg w-75"}
-                    style={{ display: "flex", flexDirection: "column" }}
-                  >
-                    <FormCheck
-                      inline
-                      type={"radio"}
-                      label={"Available"}
-                      className={"w-75"}
-                      name={"status"}
-                      checked={state === 0}
-                      onChange={() => setState(0)}
-                    ></FormCheck>
-                    <FormCheck
-                      inline
-                      type={"radio"}
-                      label={"Not available"}
-                      className={"w-75"}
-                      name={"status"}
-                      checked={state === 1}
-                      onChange={() => setState(1)}
-                    ></FormCheck>
-                    <FormCheck
-                      inline
-                      type={"radio"}
-                      label={"Waiting for recycling"}
-                      className={"w-75"}
-                      name={"status"}
-                      checked={state === 2}
-                      onChange={() => setState(2)}
-                    ></FormCheck>
-                    <FormCheck
-                      inline
-                      type={"radio"}
-                      label={"Recycled"}
-                      className={"w-75"}
-                      name={"status"}
-                      checked={state === 3}
-                      onChange={() => setState(3)}
-                    ></FormCheck>
-                  </div>
-                </Row>
-                <Button
-                  variant={"secondary"}
-                  onClick={() => history.push("/asset")}
-                  className={"ms-5"}
-                  style={{ float: "right" }}
+        <div className={"container ps-5 d-block"}>
+            <Row>
+                <h1 className={"text-danger mb-5"}>Edit Asset</h1>
+            </Row>
+            <Row className={"mt-5"}>
+                <Formik
+                    initialValues={initialValues}
+                    onSubmit={onSubmit}
+                    enableReinitialize={"true"}
+                    validationSchema={ValidateSchema}
                 >
-                  Cancel
-                </Button>
-                <Button
-                  variant={"danger"}
-                  type={"submit"}
-                  style={{ float: "right" }}
-                >
-                  Save
-                </Button>
-              </Form>
-            )}
-          </Formik>
-        </Row>
-      </div>
+                    {({
+                          values,
+                          errors,
+                          touched,
+                          handleChange,
+                          handleBlur,
+                          handleSubmit,
+                          isSubmitting,
+                          /* and other goodies */
+                      }) => (
+                        <Form onSubmit={handleSubmit}>
+                            <Row className={"mb-3"}>
+                                <p className={"w-25"}>Name</p>
+                                <FormControl
+                                    name={"assetName"}
+                                    aria-label="Username"
+                                    aria-describedby="basic-addon1"
+                                    className={"w-75"}
+                                    value={values.assetName}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    isValid={touched.assetName && !errors.assetName}
+                                    isInvalid={touched.assetName && errors.assetName}
+                                />
+                                {errors.assetName && touched.assetName ? (
+                                    <div
+                                        className={"text-danger"}
+                                        style={{paddingLeft: "25%"}}
+                                    >
+                                        {errors.assetName}
+                                    </div>
+                                ) : null}
+                            </Row>
+                            <Row className="mb-3">
+                                <p className={"col-3"}>Category</p>
+                                <Form.Control
+                                    size="sm"
+                                    className={"w-75"}
+                                    name={"category"}
+                                    value={values.categoryDTO.name}
+                                    disabled
+                                />
+                            </Row>
+                            <Row className="mb-3">
+                                <p className={"w-25"}>Specification</p>
+                                <FormControl
+                                    aria-label="Specification"
+                                    aria-describedby="basic-addon1"
+                                    className={"w-75"}
+                                    style={{height: "5em"}}
+                                    name={"specification"}
+                                    value={values.specification}
+                                    onChange={handleChange}
+                                />
+                            </Row>
+                            <Row className="mb-3">
+                                <p className={"w-25"} id="basic-addon1">
+                                    Installed Date
+                                </p>
+                                <FormControl
+                                    name={"installedDate"}
+                                    type={"date"}
+                                    aria-describedby="basic-addon1"
+                                    className={"w-75"}
+                                    value={values.installedDate}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    isValid={touched.installedDate && !errors.installedDate}
+                                    isInvalid={touched.installedDate && errors.installedDate}
+                                />
+                                {errors.installedDate && touched.installedDate ? (
+                                    <div
+                                        className={"text-danger"}
+                                        style={{paddingLeft: "25%"}}
+                                    >
+                                        {errors.installedDate}
+                                    </div>
+                                ) : null}
+                            </Row>
+                            <Row>
+                                <p id="basic-addon1" className={"w-25"}>
+                                    State
+                                </p>
+                                <div
+                                    className={"container-lg w-75"}
+                                    style={{display: "flex", flexDirection: "column"}}
+                                >
+                                    <FormCheck
+                                        inline
+                                        type={"radio"}
+                                        label={"Available"}
+                                        className={"w-75"}
+                                        name={"status"}
+                                        checked={state === 0}
+                                        onChange={() => setState(0)}
+                                    />
+                                    <FormCheck
+                                        inline
+                                        type={"radio"}
+                                        label={"Not available"}
+                                        className={"w-75"}
+                                        name={"status"}
+                                        checked={state === 1}
+                                        onChange={() => setState(1)}
+                                    />
+                                    <FormCheck
+                                        inline
+                                        type={"radio"}
+                                        label={"Waiting for recycling"}
+                                        className={"w-75"}
+                                        name={"status"}
+                                        checked={state === 2}
+                                        onChange={() => setState(2)}
+                                    />
+                                    <FormCheck
+                                        inline
+                                        type={"radio"}
+                                        label={"Recycled"}
+                                        className={"w-75"}
+                                        name={"status"}
+                                        checked={state === 3}
+                                        onChange={() => setState(3)}
+                                    />
+                                </div>
+                            </Row>
+                            <Button
+                                variant={"secondary"}
+                                onClick={() => {
+                                    setChildPage(null);
+                                    history.push("/asset")
+                                }}
+                                className={"ms-5"}
+                                style={{float: "right"}}
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                variant={"danger"}
+                                type={"submit"}
+                                style={{float: "right"}}
+                            >
+                                Save
+                            </Button>
+                        </Form>
+                    )}
+                </Formik>
+            </Row>
+        </div>
     );
 };
 
