@@ -50,7 +50,6 @@ public class RequestServiceImpl implements RequestService {
     request.setAssignment(assignmentRepository.getById(assignID));
     requestRepository.save(request);
     return requestMapper.fromEntity(request);
-
   }
 
   @Override

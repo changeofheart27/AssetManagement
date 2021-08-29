@@ -115,15 +115,15 @@ public class AssetServiceImpl implements AssetService {
             assets = assetRepository.findAssetByState(state);
             assets = assets.stream().filter(asset -> asset.getCategory().getName().equals(category)).collect(Collectors.toList());
         } else if (state == null && category == null && keyword != null) {
-            assets = assetRepository.findAssetsByAssetNameContainsOrAssetCodeContains(assetName, assetCode);
+            assets = assetRepository.findByAssetNameContainsOrAssetCodeContains(assetName, assetCode);
         } else if (state == null && category != null && keyword != null) {
-            assets = assetRepository.findAssetsByAssetNameContainsOrAssetCodeContains(assetName, assetCode);
+            assets = assetRepository.findByAssetNameContainsOrAssetCodeContains(assetName, assetCode);
             assets = assets.stream().filter(asset -> asset.getCategory().getName().equals(category)).collect(Collectors.toList());
         } else if (category == null && state != null && keyword != null) {
-            assets = assetRepository.findAssetsByAssetNameContainsOrAssetCodeContains(assetName, assetCode);
+            assets = assetRepository.findByAssetNameContainsOrAssetCodeContains(assetName, assetCode);
             assets = assets.stream().filter(asset -> asset.getState() == state).collect(Collectors.toList());
         } else if (category != null && state != null && keyword != null) {
-            assets = assetRepository.findAssetsByAssetNameContainsOrAssetCodeContains(assetName, assetCode);
+            assets = assetRepository.findByAssetNameContainsOrAssetCodeContains(assetName, assetCode);
             assets = assets.stream()
                     .filter(asset -> asset.getState() == state && asset.getCategory().getName().equals(category))
                     .collect(Collectors.toList());

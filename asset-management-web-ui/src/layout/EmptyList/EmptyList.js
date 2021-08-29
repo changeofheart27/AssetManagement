@@ -1,8 +1,8 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import MoveToInboxIcon from '@material-ui/icons/MoveToInbox';
 import {Row} from "react-bootstrap";
-import {Icon} from "@material-ui/core";
+
+import EmptySVG from '../../style/blank.svg'
 
 const EmptyList = () => {
     return (
@@ -10,8 +10,8 @@ const EmptyList = () => {
             <div className={"text-center"}>
                 You got no assignment yet
             </div>
-            <Row>
-               <svg xmlns={"file:///C:/Users/dinhn/Downloads/empty-folder%20.svg"} viewBox="0 0 841.9 595.3"/>
+            <Row className={"justify-content-center align-items-center"}>
+               <img src={EmptySVG} className={"w-50 h-50"} alt={"Empty"}/>
             </Row>
         </>
     );

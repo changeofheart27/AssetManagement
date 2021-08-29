@@ -132,7 +132,7 @@ const ManageUser = ({responseUser}) => {
     }
     return (
       <Container fluid className={"d-block ps-5"}>
-        <h1 className={"text-danger mb-3"}>User List</h1>
+        <h3 className={"text-danger mb-3"}>User List</h3>
         <div className={"justify-content-between d-flex"}>
           <div className={"col-3 d-flex"}>
             <InputGroup className={"w-50"}>

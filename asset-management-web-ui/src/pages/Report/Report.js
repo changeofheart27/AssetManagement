@@ -72,12 +72,9 @@ const Report = () => {
 
   return (
     <Container fluid className={"d-block ps-5"}>
-      <h1 className={"text-danger mb-3"}>Report</h1>
+      <h3 className={"text-danger mb-3"}>Report</h3>
       <InputGroup>
         <div className={"col-12 d-flex justify-content-end"}>
-          {/* <Button variant={"danger"} className={"mx-5"}>
-            Export
-          </Button> */}
           <ExportFile apiData={list} fileName={fileName} />
         </div>
       </InputGroup>
@@ -137,16 +134,6 @@ const Report = () => {
             </tr>
           </thead>
           <tbody>
-            {/* {list.map((row) => (
-              <tr key={row[0]}>
-                <td>{row[0]}</td>
-                <td>{row[1]}</td>
-                <td>{row[2]}</td>
-                <td>{row[3]}</td>
-                <td>{row[4]}</td>
-                <td>{row[5]}</td>
-                <td>{row[6]}</td>
-              </tr> */}
             {list.map((row) => (
               <tr key={row.Category}>
                 <td>{row.Category}</td>

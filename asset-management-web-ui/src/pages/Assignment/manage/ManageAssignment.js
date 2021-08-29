@@ -86,18 +86,18 @@ const ManageAssignment = ({responseAssigment}) => {
 
 
     useEffect(() => {
-      axios.get(rootAPI + "/assignments", config).then(function (response) {
-        let result = response.data.map((assigment) => assigment.id);
-        if (result.includes(responseAssigment.id)) {
-          const index = result.indexOf(responseAssigment.id);
-          response.data.splice(index, 1);
-          response.data.unshift(responseAssigment);
-          setList(response.data);
-        } else {
-          setList(response.data);
-        }
-        setRefreshList(false);
-      });
+        axios.get(rootAPI + "/assignments", config).then(function (response) {
+            let result = response.data.map((assigment) => assigment.id);
+            if (result.includes(responseAssigment.id)) {
+                const index = result.indexOf(responseAssigment.id);
+                response.data.splice(index, 1);
+                response.data.unshift(responseAssigment);
+                setList(response.data);
+            } else {
+                setList(response.data);
+            }
+            setRefreshList(false);
+        });
     }, [state, refreshList]);
     const check = (state) => {
         if (state === 5) {
@@ -110,6 +110,120 @@ const ManageAssignment = ({responseAssigment}) => {
             return <td>Waiting for returning</td>;
         }
     };
+    const checkButton = (state, assigment) => {
+        if (state === 5) {
+            return (
+                <>
+                    <td>
+                        <i className="bi bi-pen btn m-0 text-muted p-0 zoomin"
+                           onClick={() =>
+                               history.push(`/editassignment/${assigment.id}`)
+                           }
+                        />
+                    </td>
+                    <Popup
+                        contentStyle={{
+                            width: "25%",
+                            border: "1px solid black",
+                            borderRadius: 10,
+                            overflow: "hidden",
+                        }}
+                        trigger={
+                            <td>
+                                <i className="bi bi-x-circle text-danger btn p-0 zoomin"/>
+                            </td>
+                        }
+                        modal
+                    >
+                        {close => <DeleteAssignment id={assigment.id} close={close} setRefreshList={setRefreshList}/>}
+                    </Popup>
+
+                    <td>
+                        <i className="bi bi-arrow-counterclockwise btn disabled p-0 text-blue fw-bold"/>
+                    </td>
+
+
+                </>
+            )
+        } else if (state === 6) {
+            return (
+                <>
+                    <td>
+                        <i
+                            className="bi bi-pen btn disabled m-0 p-0"
+                        />
+                    </td>
+                    <td>
+                        <i
+                            className="bi bi-x-circle btn disabled p-0"
+                        />
+                    </td>
+                    <Popup
+                        contentStyle={{
+                            width: "27%", border: "1px solid black", borderRadius: 10,
+                            overflow: 'hidden'
+                        }}
+                        trigger={
+                            <td>
+                                <i className="bi btn m-0 p-0 zoomin bi-arrow-counterclockwise text-blue fw-bold"
+                                />
+                            </td>
+                        }
+                        modal
+                    >
+                        {(close) => <ReturnPopup assigment={assigment}
+                                                 setState={setState}
+                                                 close={close}
+                                                 setDisable={setDisable}
+                        />}
+                    </Popup>
+                </>
+            )
+        } else if (state === 7) {
+            return (
+                <>
+                    <td>
+                        <i
+                            className="bi bi-pen btn disabled m-0 p-0"
+                        />
+                    </td>
+                    <Popup
+                        contentStyle={{
+                            width: "25%",
+                            border: "1px solid black",
+                            borderRadius: 10,
+                            overflow: "hidden",
+                        }}
+                        trigger={
+                            <td>
+                                <i className="bi bi-x-circle text-danger btn p-0 zoomin"/>
+                            </td>
+                        }
+                        modal
+                    >
+                        {close => <DeleteAssignment id={assigment.id} close={close} setRefreshList={setRefreshList}/>}
+                    </Popup>
+                    <td>
+                        <i className="bi bi-arrow-counterclockwise btn disabled p-0 text-blue fw-bold"/>
+                    </td>
+                </>
+            )
+        } else if (state === 8) {
+            return (
+                <>
+                    <td>
+                        <i className="bi bi-pen btn disabled m-0 p-0"/>
+                    </td>
+                    <td>
+                        <i className="bi bi-x-circle btn disabled p-0"/>
+                    </td>
+                    <td>
+                        <i className="bi bi-arrow-counterclockwise btn disabled p-0 text-blue fw-bold"/>
+                    </td>
+                </>
+            )
+        }
+    }
     const sortingData = useMemo(() => {
         if (sortConfig !== null) {
             list.sort((a, b) => {
@@ -162,7 +276,7 @@ const ManageAssignment = ({responseAssigment}) => {
     const [disable, setDisable] = useState(false);
     return (
         <Container fluid className={"d-block ps-5"}>
-            <h1 className={"text-danger mb-3"}>My Assignment</h1>
+            <h3 className={"text-danger mb-3"}>Manage Assignment</h3>
             <InputGroup className={"justify-content-between"}>
                 <div className={"col-5 d-flex"}>
                     <InputGroup>
@@ -292,84 +406,8 @@ const ManageAssignment = ({responseAssigment}) => {
                                     <td>{assigment.assignedBy}</td>
                                     <td>{dateFormat(assigment.assignedDate, "dd/mm/yyyy")}</td>
                                     <td>{check(assigment.state)}</td>
-                                    {assigment.state === 5
-                                        ? (
-                                            <>
-                                                <td>
-                                                    <i className="bi bi-pen btn m-0 text-muted p-0 zoomin"
-                                                        onClick={() =>
-                                                            history.push(`/editassignment/${assigment.id}`)
-                                                        }
-                                                    />
-                                                </td>
-                                                <Popup
-                                                    contentStyle={{width: "25%",
-                                                        border: "1px solid black",
-                                                        borderRadius: 10,
-                                                        overflow: "hidden",
-                                                    }}
-                                                    trigger={
-                                                        <td>
-                                                            <i className="bi bi-x-circle text-danger btn p-0 zoomin"/>
-                                                        </td>
-                                                    }
-                                                    modal
-                                                >
-                                                    {close => <DeleteAssignment id={assigment.id} close={close} setRefreshList={setRefreshList}/>}
-                                                </Popup>
-                                                <Popup
-                                                    trigger={
-                                                        <td>
-                                                            <i className="bi bi-arrow-counterclockwise text-blue fw-bold"
-                                                               style={{color: "#8c9ce5"}}
-                                                            />
-                                                        </td>
-                                                    }
-                                                    modal
-                                                    disabled
-                                                >
-                                                    {(close) => <ReturnPopup assigment={assigment}
-                                                                             setState={setState}
-                                                                             close={close}
-                                                    />
-                                                    }
-                                                </Popup>
+                                    {checkButton(assigment.state, assigment)}
 
-                                            </>
-                                        ) : (
-                                            <>
-                                                <td>
-                                                    <i
-                                                        className="bi bi-pen btn m-0 p-0"
-                                                        style={{color: "#E0E0E0"}}
-                                                    />
-                                                </td>
-                                                <td>
-                                                    <i
-                                                        className="bi bi-x-circle btn p-0"
-                                                        style={{color: "#DAB5B6"}}
-                                                    />
-                                                </td>
-                                                <Popup
-                                                    contentStyle={{width: "27%", border: "1px solid black", borderRadius: 10,
-                                                        overflow: 'hidden'}}
-                                                    trigger={
-                                                        <td>
-                                                            <i className="bi btn m-0 p-0 zoomin bi-arrow-counterclockwise text-blue fw-bold"
-                                                            />
-                                                        </td>
-                                                    }
-                                                    modal
-                                                >
-                                                    {(close) => <ReturnPopup assigment={assigment}
-                                                                             setState={setState}
-                                                                             close={close}
-                                                                             setDisable={setDisable}
-                                                    />}
-
-                                                </Popup>
-                                            </>
-                                        )}
                                 </tr>
                             }
                             modal

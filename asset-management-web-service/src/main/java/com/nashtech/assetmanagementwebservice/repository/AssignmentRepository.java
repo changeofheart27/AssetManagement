@@ -15,18 +15,10 @@ public interface AssignmentRepository extends JpaRepository<Assignment, Integer>
 
   List<Assignment> findByUser_UsernameAndStateNot(String name, int state);
 
-  // search by assetcode or assetname
-  @Query(value = "SELECT a FROM Assignment a WHERE a.asset.assetName LIKE :assetName OR a.asset.assetCode = :assetCode")
-  List<Assignment> findAssignmentsByAssetNameContainsOrAssetCode(String assetName, String assetCode);
-
-  List<Assignment> findAssignmentsByState(Integer state);
-
-  List<Assignment> findAssignmentsByAssignedDate(LocalDate assignedDate);
-
   List<Assignment> findByStateNot(int state);
   
-  Assignment findByAsset_Id(Integer id);
-  
   Assignment findByAsset_IdAndStateNot(Integer id, int state);
+
+  List<Assignment> findByUser_UsernameAndStateNotAndStateNot(String name, int state1, int state2);
   
 }
