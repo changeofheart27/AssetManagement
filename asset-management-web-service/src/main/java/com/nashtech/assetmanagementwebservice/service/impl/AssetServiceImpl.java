@@ -104,8 +104,6 @@ public class AssetServiceImpl implements AssetService {
     public List<AssetDTO> filterAssets(String category, Integer state, String keyword) {
     	String currentUserLocation = getCurrentLoggedInUserLocation();
         List<Asset> assets = new ArrayList<>();
-        String assetName = "%" + keyword + "%";
-        String assetCode = keyword;
         if (state == null && category == null && keyword == null) {
             assets = assetRepository.findAllByOrderByAssetName();
         } else if (state == null && category != null && keyword == null) {
@@ -116,15 +114,15 @@ public class AssetServiceImpl implements AssetService {
             assets = assetRepository.findAssetByState(state);
             assets = assets.stream().filter(asset -> asset.getCategory().getName().equals(category)).collect(Collectors.toList());
         } else if (state == null && category == null && keyword != null) {
-            assets = assetRepository.findByAssetNameContainsOrAssetCodeContains(assetName, assetCode);
+            assets = assetRepository.findByAssetNameContainsOrAssetCodeContains(keyword, keyword);
         } else if (state == null && category != null && keyword != null) {
-            assets = assetRepository.findByAssetNameContainsOrAssetCodeContains(assetName, assetCode);
+            assets = assetRepository.findByAssetNameContainsOrAssetCodeContains(keyword, keyword);
             assets = assets.stream().filter(asset -> asset.getCategory().getName().equals(category)).collect(Collectors.toList());
         } else if (category == null && state != null && keyword != null) {
-            assets = assetRepository.findByAssetNameContainsOrAssetCodeContains(assetName, assetCode);
+            assets = assetRepository.findByAssetNameContainsOrAssetCodeContains(keyword, keyword);
             assets = assets.stream().filter(asset -> asset.getState() == state).collect(Collectors.toList());
         } else if (category != null && state != null && keyword != null) {
-            assets = assetRepository.findByAssetNameContainsOrAssetCodeContains(assetName, assetCode);
+            assets = assetRepository.findByAssetNameContainsOrAssetCodeContains(keyword, keyword);
             assets = assets.stream()
                     .filter(asset -> asset.getState() == state && asset.getCategory().getName().equals(category))
                     .collect(Collectors.toList());

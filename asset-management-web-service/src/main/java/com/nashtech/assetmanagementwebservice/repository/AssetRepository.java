@@ -39,14 +39,14 @@ public interface AssetRepository extends JpaRepository<Asset, Integer> {
     @Query(value = "select " +
             "  category.name as \"Category\", " +
             "  count(asset.category_id) as \"Total\", " +
-            "  sum(case when asset.state = 4 then 1 else 0 end) as \"Assigned\"," +
-            "  sum(case when asset.state = 0 then 1 else 0 end) as \"Available\"," +
-            "  sum(case when asset.state = 1 then 1 else 0 end) as \"Not Available\"," +
-            "  sum(case when asset.state = 2 then 1 else 0 end) as \"Waiting for recycling\"," +
+            "  sum(case when asset.state = 4 then 1 else 0 end) as \"Assigned\", " +
+            "  sum(case when asset.state = 0 then 1 else 0 end) as \"Available\", " +
+            "  sum(case when asset.state = 1 then 1 else 0 end) as \"Not Available\", " +
+            "  sum(case when asset.state = 2 then 1 else 0 end) as \"Waiting for recycling\", " +
             "  sum(case when asset.state = 3 then 1 else 0 end) as \"Recycled\" " +
             "from category " +
             "left join " +
-            "  asset " +
+            " asset " +
             "on category.id = asset.category_id" +
             "group by category.name", nativeQuery = true)
     List<Object[]> getDataForReport();

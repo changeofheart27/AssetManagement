@@ -9,22 +9,26 @@ const Pagination = ({usersPerPage, totalUsers, paginate}) => {
         pageNumbers.push(i);
     }
     const [currentPage, setCurrentPage] = useState(1);
-    console.log(currentPage+" currentpage");
     return (
 
         <nav>
             <ul className='pagination'>
-                <li className={"page-item page-link px-0 text-danger"}
-                    style={{width: "80px", textAlign: "center"}}
-                    onClick={() => {
-                        if (currentPage > 1) {
-                            paginate(currentPage - 1)
-                            setCurrentPage(currentPage-1)
-                        }
-                    }}
-                >
-                    Previous
-                </li>
+                {currentPage === 1 ? null :
+                    <>
+                        <li className={"page-item page-link px-0 text-danger"}
+                            style={{width: "80px", textAlign: "center", cursor: "pointer"}}
+                            onClick={() => {
+                                if (currentPage > 1) {
+                                    paginate(currentPage - 1)
+                                    setCurrentPage(currentPage - 1)
+                                }
+                            }}
+                        >
+
+                            Previous
+                        </li>
+                    </>
+                }
                 {pageNumbers.map(number => (
                     <li key={number} className='page-item'>
                         <a onClick={() => {
@@ -36,17 +40,19 @@ const Pagination = ({usersPerPage, totalUsers, paginate}) => {
                         </a>
                     </li>
                 ))}
-                <li className={"page-item page-link px-0 text-danger"}
-                    style={{width: "80px", textAlign: "center"}}
-                    onClick={() => {
-                        if (currentPage < totalUsers / usersPerPage) {
-                            paginate(currentPage + 1)
-                            setCurrentPage(currentPage + 1)
-                        }
-                    }}
-                >
-                    Next
-                </li>
+                {currentPage === Math.ceil(totalUsers/usersPerPage) ? null :
+                    <li className={"page-item page-link px-0 text-danger"}
+                        style={{width: "80px", textAlign: "center", cursor: "pointer"}}
+                        onClick={() => {
+                            if (currentPage < Math.ceil(totalUsers/usersPerPage)) {
+                                paginate(currentPage + 1)
+                                setCurrentPage(currentPage + 1)
+                            }
+                        }}
+                    >
+                        Next
+                    </li>
+                }
             </ul>
         </nav>
     );
