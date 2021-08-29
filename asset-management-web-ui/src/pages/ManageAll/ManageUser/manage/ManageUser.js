@@ -95,6 +95,7 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages}) => {
         }
         axios.get(rootAPI + '/users', request)
             .then(function (response) {
+                setCurrentPage(1);
                 setList(response.data);
             })
     }, [type, searchTerm])

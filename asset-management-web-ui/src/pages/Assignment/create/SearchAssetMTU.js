@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Table, Divider} from 'antd';
 import 'antd/dist/antd.css';
+import './index.css';
 import axios from "axios";
 import {Button, FormControl, InputGroup, Row} from "react-bootstrap";
 

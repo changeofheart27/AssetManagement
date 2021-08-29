@@ -80,6 +80,7 @@ const ManageAssignment = ({responseAssigment, setChildPage,setCurrentPages}) => 
         axios
             .get(rootAPI + `/assignments`, config)
             .then(function (response) {
+                setCurrentPage(1)
                 setList(response.data);
             });
     }, [type, date, keyword]);

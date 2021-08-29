@@ -34,14 +34,12 @@ const ManageAsset = ({responseDataAsset, setChildPage, setCurrentPages}) => {
 
     const [refreshList, setRefreshList] = useState(false);
     const history = useHistory();
-
     const [categories, setCategories] = useState([]);
     useEffect(() => {
         axios.get(rootAPI + "/categories").then((response) => {
             setCategories(response.data);
         });
     }, []);
-
     useEffect(() => {
         axios.get(rootAPI + '/assets')
             .then(function (response) {
@@ -99,6 +97,7 @@ const ManageAsset = ({responseDataAsset, setChildPage, setCurrentPages}) => {
             isFirstRun.current = false;
             return;
         }
+
         if (request.params.type === 'State') {
             request.params.type = null;
         }
@@ -107,6 +106,7 @@ const ManageAsset = ({responseDataAsset, setChildPage, setCurrentPages}) => {
         }
         axios.get(rootAPI + `/assets`, request)
             .then(function (response) {
+                setCurrentPage(1)
                 setList(response.data);
             })
     }, [type, category, searchTerm])

@@ -69,6 +69,9 @@ const Navbar = ({setCurrentPage, setChildPage}) => {
         state: null,
         note: null
     });
+    const [responseRequest, setResponseRequest] = useState({
+        id: null
+    });
     return (
         <div className="container-fluid d-flex">
             <div className="navbar-container col-2">
@@ -201,7 +204,7 @@ const Navbar = ({setCurrentPage, setChildPage}) => {
                             <EditAssignment setChildPage={setChildPage} setResponseAssigment={setResponseAssigment}/>
                         </Route>
                         <Route path={"/request"}>
-                            <Request setCurrentPages={setCurrentPage}/>
+                            <Request setCurrentPages={setCurrentPage} responseRequest={responseRequest}/>
                         </Route>
                         <Route path={"/report"}>
                             <Report setCurrentPages={setCurrentPage}/>
