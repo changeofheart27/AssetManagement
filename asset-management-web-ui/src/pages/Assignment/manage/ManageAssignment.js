@@ -19,6 +19,7 @@ import axios from "axios";
 import {useHistory} from "react-router-dom";
 import dateFormat from 'dateformat';
 import ReturnPopup from "../../home/popup/ReturnPopup";
+import EmptySearch from "../../../layout/EmptyList/EmptySearch";
 
 const ManageAssignment = ({responseAssigment, setChildPage, setCurrentPages, setResponseAssignment}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
@@ -455,6 +456,8 @@ const ManageAssignment = ({responseAssigment, setChildPage, setCurrentPages, set
                     ))}
                     </tbody>
                 </Table>
+                {list.length === 0 ? <EmptySearch/>
+                    : null}
             </Row>
             <Pagination
                 className="pagnition"

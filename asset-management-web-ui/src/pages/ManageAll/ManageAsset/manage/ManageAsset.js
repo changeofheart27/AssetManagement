@@ -11,6 +11,7 @@ import ViewDetailedAsset from "../viewDetails/ViewDetailedAsset"
 import axios from "axios";
 import '../../../../style/style.css'
 import {useHistory} from 'react-router-dom'
+import EmptySearch from "../../../../layout/EmptyList/EmptySearch";
 
 const ManageAsset = ({responseDataAsset, setChildPage, setCurrentPages, setResponseDataAsset}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
@@ -254,10 +255,10 @@ const ManageAsset = ({responseDataAsset, setChildPage, setCurrentPages, setRespo
                                 <td>{asset.state}</td>
                                 {asset.state !== 4 ?
                                     <td><i className="bi bi-pen btn m-0 text-muted p-0 zoomin"
-                                                           onClick={() => {
-                                                               setChildPage("Edit Asset")
-                                                               history.push(`/editasset/${asset.id}`)
-                                                           }}/></td>
+                                           onClick={() => {
+                                               setChildPage("Edit Asset")
+                                               history.push(`/editasset/${asset.id}`)
+                                           }}/></td>
                                     :
                                     <td><i className="bi bi-pen btn m-0 btn disabled text-muted p-0"/></td>}
 
@@ -290,6 +291,8 @@ const ManageAsset = ({responseDataAsset, setChildPage, setCurrentPages, setRespo
                     )}
                     </tbody>
                 </Table>
+                {list.length === 0 ? <EmptySearch/>
+                    : null}
             </Row>
             <Pagination className="pagnition"
                         usersPerPage={usersPerPage}

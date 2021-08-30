@@ -8,6 +8,7 @@ import CompleteRequest from './CompleteRequest';
 import dateFormat from 'dateformat';
 import moment from "moment";
 import Pagination from "../../../components/Pagination/Pagination";
+import EmptySearch from "../../../layout/EmptyList/EmptySearch";
 
 const Request = ({setCurrentPages, responseRequest}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
@@ -256,8 +257,11 @@ const Request = ({setCurrentPages, responseRequest}) => {
                                         closeOnDocumentClick={false}
                                         modal
                                     >
-                                        {close => <CompleteRequest id={request.id} assign={request} close={close}
-                                                                   setRefreshList={setRefreshList}/>}
+                                        {close => <CompleteRequest
+                                            id={request.id}
+                                            assign={request}
+                                            close={close}
+                                            setRefreshList={setRefreshList}/>}
                                     </Popup>
                                     <Popup
                                         contentStyle={{
@@ -286,6 +290,8 @@ const Request = ({setCurrentPages, responseRequest}) => {
                     )}
                     </tbody>
                 </Table>
+                {list.length === 0 ? <EmptySearch/>
+                    : null}
             </Row>
             <Pagination
                 className="pagnition"

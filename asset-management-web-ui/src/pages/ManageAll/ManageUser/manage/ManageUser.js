@@ -14,6 +14,9 @@ import {useHistory} from 'react-router-dom'
 import dateFormat from 'dateformat';
 import '../../../../style/style.css'
 import ChangeStatusFail from "../changeStatus/ChangeStatusFail";
+import EmptyList from "../../../../layout/EmptyList/EmptyList";
+import EmptySearch from "../../../../layout/EmptyList/EmptySearch";
+
 const ManageUser = ({responseUser, setChildPage, setCurrentPages, setResponseUser}) => {
 
     const token = localStorage.getItem('jwttoken')
@@ -305,6 +308,8 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages, setResponseUse
                     ))}
                     </tbody>
                 </Table>
+                {list.length === 0 ? <EmptySearch/>
+                    : null}
             </Row>
             <Pagination
                 className="pagnition"
