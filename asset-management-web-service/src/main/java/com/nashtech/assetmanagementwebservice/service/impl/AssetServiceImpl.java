@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.nashtech.assetmanagementwebservice.entity.*;
 import com.nashtech.assetmanagementwebservice.exception.BadRequestException;
+import com.nashtech.assetmanagementwebservice.repository.AssignmentRepository;
+import com.nashtech.assetmanagementwebservice.repository.RequestRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.nashtech.assetmanagementwebservice.entity.Asset;
-import com.nashtech.assetmanagementwebservice.entity.Category;
-import com.nashtech.assetmanagementwebservice.entity.User;
 import com.nashtech.assetmanagementwebservice.model.dto.AssetDTO;
 import com.nashtech.assetmanagementwebservice.model.mapper.AssetMapper;
 import com.nashtech.assetmanagementwebservice.model.mapper.CategoryMapper;
@@ -31,14 +31,19 @@ public class AssetServiceImpl implements AssetService {
     private final AssetMapper assetMapper;
     private final CategoryMapper categoryMapper;
     private static final Logger logger = LoggerFactory.getLogger(AssetServiceImpl.class);
+    private final AssignmentRepository assignmentRepository;
+    private final RequestRepository requestRepository;
 
     @Autowired
-    public AssetServiceImpl(AssetRepository assetRepository, CategoryService categoryService, UserService userService) {
+    public AssetServiceImpl(AssetRepository assetRepository, CategoryService categoryService, UserService userService, AssignmentRepository assignmentRepository, RequestRepository requestRepository) {
         this.assetRepository = assetRepository;
         this.categoryService = categoryService;
         this.userService = userService;
+        this.assignmentRepository = assignmentRepository;
+        this.requestRepository = requestRepository;
         assetMapper = new AssetMapper();
         categoryMapper = new CategoryMapper();
+
     }
 
     @Override
@@ -91,10 +96,17 @@ public class AssetServiceImpl implements AssetService {
     public void deleteAssetById(Integer id) {
         logger.info("Attempting to delete Asset with id " + id + "...");
         Asset asset = assetRepository.getById(id);
+        List<Assignment> assignments = asset.getAssignments();
+        if (assignments != null) {
+            List<Request> requests = assignments.stream().map(Assignment::getRequest).collect(Collectors.toList());
+            requestRepository.deleteAll(requests);
+        }
         // 4 Assigned => can not delete
         if (asset.getState() == 4) {
             throw new BadRequestException("Asset is currently assigned to someone");
         }
+        assignmentRepository.deleteAll(assignments);
+
         logger.info("Successfully delete an Asset with id=" + asset.getId() + "!");
         assetRepository.delete(asset);
     }
@@ -102,7 +114,7 @@ public class AssetServiceImpl implements AssetService {
 
     @Override
     public List<AssetDTO> filterAssets(String category, Integer state, String keyword) {
-    	String currentUserLocation = getCurrentLoggedInUserLocation();
+        String currentUserLocation = getCurrentLoggedInUserLocation();
         List<Asset> assets = new ArrayList<>();
         if (state == null && category == null && keyword == null) {
             assets = assetRepository.findAllByOrderByAssetName();
@@ -129,11 +141,11 @@ public class AssetServiceImpl implements AssetService {
         }
         logger.info("Successfully got " + assets.size() + " Asset!");
         return assets.stream()
-        		.filter(asset -> asset.getLocation().equals(currentUserLocation))
-        		.map(assetMapper::fromEntity)
-        		.collect(Collectors.toList());
+                .filter(asset -> asset.getLocation().equals(currentUserLocation))
+                .map(assetMapper::fromEntity)
+                .collect(Collectors.toList());
     }
-    
+
     @Override
     public List<Object[]> getDataForReport() {
         List<Object[]> result = assetRepository.getDataForReport();
@@ -178,10 +190,11 @@ public class AssetServiceImpl implements AssetService {
 
     /**
      * get location of current logged in user for asset
+     *
      * @return String
      */
     private String getCurrentLoggedInUserLocation() {
-    	User user = userService.findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        User user = userService.findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         return user.getLocation();
     }
 
