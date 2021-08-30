@@ -35,7 +35,10 @@ public class Assignment {
 	
 	@Column(name = "note")
 	private String note;
-	
+
+	@OneToOne(mappedBy = "assignment")
+	private Request request;
+
 	public Assignment() {
 		super();
 	}
@@ -105,4 +108,11 @@ public class Assignment {
 		this.note = note;
 	}
 
+	public Request getRequest() {
+		return request;
+	}
+
+	public void setRequest(Request request) {
+		this.request = request;
+	}
 }

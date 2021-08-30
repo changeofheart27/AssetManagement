@@ -191,7 +191,6 @@ const ManageAssignment = ({responseAssigment, setChildPage, setCurrentPages, set
                         }
                         closeOnDocumentClick={false}
                         modal
-
                     >
                         {(close) => <ReturnPopup assigment={assigment}
                                                  setState={setState}

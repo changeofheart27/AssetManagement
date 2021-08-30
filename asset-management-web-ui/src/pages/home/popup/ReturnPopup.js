@@ -5,14 +5,16 @@ import axios from "axios";
 
 const ReturnPopup = (props) => {
         const rootAPI = process.env.REACT_APP_SERVER_URL;
-        let {close, assigment, setState, setDisable, disable} = props;
+        let {close, assigment, setState, setDisable} = props;
         useEffect(() => {
             setDisable(true);
         })
         setState(assigment.state)
         const onSubmit = (close) => {
             const data = {
-                assignmentDTO: assigment
+                assignmentDTO: {
+                    id: assigment.id
+                }
             }
             axios.post(rootAPI + `/request/create`, data
             )
