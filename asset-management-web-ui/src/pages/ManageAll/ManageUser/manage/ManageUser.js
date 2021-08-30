@@ -189,7 +189,7 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages, setResponseUse
                         className={"w-auto ms-5"}
                         onClick={() => {
                             setChildPage("Create New User");
-                            history.push("/createuser");
+                            history.push("/user/createuser");
                         }}
                     >
                         Create new user
@@ -261,7 +261,7 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages, setResponseUse
                                         <i className="bi bi-pen btn m-0 text-muted p-0 zoomin"
                                            onClick={() => {
                                                setChildPage("Edit User");
-                                               history.push(`/edituser/${user.id}`)
+                                               history.push(`/user/edituser/${user.id}`)
                                            }}
                                         />
                                     </td>

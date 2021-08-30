@@ -132,7 +132,7 @@ const ManageAssignment = ({responseAssigment, setChildPage, setCurrentPages, set
                         <i className="bi bi-pen btn m-0 text-muted p-0 zoomin"
                            onClick={() => {
                                setChildPage("Edit Assignment");
-                               history.push(`/editassignment/${assigment.id}`);
+                               history.push(`/assignment/editassignment/${assigment.id}`);
                            }
                            }
                         />
@@ -360,7 +360,7 @@ const ManageAssignment = ({responseAssigment, setChildPage, setCurrentPages, set
                         className={"w-auto"}
                         onClick={() => {
                             setChildPage("Create New Assignment");
-                            history.push("/createAssignment");
+                            history.push("/assignment/createAssignment");
                         }}
                     >
                         Create new Assignment

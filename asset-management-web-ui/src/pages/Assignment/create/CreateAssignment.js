@@ -89,161 +89,165 @@ const CreateAssignment = ({setResponseAssigment, setChildPage}) => {
         return !(singleUser.id === null || assetSelect.id === null);
     };
     return (
-        <div className={"container ps-5 d-block"}>
-            <Row>
-                <h1 className={"text-danger mb-5"}>Create New Assignment</h1>
-            </Row>
-            <Row className={"mt-5"}>
-                <Formik
-                    initialValues={initialValues}
-                    onSubmit={onSubmit}
-                    validationSchema={ValidateSchema}
-                >
-                    {({
-                          values,
-                          errors,
-                          touched,
-                          handleChange,
-                          handleBlur,
-                          handleSubmit,
-                          /* and other goodies */
-                      }) => (
-                        <Form onSubmit={handleSubmit} className={"col-7"}>
-                            <Row className={"mb-3"}>
-                                <InputGroup className={"pe-0"}>
-                                    <p className={"w-25"}>User</p>
-                                    <Form.Control
-                                        readOnly
-                                        className={"bg-white"}
-                                        aria-label="Username"
-                                        name={"userID"}
-                                        value={singleUser.username}
-                                        onBlur={handleBlur}
-                                    />
-                                    <Popup
-                                        trigger={
-                                            <InputGroup.Text className={"bg-white"}>
-                                                <i className="bi bi-search"/>
-                                            </InputGroup.Text>
-                                        }
-                                        position={"left top"}
-                                        contentStyle={{width: "750px", borderRadius: "10px"}}
-                                    >
-                                        {(close) => (
-                                            <SearchUserAntD
-                                                close={close}
-                                                setSingleUser={setSingleUser}
-                                            />
-                                        )}
-                                    </Popup>
-                                </InputGroup>
-                            </Row>
-                            <Row className="mb-3">
-                                <InputGroup className={"pe-0"}>
-                                    <p className={"w-25"}>Asset</p>
-                                    <Form.Control
-                                        readOnly
-                                        className={"bg-white"}
-                                        aria-label="Username"
-                                        name={"assetID"}
-                                        value={assetSelect.assetCode}
-                                        onBlur={handleBlur}
-                                    />
-                                    <Popup
-                                        trigger={
-                                            <InputGroup.Text className={"bg-white"}>
-                                                <i className="bi bi-search"/>
-                                            </InputGroup.Text>
-                                        }
-                                        position={"left top"}
-                                        contentStyle={{width: "750px", borderRadius: "10px"}}
-                                    >
-                                        {(close) => (
-                                            <SearchAssetAntD
-                                                close={close}
-                                                setAssetSelect={setAssetSelect}
-                                            />
-                                        )}
-                                    </Popup>
-                                </InputGroup>
-                            </Row>
-                            <Row className="mb-3">
-                                <InputGroup className={"pe-0"}>
-                                    <p className={"w-25"} id="basic-addon1">
-                                        Assigned Date
-                                    </p>
-                                    <Form.Control
-                                        // readOnly
-                                        aria-describedby="basic-addon1"
-                                        className={"bg-white"}
-                                        name={"assignedDate"}
-                                        value={values.assignedDate}
-                                        onChange={handleChange}
-                                    />
-                                    <Popup
-                                        trigger={
-                                            <InputGroup.Text className={"bg-white"}>
-                                                <i className="bi bi-calendar-event-fill"/>
-                                            </InputGroup.Text>
-                                        }
-                                        position={"left top"}
-                                        contentStyle={{width: "auto", padding: "0"}}
-                                    >
-                                        {(close) => (
-                                            <SelectDate
-                                                setSelectDate={setSelectDate}
-                                                values={values}
-                                            />
-                                        )}
-                                    </Popup>
-                                </InputGroup>
-                            </Row>
-                            <Row className="mb-3">
-                                <InputGroup className={"pe-0"}>
-                                    <p className={"w-25"}>Note</p>
-                                    <Form.Control
-                                        name={"note"}
-                                        aria-describedby="basic-addon1"
-                                        className={"w-75"}
-                                        style={{height: "5em"}}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        isValid={touched.note && !errors.note}
-                                        isInvalid={touched.note && errors.note}
-                                    />
-                                </InputGroup>
-                                {errors.note && touched.note ? (
-                                    <div className={"text-danger"} style={{paddingLeft: "25%"}}>
-                                        {errors.note}
-                                    </div>
-                                ) : null}
-                            </Row>
-                            <Row className={"justify-content-end"}>
-                                <Button
-                                    variant={"danger"}
-                                    type={"submit"}
-                                    style={{width: "100px"}}
-                                    disabled={!formValid()}
-                                >
-                                    SAVE
-                                </Button>
-                                <Button
-                                    variant={"secondary"}
-                                    onClick={() => {
-                                        setChildPage(null);
-                                        history.push("/assignment")
-                                    }}
-                                    className={"ms-5"}
-                                    style={{width: "100px"}}
-                                >
-                                    CANCEL
-                                </Button>
-                            </Row>
-                        </Form>
-                    )}
-                </Formik>
-            </Row>
-        </div>
+      <div className={"container ps-5 d-block"}>
+        <Row>
+          <h1 className={"text-danger mb-5"}>Create New Assignment</h1>
+        </Row>
+        <Row className={"mt-5"}>
+          <Formik
+            initialValues={initialValues}
+            onSubmit={onSubmit}
+            validationSchema={ValidateSchema}
+          >
+            {({
+              values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              /* and other goodies */
+            }) => (
+              <Form onSubmit={handleSubmit} className={"col-7"}>
+                <Row className={"mb-3"}>
+                  <InputGroup className={"pe-0"}>
+                    <p className={"w-25"}>User</p>
+                    <Form.Control
+                      readOnly
+                      className={"bg-white"}
+                      aria-label="Username"
+                      name={"userID"}
+                      value={singleUser.username}
+                      onBlur={handleBlur}
+                    />
+                    <Popup
+                      trigger={
+                        <InputGroup.Text className={"bg-white"}>
+                          <i className="bi bi-search" />
+                        </InputGroup.Text>
+                      }
+                      position={"left top"}
+                      contentStyle={{ width: "750px", borderRadius: "10px" }}
+                    >
+                      {(close) => (
+                        <SearchUserAntD
+                          close={close}
+                          setSingleUser={setSingleUser}
+                        />
+                      )}
+                    </Popup>
+                  </InputGroup>
+                </Row>
+                <Row className="mb-3">
+                  <InputGroup className={"pe-0"}>
+                    <p className={"w-25"}>Asset</p>
+                    <Form.Control
+                      readOnly
+                      className={"bg-white"}
+                      aria-label="Username"
+                      name={"assetID"}
+                      value={assetSelect.assetCode}
+                      onBlur={handleBlur}
+                    />
+                    <Popup
+                      trigger={
+                        <InputGroup.Text className={"bg-white"}>
+                          <i className="bi bi-search" />
+                        </InputGroup.Text>
+                      }
+                      position={"left top"}
+                      contentStyle={{ width: "750px", borderRadius: "10px" }}
+                    >
+                      {(close) => (
+                        <SearchAssetAntD
+                          close={close}
+                          setAssetSelect={setAssetSelect}
+                        />
+                      )}
+                    </Popup>
+                  </InputGroup>
+                </Row>
+                <Row className="mb-3">
+                  <InputGroup className={"pe-0"}>
+                    <p className={"w-25"} id="basic-addon1">
+                      Assigned Date
+                    </p>
+                    <Form.Control
+                      // readOnly
+                      aria-describedby="basic-addon1"
+                      className={"bg-white"}
+                      name={"assignedDate"}
+                      value={values.assignedDate}
+                      onChange={handleChange}
+                    />
+                    <Popup
+                      trigger={
+                        <InputGroup.Text className={"bg-white"}>
+                          <i className="bi bi-calendar-event-fill" />
+                        </InputGroup.Text>
+                      }
+                      position={"left top"}
+                      closeOnDocumentClick={true}
+                      contentStyle={{ width: "auto", padding: "0" }}
+                    >
+                      {(close) => (
+                        <SelectDate
+                          setSelectDate={setSelectDate}
+                          values={values}
+                        />
+                      )}
+                    </Popup>
+                  </InputGroup>
+                </Row>
+                <Row className="mb-3">
+                  <InputGroup className={"pe-0"}>
+                    <p className={"w-25"}>Note</p>
+                    <Form.Control
+                      name={"note"}
+                      aria-describedby="basic-addon1"
+                      className={"w-75"}
+                      style={{ height: "5em" }}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      isValid={touched.note && !errors.note}
+                      isInvalid={touched.note && errors.note}
+                    />
+                  </InputGroup>
+                  {errors.note && touched.note ? (
+                    <div
+                      className={"text-danger"}
+                      style={{ paddingLeft: "25%" }}
+                    >
+                      {errors.note}
+                    </div>
+                  ) : null}
+                </Row>
+                <Row className={"justify-content-end"}>
+                  <Button
+                    variant={"danger"}
+                    type={"submit"}
+                    style={{ width: "100px" }}
+                    disabled={!formValid()}
+                  >
+                    SAVE
+                  </Button>
+                  <Button
+                    variant={"secondary"}
+                    onClick={() => {
+                      setChildPage(null);
+                      history.push("/assignment");
+                    }}
+                    className={"ms-5"}
+                    style={{ width: "100px" }}
+                  >
+                    CANCEL
+                  </Button>
+                </Row>
+              </Form>
+            )}
+          </Formik>
+        </Row>
+      </div>
     );
 };
 
