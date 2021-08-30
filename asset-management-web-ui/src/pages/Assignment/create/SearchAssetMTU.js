@@ -96,7 +96,7 @@ const SearchAssetAntD = props => {
                 setSearchTerm(evt.target.value);
               }}
               maxLength={255}
-            ></FormControl>
+            />
             <Button variant={"outline-secondary"} className={"me-5"}>
               <i className="bi bi-search" />
             </Button>
@@ -117,7 +117,7 @@ const SearchAssetAntD = props => {
             className={"w-25 mx-5"}
             onClick={() => close()}
           >
-            Save
+            SAVE
           </Button>
           <Button
             variant={"secondary"}
@@ -127,7 +127,7 @@ const SearchAssetAntD = props => {
               close();
             }}
           >
-            Cancel
+            CANCEL
           </Button>
         </Row>
       </div>

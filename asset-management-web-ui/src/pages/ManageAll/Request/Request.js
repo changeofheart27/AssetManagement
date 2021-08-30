@@ -211,7 +211,7 @@ const Request = ({setCurrentPages, responseRequest}) => {
                         <th className={"border-bottom"}
                             className={getClassNamesFor("assignedDate")}
                             onClick={() => requestSort("assignedDate")}
-                        >Assign Date
+                        >Assigned Date
                         </th>
                         <th className={"border-bottom"}
                             className={getClassNamesFor("accepted_by")}
@@ -221,7 +221,7 @@ const Request = ({setCurrentPages, responseRequest}) => {
                         <th className={"border-bottom"}
                             className={getClassNamesFor("returnedDate")}
                             onClick={() => requestSort("returnedDate")}
-                        >Return Date
+                        >Returned Date
                         </th>
                         <th className={"border-bottom"}
                             className={getClassNamesFor("state")}
@@ -237,7 +237,7 @@ const Request = ({setCurrentPages, responseRequest}) => {
                             <td>{request.assignmentDTO.assetDTO.assetCode}</td>
                             <td>{request.assignmentDTO.assetDTO.assetName}</td>
                             <td>{request.requestBy}</td>
-                            <td>{dateFormat(request.assignmentDTO.assignedDate, "dd/mm/yy")}</td>
+                            <td>{dateFormat(request.assignmentDTO.assignedDate, "dd/mm/yyyy")}</td>
                             <td>{request.acceptedBy}</td>
                             {request.returnedDate ? <td>{moment(request.returnedDate).format("DD/MM/YYYY")}</td> :
                                 <td/>}

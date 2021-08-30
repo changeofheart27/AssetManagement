@@ -48,10 +48,10 @@ const ReturnPopup = (props) => {
             <Row style={{padding: '10px 20px'}}>
                 <p>Do you want to create a returning request for this asset?</p>
                 <ButtonGroup className={"w-50"}>
-                    <Button variant={"danger"} className={"px-5"} onClick={() =>{onSubmit(close)}}>Yes</Button>
+                    <Button variant={"danger"} className={"px-5"} onClick={() =>{onSubmit(close)}}>YES</Button>
                 </ButtonGroup>
                 <ButtonGroup className={"w-50"}>
-                    <Button variant={"secondary"} className={"px-5"} onClick={() =>{setDisable(false); close()}}>No</Button>
+                    <Button variant={"secondary"} className={"px-5"} onClick={() =>{setDisable(false); close()}}>NO</Button>
                 </ButtonGroup>
             </Row>
         </div>

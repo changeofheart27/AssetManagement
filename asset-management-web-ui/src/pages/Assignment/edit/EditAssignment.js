@@ -11,10 +11,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import {Formik} from "formik";
 import axios from "axios";
 import {useHistory, useParams} from "react-router-dom";
-import * as Yup from "yup";
+
 import Popup from "reactjs-popup";
-import SearchUser from "../create/SearchUser";
-import SearchAsset from "../create/SearchAsset";
 import SearchAssetAntD from "../create/SearchAssetMTU";
 import SearchUserAntD from "../create/SearchUserAntD";
 
@@ -112,111 +110,110 @@ const EditAssignment = ({setResponseAssigment, setChildPage}) => {
                           handleSubmit,
                           isSubmitting,
                       }) => (
-                        <Form onSubmit={handleSubmit}>
-                            <Row className={"mb-3"}>
-                                <InputGroup>
-                                    <p className={"w-25"}>User</p>
-                                    <Form.Control
-                                        disabled
-                                        className={"bg-white"}
-                                        aria-label="Username"
-                                        name={"userID"}
-                                        value={values.userDTO.username}
-                                        onBlur={handleBlur}
-                                    />
-                                    <Popup
-                                        trigger={
-                                            <InputGroup.Text className={"bg-white"}>
-                                                <i className="bi bi-search"/>
-                                            </InputGroup.Text>
-                                        }
-                                        position={"left top"}
-                                        contentStyle={{width: "750px"}}
-                                        modal
-                                    >
-                                        {(close) => (
-                                            <SearchUserAntD
-                                                close={close}
-                                                setSingleUser={setSingleUser}
-                                            />
-                                        )}
-                                    </Popup>
-                                </InputGroup>
-                            </Row>
-                            <Row className="mb-3">
-                                <InputGroup>
-                                    <p className={"w-25"}>Asset</p>
-                                    <Form.Control
-                                        disabled
-                                        className={"bg-white"}
-                                        aria-label="Assetname"
-                                        name={"assetID"}
-                                        value={values.assetDTO.assetName}
-                                        onBlur={handleBlur}
-                                    />
-                                    <Popup
-                                        trigger={
-                                            <InputGroup.Text className={"bg-white"}>
-                                                <i className="bi bi-search"/>
-                                            </InputGroup.Text>
-                                        }
-                                        position={"left top"}
-                                        contentStyle={{width: "750px"}}
-                                        modal
-                                    >
-                                        {(close) => (
-                                            <SearchAssetAntD
-                                                close={close}
-                                                setAssetSelect={setAssetSelect}
-                                            />
-                                        )}
-                                    </Popup>
-                                </InputGroup>
-                            </Row>
-                            <Row className="mb-3">
-                                <p className={"w-25"} id="basic-addon1">
+                        <Form onSubmit={handleSubmit} className={"col-7"}>
+                            <InputGroup className={"pe-0 mb-3"}>
+                                <p className={"w-25"}>User</p>
+                                <Form.Control
+                                    disabled
+                                    className={"bg-white rounded-start"}
+                                    aria-label="Username"
+                                    name={"userID"}
+                                    value={values.userDTO.username}
+                                    onBlur={handleBlur}
+                                />
+                                <Popup
+                                    trigger={
+                                        <InputGroup.Text className={"bg-white"}>
+                                            <i className="bi bi-search"/>
+                                        </InputGroup.Text>
+                                    }
+                                    position={"left top"}
+                                    contentStyle={{width: "750px"}}
+                                    modal
+                                >
+                                    {(close) => (
+                                        <SearchUserAntD
+                                            close={close}
+                                            setSingleUser={setSingleUser}
+                                        />
+                                    )}
+                                </Popup>
+                            </InputGroup>
+
+                            <InputGroup className={"pe-0 mb-3"}>
+                                <p className={"w-25"}>Asset</p>
+                                <Form.Control
+                                    disabled
+                                    className={"bg-white rounded-start"}
+                                    aria-label="Assetname"
+                                    name={"assetID"}
+                                    value={values.assetDTO.assetName}
+                                    onBlur={handleBlur}
+                                />
+                                <Popup
+                                    trigger={
+                                        <InputGroup.Text className={"bg-white"}>
+                                            <i className="bi bi-search"/>
+                                        </InputGroup.Text>
+                                    }
+                                    position={"left top"}
+                                    contentStyle={{width: "750px"}}
+                                    modal
+                                >
+                                    {(close) => (
+                                        <SearchAssetAntD
+                                            close={close}
+                                            setAssetSelect={setAssetSelect}
+                                        />
+                                    )}
+                                </Popup>
+                            </InputGroup>
+
+                            <InputGroup className={" pe-0 mb-3"}>
+                                <p className={"w-25"}>
                                     Assigned Date
                                 </p>
-                                <FormControl
+                                <Form.Control
                                     type={"date"}
-                                    aria-describedby="basic-addon1"
-                                    className={"w-75"}
+                                    className={"w-75 rounded-start"}
                                     name={"assignedDate"}
                                     onChange={handleChange}
                                     value={values.assignedDate}
                                     onBlur={handleBlur}
                                 />
-                            </Row>
-                            <Row className="mb-3">
+                            </InputGroup>
+                            <InputGroup className="mb-3">
                                 <p className={"w-25"}>Note</p>
                                 <FormControl
                                     name={"note"}
-                                    aria-describedby="basic-addon1"
-                                    className={"w-75"}
+                                    className={"w-75 rounded-start"}
                                     value={values.note}
                                     onBlur={handleBlur}
                                     style={{height: "5em"}}
                                     onChange={handleChange}
                                 />
+                            </InputGroup>
+                            <Row className={"justify-content-end"} style={{paddingRight:"12px"}}>
+                                <Button
+                                    variant={"danger"}
+                                    type={"submit"}
+                                    style={{width: "100px"}}
+                                >
+                                    SAVE
+                                </Button>
+                                <Button
+                                    variant={"secondary"}
+                                    onClick={() => {
+                                        setChildPage(null);
+                                        history.push("/assignment")
+                                    }}
+                                    className={"ms-5"}
+                                    style={{width: "100px"}}
+                                >
+                                    CANCEL
+                                </Button>
+
                             </Row>
-                            <Button
-                                variant={"secondary"}
-                                onClick={() => {
-                                    setChildPage(null);
-                                    history.push("/assignment")
-                                }}
-                                className={"ms-5"}
-                                style={{float: "right"}}
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                variant={"danger"}
-                                type={"submit"}
-                                style={{float: "right"}}
-                            >
-                                Save
-                            </Button>
                         </Form>
                     )}
                 </Formik>

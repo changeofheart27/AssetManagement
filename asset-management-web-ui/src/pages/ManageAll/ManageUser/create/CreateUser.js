@@ -115,7 +115,7 @@ const CreateUser = ({setResponseUser, setChildPage}) => {
             <Row>
                 <h1 className={"text-danger mb-5"}>Create New User</h1>
             </Row>
-            <Row className={"mt-5"}>
+            <Row className={"mt-5 justify-content-start"}>
                 <Formik
                     initialValues={initialValues}
                     onSubmit={onSubmit}
@@ -131,7 +131,7 @@ const CreateUser = ({setResponseUser, setChildPage}) => {
                           isSubmitting,
                           /* and other goodies */
                       }) => (
-                        <Form onSubmit={handleSubmit}>
+                        <Form onSubmit={handleSubmit} className={"col-7"}>
                             <Row className={"mb-3"}>
                                 <p className={"w-25"}>First Name</p>
                                 <FormControl
@@ -267,26 +267,29 @@ const CreateUser = ({setResponseUser, setChildPage}) => {
                                     </div>
                                 ) : null}
                             </Row>
-                            <Button
-                                variant={"secondary"}
-                                onClick={() => {
-                                    setChildPage(null);
-                                    history.push("/user");
-                                }}
-                                type={"submit"}
-                                className={"ms-5"}
-                                style={{float: "right"}}
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                variant={"danger"}
-                                type={"submit"}
-                                style={{float: "right"}}
-                                disabled={formValid(values)}
-                            >
-                                Save
-                            </Button>
+                            <Row className={"justify-content-end"}>
+                                <Button
+                                    variant={"danger"}
+                                    type={"submit"}
+                                    style={{width: "100px"}}
+                                    disabled={formValid(values)}
+                                >
+                                    SAVE
+                                </Button>
+                                <Button
+                                    variant={"secondary"}
+                                    onClick={() => {
+                                        setChildPage(null);
+                                        history.push("/user");
+                                    }}
+                                    type={"submit"}
+                                    className={"ms-5"}
+                                    style={{width: "100px"}}
+                                >
+                                    CANCEL
+                                </Button>
+
+                            </Row>
                         </Form>
                     )}
                 </Formik>

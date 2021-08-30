@@ -102,7 +102,7 @@ const EditAsset = ({setResponseDataAsset, setChildPage}) => {
                           isSubmitting,
                           /* and other goodies */
                       }) => (
-                        <Form onSubmit={handleSubmit}>
+                        <Form onSubmit={handleSubmit} className={"col-7"}>
                             <Row className={"mb-3"}>
                                 <p className={"w-25"}>Name</p>
                                 <FormControl
@@ -217,24 +217,27 @@ const EditAsset = ({setResponseDataAsset, setChildPage}) => {
                                     />
                                 </div>
                             </Row>
-                            <Button
-                                variant={"secondary"}
-                                onClick={() => {
-                                    setChildPage(null);
-                                    history.push("/asset")
-                                }}
-                                className={"ms-5"}
-                                style={{float: "right"}}
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                variant={"danger"}
-                                type={"submit"}
-                                style={{float: "right"}}
-                            >
-                                Save
-                            </Button>
+                            <Row className={"justify-content-end"}>
+                                <Button
+                                    variant={"danger"}
+                                    type={"submit"}
+                                    style={{width: "100px"}}
+                                >
+                                    SAVE
+                                </Button>
+                                <Button
+                                    variant={"secondary"}
+                                    onClick={() => {
+                                        setChildPage(null);
+                                        history.push("/asset")
+                                    }}
+                                    className={"ms-5"}
+                                    style={{width: "100px"}}
+                                >
+                                    CANCEL
+                                </Button>
+
+                            </Row>
                         </Form>
                     )}
                 </Formik>

@@ -101,7 +101,10 @@ const CreateAsset = ({setResponseDataAsset, setChildPage}) => {
                           isSubmitting,
                           /* and other goodies */
                       }) => (
-                        <Form onSubmit={handleSubmit} onKeyDown={onKeyDown}>
+                        <Form onSubmit={handleSubmit}
+                              onKeyDown={onKeyDown}
+                              className={"col-7"}
+                        >
                             <Row className={"mb-3"}>
                                 <p className={"w-25"}>Name</p>
                                 <Form.Control
@@ -128,7 +131,7 @@ const CreateAsset = ({setResponseDataAsset, setChildPage}) => {
                                 <Form.Select
                                     name={"category"}
                                     size="sm"
-                                    style={{width: '70%'}}
+                                    style={{width: '68%'}}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     isValid={touched.category && !errors.category}
@@ -139,7 +142,7 @@ const CreateAsset = ({setResponseDataAsset, setChildPage}) => {
                                         <option value={category.id}>{category.name}</option>
                                     ))}
                                 </Form.Select>
-                                <Button style={{width: '5%'}}
+                                <Button style={{width:"7%"}}
                                         variant="outline-secondary"
                                         onClick={() => history.push('/createcategory')}
                                 >
@@ -217,25 +220,28 @@ const CreateAsset = ({setResponseDataAsset, setChildPage}) => {
                                     ) : null}
                                 </div>
                             </Row>
-                            <Button
-                                variant={"secondary"}
-                                onClick={() => {
-                                    setChildPage(null);
-                                    history.push("/asset")
-                                }}
-                                className={"ms-5"}
-                                style={{float: "right"}}
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                variant={"danger"}
-                                type={"submit"}
-                                style={{float: "right"}}
-                                disabled={formValid(values)}
-                            >
-                                Save
-                            </Button>
+                            <Row className={"justify-content-end"}>
+                                <Button
+                                    variant={"danger"}
+                                    type={"submit"}
+                                    style={{width:"100px"}}
+                                    disabled={formValid(values)}
+                                >
+                                    SAVE
+                                </Button>
+                                <Button
+                                    variant={"secondary"}
+                                    onClick={() => {
+                                        setChildPage(null);
+                                        history.push("/asset")
+                                    }}
+                                    className={"ms-5"}
+                                    style={{width:"100px"}}
+                                >
+                                    CANCEL
+                                </Button>
+
+                            </Row>
                         </Form>
                     )}
                 </Formik>

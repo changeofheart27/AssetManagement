@@ -20,10 +20,10 @@ const DeleteRequest = props => {
             <Row style={{padding: '10px 20px'}}>
                 <p>Do you want to cancel this this returning request?</p>
                 <ButtonGroup className={"w-50"}>
-                    <Button variant={"danger"} className={"px-5"} onClick={() =>{onSubmit(close)}}>Decline</Button>
+                    <Button variant={"danger"} className={""} onClick={() =>{onSubmit(close)}}>DECLINE</Button>
                 </ButtonGroup>
                 <ButtonGroup className={"w-50"}>
-                    <Button variant={"secondary"} className={"px-5"} onClick={() =>close()}>No</Button>
+                    <Button variant={"secondary"} className={""} onClick={() =>close()}>NO</Button>
                 </ButtonGroup>
             </Row>
         </div>

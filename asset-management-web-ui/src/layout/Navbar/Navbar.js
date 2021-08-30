@@ -165,7 +165,9 @@ const Navbar = ({setCurrentPage, setChildPage}) => {
                         <Route path={"/user"}>
                             <ManageUser setChildPage={setChildPage}
                                         setCurrentPages={setCurrentPage}
-                                        responseUser={responseUser}/>
+                                        responseUser={responseUser}
+                                        setResponseUser={setResponseUser}
+                            />
                         </Route>
                         <Route path={"/home"}>
                             <Home/>
@@ -180,7 +182,11 @@ const Navbar = ({setCurrentPage, setChildPage}) => {
                             <EditUser setChildPage={setChildPage} setResponseUser={setResponseUser}/>
                         </Route>
                         <Route path={"/asset"}>
-                            <ManageAsset setCurrentPages={setCurrentPage} setChildPage={setChildPage} responseDataAsset={responseDataAsset}/>
+                            <ManageAsset setCurrentPages={setCurrentPage}
+                                         setChildPage={setChildPage}
+                                         responseDataAsset={responseDataAsset}
+                                         setResponseDataAsset={setResponseDataAsset}
+                            />
                         </Route>
                         <Route path={"/createasset"}>
                             <CreateAsset setChildPage={setChildPage} setResponseDataAsset={setResponseDataAsset}/>
@@ -192,7 +198,10 @@ const Navbar = ({setCurrentPage, setChildPage}) => {
                             <CreateCategory/>
                         </Route>
                         <Route path={"/assignment"}>
-                            <ManageAssignment  setCurrentPages={setCurrentPage} setChildPage={setChildPage} responseAssigment={responseAssigment}/>
+                            <ManageAssignment  setCurrentPages={setCurrentPage}
+                                               setChildPage={setChildPage}
+                                               setResponseAssignment={setResponseAssigment}
+                                               responseAssigment={responseAssigment}/>
                         </Route>
                         <Route path={"/createassignment"}>
                             <CreateAssignment setChildPage={setChildPage} setResponseAssigment={setResponseAssigment}/>

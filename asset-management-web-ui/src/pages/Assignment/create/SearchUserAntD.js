@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import {Button, Form, InputGroup, Row} from "react-bootstrap";
 import {Divider, Table} from "antd";
-
 const rootAPI = process.env.REACT_APP_SERVER_URL;
 const columns = [
     {
@@ -37,7 +36,6 @@ function capitalizeFirstLetter(string) {
 const SearchUserAntD = (props) => {
     let {setSingleUser, close} = props;
     const [searchTerm, setSearchTerm] = useState("");
-    const [sortConfig, setSortConfig] = useState(null);
     const [user, setUser] = useState([{
         username: null,
         id: null,
@@ -114,7 +112,7 @@ const SearchUserAntD = (props) => {
             className={"w-25 mx-5"}
             onClick={() => close()}
           >
-            Save
+            SAVE
           </Button>
           <Button
             variant={"secondary"}
@@ -124,7 +122,7 @@ const SearchUserAntD = (props) => {
               close();
             }}
           >
-            Cancel
+            CANCEL
           </Button>
         </Row>
       </div>

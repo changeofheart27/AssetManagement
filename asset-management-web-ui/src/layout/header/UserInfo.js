@@ -2,21 +2,24 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './UserInfo.css'
 
 import * as Yup from "yup";
-
-import {Button, Form, FormControl, Row} from "react-bootstrap";
-import { useState} from "react";
+import {Button, Form, FormControl, InputGroup, Row} from "react-bootstrap";
+import {useState} from "react";
 import {useHistory} from 'react-router-dom';
-
 import {ButtonGroup} from "react-bootstrap";
 import {Formik} from 'formik';
 import React from 'react';
 import axios from 'axios';
 import {toast} from 'react-toastify';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 
 const UserInfo = ({props, loginSuccess, setResponseUser}) => {
     const username = localStorage.getItem('username')
     const token = localStorage.getItem('jwttoken')
-
+    const [showPassword, setShowPassword] = useState(false);
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword)
+    }
     const headers = {
         'Authorization': token
 
@@ -35,7 +38,7 @@ const UserInfo = ({props, loginSuccess, setResponseUser}) => {
             .required('Required')
             .typeError('Current Password is required'),
         newPassword: Yup.string()
-            .min(8,"Password at least have 8 character")
+            .min(8, "Password at least have 8 character")
             .max(500)
             .matches(/^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, "Password requires at least 8 characters, one number, one special character (e.g.!@#$%)")
             .required('Required')
@@ -101,56 +104,66 @@ const UserInfo = ({props, loginSuccess, setResponseUser}) => {
                       isSubmitting,
 
                   }) => (
-                    <Form onSubmit={handleSubmit}>
-                        <Row className={"mb-3"}>
-                            <p className={"w-25"}>Old Password</p>
-                            <FormControl
+                    <Form onSubmit={handleSubmit} className={"w-75"}>
+                        <InputGroup className={"pe-0 mb-3"}>
+                            <p className={"w-25 m-0"} style={{paddingTop: "1%"}}>Old Password</p>
+                            <Form.Control
                                 aria-label="Old Password"
-                                aria-describedby="basic-addon1"
-                                className={"w-50"}
                                 value={values.oldPassword}
                                 name={"oldPassword"}
-                                type={"password"}
+                                type={showPassword ? "text" : "password"}
+                                className={"border-end-light rounded-start"}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 isInvalid={touched.oldPassword && errors.oldPassword}
                             />
-                            {errors.oldPassword && touched.oldPassword ? (
-                                <div className={"text-danger"} style={{paddingLeft: "25%"}}>{errors.oldPassword}</div>
-                            ) : null}
-                        </Row>
-                        <Row className={"mb-3"}>
-                            <p className={"w-25"}>New Password</p>
+                            <InputGroup.Text variant={"outline-secondary"}
+                                             className={"border-start-0 bg-white"}
+                            >
+                                {showPassword ? <VisibilityIcon onClick={togglePasswordVisibility}/>
+                                    : <VisibilityOffIcon onClick={togglePasswordVisibility}/>}
+                            </InputGroup.Text>
+                        </InputGroup>
+                        {errors.oldPassword && touched.oldPassword ? (
+                            <div className={"text-danger mb-3"} style={{paddingLeft: "18%"}}>{errors.oldPassword}</div>
+                        ) : null}
+                        <InputGroup className={"pe-0 mb-3"}>
+                            <p className={"w-25 m-0"} style={{paddingTop: "1%"}}>New Password</p>
                             <Form.Control
                                 aria-label="New Password"
                                 aria-describedby="basic-addon1"
-                                className={"w-50"}
+                                className={"border-end-light rounded-start"}
                                 value={values.newPassword}
                                 name={"newPassword"}
-                                type={"password"}
+                                type={showPassword ? "text" : "password"}
                                 onBlur={handleBlur}
                                 onChange={handleChange}
                                 isInvalid={touched.newPassword && errors.newPassword}
                             />
-                            {errors.newPassword && touched.newPassword ? (
-                                <div className={"text-danger"} style={{paddingLeft: "25%"}}>{errors.newPassword}</div>
-                            ) : null}
-                        </Row>
-
-                        <Row className={"justify-content-center"}>
-                            <ButtonGroup className={"w-25 p-0 me-1"}>
-                                <Button variant={"danger"}
-                                        type={"submit"}
-                                        disabled={isSubmitting} on>
-                                    Save
-                                </Button>
-                            </ButtonGroup>
-                            <ButtonGroup className={"w-25 p-0"}>
-                                <Button variant={"secondary"}
-                                        onClick={() => history.push('/home')} type={"submit"}>
-                                    Cancel
-                                </Button>
-                            </ButtonGroup>
+                            <InputGroup.Text variant={"outline-secondary"}
+                                             className={"border-start-0 bg-white"}
+                            >
+                                {showPassword ? <VisibilityIcon onClick={togglePasswordVisibility}/>
+                                    : <VisibilityOffIcon onClick={togglePasswordVisibility}/>}
+                            </InputGroup.Text>
+                        </InputGroup>
+                        {errors.newPassword && touched.newPassword ? (
+                            <div className={"text-danger mb-3"} style={{paddingLeft: "18%"}}>{errors.newPassword}</div>
+                        ) : null}
+                        <Row className={"justify-content-end"} style={{paddingRight:"12px"}}>
+                            <Button variant={"danger"}
+                                    type={"submit"}
+                                    disabled={isSubmitting}
+                                    style={{width:"100px"}}
+                                    className={"me-5"}
+                            >
+                                SAVE
+                            </Button>
+                            <Button variant={"secondary"}
+                                    style={{width:"100px"}}
+                                    onClick={() => history.push('/home')} type={"submit"}>
+                                CANCEL
+                            </Button>
                         </Row>
 
                     </Form>
