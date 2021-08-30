@@ -108,9 +108,9 @@ const CreateAssignment = ({setResponseAssigment, setChildPage}) => {
                           handleSubmit,
                           /* and other goodies */
                       }) => (
-                        <Form onSubmit={handleSubmit}>
+                        <Form onSubmit={handleSubmit} className={"col-7"}>
                             <Row className={"mb-3"}>
-                                <InputGroup>
+                                <InputGroup className={"pe-0"}>
                                     <p className={"w-25"}>User</p>
                                     <Form.Control
                                         readOnly
@@ -139,7 +139,7 @@ const CreateAssignment = ({setResponseAssigment, setChildPage}) => {
                                 </InputGroup>
                             </Row>
                             <Row className="mb-3">
-                                <InputGroup>
+                                <InputGroup className={"pe-0"}>
                                     <p className={"w-25"}>Asset</p>
                                     <Form.Control
                                         readOnly
@@ -168,7 +168,7 @@ const CreateAssignment = ({setResponseAssigment, setChildPage}) => {
                                 </InputGroup>
                             </Row>
                             <Row className="mb-3">
-                                <InputGroup>
+                                <InputGroup className={"pe-0"}>
                                     <p className={"w-25"} id="basic-addon1">
                                         Assigned Date
                                     </p>
@@ -199,7 +199,7 @@ const CreateAssignment = ({setResponseAssigment, setChildPage}) => {
                                 </InputGroup>
                             </Row>
                             <Row className="mb-3">
-                                <InputGroup>
+                                <InputGroup className={"pe-0"}>
                                     <p className={"w-25"}>Note</p>
                                     <Form.Control
                                         name={"note"}
@@ -218,25 +218,27 @@ const CreateAssignment = ({setResponseAssigment, setChildPage}) => {
                                     </div>
                                 ) : null}
                             </Row>
-                            <Button
-                                variant={"secondary"}
-                                onClick={() => {
-                                    setChildPage(null);
-                                    history.push("/assignment")
-                                }}
-                                className={"ms-5"}
-                                style={{float: "right"}}
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                variant={"danger"}
-                                type={"submit"}
-                                style={{float: "right"}}
-                                disabled={!formValid()}
-                            >
-                                Save
-                            </Button>
+                            <Row className={"justify-content-end"}>
+                                <Button
+                                    variant={"danger"}
+                                    type={"submit"}
+                                    style={{width: "100px"}}
+                                    disabled={!formValid()}
+                                >
+                                    SAVE
+                                </Button>
+                                <Button
+                                    variant={"secondary"}
+                                    onClick={() => {
+                                        setChildPage(null);
+                                        history.push("/assignment")
+                                    }}
+                                    className={"ms-5"}
+                                    style={{width: "100px"}}
+                                >
+                                    CANCEL
+                                </Button>
+                            </Row>
                         </Form>
                     )}
                 </Formik>

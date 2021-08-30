@@ -152,7 +152,7 @@ const EditUser = ({setResponseUser, setChildPage}) => {
             <Row>
                 <h1 className={"text-danger mb-5"}>Edit User</h1>
             </Row>
-            <Row className={"mt-5"}>
+            <Row className={"mt-5 justify-content-start"}>
                 <Formik
                     initialValues={initialValues}
                     onSubmit={onSubmit}
@@ -169,14 +169,17 @@ const EditUser = ({setResponseUser, setChildPage}) => {
                           isSubmitting,
                           /* and other goodies */
                       }) => (
-                        <Form onSubmit={handleSubmit} onKeyDown={onKeyDown}>
+                        <Form onSubmit={handleSubmit}
+                              onKeyDown={onKeyDown}
+                              className={"col-7"}
+                        >
                             <Row className={"mb-3"}>
                                 <p className={"w-25"}>First Name</p>
                                 <FormControl
                                     readOnly
                                     aria-label="Username"
                                     aria-describedby="basic-addon1"
-                                    className={"w-75 ml-custom"}
+                                    className={"w-75"}
                                     name="firstName"
                                     style={{backgroundColor: "#eff1f5"}}
                                     value={values.firstName}
@@ -201,7 +204,7 @@ const EditUser = ({setResponseUser, setChildPage}) => {
                                     readOnly
                                     aria-label="Username"
                                     aria-describedby="basic-addon1"
-                                    className={"w-75 ml-custom"}
+                                    className={"w-75 "}
                                     name="lastName"
                                     style={{backgroundColor: "#eff1f5"}}
                                     value={values.lastName}
@@ -227,7 +230,7 @@ const EditUser = ({setResponseUser, setChildPage}) => {
                                     type={"date"}
                                     aria-describedby="basic-addon1"
                                     name={"dob"}
-                                    className={"w-75 ml-custom"}
+                                    className={"w-75"}
                                     onBlur={handleBlur}
                                     value={values.dob}
                                     onChange={handleChange}
@@ -252,7 +255,7 @@ const EditUser = ({setResponseUser, setChildPage}) => {
                                         inline
                                         type={"radio"}
                                         label={"Female"}
-                                        className={"w-75 ml-custom"}
+                                        className={"w-75"}
                                         name={"gender"}
                                         checked={gender === "Female"}
                                         onChange={() => setGender("Female")}
@@ -275,7 +278,7 @@ const EditUser = ({setResponseUser, setChildPage}) => {
                                 <FormControl
                                     type={"date"}
                                     aria-describedby="basic-addon1"
-                                    className={"w-75 ml-custom"}
+                                    className={"w-75"}
                                     name={"joinedDate"}
                                     value={values.joinedDate}
                                     onChange={handleChange}
@@ -296,7 +299,7 @@ const EditUser = ({setResponseUser, setChildPage}) => {
                                 <p className={"col-3"}>Type</p>
                                 <Form.Select
                                     size="sm"
-                                    className={"w-75 ml-custom"}
+                                    className={"w-75"}
                                     name={"authority"}
                                     value={values.authority}
                                     onChange={handleChange}
@@ -316,25 +319,28 @@ const EditUser = ({setResponseUser, setChildPage}) => {
                                     </div>
                                 ) : null}
                             </Row>
-                            <Button
-                                variant={"secondary"}
-                                type={"submit"}
-                                className={"ms-5"}
-                                style={{float: "right"}}
-                                onClick={() => {
-                                    setChildPage(null);
-                                    history.push("/user")
-                                }}
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                variant={"danger"}
-                                type="submit"
-                                style={{float: "right"}}
-                            >
-                                Save
-                            </Button>
+                            <Row className={"justify-content-end"}>
+                                <Button
+                                    variant={"danger"}
+                                    type="submit"
+                                    style={{width: "100px"}}
+                                >
+                                    SAVE
+                                </Button>
+                                <Button
+                                    variant={"secondary"}
+                                    type={"submit"}
+                                    className={"ms-5"}
+                                    style={{width: "100px"}}
+                                    onClick={() => {
+                                        setChildPage(null);
+                                        history.push("/user")
+                                    }}
+                                >
+                                    CANCEL
+                                </Button>
+
+                            </Row>
                         </Form>
                     )}
                 </Formik>

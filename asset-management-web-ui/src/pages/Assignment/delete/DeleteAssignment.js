@@ -26,13 +26,13 @@ const DeleteAssignment = props => {
                 <ButtonGroup className={"w-50"}>
                     <Button variant={"danger"} className={"px-5"} onClick={() => {
                         onSubmit(close)
-                    }}>Delete</Button>
+                    }}>DELETE</Button>
                 </ButtonGroup>
                 <ButtonGroup className={"w-50"}>
                     <Button variant={"secondary"} className={"px-5"} onClick={() => {
                         setDisable(false);
                         close()
-                    }}>Cancel</Button>
+                    }}>CANCEL</Button>
                 </ButtonGroup>
             </Row>
         </div>

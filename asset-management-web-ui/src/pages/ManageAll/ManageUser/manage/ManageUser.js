@@ -15,7 +15,7 @@ import dateFormat from 'dateformat';
 import '../../../../style/style.css'
 import ChangeStatusFail from "../changeStatus/ChangeStatusFail";
 
-const ManageUser = ({responseUser, setChildPage, setCurrentPages}) => {
+const ManageUser = ({responseUser, setChildPage, setCurrentPages, setResponseUser}) => {
 
     const token = localStorage.getItem('jwttoken')
     const headers = {
@@ -52,11 +52,12 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages}) => {
                 setRefresh(true);
                 setCurrentPages("Manage User")
                 let result = response.data.map(user => user.id);
-                if (result.includes(responseUser.id)) {
+                if (responseUser && result.includes(responseUser.id)) {
                     const index = result.indexOf(responseUser.id);
-                    response.data.splice(index, 1);
-                    response.data.unshift(responseUser);
+                    const newUser = response.data.splice(index, 1)[0];
+                    response.data.unshift(newUser);
                     setList(response.data);
+                    setResponseUser(null);
                 } else {
                     setList(response.data);
                 }
@@ -180,7 +181,7 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages}) => {
                         variant={"danger"}
                         className={"w-auto ms-5"}
                         onClick={() => {
-                            setChildPage("Create new user");
+                            setChildPage("Create New User");
                             history.push("/createuser");
                         }}
                     >

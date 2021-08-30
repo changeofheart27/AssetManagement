@@ -24,10 +24,10 @@ const CompleteRequest = props => {
             <Row style={{padding: '10px 20px'}}>
                 <p>Do you want to mark this returning request as 'Completed'?</p>
                 <ButtonGroup className={"w-50"}>
-                    <Button variant={"danger"} className={"px-5"} onClick={() =>{onSubmit(close)}}>Accept</Button>
+                    <Button variant={"danger"} className={" w-50"} onClick={() =>{onSubmit(close)}}>ACCEPT</Button>
                 </ButtonGroup>
                 <ButtonGroup className={"w-50"}>
-                    <Button variant={"secondary"} className={"px-5"} onClick={() =>close()}>No</Button>
+                    <Button variant={"secondary"} className={"w-50"} onClick={() =>close()}>NO</Button>
                 </ButtonGroup>
             </Row>
         </div>

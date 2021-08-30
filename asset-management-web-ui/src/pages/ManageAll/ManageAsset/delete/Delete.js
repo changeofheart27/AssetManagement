@@ -26,13 +26,13 @@ const Delete = props => {
                     <Button variant={"danger"} className={"px-5"} onClick={() => {
                         onSubmit();
                         close();
-                    }}>Yes</Button>
+                    }}>YES</Button>
                 </ButtonGroup>
                 <ButtonGroup className={"w-50"}>
                     <Button variant={"secondary"} className={"px-5"} onClick={() => {
                         setDisable(false);
                         close()
-                    }}>No</Button>
+                    }}>NO</Button>
                 </ButtonGroup>
             </Row>
         </div>

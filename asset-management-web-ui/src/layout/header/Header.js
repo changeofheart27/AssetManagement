@@ -29,7 +29,7 @@ const Header = ({currentPage,childPage}) => {
                             <Dropdown.Item className={'custom-dropdown'} href="/changepassword">Change
                                 Password</Dropdown.Item>
                             <Popup contentStyle={{
-                                width: "25%",
+                                width: "15%",
                                 border: "1px solid black",
                                 borderRadius: 10,
                                 overflow: 'hidden',

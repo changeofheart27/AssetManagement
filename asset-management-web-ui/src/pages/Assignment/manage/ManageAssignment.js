@@ -20,7 +20,7 @@ import {useHistory} from "react-router-dom";
 import dateFormat from 'dateformat';
 import ReturnPopup from "../../home/popup/ReturnPopup";
 
-const ManageAssignment = ({responseAssigment, setChildPage, setCurrentPages}) => {
+const ManageAssignment = ({responseAssigment, setChildPage, setCurrentPages, setResponseAssignment}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(10);
@@ -88,11 +88,12 @@ const ManageAssignment = ({responseAssigment, setChildPage, setCurrentPages}) =>
     useEffect(() => {
         axios.get(rootAPI + "/assignments", config).then(function (response) {
             let result = response.data.map((assigment) => assigment.id);
-            if (result.includes(responseAssigment.id)) {
+            if (responseAssigment && result.includes(responseAssigment.id)) {
                 const index = result.indexOf(responseAssigment.id);
-                response.data.splice(index, 1);
-                response.data.unshift(responseAssigment);
+                const newAssignment = response.data.splice(index, 1)[0];
+                response.data.unshift(newAssignment);
                 setList(response.data);
+                setResponseAssignment(null);
             } else {
                 setList(response.data);
             }
@@ -348,7 +349,7 @@ const ManageAssignment = ({responseAssigment, setChildPage, setCurrentPages}) =>
                         variant={"danger"}
                         className={"w-auto"}
                         onClick={() => {
-                            setChildPage("Create new assignment");
+                            setChildPage("Create New Assignment");
                             history.push("/createAssignment");
                         }}
                     >

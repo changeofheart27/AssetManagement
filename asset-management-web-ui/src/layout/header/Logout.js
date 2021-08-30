@@ -23,11 +23,9 @@ const Logout = ({close}) => {
             </Row>
             <hr/>
             <p>Do you want to Logout?</p>
-            <Row>
-                <ButtonGroup>
-                    <Button variant={"danger"} className={"mx-5"} onClick={onSubmit}>Logout</Button>
-                    <Button variant={"secondary"} className={"mx-5"} onClick={() => close()}>Cancel</Button>
-                </ButtonGroup>
+            <Row className={"justify-content-between"}>
+                <Button variant={"danger"} className={"ms-2 col-5"} onClick={onSubmit}>Logout</Button>
+                <Button variant={"secondary"} className={"me-2 col-5"} onClick={() => close()}>Cancel</Button>
             </Row>
         </div>
     );

@@ -67,13 +67,13 @@ const ChangeStatus = props => {
             <Row style={{padding: '10px 20px'}}>
                 <p>Do you want to disable this user?</p>
                 <ButtonGroup className={"w-50"}>
-                    <Button variant={"danger"} className={"px-5"} onClick={onSubmit}>Disable</Button>
+                    <Button variant={"danger"} className={"px-5"} onClick={onSubmit}>DISABLE</Button>
                 </ButtonGroup>
                 <ButtonGroup className={"w-50"}>
                     <Button variant={"secondary"} className={"px-5"} onClick={() => {
                         setDisable(false);
                         close()
-                    }}>Cancel</Button>
+                    }}>CANCEL</Button>
                 </ButtonGroup>
             </Row>
         </div>
