@@ -20,11 +20,10 @@ const Request = ({setCurrentPages, responseRequest}) => {
     const indexOfLastUser = currentPage * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
     const paginate = pageNumber => setCurrentPage(pageNumber);
-
     const [list, setList] = useState([]);
-
     const [date, setDate] = useState();
     const [searchTerm, setSearchTerm] = useState();
+    const [showEmpty, setShowEmpty] = useState(false);
     const request = {
         params: {
             state,
@@ -115,12 +114,18 @@ const Request = ({setCurrentPages, responseRequest}) => {
             .then(function (response) {
                 setList(response.data)
                 setCurrentPages("Request For Returning")
+                if (response.data.length === 0) {
+                    setShowEmpty(true)
+                } else {
+                    setShowEmpty(false);
+                }
             })
     }, [state, date, searchTerm, refreshList])
     list.map(request => {
-        if(request.assignmentDTO.state === 8){
+        if (request.assignmentDTO.state === 8) {
             request.assignmentDTO.state = "Waiting for returning";
-        }if(request.assignmentDTO.state === -1){
+        }
+        if (request.assignmentDTO.state === -1) {
             request.assignmentDTO.state = "Completed";
         }
     })
@@ -197,7 +202,7 @@ const Request = ({setCurrentPages, responseRequest}) => {
                         <th className={"border-bottom"}
                             className={getClassNamesFor("username")}
                             onClick={() => requestSort("username")}
-                        >Request by
+                        >Requested by
                         </th>
                         <th className={"border-bottom"}
                             className={getClassNamesFor("assignedDate")}
@@ -281,7 +286,7 @@ const Request = ({setCurrentPages, responseRequest}) => {
                     )}
                     </tbody>
                 </Table>
-                {list.length === 0 ? <EmptySearch/>
+                {showEmpty === true ? <EmptySearch/>
                     : null}
             </Row>
             <Pagination

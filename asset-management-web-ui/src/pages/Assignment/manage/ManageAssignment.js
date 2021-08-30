@@ -34,6 +34,7 @@ const ManageAssignment = ({responseAssigment, setChildPage, setCurrentPages, set
     const [state, setState] = useState({
         state: null
     });
+    const [showEmpty, setShowEmpty] = useState(false);
     const [refreshList, setRefreshList] = useState(false);
     const [type, setType] = useState();
     const [date, setDate] = useState();
@@ -81,6 +82,11 @@ const ManageAssignment = ({responseAssigment, setChildPage, setCurrentPages, set
             .then(function (response) {
                 setCurrentPage(1)
                 setList(response.data);
+                if (response.data.length === 0) {
+                    setShowEmpty(true);
+                } else{
+                    setShowEmpty(false);
+                }
             });
         console.log("useEffect type date keyword")
     }, [type, date, keyword]);
@@ -104,13 +110,16 @@ const ManageAssignment = ({responseAssigment, setChildPage, setCurrentPages, set
         });
     }, [state, refreshList]);
     list.map(assignment => {
-        if(assignment.state === 5) {
+        if (assignment.state === 5) {
             assignment.state = "Waiting for acceptance";
-        }if(assignment.state === 6) {
+        }
+        if (assignment.state === 6) {
             assignment.state = "Accepted";
-        }if(assignment.state === 7) {
+        }
+        if (assignment.state === 7) {
             assignment.state = "Decline";
-        }if(assignment.state === 8) {
+        }
+        if (assignment.state === 8) {
             assignment.state = "Waiting for returning";
         }
     });
@@ -455,7 +464,7 @@ const ManageAssignment = ({responseAssigment, setChildPage, setCurrentPages, set
                     ))}
                     </tbody>
                 </Table>
-                {list.length === 0 ? <EmptySearch/>
+                {showEmpty === true ? <EmptySearch/>
                     : null}
             </Row>
             <Pagination

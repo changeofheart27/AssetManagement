@@ -29,6 +29,7 @@ const Home = () => {
         defaultPassword: null,
         firstLogin: null
     });
+    const [showEmpty, setShowEmpty] = useState(false);
     const [list, setList] = useState([{
         id: null,
         assetDTO: {
@@ -59,6 +60,11 @@ const Home = () => {
         }).then((response) => {
             setDisable(false);
             setList(response.data);
+            if (response.data.length === 0) {
+                setShowEmpty(true)
+            } else {
+                setShowEmpty(false)
+            }
             axios
                 .get(rootAPI + `/my-info`)
                 .then((response2) => {
@@ -351,7 +357,7 @@ const Home = () => {
                     ))}
                     </tbody>
                 </Table>
-                {list.length === 0 ? <EmptyList/>
+                {showEmpty === true ? <EmptyList/>
                     : null}
             </Row>
             <Pagination

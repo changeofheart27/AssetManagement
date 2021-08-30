@@ -14,7 +14,6 @@ import {useHistory} from 'react-router-dom'
 import dateFormat from 'dateformat';
 import '../../../../style/style.css'
 import ChangeStatusFail from "../changeStatus/ChangeStatusFail";
-import EmptyList from "../../../../layout/EmptyList/EmptyList";
 import EmptySearch from "../../../../layout/EmptyList/EmptySearch";
 
 const ManageUser = ({responseUser, setChildPage, setCurrentPages, setResponseUser}) => {
@@ -32,6 +31,7 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages, setResponseUse
     const [refresh, setRefresh] = useState(true);
     const [disable, setDisable] = useState("false");
     const paginate = pageNumber => setCurrentPage(pageNumber);
+    const [showEmpty, setShowEmpty] = useState(false);
     const history = useHistory();
 
     const [list, setList] = useState([{
@@ -102,6 +102,11 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages, setResponseUse
             .then(function (response) {
                 setCurrentPage(1);
                 setList(response.data);
+                if (response.data.length === 0) {
+                    setShowEmpty(true)
+                } else {
+                    setShowEmpty(false)
+                }
             })
     }, [type, searchTerm])
 
@@ -308,7 +313,7 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages, setResponseUse
                     ))}
                     </tbody>
                 </Table>
-                {list.length === 0 ? <EmptySearch/>
+                {showEmpty === true ? <EmptySearch/>
                     : null}
             </Row>
             <Pagination
