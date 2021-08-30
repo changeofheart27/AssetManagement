@@ -13,7 +13,7 @@ const DeleteAssignment = props => {
         axios
             .delete(rootAPI + `/assignments/${id}`)
             .then(function (response) {
-                setRefreshList(true);
+                setRefreshList(refresh => refresh);
                 close();
             });
     }

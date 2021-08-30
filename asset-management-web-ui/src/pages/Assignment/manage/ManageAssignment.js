@@ -99,7 +99,6 @@ const ManageAssignment = ({responseAssigment, setChildPage, setCurrentPages, set
                 setList(response.data);
             }
             setCurrentPages("Manage Assignment")
-            setRefreshList(false);
             setDisable(false);
             console.log("useEffect state refreshList")
         });
@@ -419,7 +418,7 @@ const ManageAssignment = ({responseAssigment, setChildPage, setCurrentPages, set
                     {list.slice(indexOfFirstUser, indexOfLastUser).map((assigment) => (
                         <Popup
                             contentStyle={{
-                                width: "25%",
+                                width: "27%",
                                 border: "1px solid black",
                                 borderRadius: 10,
                                 overflow: "hidden",

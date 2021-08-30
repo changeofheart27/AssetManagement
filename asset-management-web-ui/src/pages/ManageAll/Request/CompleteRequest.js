@@ -13,7 +13,7 @@ const CompleteRequest = props => {
         axios
             .put(rootAPI + `/request/${id}/complete`)
             .then(function (response) {
-                setRefreshList(true);
+                setRefreshList(refresh => !refresh);
                 close();
             });
     }

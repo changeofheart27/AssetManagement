@@ -41,6 +41,9 @@ public class RequestServiceImpl implements RequestService {
   @Override
   public RequestDTO create(RequestDTO requestDTO) {
     int assignID = requestDTO.getAssignmentDTO().getId();
+    Assignment assignment = assignmentRepository.getById(assignID);
+    assignment.setState(8);
+    assignmentRepository.save(assignment);
     Request r = requestRepository.findByAssignment_Id(assignID);
     if (r != null) {
       throw new RuntimeException("Assignment ID exist");

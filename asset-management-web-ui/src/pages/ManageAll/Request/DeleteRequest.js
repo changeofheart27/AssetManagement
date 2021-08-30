@@ -4,12 +4,12 @@ import axios from "axios";
 
 const DeleteRequest = props => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
-    let {id, close,setRefreshList, refreshList} = props;
+    let {id, close, setRefreshList} = props;
     const onSubmit = () => {
         axios
             .delete(rootAPI + `/request/${id}`)
             .then(function (response) {
-                setRefreshList(true);
+                setRefreshList(refresh => !refresh);
                 close();
             });
     }
@@ -20,10 +20,12 @@ const DeleteRequest = props => {
             <Row style={{padding: '10px 20px'}}>
                 <p>Do you want to cancel this this returning request?</p>
                 <ButtonGroup className={"w-50"}>
-                    <Button variant={"danger"} className={""} onClick={() =>{onSubmit(close)}}>DECLINE</Button>
+                    <Button variant={"danger"} className={""} onClick={() => {
+                        onSubmit(close)
+                    }}>DECLINE</Button>
                 </ButtonGroup>
                 <ButtonGroup className={"w-50"}>
-                    <Button variant={"secondary"} className={""} onClick={() =>close()}>NO</Button>
+                    <Button variant={"secondary"} className={""} onClick={() => close()}>NO</Button>
                 </ButtonGroup>
             </Row>
         </div>

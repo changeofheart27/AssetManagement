@@ -113,17 +113,8 @@ const Request = ({setCurrentPages, responseRequest}) => {
         }
         axios.get(rootAPI + `/request`, request)
             .then(function (response) {
-                let result = response.data.map((request) => request.id);
-                if (result.includes(responseRequest.id)) {
-                    const index = result.indexOf(responseRequest.id);
-                    response.data.splice(index, 1);
-                    response.data.unshift(responseRequest);
-                    setList(response.data);
-                } else {
-                    setList(response.data);
-                }
+                setList(response.data)
                 setCurrentPages("Request For Returning")
-                setRefreshList(false);
             })
     }, [state, date, searchTerm, refreshList])
     list.map(request => {
