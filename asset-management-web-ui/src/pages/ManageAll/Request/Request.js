@@ -22,7 +22,6 @@ const Request = ({setCurrentPages, responseRequest}) => {
 
     const [list, setList] = useState([]);
 
-
     const [date, setDate] = useState();
     const [searchTerm, setSearchTerm] = useState();
     const request = {
@@ -126,13 +125,13 @@ const Request = ({setCurrentPages, responseRequest}) => {
                 setRefreshList(false);
             })
     }, [state, date, searchTerm, refreshList])
-    const check = (state) => {
-        if (state === 8) {
-            return <td>Waiting for returning</td>;
-        } else if (state === -1) {
-            return <td>Completed</td>;
+    list.map(request => {
+        if(request.assignmentDTO.state === 8){
+            request.assignmentDTO.state = "Waiting for returning";
+        }if(request.assignmentDTO.state === -1){
+            request.assignmentDTO.state = "Completed";
         }
-    };
+    })
     let i = 1;
     console.log(refreshList);
     return (
@@ -241,8 +240,8 @@ const Request = ({setCurrentPages, responseRequest}) => {
                             <td>{request.acceptedBy}</td>
                             {request.returnedDate ? <td>{moment(request.returnedDate).format("DD/MM/YYYY")}</td> :
                                 <td/>}
-                            {check(request.assignmentDTO.state)}
-                            {request.assignmentDTO.state === 8 ?
+                            <td>{request.assignmentDTO.state}</td>
+                            {request.assignmentDTO.state === "Waiting for returning" ?
                                 <>
                                     <Popup
                                         contentStyle={{

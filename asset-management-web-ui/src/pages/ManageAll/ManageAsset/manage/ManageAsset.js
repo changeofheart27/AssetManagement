@@ -59,19 +59,19 @@ const ManageAsset = ({responseDataAsset, setChildPage, setCurrentPages, setRespo
                 setRefreshList(false);
             })
     }, [refreshList]);
-    const check = state => {
-        if (state === 0) {
-            return <td>Available</td>
-        } else if (state === 1) {
-            return <td>Not Available</td>
-        } else if (state === 2) {
-            return <td>Waiting for recycling</td>
-        } else if (state === 3) {
-            return <td>Recycled</td>
-        } else if (state === 4) {
-            return <td>Assigned</td>
+    list.map(asset => {
+        if(asset.state === 0) {
+            asset.state = "Available";
+        }if(asset.state === 1) {
+            asset.state = "Not Available";
+        }if(asset.state === 2) {
+            asset.state = "Waiting for recycling";
+        }if(asset.state === 3) {
+            asset.state = "Recycled";
+        }if(asset.state === 4) {
+            asset.state = "Assigned";
         }
-    }
+    });
     const [type, setType] = useState();
     const [category, setCategory] = useState();
     const [searchTerm, setSearchTerm] = useState();
@@ -117,6 +117,12 @@ const ManageAsset = ({responseDataAsset, setChildPage, setCurrentPages, setRespo
     const sortingData = useMemo(() => {
         if (sortConfig !== null) {
             list.sort((a, b) => {
+                if(sortConfig.key === 'state') {
+                    if(a.state < b.state)
+                    return sortConfig.direction === "asc" ? -1 : 1;
+                    if(a.state > b.state)
+                    return sortConfig.direction === "asc" ? 1 : -1;
+                }
                 if (a[sortConfig.key] < (b[sortConfig.key]) || a.categoryDTO.name < b.categoryDTO.name) {
                     return sortConfig.direction === "asc" ? -1 : 1;
                 }
@@ -245,9 +251,9 @@ const ManageAsset = ({responseDataAsset, setChildPage, setCurrentPages, setRespo
                                 <td>{asset.assetCode}</td>
                                 <td>{asset.assetName}</td>
                                 <td>{asset.categoryDTO.name}</td>
-                                {check(asset.state)}
+                                <td>{asset.state}</td>
                                 {asset.state !== 4 ?
-                                    <td><i className="bi bi-pen btn m-0 text-muted p-0"
+                                    <td><i className="bi bi-pen btn m-0 text-muted p-0 zoomin"
                                                            onClick={() => {
                                                                setChildPage("Edit Asset")
                                                                history.push(`/editasset/${asset.id}`)
@@ -259,7 +265,7 @@ const ManageAsset = ({responseDataAsset, setChildPage, setCurrentPages, setRespo
                                     width: "25%", border: "1px solid black", borderRadius: 10,
                                     overflow: 'hidden'
                                 }}
-                                       trigger={<td><i className="bi bi-x-circle text-danger btn p-0"/></td>}
+                                       trigger={<td><i className="bi bi-x-circle text-danger btn p-0 zoomin"/></td>}
                                        modal
                                        closeOnDocumentClick={false}
                                 >

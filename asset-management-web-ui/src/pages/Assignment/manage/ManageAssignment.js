@@ -103,19 +103,20 @@ const ManageAssignment = ({responseAssigment, setChildPage, setCurrentPages, set
             console.log("useEffect state refreshList")
         });
     }, [state, refreshList]);
-    const check = (state) => {
-        if (state === 5) {
-            return <td>Waiting for acceptance</td>;
-        } else if (state === 6) {
-            return <td>Accepted</td>;
-        } else if (state === 7) {
-            return <td>Decline</td>;
-        } else if (state === 8) {
-            return <td>Waiting for returning</td>;
+    list.map(assignment => {
+        if(assignment.state === 5) {
+            assignment.state = "Waiting for acceptance";
+        }if(assignment.state === 6) {
+            assignment.state = "Accepted";
+        }if(assignment.state === 7) {
+            assignment.state = "Decline";
+        }if(assignment.state === 8) {
+            assignment.state = "Waiting for returning";
         }
-    };
+    });
+    console.log(list)
     const checkButton = (state, assigment) => {
-        if (state === 5) {
+        if (state === "Waiting for acceptance") {
             return (
                 <>
                     <td>
@@ -155,7 +156,7 @@ const ManageAssignment = ({responseAssigment, setChildPage, setCurrentPages, set
 
                 </>
             )
-        } else if (state === 6) {
+        } else if (state === "Accepted") {
             return (
                 <>
                     <td>
@@ -191,7 +192,7 @@ const ManageAssignment = ({responseAssigment, setChildPage, setCurrentPages, set
                     </Popup>
                 </>
             )
-        } else if (state === 7) {
+        } else if (state === "Decline") {
             return (
                 <>
                     <td>
@@ -226,7 +227,7 @@ const ManageAssignment = ({responseAssigment, setChildPage, setCurrentPages, set
                     </td>
                 </>
             )
-        } else if (state === 8) {
+        } else if (state === "Waiting for returning") {
             return (
                 <>
                     <td>
@@ -431,9 +432,8 @@ const ManageAssignment = ({responseAssigment, setChildPage, setCurrentPages, set
                                     <td>{assigment.userDTO.username}</td>
                                     <td>{assigment.assignedBy}</td>
                                     <td>{dateFormat(assigment.assignedDate, "dd/mm/yyyy")}</td>
-                                    <td>{check(assigment.state)}</td>
+                                    <td>{assigment.state}</td>
                                     {checkButton(assigment.state, assigment)}
-
                                 </tr>
                             }
                             modal
