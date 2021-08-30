@@ -12,6 +12,7 @@ import axios from "axios";
 import '../../../../style/style.css'
 import {useHistory} from 'react-router-dom'
 import EmptySearch from "../../../../layout/EmptyList/EmptySearch";
+import EmptyList from "../../../../layout/EmptyList/EmptyList";
 
 const ManageAsset = ({responseDataAsset, setChildPage, setCurrentPages, setResponseDataAsset}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
@@ -21,6 +22,7 @@ const ManageAsset = ({responseDataAsset, setChildPage, setCurrentPages, setRespo
     const indexOfLastUser = currentPage * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
     const paginate = pageNumber => setCurrentPage(pageNumber);
+    const [showEmpty, setShowEmpty] = useState(false);
     const [list, setList] = useState([{
         id: null,
         assetCode: null,
@@ -32,7 +34,6 @@ const ManageAsset = ({responseDataAsset, setChildPage, setCurrentPages, setRespo
             name: null
         }
     }]);
-
     const [refreshList, setRefreshList] = useState(false);
     const history = useHistory();
     const [categories, setCategories] = useState([]);
@@ -116,9 +117,14 @@ const ManageAsset = ({responseDataAsset, setChildPage, setCurrentPages, setRespo
             .then(function (response) {
                 setCurrentPage(1)
                 setList(response.data);
+                if (response.data.length === 0) {
+                    setShowEmpty(true);
+                } else {
+                    setShowEmpty(false);
+                }
             })
     }, [type, category, searchTerm])
-
+    console.log(showEmpty+" show empty")
     const sortingData = useMemo(() => {
         if (sortConfig !== null) {
             list.sort((a, b) => {
@@ -297,7 +303,7 @@ const ManageAsset = ({responseDataAsset, setChildPage, setCurrentPages, setRespo
                     )}
                     </tbody>
                 </Table>
-                {list.length === 0 ? <EmptySearch/>
+                {showEmpty === true ? <EmptySearch/>
                     : null}
             </Row>
             <Pagination className="pagnition"
