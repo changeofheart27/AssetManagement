@@ -4,3 +4,7 @@
 .pagination li a{
     color: red;
 }
+.active_item{
+    border-color: red;
+    color: #fff;
+}

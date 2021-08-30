@@ -19,6 +19,7 @@ import axios from "axios";
 import {useHistory} from "react-router-dom";
 import dateFormat from 'dateformat';
 import ReturnPopup from "../../home/popup/ReturnPopup";
+import EmptySearch from "../../../layout/EmptyList/EmptySearch";
 
 const ManageAssignment = ({responseAssigment, setChildPage, setCurrentPages, setResponseAssignment}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
@@ -98,7 +99,6 @@ const ManageAssignment = ({responseAssigment, setChildPage, setCurrentPages, set
                 setList(response.data);
             }
             setCurrentPages("Manage Assignment")
-            setRefreshList(false);
             setDisable(false);
             console.log("useEffect state refreshList")
         });
@@ -176,7 +176,7 @@ const ManageAssignment = ({responseAssigment, setChildPage, setCurrentPages, set
                         }}
                         trigger={
                             <td>
-                                <i className="bi btn m-0 p-0 zoomin bi-arrow-counterclockwise text-blue fw-bold"
+                                <i className="bi btn m-0 p-0 rotate bi-arrow-counterclockwise text-blue fw-bold"
                                 />
                             </td>
                         }
@@ -418,7 +418,7 @@ const ManageAssignment = ({responseAssigment, setChildPage, setCurrentPages, set
                     {list.slice(indexOfFirstUser, indexOfLastUser).map((assigment) => (
                         <Popup
                             contentStyle={{
-                                width: "25%",
+                                width: "27%",
                                 border: "1px solid black",
                                 borderRadius: 10,
                                 overflow: "hidden",
@@ -455,6 +455,8 @@ const ManageAssignment = ({responseAssigment, setChildPage, setCurrentPages, set
                     ))}
                     </tbody>
                 </Table>
+                {list.length === 0 ? <EmptySearch/>
+                    : null}
             </Row>
             <Pagination
                 className="pagnition"

@@ -3,10 +3,42 @@
 }
 
 .zoomin:hover{
-    transform: scale(1.5,1.5);
-    transition-duration: 2s;
+    animation: myScale 1s;
+    animation-fill-mode: forwards;
+}
+@keyframes myScale {
+    to{
+        transform: scale(1.5,1.5) ;
+    }
+}
+.rotate{
+    animation: rollback 1s reverse;
 }
 
+.rotate:hover{
+    animation: myfirst 1s infinite linear;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+    color: #0a58ca;
+}
+@keyframes myfirst {
+    0%{
+        transform: scale(1.5, 1.5) rotate(360deg);
+    }
+    100%{
+        transform: scale(1.5, 1.5) rotate(0deg);
+    }
+}
+@keyframes rollback {
+    0%{
+        transform: rotate(360deg);
+    }
+    100%{
+        transform: rotate(0deg);
+    }
+
+}
 .form-check-input:checked{
     background-color: red;
     border-color: red;

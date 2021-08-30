@@ -1,4 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
+import '../../../../style/style.css'
 import './Manage.css'
 import 'reactjs-popup/dist/index.css';
 import {Button, Container, Form, FormControl, InputGroup, Row, Table} from 'react-bootstrap';
@@ -11,9 +12,10 @@ import ViewDetailedUser from "../viewDetails/ViewDetailedUser"
 import axios from "axios";
 import {useHistory} from 'react-router-dom'
 import dateFormat from 'dateformat';
-
 import '../../../../style/style.css'
 import ChangeStatusFail from "../changeStatus/ChangeStatusFail";
+import EmptyList from "../../../../layout/EmptyList/EmptyList";
+import EmptySearch from "../../../../layout/EmptyList/EmptySearch";
 
 const ManageUser = ({responseUser, setChildPage, setCurrentPages, setResponseUser}) => {
 
@@ -306,6 +308,8 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages, setResponseUse
                     ))}
                     </tbody>
                 </Table>
+                {list.length === 0 ? <EmptySearch/>
+                    : null}
             </Row>
             <Pagination
                 className="pagnition"

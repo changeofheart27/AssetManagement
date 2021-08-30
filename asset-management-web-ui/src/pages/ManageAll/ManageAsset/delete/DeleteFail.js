@@ -8,7 +8,7 @@ const DeleteFail = props => {
         <Row className={"justify-content-between align-items-center"}
             style={{padding: '10px 20px'}}
         >
-          <h3 className={"text-danger w-auto m-0 p-0"}>Can not disable asset</h3>
+          <h3 className={"text-danger w-auto m-0 p-0"}>Can not delete asset</h3>
           <Button variant={"outline-danger w-auto"} style={{padding: '3px 6px'}} onClick={() => close()}>
             <i class="bi bi-x-lg"/>
           </Button>
