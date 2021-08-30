@@ -224,7 +224,7 @@ const ManageAsset = ({responseDataAsset, setChildPage, setCurrentPages, setRespo
                     </InputGroup>
                     <Button variant={"danger"} className={"w-auto"} onClick={() => {
                         setChildPage("Create New Asset");
-                        history.push('/createasset')
+                        history.push('/asset/createasset')
                     }}>Create
                         new Asset</Button>
 
@@ -267,7 +267,7 @@ const ManageAsset = ({responseDataAsset, setChildPage, setCurrentPages, setRespo
                                     <td><i className="bi bi-pen btn m-0 text-muted p-0 zoomin"
                                            onClick={() => {
                                                setChildPage("Edit Asset")
-                                               history.push(`/editasset/${asset.id}`)
+                                               history.push(`/asset/editasset/${asset.id}`)
                                            }}/></td>
                                     :
                                     <td><i className="bi bi-pen btn m-0 btn disabled text-muted p-0"/></td>}

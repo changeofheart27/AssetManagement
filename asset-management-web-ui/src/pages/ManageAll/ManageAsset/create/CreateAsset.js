@@ -144,7 +144,7 @@ const CreateAsset = ({setResponseDataAsset, setChildPage}) => {
                                 </Form.Select>
                                 <Button style={{width:"7%"}}
                                         variant="outline-secondary"
-                                        onClick={() => history.push('/createcategory')}
+                                        onClick={() => history.push('/asset/createcategory')}
                                 >
                                     <i className="bi bi-plus-lg"/>
                                 </Button>
