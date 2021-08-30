@@ -251,7 +251,7 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages, setResponseUse
                                     <td>{dateFormat(user.joinedDate, "dd/mm/yyyy")}</td>
                                     <td>{capitalizeFirstLetter(user.authority)}</td>
                                     <td>
-                                        <i className="bi bi-pen btn m-0 text-muted p-0"
+                                        <i className="bi bi-pen btn m-0 text-muted p-0 zoomin"
                                            onClick={() => {
                                                setChildPage("Edit User");
                                                history.push(`/edituser/${user.id}`)
@@ -267,7 +267,7 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages, setResponseUse
                                         }}
                                         trigger={
                                             <td>
-                                                <i className="bi bi-x-circle text-danger btn p-0"/>
+                                                <i className="bi bi-x-circle text-danger btn p-0 zoomin"/>
                                             </td>
                                         }
                                         modal
