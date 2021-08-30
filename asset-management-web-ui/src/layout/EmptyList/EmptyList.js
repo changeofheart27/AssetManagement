@@ -1,18 +1,19 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Row} from "react-bootstrap";
-
-import EmptySVG from '../../style/blank.svg'
-
+import "./index.css"
+import EmptySVG from '../../style/paper.svg'
 const EmptyList = () => {
+
     return (
         <>
-            <div className={"text-center"}>
-                You got no assignment yet
-            </div>
             <Row className={"justify-content-center align-items-center"}>
-               <img src={EmptySVG} className={"w-50 h-50"} alt={"Empty"}/>
+               <img src={EmptySVG}  className={"svg-custom my-5"} alt={"Empty"}/>
+                <div className={"text-center text-danger"} style={{fontSize:"18px"}}>
+                    You have got no assignment yet
+                </div>
             </Row>
+
         </>
     );
 };

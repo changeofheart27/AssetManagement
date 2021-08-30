@@ -9,8 +9,10 @@ const Pagination = ({usersPerPage, totalUsers, paginate}) => {
         pageNumbers.push(i);
     }
     const [currentPage, setCurrentPage] = useState(1);
+    const handleClick = evt => {
+        console.log(evt)
+    };
     return (
-
         <nav>
             <ul className='pagination'>
                 {currentPage === 1 ? null :
@@ -24,7 +26,6 @@ const Pagination = ({usersPerPage, totalUsers, paginate}) => {
                                 }
                             }}
                         >
-
                             Previous
                         </li>
                     </>
@@ -33,8 +34,9 @@ const Pagination = ({usersPerPage, totalUsers, paginate}) => {
                     <li key={number} className='page-item'>
                         <a onClick={() => {
                             setCurrentPage(number);
-                            paginate(number)
+                            paginate(number);
                         }}
+                           id={number}
                            href="#!" className='page-link'>
                             {number}
                         </a>

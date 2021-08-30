@@ -9,7 +9,7 @@ import Pagination from '../../../../components/Pagination/Pagination'
 import Popup from "reactjs-popup";
 import ViewDetailedAsset from "../viewDetails/ViewDetailedAsset"
 import axios from "axios";
-import {set} from 'date-fns';
+import '../../../../style/style.css'
 import {useHistory} from 'react-router-dom'
 
 const ManageAsset = ({responseDataAsset, setChildPage, setCurrentPages, setResponseDataAsset}) => {

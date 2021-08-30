@@ -97,7 +97,7 @@ const Home = () => {
         }
     }
     const PopupStyle = {
-        width: "25%",
+        width: "20%",
         border: "1px solid black",
         borderRadius: 10,
         overflow: "hidden",
@@ -323,7 +323,7 @@ const Home = () => {
                                             <Popup
                                                 trigger={
                                                     <td>
-                                                        <i className="bi bi-arrow-counterclockwise btn m-0 p-0 text-blue zoomin"/>
+                                                        <i className="bi bi-arrow-counterclockwise btn m-0 p-0 text-blue rotate"/>
                                                     </td>
                                                 }
                                                 modal

@@ -4,7 +4,7 @@
 }
 
 /* row data */
-.ant-table-tbody > tr > td {
+.ant-table-tbody > tr > td{
     height: 10px;
     padding: 8px;
 }
@@ -15,4 +15,18 @@
 .ant-table-thead > tr > th {
     height: 10px;
     padding: 8px;
+}
+.ant-radio-checked .ant-radio-inner{
+    border-color: red !important ;
+}
+
+.ant-radio-checked .ant-radio-inner:after{
+    background-color: red;
+}
+
+.ant-radio:hover .ant-radio-inner {
+    border-color: red ;
+}
+.ant-radio-checked .ant-radio-inner:focus{
+    border-color: red;
 }

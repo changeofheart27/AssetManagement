@@ -1,4 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
+import '../../../../style/style.css'
 import './Manage.css'
 import 'reactjs-popup/dist/index.css';
 import {Button, Container, Form, FormControl, InputGroup, Row, Table} from 'react-bootstrap';
@@ -11,10 +12,8 @@ import ViewDetailedUser from "../viewDetails/ViewDetailedUser"
 import axios from "axios";
 import {useHistory} from 'react-router-dom'
 import dateFormat from 'dateformat';
-
 import '../../../../style/style.css'
 import ChangeStatusFail from "../changeStatus/ChangeStatusFail";
-
 const ManageUser = ({responseUser, setChildPage, setCurrentPages, setResponseUser}) => {
 
     const token = localStorage.getItem('jwttoken')

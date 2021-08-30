@@ -176,7 +176,7 @@ const ManageAssignment = ({responseAssigment, setChildPage, setCurrentPages, set
                         }}
                         trigger={
                             <td>
-                                <i className="bi btn m-0 p-0 zoomin bi-arrow-counterclockwise text-blue fw-bold"
+                                <i className="bi btn m-0 p-0 rotate bi-arrow-counterclockwise text-blue fw-bold"
                                 />
                             </td>
                         }
