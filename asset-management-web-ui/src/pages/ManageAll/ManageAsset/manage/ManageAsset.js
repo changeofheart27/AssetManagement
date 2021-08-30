@@ -61,15 +61,19 @@ const ManageAsset = ({responseDataAsset, setChildPage, setCurrentPages, setRespo
             })
     }, [refreshList]);
     list.map(asset => {
-        if(asset.state === 0) {
+        if (asset.state === 0) {
             asset.state = "Available";
-        }if(asset.state === 1) {
+        }
+        if (asset.state === 1) {
             asset.state = "Not Available";
-        }if(asset.state === 2) {
+        }
+        if (asset.state === 2) {
             asset.state = "Waiting for recycling";
-        }if(asset.state === 3) {
+        }
+        if (asset.state === 3) {
             asset.state = "Recycled";
-        }if(asset.state === 4) {
+        }
+        if (asset.state === 4) {
             asset.state = "Assigned";
         }
     });
@@ -118,11 +122,11 @@ const ManageAsset = ({responseDataAsset, setChildPage, setCurrentPages, setRespo
     const sortingData = useMemo(() => {
         if (sortConfig !== null) {
             list.sort((a, b) => {
-                if(sortConfig.key === 'state') {
-                    if(a.state < b.state)
-                    return sortConfig.direction === "asc" ? -1 : 1;
-                    if(a.state > b.state)
-                    return sortConfig.direction === "asc" ? 1 : -1;
+                if (sortConfig.key === 'state') {
+                    if (a.state < b.state)
+                        return sortConfig.direction === "asc" ? -1 : 1;
+                    if (a.state > b.state)
+                        return sortConfig.direction === "asc" ? 1 : -1;
                 }
                 if (a[sortConfig.key] < (b[sortConfig.key]) || a.categoryDTO.name < b.categoryDTO.name) {
                     return sortConfig.direction === "asc" ? -1 : 1;
@@ -253,7 +257,7 @@ const ManageAsset = ({responseDataAsset, setChildPage, setCurrentPages, setRespo
                                 <td>{asset.assetName}</td>
                                 <td>{asset.categoryDTO.name}</td>
                                 <td>{asset.state}</td>
-                                {asset.state !== 4 ?
+                                {asset.state !== "Assigned" ?
                                     <td><i className="bi bi-pen btn m-0 text-muted p-0 zoomin"
                                            onClick={() => {
                                                setChildPage("Edit Asset")
@@ -270,13 +274,15 @@ const ManageAsset = ({responseDataAsset, setChildPage, setCurrentPages, setRespo
                                        modal
                                        closeOnDocumentClick={false}
                                 >
-                                    {asset.state !== 4 ?
+
+                                    {asset.state !== "Assigned" ?
                                         close => <Delete id={asset.id}
                                                          close={close}
                                                          setRefreshList={setRefreshList}
                                                          setDisable={setDisable}
-                                        /> :
-                                        close => <DeleteFail id={asset.id} close={close}/>}
+                                        />
+                                        :
+                                        close => <DeleteFail setDisable={setDisable} id={asset.id} close={close}/>}
                                 </Popup>
                             </tr>
                         }

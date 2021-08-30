@@ -60,14 +60,7 @@ const Home = () => {
             setDisable(false);
             setList(response.data);
             axios
-                .get(rootAPI + `/users`)
-                .then((response1) => {
-                    setUser(response1.data)
-                    console.log(response1);
-                })
-        }).then((response) => {
-            axios
-                .get(rootAPI + `/my-info?=${localStorage.getItem("username")}`)
+                .get(rootAPI + `/my-info`)
                 .then((response2) => {
                     setUser(response2.data)
                     console.log(response2);

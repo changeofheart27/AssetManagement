@@ -26,7 +26,6 @@ const Navbar = ({setCurrentPage, setChildPage}) => {
     const [authority, setAuthority] = useState([{
         authority: null
     }]);
-
     useEffect(() => {
         axios.get(rootAPI + "/my-info")
             .then(response => {
@@ -147,7 +146,7 @@ const Navbar = ({setCurrentPage, setChildPage}) => {
                     )}
                 </div>
             </div>
-            <div className="pages-container col-10">
+            <div className="pages-container col-10" style={{height: "500px"}}>
                 {authority === "STAFF" ? (
                     <Switch>
                         <Route path={"/home"} exact>
@@ -189,7 +188,8 @@ const Navbar = ({setCurrentPage, setChildPage}) => {
                             />
                         </Route>
                         <Route path={"/createasset"}>
-                            <CreateAsset setChildPage={setChildPage} setResponseDataAsset={setResponseDataAsset}/>
+                            <CreateAsset setChildPage={setChildPage}
+                                         setResponseDataAsset={setResponseDataAsset}/>
                         </Route>
                         <Route path={"/editasset/:id"}>
                             <EditAsset setChildPage={setChildPage} setResponseDataAsset={setResponseDataAsset}/>
@@ -198,16 +198,19 @@ const Navbar = ({setCurrentPage, setChildPage}) => {
                             <CreateCategory/>
                         </Route>
                         <Route path={"/assignment"}>
-                            <ManageAssignment  setCurrentPages={setCurrentPage}
-                                               setChildPage={setChildPage}
-                                               setResponseAssignment={setResponseAssigment}
-                                               responseAssigment={responseAssigment}/>
+                            <ManageAssignment setCurrentPages={setCurrentPage}
+                                              setChildPage={setChildPage}
+                                              setResponseAssignment={setResponseAssigment}
+                                              responseAssigment={responseAssigment}
+                            />
                         </Route>
                         <Route path={"/createassignment"}>
-                            <CreateAssignment setChildPage={setChildPage} setResponseAssigment={setResponseAssigment}/>
+                            <CreateAssignment setChildPage={setChildPage}
+                                              setResponseAssigment={setResponseAssigment}/>
                         </Route>
                         <Route path={"/editassignment/:id"}>
-                            <EditAssignment setChildPage={setChildPage} setResponseAssigment={setResponseAssigment}/>
+                            <EditAssignment setChildPage={setChildPage}
+                                            setResponseAssigment={setResponseAssigment}/>
                         </Route>
                         <Route path={"/request"}>
                             <Request setCurrentPages={setCurrentPage} responseRequest={responseRequest}/>

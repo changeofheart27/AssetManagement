@@ -277,7 +277,7 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages, setResponseUse
                                     >
                                         {(close) => {
                                             if (user.assignments?.length !== 0) {
-                                                return <ChangeStatusFail close={close}/>;
+                                                return <ChangeStatusFail setDisable={setDisable} close={close}/>;
                                             } else {
                                                 return <ChangeStatus id={user.id}
                                                                      close={close}
